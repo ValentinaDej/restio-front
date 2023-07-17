@@ -14,50 +14,50 @@ To use this component, you can add it to a parent component and pass the necessa
 
 ###  This example demonstrates how to use ConfirmModal in a parent component.
 
-import React, { useState } from 'react';
-import Footer from './components/Footer/Footer';
-import Header from './components/Header/Header';
-import Button from './components/Button/Button';
-import ConfirmModal from './components/ConfirmModal/ConfirmModal';
-import './styles.scss';
+**import React, { useState } from 'react';**
+**import Footer from './components/Footer/Footer';**
+**import Header from './components/Header/Header';**
+**import Button from './components/Button/Button';**
+**import ConfirmModal from './components/ConfirmModal/ConfirmModal';**
+**import './styles.scss';**
 
-const App = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+**const App = () => {**
+ ** const [isModalOpen, setIsModalOpen] = useState(false);**
 
-  const handleButtonClick = () => {
-    setIsModalOpen(true);
-  };
+  **const handleButtonClick = () => {**
+    **setIsModalOpen(true);**
+  **};**
 
-  const handleConfirm = () => {
-    // Confirmation logic
-    setIsModalOpen(false);
-  };
+  **const handleConfirm = () => {**
+    **// Confirmation logic**
+    **setIsModalOpen(false);**
+  **};**
 
-  const handleCancel = () => {
-    // Cancellation logic
-    setIsModalOpen(false);
-  };
+  **const handleCancel = () => {**
+    **// Cancellation logic**
+    **setIsModalOpen(false);**
+ ** };**
 
-  return (
-    <>
-      <Header />
-      <main className="main">
-        <div className="main__container">
-          <h1>RESTio</h1>
-          <div className="centered">
-            <Button onClick={handleButtonClick}>Start</Button>
-            {isModalOpen && (
-              <ConfirmModal
-                message="Are you sure?"
-                onConfirm={handleConfirm}
-                onCancel={handleCancel}
-              />
-            )}
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </>
-  );
-};
-export default App;
+  **return (**
+    **<>**
+     ** <Header/>**
+      **<main className="main">**
+        **<div className="main__container">**
+          **<h1>RESTio</h1>**
+          **<div className="centered">
+           ** <Button onClick={handleButtonClick}>Start</Button>**
+            **{isModalOpen && (**
+              **<ConfirmModal**
+               ** message="Are you sure?"**
+                **onConfirm={handleConfirm}**
+                **onCancel={handleCancel}**
+              **/>**
+           **)}**
+          **</div>**
+        **</div>**
+      **</main>**
+      **<Footer/>**
+    **</>**
+ **);**
+**};**
+**export default App;**
