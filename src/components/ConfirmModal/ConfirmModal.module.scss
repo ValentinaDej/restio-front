@@ -12,14 +12,31 @@
   align-items: center;
   border: solid 2px var(--color-orange);
   border-radius: 15px;
-  &_none {
-    display: none;
+  @media (max-width: 1000px) {
+    width: 700px;
+  }
+  @media (max-width: 770px) {
+    width: 550px;
+  }
+  @media (max-width: 635px) {
+    width: 500px;
+  }
+  @media (max-width: 565px) {
+    width: 400px;
+  }
+  @media (max-width: 450px) {
+    width: 360px;
   }
 }
 .buttons {
   width: 400px;
   display: flex;
   justify-content: space-between;
+  @media (max-width: 635px) {
+    height: 150px;
+    width: 200px;
+    flex-direction: column;
+  }
 }
 .img {
   width: 270px;
@@ -31,4 +48,7 @@
   text-transform: uppercase;
   text-decoration: none;
   margin-bottom: 50px;
+  @media (max-width: 635px) {
+    margin-bottom: 30px;
+  }
 }

@@ -24,20 +24,6 @@ import './styles.scss';
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleButtonClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleConfirm = () => {
-    // Confirmation logic
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    // Cancellation logic
-    setIsModalOpen(false);
-  };
-
   return (
     <>
       <Header />
@@ -45,12 +31,12 @@ const App = () => {
         <div className="main__container">
           <h1>RESTio</h1>
           <div className="centered">
-            <Button onClick={handleButtonClick}>Start</Button>
+            <Button onClick={() => setIsModalOpen(true)}>Start</Button>
             {isModalOpen && (
               <ConfirmModal
                 message="Are you sure?"
-                onConfirm={handleConfirm}
-                onCancel={handleCancel}
+                onConfirm={() => setIsModalOpen(false)}
+                onCancel={() => setIsModalOpen(false)}
               />
             )}
           </div>
