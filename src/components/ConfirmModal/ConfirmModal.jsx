@@ -4,9 +4,15 @@ import classes from './ConfirmModal.module.scss';
 import Button from '../Button/Button';
 import IconConfirm from '../../assets/icons/confirmModal/confirm.png';
 
-const ConfirmModal = ({ message, onConfirm, onCancel }) => {
-  const [isOpen, setIsOpen] = useState(true);
-
+const ConfirmModal = ({
+  confirmButtonText,
+  denyButtonText,
+  message,
+  onConfirm,
+  onCancel,
+  isOpen,
+  setIsOpen,
+}) => {
   const handleConfirm = () => {
     setIsOpen(false);
     onConfirm();
@@ -24,9 +30,9 @@ const ConfirmModal = ({ message, onConfirm, onCancel }) => {
         <div className={`${classes.title} `}>{message}</div>
         <div className={`${classes.buttons}  `}>
           <Button onClick={handleDeny} mode={'outlined'}>
-            deny
+            {denyButtonText}
           </Button>
-          <Button onClick={handleConfirm}>confirm</Button>
+          <Button onClick={handleConfirm}>{confirmButtonText}</Button>
         </div>
       </div>
     )
@@ -34,9 +40,13 @@ const ConfirmModal = ({ message, onConfirm, onCancel }) => {
 };
 
 ConfirmModal.propTypes = {
+  confirmButtonText: PropTypes.string.isRequired,
+  denyButtonText: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   onConfirm: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
 export default ConfirmModal;

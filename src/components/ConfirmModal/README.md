@@ -7,6 +7,10 @@ This component accepts several props:
 - message: The message that will be displayed in the modal window.
 - onConfirm: A function that will be called when the user confirms.
 - onCancel: A function that will be called when the user cancels.
+- confirmButtonText: Confirm Button Text 
+- denyButtonText: Deny Button Text 
+- isOpen: is responsible for displaying the window
+- setIsOpen:  function change state isOpen
 When the user clicks the "Confirm" button, the onConfirm function is called. When the "Cancel" button is clicked, the onCancel function is called. The component also has an internal state isOpen which determines whether the modal window should be displayed.
 
 To use this component, you can add it to a parent component and pass the necessary props.
@@ -22,7 +26,7 @@ import ConfirmModal from './components/ConfirmModal/ConfirmModal';
 import './styles.scss';
 
 const App = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -31,12 +35,16 @@ const App = () => {
         <div className="main__container">
           <h1>RESTio</h1>
           <div className="centered">
-            <Button onClick={() => setIsModalOpen(true)}>Start</Button>
-            {isModalOpen && (
+            <Button onClick={() => setIsOpen(true)}>Start</Button>
+            {isOpen && (
               <ConfirmModal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
                 message="Are you sure?"
-                onConfirm={() => setIsModalOpen(false)}
-                onCancel={() => setIsModalOpen(false)}
+                onConfirm={() => setIsOpen(false)}
+                confirmButtonText={'confirm'}
+                denyButtonText={'deny'}
+                onCancel={() => setIsOpen(false)}
               />
             )}
           </div>
