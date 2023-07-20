@@ -49,4 +49,10 @@ ConfirmModal.propTypes = {
   setIsOpen: PropTypes.func.isRequired,
 };
 
+ConfirmModal.defaultProps = {
+  confirmButtonText: 'Confirm',
+  denyButtonText: 'Deny',
+  message: 'confirm your actions',
+};
+
 export default ConfirmModal;
