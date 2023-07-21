@@ -1,0 +1,18 @@
+.btn {
+  padding: 10px;
+  border-radius: 50%;
+  background-color: var(--color-orange);
+
+  transition: background-color 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  border: var(--border-primary);
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-white);
+    color: var(--color-orange);
+  }
+}
+
+.icon {
+  color: var(--color-white);
+}
