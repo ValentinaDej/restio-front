@@ -2,6 +2,7 @@ import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import Button from './components/Button/Button';
 import './styles.scss';
+import { CheckBox } from './shared/CheckBox/CheckBox';
 
 const App = () => {
   return (
@@ -19,4 +20,5 @@ const App = () => {
     </>
   );
 };
+
 export default App;
