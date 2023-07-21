@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { AiOutlineCheck } from 'react-icons/ai';
 import cls from './CheckBox.module.scss';
 import { nanoid } from '@reduxjs/toolkit';
 
-export const CheckBox = ({ label, disabled, checked, onChange, className, size = 20 }) => {
+export const CheckBox = memo(({ label, disabled, checked, onChange, className, size = 20 }) => {
   const inputClasses = `visually-hidden ${cls.checkBox}`;
   const labelClasses = `${cls.checkIcon} ${disabled && cls.disabled}`;
   const checkBoxId = nanoid();
@@ -30,7 +30,7 @@ export const CheckBox = ({ label, disabled, checked, onChange, className, size =
       </label>
     </div>
   );
-};
+});
 
 CheckBox.propTypes = {
   label: PropTypes.string,
