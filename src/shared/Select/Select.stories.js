@@ -35,6 +35,15 @@ Small.args = {
   length: 'sm',
 };
 
+export const SmallSizeLongLength = Template.bind({});
+SmallSizeLongLength.args = {
+  id: 'select1',
+  name: 'select1',
+  label: 'Small Select Long Length',
+  size: 'sm',
+  length: 'lg',
+};
+
 export const Medium = Template.bind({});
 Medium.args = {
   id: 'select2',

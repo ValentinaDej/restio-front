@@ -13,9 +13,13 @@ const Select = ({ children, onChange, name, id, label, size, length, ...props })
         }`}
         id={id}
         name={name}
+        defaultValue={'default'}
         onChange={onChange}
         {...props}
       >
+        <option disabled={true} value="default">
+          Select an option
+        </option>
         {children}
       </select>
     </div>
