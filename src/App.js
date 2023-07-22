@@ -1,7 +1,7 @@
-import Footer from './components/Footer/Footer';
-import Header from './components/Header/Header';
-import Button from './components/Button/Button';
 import './styles.scss';
+import Footer from './shared/Footer/Footer';
+import Header from './shared/Header/Header';
+import Button from './shared/Button/Button';
 
 const App = () => {
   return (
