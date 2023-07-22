@@ -1,5 +1,5 @@
 .btn {
-  padding: 10px;
+  padding: 8px;
   outline-color: var(--color-orange);
   border-radius: 50%;
   background: var(--color-orange);
@@ -38,8 +38,21 @@
 
 .disabled {
   border-color: var(--color-gray-700);
-  background-color: var(--color-gray-700);
+  background: var(--color-gray-700);
   cursor: not-allowed;
+
+  &:hover,
+  &:focus {
+    background: var(--color-gray-600);
+    border-color: var(--color-gray-600);
+    .icon {
+      color: var(--color-white);
+    }
+  }
+
+  .icon {
+    color: var(--color-white);
+  }
 }
 
 .icon {
