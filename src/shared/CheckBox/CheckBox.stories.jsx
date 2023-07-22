@@ -1,23 +1,25 @@
 import { CheckBox } from './CheckBox';
-import '../../styles.scss';
 
 export default {
   title: 'Components/CheckBox',
   component: CheckBox,
   tags: ['autodocs'],
   argTypes: {
-    checked: { control: 'boolean', description: 'The ckecked status' },
-    disabled: { control: 'boolean', description: 'The disable' },
+    checked: { type: 'boolean', control: 'boolean', description: 'The ckecked status' },
+    disabled: { type: 'boolean', control: 'boolean', description: 'The disable' },
     label: {
+      type: 'string',
       control: 'text',
       description: 'The checkbox label',
     },
     size: {
+      type: 'number',
       control: 'number',
       description: 'The checkbox size',
       table: { defaultValue: { summary: 20 } },
     },
     onChange: {
+      type: 'function',
       defaultValue: (checked) => {
         console.log(checked);
       },

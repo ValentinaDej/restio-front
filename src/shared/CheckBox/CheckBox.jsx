@@ -3,34 +3,36 @@ import PropTypes from 'prop-types';
 import { AiOutlineCheck } from 'react-icons/ai';
 import cls from './CheckBox.module.scss';
 import { nanoid } from '@reduxjs/toolkit';
+import { classNames } from '../../helpers/classNames';
 
-export const CheckBox = memo(({ label, disabled, checked, onChange, className, size = 20 }) => {
-  const inputClasses = `visually-hidden ${cls.checkBox}`;
-  const labelClasses = `${cls.checkIcon} ${disabled && cls.disabled}`;
-  const checkBoxId = nanoid();
+export const CheckBox = memo(
+  ({ label, disabled, checked, onChange, className, size = 20, ...props }) => {
+    const inputClasses = `visually-hidden ${cls.checkBox}`;
+    const checkBoxId = nanoid();
 
-  const handleChange = ({ target }) => {
-    const { checked } = target;
-    onChange(checked);
-  };
+    const mods = {
+      [cls.disabled]: disabled,
+    };
 
-  return (
-    <div className={className}>
-      <label htmlFor={checkBoxId} className={cls.label}>
-        <input
-          type="checkbox"
-          id={checkBoxId}
-          checked={checked}
-          onChange={handleChange}
-          disabled={disabled}
-          className={inputClasses}
-        />
-        <AiOutlineCheck className={labelClasses} size={size} />
-        {label && <span>{label}</span>}
-      </label>
-    </div>
-  );
-});
+    return (
+      <div className={className}>
+        <label htmlFor={checkBoxId} className={cls.label}>
+          <input
+            type="checkbox"
+            id={checkBoxId}
+            checked={checked}
+            onChange={onChange}
+            disabled={disabled}
+            className={inputClasses}
+            {...props}
+          />
+          <AiOutlineCheck className={classNames(cls.checkIcon, mods, [])} size={size} />
+          {label && <span>{label}</span>}
+        </label>
+      </div>
+    );
+  }
+);
 
 CheckBox.propTypes = {
   label: PropTypes.string,
