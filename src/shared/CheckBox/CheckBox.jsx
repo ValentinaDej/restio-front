@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { AiOutlineCheck } from 'react-icons/ai';
 import cls from './CheckBox.module.scss';
 import { nanoid } from '@reduxjs/toolkit';
-import { classNames } from '../../helpers/classNames';
+import { classNames } from 'helpers/classNames';
 
 export const CheckBox = memo(
   ({ label, disabled, checked, onChange, className, size = 20, ...props }) => {

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import cls from './IconButton.module.scss';
-import { classNames } from '../../helpers/classNames';
+import { classNames } from 'helpers/classNames';
 
 export const IconButton = memo(({ Svg, size = 20, mode, disabled, onClick, ...props }) => {
   const mods = {
