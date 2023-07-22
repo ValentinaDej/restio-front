@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'path';
 
 /** @type { import('@storybook/react-webpack5').StorybookConfig } */
 const config = {
@@ -14,7 +14,7 @@ const config = {
     options: {},
   },
   docs: {
-    autodocs: 'tag',
+    autodocs: true,
   },
   staticDir: path.join(__dirname, '../public'),
 };
