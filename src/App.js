@@ -4,6 +4,7 @@ import Header from './shared/Header/Header';
 import Button from './shared/Button/Button';
 import { IconButton } from 'shared/IconButton/IconButton';
 import { BiAddToQueue } from 'react-icons/bi';
+import DishCard from 'shared/DishCard/DishCard';
 
 const App = () => {
   return (
@@ -13,8 +14,9 @@ const App = () => {
         <div className="main__container">
           <h1>RESTio</h1>
           <div className="centered">
-            <Button>Start</Button>
-            <IconButton size={33} Svg={BiAddToQueue} disabled={true} mode={'outlined'} />
+            {/* <Button>Start</Button>
+            <IconButton size={33} Svg={BiAddToQueue} disabled={true} mode={'outlined'} /> */}
+            <DishCard />
           </div>
         </div>
       </main>
