@@ -5,6 +5,7 @@ import '../../styles.scss';
 export default {
   title: 'Components/Title',
   component: Title,
+  tags: ['autodocs'],
   argTypes: {
     mode: {
       type: 'string',
