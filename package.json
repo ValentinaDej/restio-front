@@ -11,6 +11,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
+    "react-loader-spinner": "^5.3.4",
+    "react-loading-skeleton": "^3.3.1",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.14.1",
     "react-scripts": "5.0.1",
@@ -73,6 +75,7 @@
     "prettier": "^3.0.0",
     "prop-types": "^15.8.1",
     "sass": "^1.63.6",
-    "storybook": "^7.0.27"
+    "storybook": "^7.0.27",
+    "webpack": "^5.88.2"
   }
 }
