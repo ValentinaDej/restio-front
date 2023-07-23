@@ -39,24 +39,6 @@ const DUMMY_EMPLOYEES = [
 
 const EmployeeCard = ({ children, type, onClick, mode = 'primary', size = 'md', ...props }) => {
   return (
-    // <>
-    //   {DUMMY_EMPLOYEES.map((person) => {
-    //     return (
-    //       <div className={classes.card} key={person.id}>
-    //         <img src={person.picture} className={classes.card_image} />
-    //         {/* Insert 'DELETE BUTTON" and "EDIT BUTTON" component instead of react-icons, but keep a class '.trash' and '.edit' and size={'1.2rem'}  */}
-    //         <BsTrash size={'1.2rem'} className={classes.trash}></BsTrash>
-    //         <BiEditAlt size={'1.2rem'} className={classes.edit}></BiEditAlt>
-    //         {/* End of buttons block  */}
-    //         <div className={classes.employee_text}>
-    //           <p className={classes.employee_name}>{person.name}</p>
-    //           <p className={classes.employee_subinfo}>{person.role}</p>
-    //           <p className={classes.employee_subinfo}>{person.phone}</p>
-    //         </div>
-    //       </div>
-    //     );
-    //   })}
-    // </>
     <>
       <div className={`${classes.card} ${classes[`${mode}`]} ${classes[`${size}`]}`}>
         <img
