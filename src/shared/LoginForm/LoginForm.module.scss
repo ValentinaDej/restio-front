@@ -1,5 +1,9 @@
 .form__error {
   color: var(--color-orange-hover);
+  align-self: flex-start;
+  text-align: left;
+  line-height: 1.5rem;
+  margin-left: 0.5rem;
 }
 
 .form {
@@ -48,5 +52,5 @@
 }
 
 .form__checkbox {
-  margin: 0.5rem 0;
+  margin: 0.5rem;
 }
