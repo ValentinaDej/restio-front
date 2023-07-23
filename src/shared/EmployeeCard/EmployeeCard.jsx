@@ -37,7 +37,7 @@ const DUMMY_EMPLOYEES = [
   },
 ];
 
-const EmployeeCard = ({ children, type, onClick, mode = 'primary', size = 'md', ...props }) => {
+const EmployeeCard = ({ children, onClick, mode = 'primary', size = 'md', ...props }) => {
   return (
     <>
       <div className={`${classes.card} ${classes[`${mode}`]} ${classes[`${size}`]}`}>
@@ -57,6 +57,13 @@ const EmployeeCard = ({ children, type, onClick, mode = 'primary', size = 'md', 
       </div>
     </>
   );
+};
+
+EmployeeCard.propTypes = {
+  children: PropTypes.node,
+  mode: PropTypes.oneOf(['primary', 'outlined']),
+  size: PropTypes.oneOf(['sm', 'md', 'lg']),
+  onClick: PropTypes.func,
 };
 
 export default EmployeeCard;
