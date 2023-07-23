@@ -2,6 +2,7 @@ import './styles.scss';
 import Footer from './shared/Footer/Footer';
 import Header from './shared/Header/Header';
 import Button from './shared/Button/Button';
+import { IconButton } from 'shared/IconButton/IconButton';
 
 const App = () => {
   return (
