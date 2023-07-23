@@ -6,7 +6,7 @@ import Button from './shared/Button/Button';
 const App = () => {
   return (
     <>
-      <Header />
+      <Header role="customer" />
       <main className="main">
         <div className="main__container">
           <h1>RESTio</h1>
