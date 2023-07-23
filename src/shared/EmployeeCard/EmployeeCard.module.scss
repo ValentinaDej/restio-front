@@ -1,0 +1,133 @@
+@media (min-width: 320px) {
+  .card {
+    position: relative;
+    width: 47%;
+    transition: 1s;
+    margin-bottom: 2rem;
+    transition: 0.7s;
+    text-align: center;
+    &.outlined {
+      border: dashed 1px rgb(212, 211, 211);
+      border-radius: 50px 50px 25px 25px;
+    }
+    &.sm {
+      width: 15%;
+    }
+    &.md {
+      width: 23%;
+    }
+  }
+
+  .card_image {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    bottom: -40px;
+    border-radius: 50%;
+    width: 65%;
+    height: auto;
+    object-fit: cover;
+    object-position: 25% 25%;
+    aspect-ratio: 16/16;
+    z-index: 1;
+  }
+
+  .employee_text {
+    padding: 3rem 0.5rem 1.2rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(42px);
+    border-radius: 25px;
+    border: 0 solid rgba(0, 0, 0, 0.125);
+    transition: 0.7s;
+  }
+
+  .employee_name {
+    font-weight: bolder;
+    padding: 1rem 0 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  .employee_subinfo {
+    color: var(--color-gray-600);
+    padding: 0 0 0.3rem;
+    font-size: 0.9rem;
+  }
+
+  .trash {
+    position: absolute;
+    color: #ea6a12;
+    top: 0px;
+    right: 5px;
+  }
+
+  .edit {
+    position: absolute;
+    color: #ea6a12;
+    bottom: 120px;
+    right: 0px;
+    z-index: 1;
+  }
+}
+
+@media (min-width: 576px) {
+  .card {
+    position: relative;
+    width: 30%;
+    transition: 1s;
+    margin-bottom: 2rem;
+    transition: 0.7s;
+  }
+
+  .trash {
+    top: 35px;
+    right: 25px;
+    &.sm {
+      right: 5px;
+    }
+  }
+
+  .edit {
+    bottom: 120px;
+    right: 25px;
+    &.sm {
+      right: 5px;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .card {
+    position: relative;
+    width: 22%;
+    transition: 1s;
+    margin-bottom: 2rem;
+    transition: 0.7s;
+  }
+
+  .card:hover .employee_text {
+    transition: 0.7s;
+    background-color: rgba(250, 248, 248, 0.8);
+    box-shadow: 10px 12px 51px -24px rgba(0, 0, 0, 0.52);
+  }
+
+  .outlined:hover {
+    transition: 0.7s;
+    box-shadow: 10px 12px 51px -24px rgba(0, 0, 0, 0.52);
+  }
+
+  .trash {
+    top: 35px;
+    right: 25px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .edit {
+    bottom: 120px;
+    right: 25px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
