@@ -2,10 +2,15 @@ import PropTypes from 'prop-types';
 import classes from './Button.module.scss';
 
 const Button = ({ children, type, onClick, mode, size, ...props }) => {
+  const buttonMode = mode || 'primary';
+  const buttonSize = size || 'md';
+
   return (
     <button
       type={type || 'button'}
-      className={`${classes.button} ${classes[`button_${mode}`]} ${classes[`button_${size}`]}`}
+      className={`${classes.button} ${classes[`button_${buttonMode}`]} ${
+        classes[`button_${buttonSize}`]
+      }`}
       onClick={onClick}
       disabled={mode === 'disabled'}
       {...props}
