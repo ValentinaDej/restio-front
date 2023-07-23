@@ -13,7 +13,7 @@ const Text = ({ mode, children, fontWeight, fontSize, color, textAlign }) => {
             color,
             textAlign,
           }}
-          className={classes.text}
+          className={classes.p}
         >
           {children}
         </p>

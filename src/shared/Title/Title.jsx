@@ -13,7 +13,7 @@ const Title = ({ mode, children, fontWeight, fontSize, color, textAlign }) => {
             color,
             textAlign,
           }}
-          className={classes.span}
+          className={classes.h1}
         >
           {children}
         </h1>
@@ -27,7 +27,7 @@ const Title = ({ mode, children, fontWeight, fontSize, color, textAlign }) => {
             color,
             textAlign,
           }}
-          className={classes.span}
+          className={classes.h2}
         >
           {children}
         </h2>
@@ -41,7 +41,7 @@ const Title = ({ mode, children, fontWeight, fontSize, color, textAlign }) => {
             color,
             textAlign,
           }}
-          className={classes.span}
+          className={classes.h3}
         >
           {children}
         </h3>
