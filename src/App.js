@@ -2,7 +2,6 @@ import './styles.scss';
 import Footer from './shared/Footer/Footer';
 import Header from './shared/Header/Header';
 import Button from './shared/Button/Button';
-import EmployeeCard from 'shared/EmployeeCard/EmployeeCard';
 
 const App = () => {
   return (
