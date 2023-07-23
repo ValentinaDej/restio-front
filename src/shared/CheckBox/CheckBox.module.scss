@@ -1,0 +1,36 @@
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkIcon {
+  display: inline-block;
+  border: var(--border-primary);
+  border-radius: 2px;
+  color: transparent;
+  cursor: pointer;
+
+  transition: background-color 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  &:hover {
+    background-color: var(--color-orange-transparent);
+    border-color: var(--color-orange-hover);
+  }
+
+  &.disabled {
+    border-color: var(--color-gray);
+    cursor: not-allowed;
+  }
+}
+
+.checkBox {
+  &:checked + .checkIcon {
+    color: var(--color-orange);
+  }
+
+  &:focus + .checkIcon {
+    border-color: var(--color-orange-hover);
+    background-color: var(--color-orange-transparent);
+  }
+}

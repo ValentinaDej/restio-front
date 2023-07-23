@@ -6,7 +6,9 @@
   --color-pink: #d63384;
   --color-red: #ea1212;
   --color-orange: #ea6a12;
+  --color-orange-transparent: rgba(248, 156, 95, 0.2);
   --color-orange-hover: #bd550f;
+  --color-orange-focus: #af4a06;
   --color-yellow: #eab012;
   --color-green: #3bb77e;
   --color-teal: #20c997;
@@ -41,10 +43,12 @@
   --line-height: 1.75;
   --color-font: #3a3a3a;
   --color-bg: #faf9f5;
+  --color-bg-dark: #f3dbc4;
   --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   --box-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
   --md-pc: 1200px;
   --md-tablet: 991.98px;
   --md-mobile: 767.98px;
   --md-mobile-small: 479.98px;
+  --border-primary: 2px solid var(--color-orange);
 }

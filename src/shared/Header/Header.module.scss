@@ -1,0 +1,39 @@
+.header {
+  background-color: var(--color-bg-dark);
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem 1.5rem;
+    @media (max-width: 767px) {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  &__column {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  &__column:nth-child(2) {
+    @media (max-width: 767px) {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+  &__logo {
+    margin-right: 1rem;
+  }
+  &__img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+  }
+  &__button {
+    margin-left: 1rem;
+    @media (max-width: 767px) {
+      margin-bottom: 1rem;
+    }
+  }
+}

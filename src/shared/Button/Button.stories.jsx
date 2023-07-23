@@ -1,9 +1,10 @@
 import Button from './Button';
 import '../../styles.scss';
 
-export default {
+const meta = {
   title: 'Components/Button',
   component: Button,
+  tags: ['autodocs'],
   argTypes: {
     mode: {
       type: 'string',
@@ -35,6 +36,8 @@ export default {
     },
   },
 };
+
+export default meta;
 
 const Template = (args) => <Button {...args} />;
 
