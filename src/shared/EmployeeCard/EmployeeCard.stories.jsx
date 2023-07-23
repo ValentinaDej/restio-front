@@ -1,7 +1,7 @@
 import EmployeeCard from './EmployeeCard';
 
 const meta = {
-  title: 'Components/EmployeeCard',
+  title: 'Shared/EmployeeCard',
   component: EmployeeCard,
   argTypes: {
     mode: {
