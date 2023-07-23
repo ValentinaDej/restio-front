@@ -2,7 +2,7 @@ import { IconButton } from './IconButton';
 import { BiSolidTrash } from 'react-icons/bi';
 
 const meta = {
-  title: 'Components/IconButton',
+  title: 'Shared/IconButton',
   component: IconButton,
   tags: ['autodocs'],
   argTypes: {
