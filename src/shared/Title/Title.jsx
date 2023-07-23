@@ -6,21 +6,21 @@ const Title = ({ mode, children, fontWeight, fontSize, color, textAlign }) => {
   switch (mode) {
     case 'h1':
       return (
-        <p
+        <h1
           style={{
             fontWeight,
             fontSize,
             color,
             textAlign,
           }}
-          className={classes.text}
+          className={classes.span}
         >
           {children}
-        </p>
+        </h1>
       );
     case 'h2':
       return (
-        <span
+        <h2
           style={{
             fontWeight,
             fontSize,
@@ -30,11 +30,11 @@ const Title = ({ mode, children, fontWeight, fontSize, color, textAlign }) => {
           className={classes.span}
         >
           {children}
-        </span>
+        </h2>
       );
     case 'h3':
       return (
-        <span
+        <h3
           style={{
             fontWeight,
             fontSize,
@@ -44,14 +44,13 @@ const Title = ({ mode, children, fontWeight, fontSize, color, textAlign }) => {
           className={classes.span}
         >
           {children}
-        </span>
+        </h3>
       );
-    default:
   }
 };
 
 Title.propTypes = {
-  mode: PropTypes.oneOf(['paragra', 'span']),
+  mode: PropTypes.oneOf(['h1', 'h2', 'h3']),
   children: PropTypes.string,
   textAlign: PropTypes.oneOf(['start', 'end', 'center', 'left', 'right']),
   fontWeight: PropTypes.oneOf([100, 200, 300, 400, 500, 600, 700, 800, 900]),
