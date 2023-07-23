@@ -13,7 +13,7 @@ const App = () => {
           <h1>RESTio</h1>
           <div className="centered">
             <Button>Start</Button>
-            <IconButton size={33} Svg={BiAddToQueue} disabled={true} mode={'outlined'} />
+            <IconButton size={33} Svg={BiAddToQueue} disabled={true} mode={'outlined'}/>
           </div>
         </div>
       </main>
