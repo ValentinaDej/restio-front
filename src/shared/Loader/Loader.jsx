@@ -8,7 +8,7 @@ const sizeValues = {
   lg: '96',
 };
 
-const Loader = ({ size }) => {
+const Loader = ({ size = "sm" }) => {
   return (
     <div className={`${classes.loader}`}>
       <RotatingLines

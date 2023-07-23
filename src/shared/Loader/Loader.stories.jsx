@@ -24,11 +24,6 @@ const meta = {
   Default.args = {
     size: 'sm',
   };
-  
-  export const SmallLoader = Template.bind({});
-  SmallLoader.args = {
-    size: 'sm',
-  };
 
   export const MediumLoader = Template.bind({});
   MediumLoader.args = {
