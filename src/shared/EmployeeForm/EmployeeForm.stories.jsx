@@ -12,6 +12,12 @@ export default {
       },
       options: ['sm', 'md', 'lg'],
     },
+    length: {
+      control: {
+        type: 'radio',
+      },
+      options: ['sm', 'md', 'lg'],
+    },
   },
   tags: ['autodocs', 'forms'], // Tags for filtering in the Storybook sidebar
 };
@@ -33,6 +39,17 @@ Default.args = {
     address: '123 Main St',
   },
   buttonText: 'Submit',
+};
+
+export const Small = Template.bind({});
+Small.args = {
+  ...Default.args, // We're reusing the args from the Default story above
+  size: 'sm',
+};
+
+export const Mid = Template.bind({});
+Mid.args = {
+  ...Default.args, // We're reusing the args from the Default story above
   size: 'md',
 };
 
@@ -40,10 +57,4 @@ export const Large = Template.bind({});
 Large.args = {
   ...Default.args, // We're reusing the args from the Default story above
   size: 'lg',
-};
-
-export const Small = Template.bind({});
-Small.args = {
-  ...Default.args,
-  size: 'sm',
 };
