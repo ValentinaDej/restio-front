@@ -3,7 +3,7 @@ import Text from './Text';
 import '../../styles.scss';
 
 export default {
-  title: 'Components/Text',
+  title: 'Shared/Text',
   component: Text,
   tags: ['autodocs'],
   argTypes: {
