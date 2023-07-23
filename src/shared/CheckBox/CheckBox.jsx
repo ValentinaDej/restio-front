@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { AiOutlineCheck } from 'react-icons/ai';
 import cls from './CheckBox.module.scss';
@@ -8,7 +8,7 @@ import { classNames } from 'helpers/classNames';
 export const CheckBox = memo(
   ({ label, disabled, checked, onChange, className, size = 20, ...props }) => {
     const inputClasses = `visually-hidden ${cls.checkBox}`;
-    const checkBoxId = nanoid();
+    const [checkBoxId] = useState(nanoid());
 
     const mods = {
       [cls.disabled]: disabled,
