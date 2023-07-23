@@ -5,7 +5,7 @@ export default {
   component: CheckBox,
   tags: ['autodocs'],
   argTypes: {
-    checked: { type: 'boolean', control: 'boolean', description: 'The ckecked status' },
+    checked: { type: 'boolean', control: 'boolean', description: 'The checked status' },
     disabled: { type: 'boolean', control: 'boolean', description: 'The disable' },
     label: {
       type: 'string',

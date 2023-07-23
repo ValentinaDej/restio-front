@@ -20,8 +20,8 @@ const meta = {
     mode: {
       type: 'string',
       description: 'Mods variants',
-      table: { defaultValue: { summary: 'default' } },
-      options: ['default', 'outlined'],
+      table: { defaultValue: { summary: 'clear' } },
+      options: ['clear', 'filled', 'outlined'],
       control: {
         type: 'radio',
       },

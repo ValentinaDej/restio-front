@@ -3,7 +3,30 @@
   outline-color: var(--color-orange);
   border-radius: 50%;
   background: var(--color-orange);
-  transition: background 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  transition-property: background, color, border-color;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.clear {
+  background: none;
+  &:hover,
+  &:focus {
+    .icon {
+      color: var(--color-orange-hover);
+    }
+  }
+  .icon {
+    color: var(--color-orange);
+  }
+}
+
+.filled {
+  padding: 8px;
+  outline-color: var(--color-orange);
+  border-radius: 50%;
+  background: var(--color-orange);
   border: var(--border-primary);
 
   &:hover,
