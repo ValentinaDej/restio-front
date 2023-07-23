@@ -2,8 +2,6 @@ import './styles.scss';
 import Footer from './shared/Footer/Footer';
 import Header from './shared/Header/Header';
 import Button from './shared/Button/Button';
-import { IconButton } from 'shared/IconButton/IconButton';
-import { BiAddToQueue } from 'react-icons/bi';
 import EmployeeCard from 'shared/EmployeeCard/EmployeeCard';
 
 const App = () => {
