@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useForm, Controller } from 'react-hook-form';
 import Select from '../Select/Select';
 import styles from './EmployeeForm.module.scss';
 import Button from '../Button/Button';
-import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Input from '../Input/Input';
 
@@ -27,159 +27,162 @@ const validationSchema = Yup.object({
 });
 
 const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
-  const formik = useFormik({
-    initialValues: initialState,
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      onSubmit(values);
-      formik.resetForm();
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: initialState,
+    resolver: async (data) => {
+      try {
+        await validationSchema.validate(data, { abortEarly: false });
+        return {
+          values: data,
+          errors: {},
+        };
+      } catch (err) {
+        const errors = err.inner.reduce((acc, curr) => {
+          acc[curr.path] = curr.message;
+          return acc;
+        }, {});
+        return {
+          values: {},
+          errors: errors,
+        };
+      }
     },
   });
+
+  const handleFormSubmit = (data) => {
+    onSubmit(data);
+    reset();
+  };
 
   return (
     <form
       className={`${styles.employeeForm} ${styles[`employeeForm_${size}`]}`}
-      onSubmit={formik.handleSubmit}
+      onSubmit={handleSubmit(handleFormSubmit)}
     >
       <div className={styles.field__container}>
-        <Input
+        <Controller
           name="firstName"
-          value={formik.values.firstName}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          placeholder="First Name"
-          size={size}
-          length={'lg'}
+          control={control}
+          render={({ field }) => (
+            <>
+              <Input {...field} placeholder="First Name" size={size} length={'lg'} />
+              {errors.firstName && <div className={styles.error}>{errors.firstName}</div>}
+            </>
+          )}
         />
-
-        {formik.touched.firstName && formik.errors.firstName ? (
-          <div className={styles.error}>{formik.errors.firstName}</div>
-        ) : null}
       </div>
       <div className={styles.field__container}>
-        <Input
+        <Controller
           name="lastName"
-          value={formik.values.lastName}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          placeholder="Last Name"
-          size={size}
-          length={'lg'}
+          control={control}
+          render={({ field }) => (
+            <>
+              <Input {...field} placeholder="Last Name" size={size} length={'lg'} />
+              {errors.lastName && <div className={styles.error}>{errors.lastName}</div>}
+            </>
+          )}
         />
-        {formik.touched.lastName && formik.errors.lastName ? (
-          <div className={styles.error}>{formik.errors.lastName}</div>
-        ) : null}
       </div>
       <div className={styles.field__container}>
-        <Select
+        <Controller
           name="gender"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          label="Gender"
-          size={size}
-          length={`lg`}
-        >
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </Select>
-
-        {formik.touched.gender && formik.errors.gender ? (
-          <div className={styles.error}>{formik.errors.gender}</div>
-        ) : null}
+          control={control}
+          render={({ field }) => (
+            <>
+              <Select {...field} label="Gender" size={size} length={`lg`}>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </Select>
+              {errors.gender && <div className={styles.error}>{errors.gender}</div>}
+            </>
+          )}
+        />
       </div>
       <div className={styles.field__container}>
-        <Select
+        <Controller
           name="role"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          label="Role"
-          size={size}
-          length={`lg`}
-        >
-          <option value="waiter">Waiter</option>
-          <option value="admin">Admin</option>
-          <option value="cook">Cook</option>
-        </Select>
-
-        {formik.touched.role && formik.errors.role ? (
-          <div className={styles.error}>{formik.errors.role}</div>
-        ) : null}
+          control={control}
+          render={({ field }) => (
+            <>
+              <Select {...field} label="Role" size={size} length={`lg`}>
+                <option value="waiter">Waiter</option>
+                <option value="admin">Admin</option>
+                <option value="cook">Cook</option>
+              </Select>
+              {errors.role && <div className={styles.error}>{errors.role}</div>}
+            </>
+          )}
+        />
       </div>
       <div className={styles.field__container}>
-        <Input
-          type="password"
+        <Controller
           name="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          placeholder="Password"
-          size={size}
-          length={`lg`}
+          control={control}
+          render={({ field }) => (
+            <>
+              <Input {...field} type="password" placeholder="Password" size={size} length={`lg`} />
+              {errors.password && <div className={styles.error}>{errors.password}</div>}
+            </>
+          )}
         />
-
-        {formik.touched.password && formik.errors.password ? (
-          <div className={styles.error}> {formik.errors.password}</div>
-        ) : null}
       </div>
       <div className={styles.field__container}>
-        <Input
+        <Controller
           name="phone"
-          value={formik.values.phone}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          placeholder="Phone"
-          size={size}
-          length={`lg`}
+          control={control}
+          render={({ field }) => (
+            <>
+              <Input {...field} placeholder="Phone" size={size} length={`lg`} />
+              {errors.phone && <div className={styles.error}>{errors.phone}</div>}
+            </>
+          )}
         />
-        {formik.touched.phone && formik.errors.phone ? (
-          <div className={styles.error}>{formik.errors.phone}</div>
-        ) : null}
       </div>
       <div className={styles.field__container}>
-        <Input
-          type="email"
+        <Controller
           name="email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          placeholder="Email"
-          size={size}
-          length={`lg`}
+          control={control}
+          render={({ field }) => (
+            <>
+              <Input {...field} type="email" placeholder="Email" size={size} length={`lg`} />
+              {errors.email && <div className={styles.error}>{errors.email}</div>}
+            </>
+          )}
         />
-        {formik.touched.email && formik.errors.email ? (
-          <div className={styles.error}>{formik.errors.email}</div>
-        ) : null}
       </div>
       <div className={styles.field__container}>
-        <Input
+        <Controller
           name="address"
-          value={formik.values.address}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          placeholder="Address"
-          size={size}
-          length={`lg`}
+          control={control}
+          render={({ field }) => (
+            <>
+              <Input {...field} placeholder="Address" size={size} length={`lg`} />
+              {errors.address && <div className={styles.error}>{errors.address}</div>}
+            </>
+          )}
         />
-        {formik.touched.address && formik.errors.address ? (
-          <div className={styles.error}>{formik.errors.address}</div>
-        ) : null}
       </div>
       <div className={styles.field__container}>
-        <Input
-          label={'Upload Photo'}
-          size={size}
-          length={`lg`}
-          type="file"
-          name="picture"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
+        <Controller
+          name="image"
+          control={control}
+          render={({ field }) => (
+            <>
+              <Input {...field} label="Upload Photo" size={size} length={`lg`} type="file" />
+            </>
+          )}
         />
       </div>
       <div className={styles.btn_group}>
-        <Button type="submit" size={size}>
+        <Button type="submit" size={size} disabled={isSubmitting}>
           {buttonText}
         </Button>
-        <Button type={'button'} onClick={formik.handleReset} size={size}>
+        <Button type="button" onClick={() => reset()} size={size}>
           Clear
         </Button>
       </div>
