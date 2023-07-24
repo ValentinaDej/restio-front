@@ -3,11 +3,11 @@ import { MdOutlineAddCircle } from 'react-icons/md';
 
 import css from './DishCard.module.scss';
 
-const DishCard = ({ src, alt, title, ingredients, weight, price, onClick }) => {
+const DishCard = ({ src, title, ingredients, weight, price, onClick }) => {
   return (
     <div className={css['card-container']}>
       <div className={css['card-container__image-wrapper']}>
-        <img className={css['card-container__image']} src={src} alt={alt} />
+        <img className={css['card-container__image']} src={src} alt={title} />
       </div>
       <div className={css['card-container__wrapper']}>
         <h3 className={css['card-container__title']}>{title}</h3>
@@ -26,7 +26,6 @@ const DishCard = ({ src, alt, title, ingredients, weight, price, onClick }) => {
 
 DishCard.propTypes = {
   src: PropTypes.string,
-  alt: PropTypes.string,
   title: PropTypes.string,
   ingredients: PropTypes.array,
   weight: PropTypes.number,

@@ -9,10 +9,6 @@ const meta = {
       type: 'string',
       description: 'Image source url',
     },
-    alt: {
-      type: 'string',
-      description: 'Image description',
-    },
     title: {
       type: 'string',
       description: 'Dish title',
@@ -40,7 +36,6 @@ export default meta;
 
 const defaultValues = {
   src: defaultSrc,
-  alt: 'alt',
   title: 'Pork Tenderloin',
   ingredients: [
     'Pork',

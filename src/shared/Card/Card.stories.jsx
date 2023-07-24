@@ -1,4 +1,5 @@
 import Card from './Card';
+import defaultSrc from '../../assets/img-template.jpg';
 
 const meta = {
   component: Card,
@@ -20,10 +21,26 @@ const meta = {
       type: 'number',
       description: 'Quantity of items',
     },
+    addOne: {
+      type: 'function',
+      description: 'Add quantity button value',
+    },
+    minusOne: {
+      type: 'function',
+      description: 'Minus quantity button value',
+    },
+    onDelete: {
+      type: 'function',
+      description: 'Handle deleting dish from the cart',
+    },
+    onClick: {
+      type: 'function',
+      description: 'Handle adding dish to the order by waiter',
+    },
     mode: {
       type: 'string',
       defaultValue: 'order',
-      options: ['order', 'cart'],
+      options: ['order', 'cart', 'waiter', 'cook'],
       control: {
         type: 'radio',
       },
@@ -33,14 +50,44 @@ const meta = {
 
 export default meta;
 
+const defaultValues = {
+  src: defaultSrc,
+  title: 'Pork Tenderloin',
+  quantity: 1,
+};
+
 export const Order = {
   args: {
+    ...defaultValues,
+    price: 7.8,
     mode: 'order',
   },
 };
 
 export const Cart = {
   args: {
+    ...defaultValues,
+    price: 7.8,
     mode: 'cart',
+    addOne: () => {},
+    minusOne: () => {},
+    onDelete: () => {},
+  },
+};
+
+export const Waiter = {
+  args: {
+    ...defaultValues,
+    mode: 'waiter',
+    addOne: () => {},
+    minusOne: () => {},
+    onClick: () => {},
+  },
+};
+
+export const Cook = {
+  args: {
+    ...defaultValues,
+    mode: 'cook',
   },
 };

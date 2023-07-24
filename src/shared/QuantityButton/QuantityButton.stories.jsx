@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import QuantityButton from './QuantityButton';
 
 const meta = {
@@ -17,11 +16,15 @@ const meta = {
       defaultValue: 'md',
       options: ['sm', 'md'],
     },
-    setValue: {
+    addOne: {
       type: 'function',
       description: 'Function to handle value changes',
     },
-    value: {
+    minusOne: {
+      type: 'function',
+      description: 'Function to handle value changes',
+    },
+    quantity: {
       control: {
         type: 'number',
         min: 1,
@@ -33,26 +36,23 @@ const meta = {
 
 export default meta;
 
-const QuantityButtonWrapper = (props) => {
-  const [value, setValue] = useState(1);
-
-  return <QuantityButton {...props} value={value} setValue={setValue} />;
+export const Default = {
+  args: {
+    mode: 'default',
+    size: 'md',
+  },
 };
 
-export const Default = (args) => <QuantityButtonWrapper {...args} />;
-Default.args = {
-  mode: 'default',
-  size: 'md',
+export const Outlined = {
+  args: {
+    ...Default.args,
+    mode: 'outlined',
+  },
 };
 
-export const Outlined = (args) => <QuantityButtonWrapper {...args} />;
-Outlined.args = {
-  ...Default.args,
-  mode: 'outlined',
-};
-
-export const Small = (args) => <QuantityButtonWrapper {...args} />;
-Small.args = {
-  ...Default.args,
-  size: 'sm',
+export const Small = {
+  args: {
+    ...Default.args,
+    size: 'sm',
+  },
 };
