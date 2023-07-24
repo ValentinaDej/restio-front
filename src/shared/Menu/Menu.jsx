@@ -4,13 +4,13 @@ import classes from './Menu.module.scss';
 // import DishCard from 'shared/DishCard/DishCard';
 import Title from 'shared/Title/Title';
 
-const Menu = ({ mode, text = 'Menu', ...props }) => {
+const Menu = ({ mode, title = 'Menu', ...props }) => {
   // const fetchedListForRender = []; keep it here for future fetched data and send it via props to Card while mapping
   return (
     <>
-      <Title>{text}</Title>
+      <Title>{title}</Title>
       <ul className={`${classes.menu_wrapper} ${classes[mode]}`}>
-        {/* {text === 'Menu'
+        {/* {title === 'Menu'
           ? fetchedListForRender.map((item) => {
               return (
                 <li className={classes.card_wrapper} key={item.id}>
@@ -18,7 +18,7 @@ const Menu = ({ mode, text = 'Menu', ...props }) => {
                 </li>
               );
             })
-          : text === 'Employee'
+          : title === 'Employee'
           ? fetchedListForRender.map((item) => {
               return (
                 <li className={classes.card_wrapper} key={item.id}>
