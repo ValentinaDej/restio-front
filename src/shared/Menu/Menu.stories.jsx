@@ -11,6 +11,13 @@ const meta = {
       options: ['primary', 'outlined'],
       control: { type: 'radio' },
     },
+    title: {
+      type: 'string',
+      description: 'Title of page',
+      defaultValue: 'Menu',
+      options: ['Menu', 'Employees'],
+      control: { type: 'radio' },
+    },
   },
   tags: ['autodocs'],
 };
@@ -28,4 +35,9 @@ Default.args = {
 export const WithBorder = Template.bind({});
 WithBorder.args = {
   mode: 'outlined',
+};
+
+export const Title = Template.bind({});
+WithBorder.args = {
+  title: 'Employees',
 };
