@@ -6,11 +6,6 @@ import Modal from './shared/Modal/Modal';
 import { useState, useCallback } from 'react';
 
 const App = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
-  const handleClose = useCallback(() => {
-    setIsModalOpen(false);
-  }, [setIsModalOpen]);
-
   return (
     <>
       <Header role="customer" />
@@ -20,7 +15,6 @@ const App = () => {
           <div className="centered">
             <Button>Start</Button>
           </div>
-          {isModalOpen && <Modal handleClose={handleClose} />}
         </div>
       </main>
       <Footer />

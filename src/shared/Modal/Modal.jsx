@@ -1,10 +1,42 @@
 import { IconButton } from 'shared/IconButton/IconButton';
 import classes from './Modal.module.scss';
+import PropTypes from 'prop-types';
 import { AiOutlineClose } from 'react-icons/ai';
+import { useCallback, useEffect } from 'react';
 
-const Modal = ({ children, handleClose }) => {
+const Modal = ({ setIsModalOpen }) => {
+  const handleClose = useCallback(() => {
+    setIsModalOpen(false);
+  }, [setIsModalOpen]);
+
+  const handleCloseEsc = useCallback(
+    (e) => {
+      if (e.code === 'Escape') {
+        handleClose();
+      }
+    },
+    [handleClose]
+  );
+
+  const handleCloseBackdrop = useCallback(
+    (e) => {
+      if (e.currentTarget === e.target) {
+        handleClose();
+      }
+    },
+    [handleClose]
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleCloseEsc);
+
+    return () => {
+      window.removeEventListener('keydown', handleCloseEsc);
+    };
+  });
+
   return (
-    <div className={`${classes.backdrop}`}>
+    <div className={`${classes.backdrop}`} onClick={handleCloseBackdrop}>
       <div className={`${classes.modal}`}>
         <IconButton
           Svg={AiOutlineClose}
@@ -17,6 +49,9 @@ const Modal = ({ children, handleClose }) => {
   );
 };
 
-Modal.propTypes = {};
+Modal.propTypes = {
+  children: PropTypes.node,
+  setIsModalOpen: PropTypes.func.isRequired,
+};
 
 export default Modal;
