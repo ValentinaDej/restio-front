@@ -2,7 +2,7 @@ import Loader from './Loader';
 import '../../styles.scss';
 
 const meta = {
-  title: 'Components/Loader',
+  title: 'Shared/Loader',
   component: Loader,
   tags: ['autodocs'],
   argTypes: {
