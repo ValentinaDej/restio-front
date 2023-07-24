@@ -2,6 +2,7 @@
   .card {
     position: relative;
     width: 47%;
+    flex: 0 0 1;
     transition: 1s;
     margin-bottom: 2rem;
     transition: 0.7s;
@@ -43,7 +44,7 @@
 
   .employee_name {
     font-weight: bolder;
-    padding: 1rem 0 0.5rem;
+    padding: 1rem 0.5rem 0.5rem;
     font-size: 1.2rem;
   }
 
@@ -56,7 +57,7 @@
   .trash {
     position: absolute;
     color: #ea6a12;
-    top: 0px;
+    top: 20px;
     right: 5px;
   }
 
@@ -80,7 +81,7 @@
 
   .trash {
     top: 35px;
-    right: 25px;
+    right: 15px;
     &.sm {
       right: 5px;
     }
@@ -88,7 +89,7 @@
 
   .edit {
     bottom: 120px;
-    right: 25px;
+    right: 15px;
     &.sm {
       right: 5px;
     }
