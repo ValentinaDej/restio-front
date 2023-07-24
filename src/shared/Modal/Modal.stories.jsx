@@ -7,6 +7,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     setIsModalOpen: {
+      action: 'clicked',
       type: 'function',
       description: 'Function changes the modal state',
     },
@@ -14,19 +15,23 @@ const meta = {
 };
 export default meta;
 
-// Mocking the setIsModalOpen function for the story
-const mockSetIsModalOpen = (isOpen) => {
-  console.log(`Modal is ${isOpen ? 'open' : 'closed'}`);
+const mockSetIsModalOpen = () => {
+  console.log('Modal is closed');
 };
 
-const Template = (args) => (
-  <Modal {...args}>
-    <h2>Modal Content</h2>
-    <p>This is the content of the modal.</p>
-  </Modal>
-);
+const ModalContent = () => {
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <h2>Modal Content</h2>
+      <p>This is the content of the modal.</p>
+    </div>
+  );
+};
+
+const Template = (args) => <Modal {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
   setIsModalOpen: mockSetIsModalOpen,
+  children: <ModalContent />,
 };

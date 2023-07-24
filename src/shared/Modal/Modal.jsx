@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { AiOutlineClose } from 'react-icons/ai';
 import { useCallback, useEffect } from 'react';
 
-const Modal = ({ setIsModalOpen }) => {
+const Modal = ({ children, setIsModalOpen, ...props }) => {
   const handleClose = useCallback(() => {
     setIsModalOpen(false);
   }, [setIsModalOpen]);
