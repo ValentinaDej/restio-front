@@ -2,6 +2,7 @@ import { useState } from 'react';
 import QuantityButton from './QuantityButton';
 
 const meta = {
+  title: 'Shared/QuantityButton',
   component: QuantityButton,
   tags: ['autodocs'],
   argTypes: {

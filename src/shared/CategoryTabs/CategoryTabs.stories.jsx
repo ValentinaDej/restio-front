@@ -1,7 +1,7 @@
 import CategoryTabs from './CategoryTabs';
 
 const meta = {
-  title: 'Components/CategoryTabs',
+  title: 'Shared/CategoryTabs',
   component: CategoryTabs,
   tags: ['autodocs'],
   argTypes: {

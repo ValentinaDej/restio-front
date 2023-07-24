@@ -3,7 +3,7 @@ import Title from './Title';
 import '../../styles.scss';
 
 export default {
-  title: 'Components/Title',
+  title: 'Shared/Title',
   component: Title,
   tags: ['autodocs'],
   argTypes: {
