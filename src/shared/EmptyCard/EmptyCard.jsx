@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import classes from './EmptyCard.module.scss';
 import { AiOutlineAppstoreAdd } from 'react-icons/ai';
+import Text from 'shared/Text/Text';
 
-const EmptyCard = ({ children, text = 'employee', onClick, mode = 'primary', ...props }) => {
+const EmptyCard = ({ text = 'employee', onClick, mode = 'primary', ...props }) => {
   return (
     <>
       <div className={`${classes.emptyCard_wrapper} ${classes[`${mode}`]}`}>
         <AiOutlineAppstoreAdd size={'2rem'} className={classes.icon} />
-        <p>Add new {text}</p>
+        <Text color="#ea6512">Add new {text}</Text>
       </div>
     </>
   );
