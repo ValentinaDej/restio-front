@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classes from './EmployeeCard.module.scss';
 import { BsTrash } from 'react-icons/bs';
 import { BiEditAlt } from 'react-icons/bi';
