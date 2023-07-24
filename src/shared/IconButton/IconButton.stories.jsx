@@ -46,6 +46,13 @@ export const Default = {
   },
 };
 
+export const Filled = {
+  args: {
+    mode: 'filled',
+    Svg: BiSolidTrash,
+  },
+};
+
 export const Outlined = {
   args: {
     mode: 'outlined',
