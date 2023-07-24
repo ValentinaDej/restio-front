@@ -34,7 +34,7 @@ const Menu = ({ mode, title = 'Menu', ...props }) => {
 };
 
 Menu.propTypes = {
-  text: PropTypes.oneOf(['Menu', 'Employees']),
+  title: PropTypes.oneOf(['Menu', 'Employees']),
   mode: PropTypes.oneOf(['primary', 'outlined']),
 };
 
