@@ -2,10 +2,14 @@ import './styles.scss';
 import Footer from './shared/Footer/Footer';
 import Header from './shared/Header/Header';
 import Button from './shared/Button/Button';
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
   return (
     <>
+      <div>
+        <Toaster />
+      </div>
       <Header role="customer" />
       <main className="main">
         <div className="main__container">

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import Select from '../Select/Select';
 import styles from './EmployeeForm.module.scss';
 import Button from '../Button/Button';
 import * as Yup from 'yup';
 import Input from '../Input/Input';
+import FileUploader from '../FileUploader/FileUploader';
+import toast from 'react-hot-toast';
 
 const validationSchema = Yup.object({
   firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required field'),
@@ -28,6 +30,7 @@ const validationSchema = Yup.object({
 
 const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
   const {
+    register,
     handleSubmit,
     control,
     reset,
@@ -54,9 +57,18 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
     },
   });
 
-  const handleFormSubmit = (data) => {
-    onSubmit(data);
+  const fileUploaderRef = useRef();
+
+  const handleFormSubmit = async (data) => {
+    // Add the file upload response to the form data
+    const image = await fileUploaderRef.current.handleUpload();
+
+    onSubmit({ ...data, image: image.data.imageName });
     reset();
+
+    toast.success('Employee updated!');
+
+    fileUploaderRef.current.clearFile();
   };
 
   return (
@@ -64,7 +76,7 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
       className={`${styles.employeeForm} ${styles[`employeeForm_${size}`]}`}
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <div className={styles.field__container}>
+      <div className={styles.field__wrapper}>
         <Controller
           name="firstName"
           control={control}
@@ -76,7 +88,7 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
           )}
         />
       </div>
-      <div className={styles.field__container}>
+      <div className={styles.field__wrapper}>
         <Controller
           name="lastName"
           control={control}
@@ -88,38 +100,22 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
           )}
         />
       </div>
-      <div className={styles.field__container}>
-        <Controller
-          name="gender"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Select {...field} label="Gender" size={size} length={`lg`}>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </Select>
-              {errors.gender && <div className={styles.error}>{errors.gender}</div>}
-            </>
-          )}
-        />
+      <div className={styles.field__wrapper}>
+        <Select label="Gender" size={size} length={`lg`} register={register}>
+          <option>Male</option>
+          <option>Female</option>
+        </Select>
+        {errors.gender && <div className={styles.error}>{errors.gender}</div>}
       </div>
-      <div className={styles.field__container}>
-        <Controller
-          name="role"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Select {...field} label="Role" size={size} length={`lg`}>
-                <option value="waiter">Waiter</option>
-                <option value="admin">Admin</option>
-                <option value="cook">Cook</option>
-              </Select>
-              {errors.role && <div className={styles.error}>{errors.role}</div>}
-            </>
-          )}
-        />
+      <div className={styles.field__wrapper}>
+        <Select label="Role" size={size} length={`lg`} register={register}>
+          <option>Waiter</option>
+          <option>Admin</option>
+          <option>Cook</option>
+        </Select>
+        {errors.role && <div className={styles.error}>{errors.role}</div>}
       </div>
-      <div className={styles.field__container}>
+      <div className={styles.field__wrapper}>
         <Controller
           name="password"
           control={control}
@@ -131,7 +127,7 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
           )}
         />
       </div>
-      <div className={styles.field__container}>
+      <div className={styles.field__wrapper}>
         <Controller
           name="phone"
           control={control}
@@ -143,7 +139,7 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
           )}
         />
       </div>
-      <div className={styles.field__container}>
+      <div className={styles.field__wrapper}>
         <Controller
           name="email"
           control={control}
@@ -155,7 +151,7 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
           )}
         />
       </div>
-      <div className={styles.field__container}>
+      <div className={styles.field__wrapper}>
         <Controller
           name="address"
           control={control}
@@ -167,16 +163,8 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
           )}
         />
       </div>
-      <div className={styles.field__container}>
-        <Controller
-          name="image"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} label="Upload Photo" size={size} length={`lg`} type="file" />
-            </>
-          )}
-        />
+      <div className={styles.field__wrapper}>
+        <FileUploader ref={fileUploaderRef} />
       </div>
       <div className={styles.btn_group}>
         <Button type="submit" size={size} disabled={isSubmitting}>
