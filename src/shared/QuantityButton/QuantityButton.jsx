@@ -3,15 +3,7 @@ import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 
 import css from './QuantityButton.module.scss';
 
-const QuantityButton = ({ value = 1, setValue, mode, size }) => {
-  const addOne = () => {
-    setValue((prevValue) => prevValue + 1);
-  };
-
-  const minusOne = () => {
-    setValue((prevValue) => prevValue - 1);
-  };
-
+const QuantityButton = ({ quantity = 1, addOne, minusOne, mode, size }) => {
   return (
     <div
       className={`${css['quantity-container']} ${css[`quantity-container_${mode}`]} ${
@@ -22,16 +14,16 @@ const QuantityButton = ({ value = 1, setValue, mode, size }) => {
         className={css['quantity-container__button']}
         type="button"
         onClick={minusOne}
-        disabled={value <= 1}
+        disabled={quantity <= 1}
       >
         <AiOutlineMinus className={css['quantity-container__icon']} />
       </button>
-      <p className={css['quantity-container__value']}>{value}</p>
+      <p className={css['quantity-container__value']}>{quantity}</p>
       <button
         className={css['quantity-container__button']}
         type="button"
         onClick={addOne}
-        disabled={value >= 99}
+        disabled={quantity >= 99}
       >
         <AiOutlinePlus className={css['quantity-container__icon']} />
       </button>
@@ -40,8 +32,9 @@ const QuantityButton = ({ value = 1, setValue, mode, size }) => {
 };
 
 QuantityButton.propTypes = {
-  value: PropTypes.number,
-  setValue: PropTypes.func,
+  quantity: PropTypes.number,
+  addOne: PropTypes.func,
+  minusOne: PropTypes.func,
   mode: PropTypes.string,
   size: PropTypes.string,
 };
