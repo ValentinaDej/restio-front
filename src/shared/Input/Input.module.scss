@@ -6,8 +6,8 @@
 .checkbox_wrapper {
   display: flex;
   flex-direction: row;
-  align-items: start;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 5px;
 }
 
 .checkbox_wrapper .label {
@@ -21,6 +21,7 @@
   font-weight: var(--font-semi-bold);
   color: var(--color-dark);
   margin-bottom: 0.5rem;
+  align-self: flex-start;
 
   &_sm {
     font-size: 0.8rem;

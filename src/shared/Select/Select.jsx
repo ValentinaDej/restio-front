@@ -1,7 +1,18 @@
 import PropTypes from 'prop-types';
 import styles from './Select.module.scss';
 
-const Select = ({ children, onChange, name, id, label, size, length, ...props }) => {
+const Select = ({
+  children,
+  onChange,
+  name,
+  id,
+  label,
+  size,
+  length,
+  multiple,
+  value,
+  ...props
+}) => {
   return (
     <div className={`${styles.select_wrapper}`}>
       <label className={`${styles.label} ${styles[`label_${size}`]}`} htmlFor={id}>
@@ -13,7 +24,9 @@ const Select = ({ children, onChange, name, id, label, size, length, ...props })
         }`}
         id={id}
         name={name}
-        defaultValue={'default'}
+        //defaultValue={'default'}
+        multiple={multiple} // Додаємо властивість multiple
+        value={value} // Додаємо властивість value, яка буде контролювати обрані значення для мульти-вибору
         onChange={onChange}
         {...props}
       >

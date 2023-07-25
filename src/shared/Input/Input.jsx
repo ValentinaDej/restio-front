@@ -13,10 +13,11 @@ const Input = forwardRef(
       onChange,
       placeholder,
       pattern,
-      inputRef,
       size,
       length,
       mode,
+      register,
+      rules,
       ...props
     },
     ref
@@ -29,7 +30,8 @@ const Input = forwardRef(
           {label}
         </label>
         <input
-          ref={inputRef}
+          ref={ref}
+          {...register(name, rules)}
           type={type || 'text'}
           id={id}
           name={name}
