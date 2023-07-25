@@ -10,19 +10,10 @@ const Menu = ({ mode, title = 'Menu', ...props }) => {
     <>
       <Title>{title}</Title>
       <ul className={`${classes.menu_wrapper} ${classes[mode]}`}>
-        {/* {title === 'Menu'
-          ? fetchedListForRender.map((item) => {
+        {/*fetchedListForRender.map((item) => {
               return (
                 <li className={classes.card_wrapper} key={item.id}>
-                  <DishCard data={item}></DishCard>
-                </li>
-              );
-            })
-          : title === 'Employee'
-          ? fetchedListForRender.map((item) => {
-              return (
-                <li className={classes.card_wrapper} key={item.id}>
-                  <EmployeeCard data={item}></EmployeeCard>
+                  <EmployeeCard data={item}></EmployeeCard> or <DishCard data={item}></DishCard>
                 </li>
               );
             })
