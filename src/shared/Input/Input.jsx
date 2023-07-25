@@ -1,44 +1,52 @@
 import PropTypes from 'prop-types';
 import styles from './Input.module.scss';
+import { forwardRef } from 'react';
 
-const Input = ({
-  label,
-  id,
-  type,
-  name,
-  value,
-  onChange,
-  placeholder,
-  pattern,
-  inputRef,
-  size,
-  length,
-  mode,
-  ...props
-}) => {
-  const isCheckbox = type === 'checkbox';
+const Input = forwardRef(
+  (
+    {
+      label,
+      id,
+      type,
+      name,
+      value,
+      onChange,
+      placeholder,
+      pattern,
+      inputRef,
+      size,
+      length,
+      mode,
+      ...props
+    },
+    ref
+  ) => {
+    const isCheckbox = type === 'checkbox';
 
-  return (
-    <div className={`${styles.input_wrapper} ${isCheckbox ? styles.checkbox_wrapper : ''}`}>
-      <label className={`${styles.label} ${styles[`label_${size}`]}`} htmlFor={id}>
-        {label}
-      </label>
-      <input
-        ref={inputRef}
-        type={type || 'text'}
-        id={id}
-        name={name}
-        value={value}
-        pattern={pattern}
-        placeholder={placeholder}
-        className={`${styles.input} ${styles[`input_${size}`]} ${styles[`input_length-${length}`]}`}
-        onChange={onChange}
-        disabled={mode === 'disabled'}
-        {...props}
-      />
-    </div>
-  );
-};
+    return (
+      <div className={`${styles.input_wrapper} ${isCheckbox ? styles.checkbox_wrapper : ''}`}>
+        <label className={`${styles.label} ${styles[`label_${size}`]}`} htmlFor={id}>
+          {label}
+        </label>
+        <input
+          ref={inputRef}
+          type={type || 'text'}
+          id={id}
+          name={name}
+          value={value}
+          pattern={pattern}
+          placeholder={placeholder}
+          className={`${styles.input} ${styles[`input_${size}`]} ${
+            styles[`input_length-${length}`]
+          }`}
+          onChange={onChange}
+          disabled={mode === 'disabled'}
+          {...props}
+        />
+      </div>
+    );
+  }
+);
 
 Input.propTypes = {
   label: PropTypes.string,
