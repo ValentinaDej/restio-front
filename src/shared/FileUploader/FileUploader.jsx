@@ -3,23 +3,33 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import styles from './FileUploader.module.scss';
 
+const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg', 'gif'];
+
 const FileUploader = forwardRef(({ size }, ref) => {
   const [uploadedFile, setUploadedFile] = useState();
   const [previewUrl, setPreviewUrl] = useState('');
 
+  const getFileExtension = (fileName) => {
+    return fileName.split('.').pop().toLowerCase();
+  };
+
   const onFileChange = (event) => {
     const file = event.target.files[0];
-    setUploadedFile(file);
-    // Create a temporary URL for image preview
-    if (file) {
+    const fileExtension = getFileExtension(file.name);
+    if (ALLOWED_EXTENSIONS.includes(fileExtension)) {
+      setUploadedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
     } else {
-      setPreviewUrl(null); // or setPreviewUrl('')
+      toast.error('Invalid file format. Allowed formats: png, jpeg, jpg, gif');
     }
   };
 
   const handleUpload = async () => {
     try {
+      if (!uploadedFile) {
+        return '';
+      }
+
       const formData = new FormData();
       formData.append('image', uploadedFile);
 
@@ -27,16 +37,13 @@ const FileUploader = forwardRef(({ size }, ref) => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      console.log(response);
-
       // Clear the selected file and preview after successful upload
+      setUploadedFile(null);
       setPreviewUrl('');
 
       return response;
     } catch (error) {
       toast.error('Some error occurred uploading an image!');
-      console.error('Error uploading file:', error);
-      throw error;
     }
   };
 
@@ -57,7 +64,11 @@ const FileUploader = forwardRef(({ size }, ref) => {
         ) : (
           <p>Drag & drop an image file here, or click to select one (jpeg, png, gif)</p>
         )}
-        <input type="file" accept="image/jpeg, image/png, image/gif" onChange={onFileChange} />
+        <input
+          type="file"
+          accept="image/jpeg, image/png, image/gif, image/jpg"
+          onChange={onFileChange}
+        />
       </div>
     </div>
   );
