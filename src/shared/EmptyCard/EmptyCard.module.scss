@@ -4,9 +4,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 47%;
-    min-height: 150px;
+    width: 100%;
+    padding: 0 2rem;
+    min-height: 240px;
     flex: 0 0 auto;
+    // margin-top: -30px;
     margin-bottom: 2rem;
     transition: 0.7s;
     text-align: center;
@@ -30,13 +32,11 @@
 
 @media (min-width: 576px) {
   .emptyCard_wrapper {
-    width: 30%;
   }
 }
 
 @media (min-width: 992px) {
   .emptyCard_wrapper {
-    width: 22%;
     &:hover {
       transition: 0.7s;
       background-color: rgba(255, 255, 255, 0.8);

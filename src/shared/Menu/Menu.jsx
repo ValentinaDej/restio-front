@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import classes from './Menu.module.scss';
 // import EmployeeCard from 'shared/EmployeeCard/EmployeeCard';
 // import DishCard from 'shared/DishCard/DishCard';
+import EmptyCard from 'shared/EmptyCard/EmptyCard';
 import Title from 'shared/Title/Title';
 
 const Menu = ({ mode, title = 'Menu', ...props }) => {
@@ -18,7 +19,9 @@ const Menu = ({ mode, title = 'Menu', ...props }) => {
               );
             })
           : ''} */}
-        <li className={classes.card_wrapper}>{/* Employee or Dish component here */}</li>
+        <li className={classes.card_wrapper}>
+          <EmptyCard></EmptyCard>
+        </li>
       </ul>
     </>
   );
