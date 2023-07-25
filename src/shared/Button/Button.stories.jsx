@@ -2,7 +2,7 @@ import Button from './Button';
 import '../../styles.scss';
 
 const meta = {
-  title: 'Components/Button',
+  title: 'Shared/Button',
   component: Button,
   tags: ['autodocs'],
   argTypes: {

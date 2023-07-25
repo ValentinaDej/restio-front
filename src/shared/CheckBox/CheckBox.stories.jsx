@@ -1,11 +1,11 @@
 import { CheckBox } from './CheckBox';
 
 export default {
-  title: 'Components/CheckBox',
+  title: 'Shared/CheckBox',
   component: CheckBox,
   tags: ['autodocs'],
   argTypes: {
-    checked: { type: 'boolean', control: 'boolean', description: 'The ckecked status' },
+    checked: { type: 'boolean', control: 'boolean', description: 'The checked status' },
     disabled: { type: 'boolean', control: 'boolean', description: 'The disable' },
     label: {
       type: 'string',

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import styles from './Select.module.scss';
 
-const Select = ({ children, onChange, name, id, label, size, length, ...props }) => {
+const Select = ({ children, onChange, name, id, label, size, length, register, ...props }) => {
   return (
     <div className={`${styles.select_wrapper}`}>
       <label className={`${styles.label} ${styles[`label_${size}`]}`} htmlFor={id}>
@@ -15,6 +15,7 @@ const Select = ({ children, onChange, name, id, label, size, length, ...props })
         name={name}
         defaultValue={'default'}
         onChange={onChange}
+        {...register(label.toLowerCase())}
         {...props}
       >
         <option disabled={true} value="default">
