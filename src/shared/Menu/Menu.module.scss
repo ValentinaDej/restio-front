@@ -1,0 +1,24 @@
+.menu_wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 2%;
+  width:100%;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  // flex-shrink: 0;
+  padding: 1.5rem 0;
+  &.outlined {
+    padding: 1.5rem 0;
+    border: solid gray 1px;
+    border: 1px solid rgba(8, 8, 8, 0.123);
+    border-radius: 50px;
+  }
+  
+}
+
+.card_wrapper{
+  flex-grow: 1;
+  margin-bottom: 70px;
+  max-width: 250px;
+}
