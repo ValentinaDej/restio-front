@@ -63,7 +63,11 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
     // Add the file upload response to the form data
     const image = await fileUploaderRef.current.handleUpload();
 
-    onSubmit({ ...data, image: image.data.imageName });
+    if (image) {
+      onSubmit({ ...data, image: image.data.imageName });
+    } else {
+      onSubmit({ ...data, image: '' });
+    }
     reset();
 
     toast.success('Employee updated!');
