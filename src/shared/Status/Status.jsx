@@ -10,7 +10,7 @@ const Status = ({ statusCurrent }) => {
     switch (statusCurrent) {
       case 'free':
       case 'served':
-      case 'payed':
+      case 'paid':
         setStatusColor('green');
         break;
 
@@ -57,7 +57,7 @@ Status.propTypes = {
     'ready',
     'served',
     'open',
-    'payed',
+    'paid',
   ]).isRequired,
 };
 

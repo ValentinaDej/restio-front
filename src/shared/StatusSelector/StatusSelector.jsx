@@ -6,7 +6,7 @@ import Status from '../Status/Status';
 const StatusSelector = ({ mode }) => {
   const statusTables = ['free', 'taken', 'called waiter', 'request bill'];
   const statusDishes = ['ordered', 'in progress', 'ready', 'served'];
-  const statusOrders = ['open', 'payed'];
+  const statusOrders = ['open', 'paid'];
 
   const [selectedCurrent, setSelectCurrent] = useState();
   const [currentMode, setCurrentMode] = useState([]);
@@ -49,7 +49,6 @@ const StatusSelector = ({ mode }) => {
             <div>
               {currentMode &&
                 currentMode.map((item, index) => {
-                  console.log(item);
                   return (
                     <div
                       onClick={() => handleItemBody(item)}
