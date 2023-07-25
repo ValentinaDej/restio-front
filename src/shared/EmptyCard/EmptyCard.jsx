@@ -3,7 +3,7 @@ import classes from './EmptyCard.module.scss';
 import { AiOutlineAppstoreAdd } from 'react-icons/ai';
 import Text from 'shared/Text/Text';
 
-const EmptyCard = ({ text = 'employee', onClick, mode = 'primary', ...props }) => {
+const EmptyCard = ({ text, onClick, mode = 'primary', ...props }) => {
   return (
     <>
       <div className={`${classes.emptyCard_wrapper} ${classes[`${mode}`]}`}>
