@@ -43,7 +43,6 @@ const StatusSelector = ({ mode }) => {
           <div className={classes.select_current}>
             <Status statusCurrent={selectedCurrent} />
           </div>
-          <div className={classes.select_icon}>&times;</div>
         </div>
         {visibleBody ? (
           <div className={classes.select_body}>
