@@ -29,12 +29,14 @@ export const Default = Template.bind({});
 Default.args = {
   // Set the default args for the story here
   initialState: {
-    name: 'Salad',
-    pescatarian: false,
+    name: 'Salad with tuna',
+    type: 'Salad',
     vegetarian: false,
     spicy: false,
-    portionWeigh: 0,
-    price: 0,
+    pescatarian: false,
+    portionWeigh: 350,
+    price: 850,
+    ingredients: ['1', '2'],
   },
   buttonText: 'Create',
 };
