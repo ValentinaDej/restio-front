@@ -77,9 +77,8 @@ const DishForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={classes.field__wrapper}>
             <Input
-              label="Name"
               name="name"
-              placeholder="input dish name"
+              placeholder="Dish name"
               rules={{
                 required: 'Dish name is required',
                 minLength: {
@@ -95,7 +94,6 @@ const DishForm = () => {
                   message: 'Dish name can only contain letters, numbers, and spaces',
                 },
               }}
-              length={'lg'}
               register={register}
             />
             {errors.name && (
@@ -110,169 +108,180 @@ const DishForm = () => {
               </Text>
             )}
           </div>
-          <div className={classes.field__wrapper}>
-            <Select
-              label="Type"
-              length={`lg`}
-              name="type"
-              defaultValue=""
-              register={register}
-              rules={{
-                required: 'Dish type is required',
-              }}
-            >
-              <option value="" disabled hidden style={{ color: 'var(--color-danger)' }}>
-                select dish type
-              </option>
-              {initialData.typesOfDishes.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </Select>
-            {errors.type && (
-              <Text
-                mode="p"
-                textAlign="center"
-                fontSize={8}
-                fontWeight={400}
-                color="var(--color-danger)"
-              >
-                {errors.type.message}
-              </Text>
-            )}
-          </div>
-          <div className={classes.field__wrapper}>
-            <Text mode="p" textAlign="left" fontSize={16} fontWeight={600}>
-              Options
-            </Text>
-            <div className={classes.checkbox__wrapper}>
-              <Input
-                type="checkbox"
-                label="vegetarian"
-                name="vegetarian"
-                register={register}
-                size={'sm'}
-              />
-              <Input type="checkbox" label="spicy" name="spicy" register={register} size={'sm'} />
-              <Input
-                type="checkbox"
-                label="pescatarian"
-                name="pescatarian"
-                register={register}
-                size={'sm'}
-              />
+          <div className={classes.column__wrapper}>
+            <div className={classes.column}>
+              <div className={classes.field__wrapper}>Picture</div>
+            </div>
+            <div className={classes.column}>
+              <div className={classes.field__wrapper}>
+                <Select
+                  name="type"
+                  defaultValue=""
+                  register={register}
+                  rules={{
+                    required: 'Dish type is required',
+                  }}
+                >
+                  <option value="" disabled hidden style={{ color: 'var(--color-danger)' }}>
+                    Select dish type
+                  </option>
+                  {initialData.typesOfDishes.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </Select>
+                {errors.type && (
+                  <Text
+                    mode="p"
+                    textAlign="center"
+                    fontSize={8}
+                    fontWeight={400}
+                    color="var(--color-danger)"
+                  >
+                    {errors.type.message}
+                  </Text>
+                )}
+              </div>
+              <div className={classes.field__wrapper}>
+                <div className={classes.checkbox__wrapper}>
+                  <div className={classes.field__wrapper}>
+                    <Input
+                      type="checkbox"
+                      label="vegetarian"
+                      name="vegetarian"
+                      register={register}
+                      size={'sm'}
+                    />
+                  </div>
+                  <div className={classes.field__wrapper}>
+                    <Input
+                      type="checkbox"
+                      label="spicy"
+                      name="spicy"
+                      register={register}
+                      size={'sm'}
+                    />
+                  </div>
+                  <div className={classes.field__wrapper}>
+                    <Input
+                      type="checkbox"
+                      label="pescatarian"
+                      name="pescatarian"
+                      register={register}
+                      size={'sm'}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className={classes.field__wrapper}>
+                <Input
+                  type="number"
+                  name="portionWeight"
+                  placeholder="Portion weight, grams"
+                  rules={{
+                    required: 'Dish weight is required',
+                    pattern: {
+                      value: /^[1-9]\d{0,3}$|^10000$/,
+                      message: 'Dish weight must be a number between 1 and 10000',
+                    },
+                  }}
+                  register={register}
+                />
+                {errors.portionWeight && (
+                  <Text
+                    mode="p"
+                    textAlign="center"
+                    fontSize={8}
+                    fontWeight={400}
+                    color="var(--color-danger)"
+                  >
+                    {errors.portionWeight.message}
+                  </Text>
+                )}
+              </div>
+              <div className={classes.field__wrapper}>
+                <Input
+                  type="text"
+                  name="price"
+                  placeholder="Price"
+                  rules={{
+                    required: 'Dish price is required',
+                    pattern: {
+                      value: /^(?!0\d)\d+(\.\d{1,2})?$/,
+                      message: 'Dish price must be a positive number with up to 2 decimal places',
+                    },
+                  }}
+                  register={register}
+                />
+                {errors.price && (
+                  <Text
+                    mode="p"
+                    textAlign="center"
+                    fontSize={8}
+                    fontWeight={400}
+                    color="var(--color-danger)"
+                  >
+                    {errors.price.message}
+                  </Text>
+                )}
+              </div>
             </div>
           </div>
-          <div className={classes.field__wrapper}>
-            <Input
-              type="number"
-              label="Portion weight"
-              name="portionWeight"
-              placeholder="input weight in grams"
-              rules={{
-                required: 'Dish weight is required',
-                pattern: {
-                  value: /^[1-9]\d{0,3}$|^10000$/,
-                  message: 'Dish weight must be a number between 1 and 10000',
-                },
-              }}
-              length={'lg'}
-              register={register}
-            />
-            {errors.portionWeight && (
-              <Text
-                mode="p"
-                textAlign="center"
-                fontSize={8}
-                fontWeight={400}
-                color="var(--color-danger)"
-              >
-                {errors.portionWeight.message}
-              </Text>
-            )}
-          </div>
-          <div className={classes.field__wrapper}>
-            <Input
-              type="text"
-              label="Price"
-              name="price"
-              placeholder="input price"
-              rules={{
-                required: 'Dish price is required',
-                pattern: {
-                  value: /^(?!0\d)\d+(\.\d{1,2})?$/,
-                  message: 'Dish price must be a positive number with up to 2 decimal places',
-                },
-              }}
-              length={'lg'}
-              register={register}
-            />
-            {errors.price && (
-              <Text
-                mode="p"
-                textAlign="center"
-                fontSize={8}
-                fontWeight={400}
-                color="var(--color-danger)"
-              >
-                {errors.price.message}
-              </Text>
-            )}
-          </div>
-
-          <div className={classes.field__wrapper}>
-            <label htmlFor="type">Select Ingredient Type:</label>
-            <Select id="type" value={selectedType} onChange={handleTypeChange}>
-              <option value="">All</option>
-              {initialData.typesOfIngredients.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </Select>
-          </div>
-          <div className={classes.field__wrapper}>
-            <Select
-              label="Ingredients"
-              name="Ingredients"
-              multiple={true}
-              onChange={handleIngredientChange}
-              value={selectedIngredients}
-              //value={Array.from(selectedIngredients)}
-            >
-              {filteredIngredients.map((ingredient) => (
-                <option key={ingredient.id} value={ingredient.id}>
-                  {ingredient.name}
-                </option>
-              ))}
-            </Select>
-          </div>
-
-          <>
-            <div>
-              <label>Selected Ingredients:</label>
-              <ul>
-                {Array.from(selectedIngredients).map((ingredientId) => {
-                  const ingredient = initialData.ingredientsList.find(
-                    (ing) => ing.id === ingredientId
-                  );
-                  return (
-                    <li key={ingredientId}>
-                      {ingredient ? ingredient.name : 'Unknown Ingredient'}
-                      {/* <IconButton onClick={() => handleRemoveIngredient(ingredientId)}></IconButton> */}
-                      <button onClick={() => handleRemoveIngredient(ingredientId)}>Remove</button>
-                    </li>
-                  );
-                })}
-              </ul>
+          <div className={classes.column__wrapper}>
+            <div className={classes.column}>
+              <div className={classes.field__wrapper}>
+                <Select id="type" value={selectedType} onChange={handleTypeChange}>
+                  <option value="">All</option>
+                  {initialData.typesOfIngredients.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className={classes.field__wrapper}>
+                <Select
+                  name="Ingredients"
+                  multiple={true}
+                  onChange={handleIngredientChange}
+                  value={selectedIngredients}
+                  //value={Array.from(selectedIngredients)}
+                >
+                  {filteredIngredients.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.id}>
+                      {ingredient.name}
+                    </option>
+                  ))}
+                </Select>
+              </div>
             </div>
-            {errors.ingredients && (
-              <Text mode="p" textAlign="left" fontSize={8} fontWeight={400}>
-                {errors.ingredients.message}
-              </Text>
-            )}
-          </>
+            <div className={classes.column}>
+              <div>
+                <label>Selected Ingredients:</label>
+                <ul>
+                  {Array.from(selectedIngredients).map((ingredientId) => {
+                    const ingredient = initialData.ingredientsList.find(
+                      (ing) => ing.id === ingredientId
+                    );
+                    return (
+                      <li key={ingredientId}>
+                        {ingredient ? ingredient.name : 'Unknown Ingredient'}
+                        {/* <IconButton onClick={() => handleRemoveIngredient(ingredientId)}></IconButton> */}
+                        <button onClick={() => handleRemoveIngredient(ingredientId)}>Remove</button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              {errors.ingredients && (
+                <Text mode="p" textAlign="left" fontSize={8} fontWeight={400}>
+                  {errors.ingredients.message}
+                </Text>
+              )}
+            </div>
+          </div>
+
           <div className={classes.btn_group}>
             <Button type="submit">Create</Button>
             <Button type="button" onClick={() => reset()}>

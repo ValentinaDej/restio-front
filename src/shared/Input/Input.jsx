@@ -39,14 +39,17 @@ const Input = forwardRef(
           value={value}
           pattern={pattern}
           placeholder={placeholder}
-          className={`${styles.input} ${styles[`input_${size}`]} ${styles[`input_length-${length}`]}`}
+          className={`${styles.input} ${styles[`input_${size}`]} ${
+            styles[`input_length-${length}`]
+          }`}
           onChange={onChange}
           disabled={mode === 'disabled'}
           {...props}
         />
       </div>
     );
-  };
+  }
+);
 
 Input.propTypes = {
   label: PropTypes.string,
