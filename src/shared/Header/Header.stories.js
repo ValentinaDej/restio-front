@@ -16,7 +16,7 @@ const meta = {
     role: {
       type: 'string',
       description: 'Role of the authorized person',
-      options: ['customer', 'waiter', 'cook'],
+      options: ['customer', 'waiter', 'cook', 'administrator'],
       control: {
         type: 'radio',
       },

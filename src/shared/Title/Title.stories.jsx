@@ -3,7 +3,7 @@ import Title from './Title';
 import '../../styles.scss';
 
 export default {
-  title: 'Components/Title',
+  title: 'Shared/Title',
   component: Title,
   tags: ['autodocs'],
   argTypes: {
@@ -83,3 +83,4 @@ H3.args = {
   color: '#000',
   textAlign: 'center',
 };
+//

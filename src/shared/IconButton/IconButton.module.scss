@@ -1,5 +1,4 @@
 .btn {
-  padding: 8px;
   outline-color: var(--color-orange);
   border-radius: 50%;
   background: var(--color-orange);
@@ -41,6 +40,7 @@
 }
 
 .outlined {
+  padding: 8px;
   color: var(--color-orange);
   border: 2px solid var(--color-orange);
   background: none;
@@ -60,6 +60,7 @@
 }
 
 .disabled {
+  padding: 8px;
   border-color: var(--color-gray-700);
   background: var(--color-gray-700);
   cursor: not-allowed;

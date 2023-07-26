@@ -1,7 +1,7 @@
 import LoginForm from './LoginForm';
 
 const meta = {
-  title: 'Components/LoginForm',
+  title: 'Shared/LoginForm',
   component: LoginForm,
   tags: ['autodocs'],
 };

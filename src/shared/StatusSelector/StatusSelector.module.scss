@@ -1,0 +1,35 @@
+.select {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  &_header {
+    cursor: pointer;
+    width: 90px;
+    height: 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 2px #ccc;
+    border-radius: 15px;
+  }
+  &_body {
+    max-width: 90px;
+    padding: 5px 0;
+    position: absolute;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    left: 0;
+    right: 0;
+    top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    :last-child {
+      margin-bottom: 0;
+    }
+  }
+  &_item {
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+}
