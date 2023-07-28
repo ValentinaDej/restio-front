@@ -1,0 +1,10 @@
+.list {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: auto;
+  gap: 10px;
+
+  // @media screen and (min-width: var(--md-mobile)) {
+  //     grid-template-columns: auto auto;
+  //   }
+}

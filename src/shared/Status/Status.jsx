@@ -7,10 +7,11 @@ const Status = ({ statusCurrent }) => {
   const [statusColor, setStatusColor] = useState('green');
 
   useEffect(() => {
-    switch (statusCurrent) {
+    switch (statusCurrent?.toLowerCase()) {
       case 'free':
       case 'served':
       case 'paid':
+      case 'success':
         setStatusColor('green');
         break;
 
@@ -49,6 +50,7 @@ const Status = ({ statusCurrent }) => {
 Status.propTypes = {
   statusCurrent: PropTypes.oneOf([
     'free',
+    'success',
     'taken',
     'called waiter',
     'request bill',

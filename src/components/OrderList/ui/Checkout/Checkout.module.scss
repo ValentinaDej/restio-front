@@ -1,0 +1,25 @@
+.box {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  &.isOpen {
+    bottom: 0;
+  }
+}
+
+.checkoutBtn {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.btnsBox {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  justify-content: center;
+  gap: 10px;
+}
