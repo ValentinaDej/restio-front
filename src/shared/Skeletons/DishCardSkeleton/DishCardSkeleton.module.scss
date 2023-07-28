@@ -1,0 +1,10 @@
+.skeleton {
+    &__ingredients {
+      width: 200px;
+  
+      @media screen and (min-width: 375px) {
+        width: 80%;
+      }
+    }
+  }
+  
