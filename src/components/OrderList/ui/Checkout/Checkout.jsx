@@ -17,7 +17,7 @@ const Checkout = () => {
 
   const onClickPaidAllBtn = useCallback(async () => {
     const { data } = await axios.post('http://localhost:3001/transactions', {
-      amount: 100,
+      amount: 250,
       order_id: '64c2bdc95c1b58e890309955',
       type: 'online',
     });
@@ -44,17 +44,17 @@ const Checkout = () => {
           </Text>
           <div className={cls.btnsBox}>
             <Button size={'sm'} mode={'outlined'}>
-              Pay selected
+              Pay online selected
             </Button>
             <Button size={'sm'} onClick={onClickPaidAllBtn}>
-              Pay all
+              Pay online all
             </Button>
           </div>
           <div className={cls.btnsBox}>
             <Button size={'sm'} mode={'outlined'}>
-              Bill selected
+              Request bill selected
             </Button>
-            <Button size={'sm'}>Bill all</Button>
+            <Button size={'sm'}>Request bill all</Button>
           </div>
         </Modal>
       )}
