@@ -3,8 +3,7 @@ import Footer from './shared/Footer/Footer';
 import Header from './shared/Header/Header';
 import Button from './shared/Button/Button';
 import { Toaster } from 'react-hot-toast';
-import Checkout from 'components/OrderList/ui/Checkout/Checkout';
-import { OrderList } from 'components/OrderList';
+import { Checkout, OrdersList } from 'components/Customer';
 
 const App = () => {
   return (
@@ -18,7 +17,7 @@ const App = () => {
           <h1>RESTio</h1>
           <div className="centered">
             {/* <Button>Start</Button> */}
-            <OrderList />
+            <OrdersList />
             <Checkout />
           </div>
         </div>

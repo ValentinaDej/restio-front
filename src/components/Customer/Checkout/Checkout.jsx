@@ -6,23 +6,31 @@ import { useState } from 'react';
 import { classNames } from 'helpers/classNames';
 import Modal from 'shared/Modal/Modal';
 import { useCallback } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { payOrders } from 'store/customer/orders/asyncOperations';
+import { getDataParams, getPaymentInfo } from 'store/customer/orders/selectors';
+import { useEffect } from 'react';
+import { memo } from 'react';
 
-const Checkout = () => {
+export const Checkout = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { data, signature } = useSelector(getPaymentInfo);
+  const dataParams = useSelector(getDataParams);
+
+  useEffect(() => {
+    if (data && signature) {
+      location.href = `https://www.liqpay.ua/api/3/checkout?data=${data}&signature=${signature}`;
+    }
+  }, [data, signature]);
 
   const onOpenModal = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
 
-  const onClickPaidAllBtn = useCallback(async () => {
-    const { data } = await axios.post('http://localhost:3001/transactions', {
-      amount: 250,
-      order_id: '64c2bdc95c1b58e890309955',
-      type: 'online',
-    });
-    location.href = `https://www.liqpay.ua/api/3/checkout?data=${data.paymentData.data}&signature=${data.paymentData.signature}`;
-  }, []);
+  const onClickPaidAllBtn = useCallback(() => {
+    dispatch(payOrders(dataParams));
+  }, [dataParams, dispatch]);
 
   const mods = {
     [cls.isOpen]: isOpen,
@@ -33,14 +41,14 @@ const Checkout = () => {
       <div className={classNames(cls.box, mods, [])}>
         <div className={cls.checkoutBtn}>
           <Button onClick={onOpenModal} size={isOpen ? 'sm' : 'md'}>
-            {isOpen ? <AiOutlineArrowDown size={25} /> : `Checkout $${250}`}
+            {isOpen ? <AiOutlineArrowDown size={25} /> : `Checkout $${dataParams.amount}`}
           </Button>
         </div>
       </div>
       {isOpen && (
         <Modal setIsModalOpen={onOpenModal}>
           <Text color="#000" fontWeight={700}>
-            Total price: ${250}
+            Total price: ${dataParams.amount}
           </Text>
           <div className={cls.btnsBox}>
             <Button size={'sm'} mode={'outlined'}>
@@ -60,6 +68,4 @@ const Checkout = () => {
       )}
     </>
   );
-};
-
-export default Checkout;
+});

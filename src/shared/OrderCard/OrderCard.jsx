@@ -8,17 +8,32 @@ import { CheckBox } from 'shared/CheckBox/CheckBox';
 import { useCallback } from 'react';
 import { useState } from 'react';
 
-const OrderCard = ({ _id, orderItems, status, checkedPay, checkedBill }) => {
+const OrderCard = ({
+  _id,
+  orderItems,
+  status,
+  checkedPay,
+  checkedBill,
+  onChangePayAction,
+  onChangeBillAction,
+}) => {
   const [isCheckedPay, setIsCheckedPay] = useState(checkedPay || false);
   const [isCheckedBill, setIsCheckedBill] = useState(checkedBill || false);
+  const totalPrice = orderItems.reduce((acc, { dish, quantity }) => acc + dish.price * quantity, 0);
+
   const onChangePay = useCallback(() => {
     setIsCheckedPay((prev) => !prev);
-  }, []);
+    if (onChangePayAction) {
+      onChangePayAction({ _id, totalPrice });
+    }
+  }, [_id, onChangePayAction, totalPrice]);
   const onChangeBill = useCallback(() => {
     setIsCheckedBill((prev) => !prev);
-  }, []);
+    if (onChangeBillAction) {
+      onChangeBillAction();
+    }
+  }, [onChangeBillAction]);
 
-  const totalPrice = orderItems.reduce((acc, { dish, quantity }) => acc + dish.price * quantity, 0);
   return (
     <div className={cls.item}>
       <div className={cls.topBlock}>
@@ -27,6 +42,7 @@ const OrderCard = ({ _id, orderItems, status, checkedPay, checkedBill }) => {
         </Title>
         <Status statusCurrent={status} />
       </div>
+      <Text>The menu</Text>
       <ul className={cls.list}>
         {orderItems.map(({ dish: { _id, picture, name, price }, quantity }) => (
           <Card key={_id} src={picture} title={name} quantity={quantity} price={price} />
