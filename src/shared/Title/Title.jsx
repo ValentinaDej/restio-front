@@ -1,8 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import classes from './Title.module.scss';
+import { memo } from 'react';
 
-const Title = ({ mode, children, fontWeight, fontSize, color, textAlign }) => {
+const Title = memo(({ mode, children, fontWeight, fontSize, color, textAlign }) => {
   switch (mode) {
     case 'h1':
       return (
@@ -47,7 +47,7 @@ const Title = ({ mode, children, fontWeight, fontSize, color, textAlign }) => {
         </h3>
       );
   }
-};
+});
 
 Title.propTypes = {
   mode: PropTypes.oneOf(['h1', 'h2', 'h3']),

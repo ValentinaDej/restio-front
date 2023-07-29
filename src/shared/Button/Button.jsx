@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import classes from './Button.module.scss';
+import { memo } from 'react';
 
-const Button = ({ children, type, onClick, mode, size, ...props }) => {
+const Button = memo(({ children, type, onClick, mode, size, ...props }) => {
   const buttonMode = mode || 'primary';
   const buttonSize = size || 'md';
 
@@ -18,7 +19,7 @@ const Button = ({ children, type, onClick, mode, size, ...props }) => {
       {children}
     </button>
   );
-};
+});
 
 Button.propTypes = {
   children: PropTypes.node,
