@@ -1,2 +1,2 @@
-export { Checkout } from './Checkout/Checkout';
-export { OrdersList } from './OrdersList/OrdersList';
+export { Checkout } from './Orders/Checkout/Checkout';
+export { OrdersList } from './Orders/OrdersList/OrdersList';

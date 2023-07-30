@@ -50,7 +50,7 @@ const Status = ({ statusCurrent }) => {
 Status.propTypes = {
   statusCurrent: PropTypes.oneOf([
     'free',
-    'success',
+    'Success',
     'taken',
     'called waiter',
     'request bill',
@@ -58,8 +58,8 @@ Status.propTypes = {
     'in progress',
     'ready',
     'served',
-    'open',
-    'paid',
+    'Open',
+    'Paid',
   ]).isRequired,
 };
 

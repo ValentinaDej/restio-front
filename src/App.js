@@ -3,9 +3,9 @@ import Footer from './shared/Footer/Footer';
 import Header from './shared/Header/Header';
 import Button from './shared/Button/Button';
 import { Toaster } from 'react-hot-toast';
-import { Checkout, OrdersList } from 'components/Customer';
 
 import HomePage from 'pages/HomePage/HomePage';
+import CustomerOrdersPage from 'pages/CustomerOrdersPage/CustomerOrdersPage';
 
 const App = () => {
   return (
@@ -24,11 +24,8 @@ const App = () => {
     //   </main>
     //   <Footer />
     // </>
-    <>
-      <OrdersList />
-      <Checkout />
-      <HomePage />
-    </>
+    // <HomePage />
+    <CustomerOrdersPage />
   );
 };
 

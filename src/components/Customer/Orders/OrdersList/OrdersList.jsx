@@ -1,21 +1,16 @@
 import OrderCard from 'shared/OrderCard/OrderCard';
+import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getOrders,
-  getOrdersIDs,
-  getSelectedOrders,
-  getTotalPrice,
-} from 'store/customer/orders/selectors';
+import { getOrdersIDs, getSelectedOrders, getTotalPrice } from 'store/customer/orders/selectors';
 import { customerOrdersActions } from 'store/customer/orders/ordersSlice';
-import { memo, useCallback } from 'react';
+import { useCallback } from 'react';
 import Button from 'shared/Button/Button';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
 
-export const OrdersList = memo(({}) => {
+export const OrdersList = ({ orders }) => {
   const selectedOrders = useSelector(getSelectedOrders);
-  const orders = useSelector(getOrders);
   const ordersIDs = useSelector(getOrdersIDs);
   const totalPrice = useSelector(getTotalPrice);
 
@@ -65,4 +60,8 @@ export const OrdersList = memo(({}) => {
       <ul className={cls.list}>{orders.map(renderOrder)}</ul>
     </div>
   );
-});
+};
+
+OrdersList.propTypes = {
+  orders: PropTypes.array,
+};
