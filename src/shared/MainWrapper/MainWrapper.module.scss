@@ -1,0 +1,29 @@
+.background {
+    width: 100vw;
+    background-color: var(--color-gray-100);
+    background-image: url('../../img/dishes.png'), url('../../img/bg.png');
+    background-size: 50%, 90%;
+    background-repeat: no-repeat;
+    background-position: top 10px right 10px, top 0 right 0;
+
+    @media screen and (min-width: 375px) and (max-width: 480px) {
+      background-size: 50%, 85%;
+    }
+
+    @media screen and (min-width: 481px) {
+      justify-content: center;
+    }
+
+    @media screen and (min-width: 768px) {
+      background-size: 35%, 70%;
+      background-repeat: no-repeat;
+      background-position: top 25px right 40px, top 0 right 0;
+    }
+
+    @media screen and (min-width: 1000px) {
+      background-image: url('../../img/dishes.png'), url('../../img/bg.png');
+      background-size: 30%, 60%;
+      background-repeat: no-repeat;
+      background-position: top 55px right 30px, top 0 right 0;
+    }
+  }

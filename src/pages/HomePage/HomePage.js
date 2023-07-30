@@ -3,10 +3,11 @@ import styles from './HomePage.module.scss';
 import Title from '../../shared/Title/Title';
 import Text from 'shared/Text/Text';
 import Logo from 'shared/Logo/Logo';
+import MainWrapper from 'shared/MainWrapper/MainWrapper';
 
 const HomePage = () => {
   return (
-    <div className={`${styles.background}`}>
+    <MainWrapper classname={`${styles.bg}`}>
       <main>
         <div className="main__container">
           <Logo size="lg" classname={`${styles.img__logo}`} />
@@ -23,7 +24,7 @@ const HomePage = () => {
           </div>
         </div>
       </main>
-    </div>
+    </MainWrapper>
   );
 };
 
