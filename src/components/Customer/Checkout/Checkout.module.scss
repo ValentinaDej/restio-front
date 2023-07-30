@@ -1,19 +1,36 @@
 .box {
+  padding: 20px;
   position: fixed;
-  bottom: 0;
+  bottom: -110px;
   left: 0;
+  height: 110px;
   width: 100%;
+  border-radius: 10px 10px 0 0;
+  background-color: rgba(234, 188, 158, 0.455);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 
+  transition: bottom 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
   &.isOpen {
     bottom: 0;
   }
 }
 
 .checkoutBtn {
+  width: 100%;
   position: absolute;
-  bottom: 2px;
   left: 50%;
+  top: 0;
   transform: translate(-50%);
+
+  transition: top 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  &.isShown {
+    top: -50px;
+    &.isOpen {
+      top: -49px;
+    }
+  }
 }
 
 .btnsBox {

@@ -7,18 +7,10 @@ import Text from 'shared/Text/Text';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import { useCallback } from 'react';
 import { useState } from 'react';
+import { memo } from 'react';
 
-const OrderCard = ({
-  _id,
-  orderItems,
-  status,
-  checkedPay,
-  checkedBill,
-  onChangePayAction,
-  onChangeBillAction,
-}) => {
-  const [isCheckedPay, setIsCheckedPay] = useState(checkedPay || false);
-  const [isCheckedBill, setIsCheckedBill] = useState(checkedBill || false);
+const OrderCard = memo(({ _id, orderItems, status, isChecked, onChangePayAction }) => {
+  const [isCheckedPay, setIsCheckedPay] = useState(isChecked || false);
   const totalPrice = orderItems.reduce((acc, { dish, quantity }) => acc + dish.price * quantity, 0);
 
   const onChangePay = useCallback(() => {
@@ -27,12 +19,6 @@ const OrderCard = ({
       onChangePayAction({ _id, totalPrice });
     }
   }, [_id, onChangePayAction, totalPrice]);
-  const onChangeBill = useCallback(() => {
-    setIsCheckedBill((prev) => !prev);
-    if (onChangeBillAction) {
-      onChangeBillAction();
-    }
-  }, [onChangeBillAction]);
 
   return (
     <div className={cls.item}>
@@ -42,38 +28,30 @@ const OrderCard = ({
         </Title>
         <Status statusCurrent={status} />
       </div>
-      <Text>The menu</Text>
+      <Text fontWeight={700}>Dishes</Text>
       <ul className={cls.list}>
         {orderItems.map(({ dish: { _id, picture, name, price }, quantity }) => (
           <Card key={_id} src={picture} title={name} quantity={quantity} price={price} />
         ))}
       </ul>
-      <Text>Total: ${totalPrice}</Text>
+      <Text fontWeight={700}>Order total: ${totalPrice}</Text>
       <div className={cls.bottomBlock}>
         {status === 'Paid' ? (
           <div className={cls.status}>
             <Status statusCurrent={'Success'} />
           </div>
         ) : (
-          <>
-            <CheckBox
-              label={'Request bill'}
-              checked={isCheckedBill}
-              onChange={onChangeBill}
-              size={25}
-            />
-
-            <CheckBox
-              label={'Pay online'}
-              checked={isCheckedPay}
-              onChange={onChangePay}
-              size={25}
-            />
-          </>
+          <CheckBox
+            label={'Select order'}
+            className={cls.checkBox}
+            checked={isCheckedPay}
+            onChange={onChangePay}
+            size={25}
+          />
         )}
       </div>
     </div>
   );
-};
+});
 
 export default OrderCard;

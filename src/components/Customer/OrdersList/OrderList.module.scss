@@ -1,3 +1,14 @@
+.box {
+  display: grid;
+  gap: 15px;
+}
+
+.btnsBox {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 .list {
   display: grid;
   justify-content: center;

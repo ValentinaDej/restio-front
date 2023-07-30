@@ -23,7 +23,7 @@ export const payOrders = createAsyncThunk(
     try {
       const {
         data: { paymentInfo },
-      } = await axios.post('http://localhost:3001/transactions', ordersData);
+      } = await axios.post('https://et-back-23.vercel.app/transactions', ordersData);
       return paymentInfo;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.message);
