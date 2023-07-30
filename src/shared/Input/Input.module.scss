@@ -38,6 +38,8 @@
 
 .input {
   display: inline-block;
+  position: relative;
+  width: 100%;
   border: 1px solid var(--color-orange);
   background: var(--color-white);
   color: var(--color-dark);

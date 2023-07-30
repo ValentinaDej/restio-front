@@ -8,12 +8,13 @@ import Select from 'shared/Select/Select';
 import Text from 'shared/Text/Text';
 import Title from 'shared/Title/Title';
 import { IconButton } from 'shared/IconButton/IconButton';
+import DishIngredients from './DishIngridiens/DishIngridiens';
 
 import classes from './DishForm.module.scss';
 import * as initialData from './InitialState';
 
 const DishForm = () => {
-  const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState(new Set());
   const [selectedType, setSelectedType] = useState('');
   const [filteredIngredients, setFilteredIngredients] = useState(initialData.ingredientsList);
 
@@ -28,24 +29,20 @@ const DishForm = () => {
   });
 
   const handleRemoveIngredient = (ingredientId) => {
-    // setSelectedIngredients((prevIngredients) => {
-    //   const newIngredients = new Set(prevIngredients);
-    //   newIngredients.delete(ingredientId);
-    //   return newIngredients;
-    // });
-    setSelectedIngredients((prevIngredients) =>
-      prevIngredients.filter((id) => id !== ingredientId)
-    );
+    setSelectedIngredients((prevIngredients) => {
+      const newIngredients = new Set(prevIngredients);
+      newIngredients.delete(ingredientId);
+      return newIngredients;
+    });
   };
 
   const handleIngredientChange = (event) => {
     const selectedOptionValues = Array.from(event.target.selectedOptions, (option) =>
       Number(option.value)
     );
-    // setSelectedIngredients(
-    //   (prevIngredients) => new Set([...prevIngredients, ...selectedOptionValues])
-    // );
-    setSelectedIngredients((prevIngredients) => [...prevIngredients, ...selectedOptionValues]);
+    setSelectedIngredients(
+      (prevIngredients) => new Set([...prevIngredients, ...selectedOptionValues])
+    );
   };
 
   const handleTypeChange = (event) => {
@@ -143,37 +140,36 @@ const DishForm = () => {
                   </Text>
                 )}
               </div>
-              <div className={classes.field__wrapper}>
-                <div className={classes.checkbox__wrapper}>
-                  <div className={classes.field__wrapper}>
-                    <Input
-                      type="checkbox"
-                      label="vegetarian"
-                      name="vegetarian"
-                      register={register}
-                      size={'sm'}
-                    />
-                  </div>
-                  <div className={classes.field__wrapper}>
-                    <Input
-                      type="checkbox"
-                      label="spicy"
-                      name="spicy"
-                      register={register}
-                      size={'sm'}
-                    />
-                  </div>
-                  <div className={classes.field__wrapper}>
-                    <Input
-                      type="checkbox"
-                      label="pescatarian"
-                      name="pescatarian"
-                      register={register}
-                      size={'sm'}
-                    />
-                  </div>
+              <div className={classes.checkbox__wrapper}>
+                <div>
+                  <Input
+                    type="checkbox"
+                    label="vegetarian"
+                    name="vegetarian"
+                    register={register}
+                    size={'sm'}
+                  />
+                </div>
+                <div>
+                  <Input
+                    type="checkbox"
+                    label="spicy"
+                    name="spicy"
+                    register={register}
+                    size={'sm'}
+                  />
+                </div>
+                <div>
+                  <Input
+                    type="checkbox"
+                    label="pescatarian"
+                    name="pescatarian"
+                    register={register}
+                    size={'sm'}
+                  />
                 </div>
               </div>
+
               <div className={classes.field__wrapper}>
                 <Input
                   type="number"
@@ -229,59 +225,17 @@ const DishForm = () => {
             </div>
           </div>
           <div className={classes.column__wrapper}>
-            <div className={classes.column}>
-              <div className={classes.field__wrapper}>
-                <Select id="type" value={selectedType} onChange={handleTypeChange}>
-                  <option value="">All</option>
-                  {initialData.typesOfIngredients.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-              <div className={classes.field__wrapper}>
-                <Select
-                  name="Ingredients"
-                  multiple={true}
-                  onChange={handleIngredientChange}
-                  value={selectedIngredients}
-                  //value={Array.from(selectedIngredients)}
-                >
-                  {filteredIngredients.map((ingredient) => (
-                    <option key={ingredient.id} value={ingredient.id}>
-                      {ingredient.name}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-            <div className={classes.column}>
-              <div>
-                <label>Selected Ingredients:</label>
-                <ul>
-                  {Array.from(selectedIngredients).map((ingredientId) => {
-                    const ingredient = initialData.ingredientsList.find(
-                      (ing) => ing.id === ingredientId
-                    );
-                    return (
-                      <li key={ingredientId}>
-                        {ingredient ? ingredient.name : 'Unknown Ingredient'}
-                        {/* <IconButton onClick={() => handleRemoveIngredient(ingredientId)}></IconButton> */}
-                        <button onClick={() => handleRemoveIngredient(ingredientId)}>Remove</button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-              {errors.ingredients && (
-                <Text mode="p" textAlign="left" fontSize={8} fontWeight={400}>
-                  {errors.ingredients.message}
-                </Text>
-              )}
-            </div>
+            <DishIngredients
+              selectedIngredients={selectedIngredients}
+              setSelectedIngredients={setSelectedIngredients}
+              handleRemoveIngredient={handleRemoveIngredient}
+              handleIngredientChange={handleIngredientChange}
+              selectedType={selectedType}
+              handleTypeChange={handleTypeChange}
+              filteredIngredients={filteredIngredients}
+              errors={errors}
+            />
           </div>
-
           <div className={classes.btn_group}>
             <Button type="submit">Create</Button>
             <Button type="button" onClick={() => reset()}>

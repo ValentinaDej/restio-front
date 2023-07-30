@@ -32,7 +32,7 @@ const Input = forwardRef(
         </label>
         <input
           ref={ref}
-          {...register(name, rules)}
+          {...(register && register(name, rules))}
           type={type || 'text'}
           id={id}
           name={name}
