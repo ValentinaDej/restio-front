@@ -1,0 +1,25 @@
+.cart-container {
+  margin: 40px 10px 0;
+  padding: 20px 10px;
+  border: 2px solid var(--color-orange);
+  border-radius: 20px;
+}
+.cart-list {
+  margin: 20px auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  &__item {
+    flex-basis: 100%;
+    @media screen and (min-width: 479.98px) {
+      flex-basis: calc((100% - 20px) / 2);
+    }
+    @media screen and (min-width: 767.98px) {
+      flex-basis: calc((100% - 40px) / 3);
+    }
+    @media screen and (min-width: 991.98px) {
+      flex-basis: calc((100% - 60px) / 4);
+    }
+  }
+}

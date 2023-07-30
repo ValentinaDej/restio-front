@@ -4,6 +4,7 @@ import Header from './shared/Header/Header';
 import Button from './shared/Button/Button';
 import { Toaster } from 'react-hot-toast';
 import HomePage from 'pages/HomePage/HomePage';
+import MenuPage from 'pages/MenuPage/MenuPage';
 
 const App = () => {
   return (
@@ -22,7 +23,7 @@ const App = () => {
     //   </main>
     //   <Footer />
     // </>
-    <HomePage />
+    <MenuPage />
   );
 };
 

@@ -16,7 +16,17 @@ const variant = {
 };
 
 const Card = memo(
-  ({ src, title, price, quantity, mode = variant.order, addOne, minusOne, onDelete, onClick }) => {
+  ({
+    src,
+    title,
+    price,
+    quantity = 1,
+    mode = variant.order,
+    addOne,
+    minusOne,
+    onDelete,
+    onClick,
+  }) => {
     const sum = (price * quantity).toFixed(2);
     return (
       <div className={css['card']}>
