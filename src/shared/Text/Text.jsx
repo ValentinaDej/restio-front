@@ -1,6 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import classes from './Text.module.scss';
+import { memo } from 'react';
 
 const Text = ({ mode, children, fontWeight, fontSize, color, textAlign, classname }) => {
   switch (mode) {
