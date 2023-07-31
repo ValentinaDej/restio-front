@@ -3,6 +3,7 @@ import Select from 'shared/Select/Select';
 import Input from 'shared/Input/Input';
 import Text from 'shared/Text/Text';
 import { FaSearch } from 'react-icons/fa';
+import { LiaSearchSolid } from 'react-icons/lia';
 
 import classes from '../DishForm.module.scss';
 import * as initialData from '../InitialState';
@@ -98,7 +99,7 @@ const DishIngredients = ({
               onChange={handleInputChange}
               onKeyDown={handleInputKeyDown}
             />
-            <FaSearch onClick={handleAddIngredient} className={classes.input_icon} />
+            <LiaSearchSolid onClick={handleAddIngredient} className={classes.flipped_input_icon} />
           </div>
         </div>
 

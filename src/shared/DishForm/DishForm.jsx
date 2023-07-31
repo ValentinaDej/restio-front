@@ -9,6 +9,10 @@ import Text from 'shared/Text/Text';
 import Title from 'shared/Title/Title';
 import { IconButton } from 'shared/IconButton/IconButton';
 import DishIngredients from './DishIngridiens/DishIngridiens';
+// import { FaWeight } from 'react-icons/fa';
+// import { FaMoneyBill } from 'react-icons/fa';
+import { LiaWeightSolid } from 'react-icons/lia';
+import { LiaMoneyBillSolid } from 'react-icons/lia';
 
 import classes from './DishForm.module.scss';
 import * as initialData from './InitialState';
@@ -170,57 +174,70 @@ const DishForm = () => {
                 </div>
               </div>
 
-              <div className={classes.field__wrapper}>
-                <Input
-                  type="number"
-                  name="portionWeight"
-                  placeholder="Portion weight, grams"
-                  rules={{
-                    required: 'Dish weight is required',
-                    pattern: {
-                      value: /^[1-9]\d{0,3}$|^10000$/,
-                      message: 'Dish weight must be a number between 1 and 10000',
-                    },
-                  }}
-                  register={register}
-                />
-                {errors.portionWeight && (
-                  <Text
-                    mode="p"
-                    textAlign="center"
-                    fontSize={8}
-                    fontWeight={400}
-                    color="var(--color-danger)"
-                  >
-                    {errors.portionWeight.message}
-                  </Text>
-                )}
-              </div>
-              <div className={classes.field__wrapper}>
-                <Input
-                  type="text"
-                  name="price"
-                  placeholder="Price"
-                  rules={{
-                    required: 'Dish price is required',
-                    pattern: {
-                      value: /^(?!0\d)\d+(\.\d{1,2})?$/,
-                      message: 'Dish price must be a positive number with up to 2 decimal places',
-                    },
-                  }}
-                  register={register}
-                />
-                {errors.price && (
-                  <Text
-                    mode="p"
-                    textAlign="center"
-                    fontSize={8}
-                    fontWeight={400}
-                    color="var(--color-danger)"
-                  >
-                    {errors.price.message}
-                  </Text>
-                )}
+              <div className={classes.column__wrapper}>
+                <div className={classes.column}>
+                  <div className={classes.field__wrapper}>
+                    <div className={classes.input_wrapper}>
+                      <Input
+                        type="number"
+                        name="portionWeight"
+                        placeholder="Weight (gram)"
+                        rules={{
+                          required: 'Dish weight is required',
+                          pattern: {
+                            value: /^[1-9]\d{0,3}$|^10000$/,
+                            message: 'Dish weight must be a number between 1 and 10000',
+                          },
+                        }}
+                        register={register}
+                      />
+                      <LiaWeightSolid className={classes.input_icon} />
+                    </div>
+                    {errors.portionWeight && (
+                      <Text
+                        mode="p"
+                        textAlign="center"
+                        fontSize={8}
+                        fontWeight={400}
+                        color="var(--color-danger)"
+                      >
+                        {errors.portionWeight.message}
+                      </Text>
+                    )}
+                  </div>
+                </div>
+                <div className={classes.column}>
+                  <div className={classes.field__wrapper}>
+                    <div className={classes.input_wrapper}>
+                      <Input
+                        type="text"
+                        name="price"
+                        placeholder="Price"
+                        rules={{
+                          required: 'Dish price is required',
+                          pattern: {
+                            value: /^(?!0\d)\d+(\.\d{1,2})?$/,
+                            message:
+                              'Dish price must be a positive number with up to 2 decimal places',
+                          },
+                        }}
+                        register={register}
+                      />
+                      <LiaMoneyBillSolid className={classes.input_icon} />
+                    </div>
+                    {errors.price && (
+                      <Text
+                        mode="p"
+                        textAlign="center"
+                        fontSize={8}
+                        fontWeight={400}
+                        color="var(--color-danger)"
+                      >
+                        {errors.price.message}
+                      </Text>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -236,7 +253,8 @@ const DishForm = () => {
               errors={errors}
             />
           </div>
-          <div className={classes.btn_group}>
+
+          <div className={classes.button__wrapper}>
             <Button type="submit">Create</Button>
             <Button type="button" onClick={() => reset()}>
               Clear

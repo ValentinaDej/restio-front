@@ -19,10 +19,12 @@
 .column__wrapper {
   display: flex;
   border: 1px solid red;
+  margin-bottom: 10px;
 }
 
 .column {
   flex: 1;
+
   &:not(:last-child) {
     margin-right: 10px;
   }
@@ -56,12 +58,39 @@
   color: var(--color-orange);
 }
 
+.flipped_input_icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%) scaleX(-1);
+  /* Комбінований стиль з двома трансформаціями */
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: var(--color-orange);
+}
+
 .input_wrapper:hover .input_icon {
   color: var(--color-orange-hover);
 }
 
 .input_icon:hover {
   color: var(--color-orange-hover);
+}
+
+.button__wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+
+  border: 1px solid red;
+}
+
+.button__wrapper button {
+  margin-right: 5px;
+}
+
+.button__wrapper button:last-child {
+  margin-right: 0;
 }
 
 .section {
@@ -88,17 +117,20 @@
   &::-webkit-scrollbar {
     width: 5px;
   }
+
   &::-webkit-scrollbar-thumb {
     background-color: var(--color-orange);
     border-radius: 20px;
   }
+
   &::-webkit-scrollbar-track {
     background-color: var(--color-orange-transparent);
   }
 
   /* Styling the scrollbar for Firefox */
   & {
-    scrollbar-width: thin; /* Width of the scrollbar track */
+    scrollbar-width: thin;
+    /* Width of the scrollbar track */
     scrollbar-color: var(--color-orange) var(--color-orange-transparent);
   }
 
@@ -108,16 +140,22 @@
 }
 
 .section option:checked {
-  background-color: #f2f2f2; /* Background color when selected */
-  color: green; /* Text color when selected */
-  font-weight: bold; /* Font weight when selected */
-  border: 1px solid #ccc; /* Border when selected */
+  background-color: #f2f2f2;
+  /* Background color when selected */
+  color: green;
+  /* Text color when selected */
+  font-weight: bold;
+  /* Font weight when selected */
+  border: 1px solid #ccc;
+  /* Border when selected */
 }
 
 /* Add a custom checkmark to the selected option */
 option:checked::before {
-  content: '\2713'; /* Checkmark symbol */
-  margin-right: 5px; /* Spacing between checkmark and option text */
+  content: '\2713';
+  /* Checkmark symbol */
+  margin-right: 5px;
+  /* Spacing between checkmark and option text */
 }
 
 /* Change the selection highlight color */
@@ -131,6 +169,7 @@ option:checked::selection {
   background-color: transparent;
   color: var(--color-orange-transparent);
 }
+
 // .section::after {
 //   content: '\25bc';
 //   font-size: 12px;
