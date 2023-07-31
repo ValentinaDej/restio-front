@@ -54,6 +54,10 @@
   -webkit-appearance: none;
   -moz-appearance: none;
 
+  &::placeholder {
+    color: var(--color-dark);
+  }
+
   &:hover,
   &:focus {
     border-color: var(--color-orange-hover);

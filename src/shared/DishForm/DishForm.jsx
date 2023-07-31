@@ -7,12 +7,11 @@ import Input from 'shared/Input/Input';
 import Select from 'shared/Select/Select';
 import Text from 'shared/Text/Text';
 import Title from 'shared/Title/Title';
-import { IconButton } from 'shared/IconButton/IconButton';
 import DishIngredients from './DishIngridiens/DishIngridiens';
-// import { FaWeight } from 'react-icons/fa';
-// import { FaMoneyBill } from 'react-icons/fa';
+
 import { LiaWeightSolid } from 'react-icons/lia';
 import { LiaMoneyBillSolid } from 'react-icons/lia';
+import { GiWeight } from 'react-icons/gi';
 
 import classes from './DishForm.module.scss';
 import * as initialData from './InitialState';
@@ -80,6 +79,7 @@ const DishForm = () => {
             <Input
               name="name"
               placeholder="Dish name"
+              size="sm"
               rules={{
                 required: 'Dish name is required',
                 minLength: {
@@ -119,6 +119,7 @@ const DishForm = () => {
                   name="type"
                   defaultValue=""
                   register={register}
+                  size="sm"
                   rules={{
                     required: 'Dish type is required',
                   }}
@@ -182,6 +183,7 @@ const DishForm = () => {
                         type="number"
                         name="portionWeight"
                         placeholder="Weight (gram)"
+                        size="sm"
                         rules={{
                           required: 'Dish weight is required',
                           pattern: {
@@ -191,7 +193,7 @@ const DishForm = () => {
                         }}
                         register={register}
                       />
-                      <LiaWeightSolid className={classes.input_icon} />
+                      <GiWeight className={classes.input_icon} />
                     </div>
                     {errors.portionWeight && (
                       <Text
@@ -213,6 +215,7 @@ const DishForm = () => {
                         type="text"
                         name="price"
                         placeholder="Price"
+                        size="sm"
                         rules={{
                           required: 'Dish price is required',
                           pattern: {
@@ -255,8 +258,10 @@ const DishForm = () => {
           </div>
 
           <div className={classes.button__wrapper}>
-            <Button type="submit">Create</Button>
-            <Button type="button" onClick={() => reset()}>
+            <Button type="submit" size="sm">
+              Create
+            </Button>
+            <Button type="button" onClick={() => reset()} size="sm">
               Clear
             </Button>
           </div>
