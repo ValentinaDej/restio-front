@@ -3,8 +3,8 @@ import { createSelector } from '@reduxjs/toolkit';
 export const getOrders = (state) => state?.customerOrders.orders;
 export const getAmount = (state) => state?.customerOrders.amount;
 export const getPaymentInfo = (state) => state?.customerOrders.paymentInfo;
+export const getIsLoading = (state) => state?.customerOrders.isLoading;
 export const getSelectedOrders = (state) => state?.customerOrders.selectedOrders;
-
 export const getTotalPrice = createSelector([getOrders], (orders) => {
   let totalPrice = 0;
 

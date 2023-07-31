@@ -24,8 +24,8 @@ const App = () => {
     //   </main>
     //   <Footer />
     // </>
-    // <HomePage />
-    <CustomerOrdersPage />
+    <HomePage />
+    // <CustomerOrdersPage />
   );
 };
 

@@ -7,7 +7,6 @@ export const getOrdersByTableId = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { tableId } = useParams();
-      console.log(tableId);
 
       const response = await axios.get(``);
       return response.data.orders;
@@ -21,6 +20,7 @@ export const payOrders = createAsyncThunk(
   'customerOrders/payOrders',
   async (ordersData, thunkAPI) => {
     try {
+      // need add instance
       const {
         data: { paymentInfo },
       } = await axios.post('https://et-back-23.vercel.app/transactions', ordersData);

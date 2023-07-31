@@ -18,7 +18,7 @@ export const Checkout = () => {
 
   useEffect(() => {
     if (data && signature) {
-      location.href = `https://www.liqpay.ua/api/3/checkout?data=${data}&signature=${signature}`;
+      location.href = `${process.env.REACT_APP_LIQPAY_BASE_URL}/checkout?data=${data}&signature=${signature}`;
     }
   }, [data, signature]);
 
@@ -30,6 +30,7 @@ export const Checkout = () => {
     dispatch(
       payOrders({
         amount,
+        // order_id[0]
         order_id: '64c58973860d0119306ee2b1',
         type: 'online',
         // add selectedOrders
@@ -49,15 +50,14 @@ export const Checkout = () => {
   return (
     <>
       <div className={classNames(cls.box, boxMods, [])}>
-        <div className={classNames(cls.checkoutBtn, checkoutBtnMods, [])}>
-          <Button onClick={onOpenModal} size={isOpen ? 'sm' : 'md'} disabled={amount === 0}>
-            {isOpen ? (
-              <AiOutlineClose size={25} />
-            ) : (
-              <>Go to checkout selected &middot; ${amount}</>
-            )}
-          </Button>
-        </div>
+        <Button
+          className={classNames(cls.checkoutBtn, checkoutBtnMods, [])}
+          onClick={onOpenModal}
+          size={isOpen ? 'sm' : 'md'}
+          disabled={amount === 0}
+        >
+          {isOpen ? <AiOutlineClose size={25} /> : <>Go to checkout selected &middot; ${amount}</>}
+        </Button>
         <Text color="#000" fontWeight={700}>
           Total price for selected orders: ${amount}
         </Text>
