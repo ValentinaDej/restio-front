@@ -36,22 +36,16 @@ const Modal = ({ children, setIsModalOpen, classname, position, ...props }) => {
   });
 
   return (
-    <>
-      <div
-        className={`${classes.backdrop}`}
-        onClick={handleCloseBackdrop}
-        style={{ position: 'relative' }}
-      >
-        <div className={`${classes.modal} ${classname}`}>
-          <IconButton
-            Svg={AiOutlineClose}
-            onClick={handleClose}
-            style={{ position: 'absolute', top: 0, right: 0 }}
-          />
-          {children}
-        </div>
+    <div className={`${classes.backdrop}`} onClick={handleCloseBackdrop} style={{ position }}>
+      <div className={`${classes.modal} ${classname}`}>
+        <IconButton
+          Svg={AiOutlineClose}
+          onClick={handleClose}
+          style={{ position: 'absolute', top: 0, right: 0 }}
+        />
+        {children}
       </div>
-    </>
+    </div>
   );
 };
 

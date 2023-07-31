@@ -50,4 +50,5 @@ export const Default = Template.bind({});
 Default.args = {
   setIsModalOpen: mockSetIsModalOpen,
   children: <ModalContent />,
+  position: 'relative',
 };
