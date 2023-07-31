@@ -3,8 +3,9 @@ import classes from './Modal.module.scss';
 import PropTypes from 'prop-types';
 import { AiOutlineClose } from 'react-icons/ai';
 import { useCallback, useEffect } from 'react';
+import { Portal } from 'shared/Portal/Portal';
 
-const Modal = ({ children, setIsModalOpen, classname, position, ...props }) => {
+const Modal = ({ children, setIsModalOpen, classname, ...props }) => {
   const handleClose = useCallback(() => {
     setIsModalOpen(false);
   }, [setIsModalOpen]);
@@ -36,16 +37,18 @@ const Modal = ({ children, setIsModalOpen, classname, position, ...props }) => {
   });
 
   return (
-    <div className={`${classes.backdrop}`} onClick={handleCloseBackdrop} style={{ position }}>
-      <div className={`${classes.modal} ${classname}`}>
-        <IconButton
-          Svg={AiOutlineClose}
-          onClick={handleClose}
-          style={{ position: 'absolute', top: 0, right: 0 }}
-        />
-        {children}
+    <Portal>
+      <div className={`${classes.backdrop}`} onClick={handleCloseBackdrop}>
+        <div className={`${classes.modal} ${classname}`}>
+          <IconButton
+            Svg={AiOutlineClose}
+            onClick={handleClose}
+            style={{ position: 'absolute', top: 0, right: 0 }}
+          />
+          {children}
+        </div>
       </div>
-    </div>
+    </Portal>
   );
 };
 
@@ -53,7 +56,6 @@ Modal.propTypes = {
   children: PropTypes.node,
   setIsModalOpen: PropTypes.func.isRequired,
   classname: PropTypes.string,
-  position: PropTypes.string.isRequired,
 };
 
 export default Modal;

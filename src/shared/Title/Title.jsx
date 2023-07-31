@@ -51,7 +51,7 @@ const Title = ({ mode, children, fontWeight, fontSize, color, textAlign, classna
 
 Title.propTypes = {
   mode: PropTypes.oneOf(['h1', 'h2', 'h3']),
-  children: PropTypes.string,
+  children: PropTypes.node,
   textAlign: PropTypes.oneOf(['start', 'end', 'center', 'left', 'right']),
   fontWeight: PropTypes.oneOf([100, 200, 300, 400, 500, 600, 700, 800, 900]),
   fontSize: PropTypes.number,
