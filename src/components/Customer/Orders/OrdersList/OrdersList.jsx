@@ -1,9 +1,9 @@
 import OrderCard from 'shared/OrderCard/OrderCard';
-import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getIsLoading,
+  getOrders,
   getOrdersIDs,
   getSelectedOrders,
   getTotalPrice,
@@ -15,12 +15,13 @@ import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
 
-export const OrdersList = ({ orders }) => {
+export const OrdersList = () => {
+  const dispatch = useDispatch();
+  const orders = useSelector(getOrders);
   const selectedOrders = useSelector(getSelectedOrders);
   const ordersIDs = useSelector(getOrdersIDs);
   const totalPrice = useSelector(getTotalPrice);
   const isLoading = useSelector(getIsLoading);
-  const dispatch = useDispatch();
 
   const onClickPayAllBtn = useCallback(() => {
     dispatch(
@@ -68,13 +69,9 @@ export const OrdersList = ({ orders }) => {
       </div>
       {isLoading.payment && (
         <div className={cls.layout}>
-          <Loader color={'white'} />
+          <Loader />
         </div>
       )}
     </>
   );
-};
-
-OrdersList.propTypes = {
-  orders: PropTypes.array,
 };

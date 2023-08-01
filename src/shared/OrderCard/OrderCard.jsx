@@ -11,7 +11,10 @@ import { memo } from 'react';
 
 const OrderCard = memo(({ _id, orderItems, status, isChecked, onChangePayAction }) => {
   const [isCheckedPay, setIsCheckedPay] = useState(isChecked || false);
-  const totalPrice = orderItems.reduce((acc, { dish, quantity }) => acc + dish.price * quantity, 0);
+  const totalPrice = orderItems.reduce((acc, { dish, quantity }) => {
+    const price = acc + dish.price * quantity;
+    return Math.round(price * 100) / 100;
+  }, 0);
 
   const onChangePay = useCallback(() => {
     setIsCheckedPay((prev) => !prev);
