@@ -75,19 +75,21 @@ const DishIngredients = ({
           </Select>
         </div>
         <div className={classes.field__wrapper}>
-          <select
-            className={classes.section}
-            name="Ingredients"
-            multiple={true}
-            onChange={handleIngredientChange}
-            value={selectedIngredients}
-          >
-            {filteredIngredientsToShow.map((ingredient) => (
-              <option key={ingredient.id} value={ingredient.id}>
-                {ingredient.name}
-              </option>
-            ))}
-          </select>
+          <div className={classes.section__select}>
+            <ul className={classes.select_list}>
+              {filteredIngredientsToShow.map((ingredient) => (
+                <li
+                  key={ingredient.id}
+                  className={`${classes.select_option} ${
+                    selectedIngredients.has(ingredient.id) ? classes.selected : ''
+                  }`}
+                  onClick={() => handleIngredientChange(ingredient.id)}
+                >
+                  {ingredient.name}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
       <div className={classes.column}>

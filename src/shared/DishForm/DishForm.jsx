@@ -39,13 +39,16 @@ const DishForm = () => {
     });
   };
 
-  const handleIngredientChange = (event) => {
-    const selectedOptionValues = Array.from(event.target.selectedOptions, (option) =>
-      Number(option.value)
-    );
-    setSelectedIngredients(
-      (prevIngredients) => new Set([...prevIngredients, ...selectedOptionValues])
-    );
+  const handleIngredientChange = (ingredientId) => {
+    setSelectedIngredients((prevIngredients) => {
+      if (prevIngredients.has(ingredientId)) {
+        return prevIngredients;
+      } else {
+        const newIngredients = new Set(prevIngredients);
+        newIngredients.add(ingredientId);
+        return newIngredients;
+      }
+    });
   };
 
   const handleTypeChange = (event) => {

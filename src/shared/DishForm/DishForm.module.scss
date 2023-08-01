@@ -130,6 +130,7 @@
   transition: all 0.3s ease 0s;
   max-height: 95px;
   overflow-y: auto;
+
   &::-webkit-scrollbar {
     width: 5px;
   }
@@ -163,4 +164,57 @@
 
 .section__icon {
   color: var(--color-orange);
+}
+
+.section__select {
+  display: inline-block;
+  width: 100%;
+  max-height: 150px;
+  border: 1px solid var(--color-orange);
+  background: var(--color-white);
+  color: var(--color-dark);
+  padding: 0.75rem 2.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
+  font-weight: var(--font-medium);
+  transition: all 0.3s ease 0s;
+  outline: none;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-orange);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--color-orange-transparent);
+  }
+
+  /* Стилізація полоси прокрутки для Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-orange) var(--color-orange-transparent);
+}
+
+.select_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.select_option {
+  margin-bottom: 5px;
+
+  &:hover,
+  &:focus {
+    color: var(--color-orange-hover);
+  }
+
+  &:checked {
+    background-color: var(--color-orange-transparent);
+  }
 }
