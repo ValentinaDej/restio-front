@@ -1,5 +1,6 @@
 import './styles.scss';
 import { Toaster } from 'react-hot-toast';
+
 import HomePage from 'pages/HomePage/HomePage';
 import LoginPage from 'pages/LoginPage/LoginPage';
 import { PrivateRoute, PublicRoute } from 'services/routes';
@@ -7,7 +8,6 @@ import SharedLayout from 'shared/SharedLayout/SharedLayout';
 import logoImg from './img/RESTio.svg';
 import { Route, Routes } from 'react-router-dom';
 import MenuPage from 'pages/MenuPage/MenuPage';
-import OrdersCustomerPage from 'pages/OrdersCustomerPage/OrdersCustomerPage';
 import DishPage from 'pages/DishPage/DishPage';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import TablesWaiterPage from 'pages/TablesWaiterPage/TablesWaiterPage';
@@ -19,6 +19,8 @@ import EmployeePage from 'pages/EmployeePage/EmployeePage';
 import DishesAdminPage from 'pages/DishesAdminPage/DishesAdminPage';
 import AddPersonnelPage from 'pages/AddPersonnelPage/AddPersonnelPage';
 import AddDishPage from 'pages/AddDishPage/AddDishPage';
+import CustomerOrdersPage from 'pages/CustomerOrdersPage/CustomerOrdersPage';
+
 
 const App = () => {
   const role = 'waiter';
@@ -37,7 +39,7 @@ const App = () => {
         element={<SharedLayout role="customer" restaurantName={restaurantName} logo={logo} />}
       >
         <Route index element={<PublicRoute component={<MenuPage />} />} />
-        <Route path="orders" element={<PublicRoute component={<OrdersCustomerPage />} />} />
+        <Route path="orders" element={<PublicRoute component={<CustomerOrdersPage  />} />} />
         <Route path="dishes/:dishId" element={<PublicRoute component={<DishPage />} />} />
       </Route>
       {role === 'administrator' && (
@@ -92,6 +94,7 @@ const App = () => {
       )}
       <Route path="*" element={<ErrorPage />} />
     </Routes>
+
   );
 };
 
