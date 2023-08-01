@@ -9,8 +9,7 @@ import Text from 'shared/Text/Text';
 import Title from 'shared/Title/Title';
 import DishIngredients from './DishIngridiens/DishIngridiens';
 
-import { LiaWeightSolid } from 'react-icons/lia';
-import { LiaMoneyBillSolid } from 'react-icons/lia';
+import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
 
 import classes from './DishForm.module.scss';
@@ -82,6 +81,7 @@ const DishForm = () => {
             <Input
               name="name"
               placeholder="Dish name"
+              autoComplete="off"
               size="sm"
               rules={{
                 required: 'Dish name is required',
@@ -172,78 +172,75 @@ const DishForm = () => {
                     type="checkbox"
                     label="pescatarian"
                     name="pescatarian"
+                    autoComplete="off"
                     register={register}
                     size={'sm'}
                   />
                 </div>
               </div>
+              <div className={classes.field__wrapper}>
+                <div className={classes.input__wrapper}>
+                  <Input
+                    type="text"
+                    name="portionWeight"
+                    placeholder="Weight (gram)"
+                    autoComplete="off"
+                    size="sm"
+                    length="md"
+                    rules={{
+                      required: 'Dish weight is required',
+                      pattern: {
+                        value: /^[1-9]\d{0,3}$|^10000$/,
+                        message: 'Dish weight must be a number between 1 and 10000',
+                      },
+                    }}
+                    register={register}
+                  />
+                  <GiWeight className={classes.input__icon} />
+                </div>
+                {errors.portionWeight && (
+                  <Text
+                    mode="p"
+                    textAlign="center"
+                    fontSize={8}
+                    fontWeight={400}
+                    color="var(--color-danger)"
+                  >
+                    {errors.portionWeight.message}
+                  </Text>
+                )}
+              </div>
 
-              <div className={classes.column__wrapper}>
-                <div className={classes.column}>
-                  <div className={classes.field__wrapper}>
-                    <div className={classes.input_wrapper}>
-                      <Input
-                        type="number"
-                        name="portionWeight"
-                        placeholder="Weight (gram)"
-                        size="sm"
-                        rules={{
-                          required: 'Dish weight is required',
-                          pattern: {
-                            value: /^[1-9]\d{0,3}$|^10000$/,
-                            message: 'Dish weight must be a number between 1 and 10000',
-                          },
-                        }}
-                        register={register}
-                      />
-                      <GiWeight className={classes.input_icon} />
-                    </div>
-                    {errors.portionWeight && (
-                      <Text
-                        mode="p"
-                        textAlign="center"
-                        fontSize={8}
-                        fontWeight={400}
-                        color="var(--color-danger)"
-                      >
-                        {errors.portionWeight.message}
-                      </Text>
-                    )}
-                  </div>
+              <div className={classes.field__wrapper}>
+                <div className={classes.input__wrapper}>
+                  <Input
+                    type="text"
+                    name="price"
+                    placeholder="Price"
+                    autoComplete="off"
+                    size="sm"
+                    rules={{
+                      required: 'Dish price is required',
+                      pattern: {
+                        value: /^(?!0\d)\d+(\.\d{1,2})?$/,
+                        message: 'Dish price must be a positive number with up to 2 decimal places',
+                      },
+                    }}
+                    register={register}
+                  />
+                  <FaMoneyBillAlt className={classes.input__icon} />
                 </div>
-                <div className={classes.column}>
-                  <div className={classes.field__wrapper}>
-                    <div className={classes.input_wrapper}>
-                      <Input
-                        type="text"
-                        name="price"
-                        placeholder="Price"
-                        size="sm"
-                        rules={{
-                          required: 'Dish price is required',
-                          pattern: {
-                            value: /^(?!0\d)\d+(\.\d{1,2})?$/,
-                            message:
-                              'Dish price must be a positive number with up to 2 decimal places',
-                          },
-                        }}
-                        register={register}
-                      />
-                      <LiaMoneyBillSolid className={classes.input_icon} />
-                    </div>
-                    {errors.price && (
-                      <Text
-                        mode="p"
-                        textAlign="center"
-                        fontSize={8}
-                        fontWeight={400}
-                        color="var(--color-danger)"
-                      >
-                        {errors.price.message}
-                      </Text>
-                    )}
-                  </div>
-                </div>
+                {errors.price && (
+                  <Text
+                    mode="p"
+                    textAlign="center"
+                    fontSize={8}
+                    fontWeight={400}
+                    color="var(--color-danger)"
+                  >
+                    {errors.price.message}
+                  </Text>
+                )}
               </div>
             </div>
           </div>

@@ -19,6 +19,7 @@ const Input = forwardRef(
       mode,
       register,
       rules,
+      isFullWidth,
       ...props
     },
     ref
@@ -26,7 +27,11 @@ const Input = forwardRef(
     const isCheckbox = type === 'checkbox';
 
     return (
-      <div className={`${styles.input_wrapper} ${isCheckbox ? styles.checkbox_wrapper : ''}`}>
+      <div
+        className={`${styles.input_wrapper} ${isCheckbox ? styles.checkbox_wrapper : ''} ${
+          isFullWidth ? styles.full_width : ''
+        }`}
+      >
         <label className={`${styles.label} ${styles[`label_${size}`]}`} htmlFor={id}>
           {label}
         </label>

@@ -10,6 +10,7 @@ const Select = ({
   size,
   length,
   register,
+  rules,
   multiple,
   value,
   ...props
@@ -26,10 +27,10 @@ const Select = ({
         id={id}
         name={name}
         //defaultValue={'default'}
-        multiple={multiple} // Додаємо властивість multiple
-        value={value} // Додаємо властивість value, яка буде контролювати обрані значення для мульти-вибору
+        multiple={multiple}
+        value={value}
         onChange={onChange}
-        // {...register(label.toLowerCase())}
+        {...(register && register(name, rules))}
         {...props}
       >
         <option disabled={true} value="default">

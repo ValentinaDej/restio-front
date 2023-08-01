@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.input_wrapper.full_width {
+  width: 100%;
+}
+
 .checkbox_wrapper {
   display: flex;
   flex-direction: row;

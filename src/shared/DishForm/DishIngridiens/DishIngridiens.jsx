@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { LiaSearchSolid } from 'react-icons/lia';
+import { FaSearch } from 'react-icons/fa';
 import { BiSolidTrash } from 'react-icons/bi';
 
 import Select from 'shared/Select/Select';
@@ -65,6 +65,22 @@ const DishIngredients = ({
     <>
       <div className={classes.column}>
         <div className={classes.field__wrapper}>
+          <div className={classes.input__wrapper}>
+            <Input
+              type="text"
+              name="ingredient"
+              placeholder="Your ingredient"
+              size="sm"
+              value={inputValue}
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyDown}
+              autoComplete="off"
+              isFullWidth={true}
+            />
+            <FaSearch onClick={handleAddIngredient} className={classes.input__icon} />
+          </div>
+        </div>
+        <div className={classes.field__wrapper}>
           <Select id="type" value={selectedType} onChange={handleTypeChange} size="sm">
             <option value="">All</option>
             {initialData.typesOfIngredients.map((option) => (
@@ -76,11 +92,11 @@ const DishIngredients = ({
         </div>
         <div className={classes.field__wrapper}>
           <div className={classes.section__select}>
-            <ul className={classes.select_list}>
+            <ul>
               {filteredIngredientsToShow.map((ingredient) => (
                 <li
                   key={ingredient.id}
-                  className={`${classes.select_option} ${
+                  className={`${classes.section__item_select} ${
                     selectedIngredients.has(ingredient.id) ? classes.selected : ''
                   }`}
                   onClick={() => handleIngredientChange(ingredient.id)}
@@ -93,38 +109,28 @@ const DishIngredients = ({
         </div>
       </div>
       <div className={classes.column}>
-        <div className={classes.field__wrapper}>
-          <div className={classes.input_wrapper}>
-            <Input
-              type="text"
-              name="ingredient"
-              placeholder="Your ingredient"
-              size="sm"
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={handleInputKeyDown}
-            />
-            <LiaSearchSolid onClick={handleAddIngredient} className={classes.input_icon} />
-          </div>
-        </div>
-        <Text mode="p" textAlign="left" fontWeight={400} color="var(--color-dark)">
-          Selected ingredients:
-        </Text>
-        <ul className={classes.section__wrapper}>
-          {Array.from(selectedIngredients).map((ingredientId) => {
-            const ingredient = initialData.ingredientsList.find((ing) => ing.id === ingredientId);
-            return (
-              <li key={ingredientId} className={classes.section__item}>
-                {ingredient ? ingredient.name : 'Unknown Ingredient'}
+        <div className={classes.section}>
+          <Text mode="p" textAlign="left" fontSize={14} fontWeight={600} color="var(--color-dark)">
+            Selected ingredients:
+          </Text>
+          <ul>
+            {Array.from(selectedIngredients).map((ingredientId) => {
+              const ingredient = initialData.ingredientsList.find((ing) => ing.id === ingredientId);
+              return (
+                <li key={ingredientId} className={classes.section__item}>
+                  {ingredient ? ingredient.name : 'Unknown Ingredient'}
 
-                <BiSolidTrash
-                  onClick={() => handleRemoveIngredient(ingredientId)}
-                  className={classes.section__icon}
-                />
-              </li>
-            );
-          })}
-        </ul>
+                  <div
+                    className={classes.icon_wrapper}
+                    onClick={() => handleRemoveIngredient(ingredientId)}
+                  >
+                    <BiSolidTrash />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
       {errors.ingredients && (
         <Text mode="p" textAlign="left" fontSize={8} fontWeight={400}>
