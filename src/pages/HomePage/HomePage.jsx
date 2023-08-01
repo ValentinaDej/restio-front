@@ -20,7 +20,9 @@ const HomePage = () => {
             some kitchen magic happen!
           </Text>
           <div className={`${styles.buttons__container}`}>
-            <NavLink className={`${styles.link}`}>Log in</NavLink>
+            <NavLink className={`${styles.link}`} to="/login">
+              Log in
+            </NavLink>
           </div>
         </div>
       </main>

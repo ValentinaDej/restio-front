@@ -1,5 +1,5 @@
-const OrdersCostumerPage = () => {
+const OrdersCustomerPage = () => {
   return <p>Orders Costumer Page</p>;
 };
 
-export default OrdersCostumerPage;
+export default OrdersCustomerPage;
