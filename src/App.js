@@ -21,9 +21,8 @@ import AddPersonnelPage from 'pages/AddPersonnelPage/AddPersonnelPage';
 import AddDishPage from 'pages/AddDishPage/AddDishPage';
 import CustomerOrdersPage from 'pages/CustomerOrdersPage/CustomerOrdersPage';
 
-
 const App = () => {
-  const role = 'waiter';
+  const role = 'administrator';
   //useState де сбережені лого, назва ресторану поки що болванка
   const logo = logoImg;
   const restaurantName = 'Restio';
@@ -39,7 +38,7 @@ const App = () => {
         element={<SharedLayout role="customer" restaurantName={restaurantName} logo={logo} />}
       >
         <Route index element={<PublicRoute component={<MenuPage />} />} />
-        <Route path="orders" element={<PublicRoute component={<CustomerOrdersPage  />} />} />
+        <Route path="orders" element={<PublicRoute component={<CustomerOrdersPage />} />} />
         <Route path="dishes/:dishId" element={<PublicRoute component={<DishPage />} />} />
       </Route>
       {role === 'administrator' && (
@@ -94,7 +93,6 @@ const App = () => {
       )}
       <Route path="*" element={<ErrorPage />} />
     </Routes>
-
   );
 };
 
