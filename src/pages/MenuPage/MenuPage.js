@@ -30,7 +30,6 @@ const MenuPage = () => {
   return (
     <>
       <Header role="customer" />
-      <Cart />
       <main className={css.main}>
         <CategoryTabs mode="outlined" />
         <ul className={css.list}>
@@ -47,6 +46,7 @@ const MenuPage = () => {
             </li>
           ))}
         </ul>
+        <Cart />
       </main>
     </>
   );
