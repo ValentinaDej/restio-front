@@ -28,10 +28,10 @@ export const OrdersList = () => {
       payOrders({
         amount: totalPrice,
         // ordersIDs[0]
-        order_id: '64c58973860d0119306ee2e8',
+        order_id: '64c58973860d0119306ee2c3',
         type: 'online',
         // add ordersIDs
-        info: ['64c58973860d0119306ee2e8', '64c58973860d0119306ee2e9'].join(','),
+        info: ['64c58973860d0119306ee2c3', '64c58973860d0119306ee2c4'].join(','),
       })
     );
   }, [dispatch, totalPrice]);
@@ -55,16 +55,20 @@ export const OrdersList = () => {
   return (
     <>
       <div className={cls.box}>
-        <Text fontWeight={700} fontSize={20}>
+        <Text fontWeight={700} fontSize={20} classname={cls.text}>
           Total price ${totalPrice}
         </Text>
         <div className={cls.btnsBox}>
-          <Button size={'sm'}>Request bill</Button>
+          <Button size={'sm'} mode={'outlined'}>
+            Request bill
+          </Button>
           <Button size={'sm'} onClick={onClickPayAllBtn}>
             Pay online
           </Button>
         </div>
-        <Text>Or you can pay for each order separately by selecting the ones you need.</Text>
+        <Text classname={cls.text}>
+          Or you can pay for each order separately by selecting the ones you need.
+        </Text>
         <ul className={cls.list}>{orders.map(renderOrder)}</ul>
       </div>
       {isLoading.payment && (

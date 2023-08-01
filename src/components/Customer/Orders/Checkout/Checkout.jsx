@@ -58,11 +58,13 @@ export const Checkout = () => {
         >
           {isOpen ? <AiOutlineClose size={25} /> : <>Go to checkout selected &middot; ${amount}</>}
         </Button>
-        <Text color="#000" fontWeight={700}>
+        <Text classname={cls.text} fontWeight={700}>
           Total price for selected orders: ${amount}
         </Text>
         <div className={cls.btnsBox}>
-          <Button size={'sm'}>Request bill</Button>
+          <Button size={'sm'} mode={'outlined'}>
+            Request bill
+          </Button>
           <Button size={'sm'} onClick={onClickPaySelected}>
             Pay online
           </Button>

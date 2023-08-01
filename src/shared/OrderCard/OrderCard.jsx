@@ -26,18 +26,22 @@ const OrderCard = memo(({ _id, orderItems, status, isChecked, onChangePayAction 
   return (
     <div className={cls.item}>
       <div className={cls.topBlock}>
-        <Title mode={'h3'} fontSize={12} textAlign="left">
+        <Title mode={'h3'} fontSize={12} textAlign="left" classname={cls.text}>
           Order #{_id}
         </Title>
         <Status statusCurrent={status} />
       </div>
-      <Text fontWeight={700}>Dishes</Text>
+      <Text fontWeight={700} classname={cls.text}>
+        Dishes
+      </Text>
       <ul className={cls.list}>
         {orderItems.map(({ dish: { _id, picture, name, price }, quantity }) => (
           <Card key={_id} src={picture} title={name} quantity={quantity} price={price} />
         ))}
       </ul>
-      <Text fontWeight={700}>Order total: ${totalPrice}</Text>
+      <Text fontWeight={700} classname={cls.text}>
+        Order total: ${totalPrice}
+      </Text>
       <div className={cls.bottomBlock}>
         {status === 'Paid' ? (
           <div className={cls.status}>
