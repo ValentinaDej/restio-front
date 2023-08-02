@@ -7,15 +7,21 @@ import styles from './DishesForCookPage.module.scss';
 import Button from 'shared/Button/Button';
 import Status from 'shared/Status/Status';
 
-const statuses = ['Ordered', 'in progress', 'ready'];
+const statuses = ['Ordered', 'In progress', 'Ready'];
 
 const DishesForCookPage = () => {
   const [dishes, setDishes] = useState([]);
   const { restId } = useParams();
   console.log(dishes);
 
-  const handleChangeStatus = (status) => {
-    console.log(status);
+  const handleChangeStatus = async (id, status) => {
+    const result = await axios.patch(
+      `http://localhost:3001/orders/${restId}/64ca7527e72e435beb0339f0/${id}`,
+      {
+        status,
+      }
+    );
+    console.log(result);
   };
 
   useEffect(() => {
@@ -23,7 +29,7 @@ const DishesForCookPage = () => {
       const request = await axios.get(
         `http://localhost:3001/orders/${restId}/64ca7527e72e435beb0339f0`
       );
-
+      console.log(request.data.data.order);
       setDishes(request.data.data.order.orderItems);
     };
 
@@ -41,7 +47,7 @@ const DishesForCookPage = () => {
         <div className={`${styles.status__container}`}>
           {statuses.map((status) => (
             <div key={status} className={`${styles.status__card}`}>
-              <Status statusCurrent={status.toLowerCase()} className={`${styles.status__title}`} />
+              <Status statusCurrent={status} className={`${styles.status__title}`} />
               {dishes.length > 0 && (
                 <ul className={`${styles.list}`}>
                   {filterDishes(status).map(({ dish, quantity, status }) => {
@@ -53,13 +59,10 @@ const DishesForCookPage = () => {
                           title={dish.name}
                           quantity={quantity}
                         />
-                        <Status
-                          statusCurrent={status.toLowerCase()}
-                          className={`${styles.status}`}
-                        />
+                        <Status statusCurrent={status} className={`${styles.status}`} />
                         <div className={`${styles.button__container}`}>
                           <Button
-                            onClick={() => handleChangeStatus('In progress')}
+                            onClick={() => handleChangeStatus(dish._id, 'In progress')}
                             mode="primary"
                             size="sm"
                             className={`${styles.button__purple}`}
@@ -67,7 +70,7 @@ const DishesForCookPage = () => {
                             In progress
                           </Button>
                           <Button
-                            onClick={() => handleChangeStatus('Ready')}
+                            onClick={() => handleChangeStatus(dish._id, 'Ready')}
                             mode="primary"
                             size="sm"
                             className={`${styles.button__green}`}
