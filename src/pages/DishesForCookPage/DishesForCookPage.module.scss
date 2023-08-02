@@ -1,0 +1,40 @@
+.container {
+  padding: 20px;
+}
+
+.title {
+  margin-bottom: 30px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.item {
+  position: relative;
+}
+
+.button__container {
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status {
+  position: absolute;
+  right: 50px;
+  top: 10px;
+}
+
+.button__purple {
+  background-color: var(--color-purple);
+}
+
+.button__green {
+  background-color: var(--color-green);
+}

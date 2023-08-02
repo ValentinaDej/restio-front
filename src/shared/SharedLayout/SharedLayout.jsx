@@ -8,9 +8,11 @@ const SharedLayout = ({ logo, restaurantName, table = 0, role }) => {
   return (
     <>
       <Header logo={logo} restaurantName={restaurantName} table={table} role={role} />
-      <Suspense fallback={<Loader size="lg" />}>
-        <Outlet />
-      </Suspense>
+      <main>
+        <Suspense fallback={<Loader size="lg" />}>
+          <Outlet />
+        </Suspense>
+      </main>
       <Footer />
     </>
   );
