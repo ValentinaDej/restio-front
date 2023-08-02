@@ -24,8 +24,6 @@ import { useSelector } from 'react-redux';
 
 const App = () => {
   const { role } = useSelector((state) => state.auth);
-  // const role = 'administrator';
-  // console.log(role);
   //useState де сбережені лого, назва ресторану поки що болванка
   const logo = logoImg;
   const restaurantName = 'Restio';
@@ -53,13 +51,20 @@ const App = () => {
                 path="admin"
                 element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
               >
-                <Route index element={<PrivateRoute component={<EmployeePage />} />} />
+                <Route
+                  index
+                  element={
+                    <PrivateRoute
+                      component={<EmployeePage restaurant_id={`64c4fdea4055a7111092df32`} />}
+                    />
+                  }
+                />
                 <Route
                   path="dishesAdmin"
                   element={<PrivateRoute component={<DishesAdminPage />} />}
                 />
                 <Route
-                  path="addPersonnel"
+                  path="addPersonnel/:personId"
                   element={<PrivateRoute component={<AddPersonnelPage />} />}
                 />
                 <Route path="addDish" element={<PrivateRoute component={<AddDishPage />} />} />
