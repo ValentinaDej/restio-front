@@ -16,9 +16,9 @@ const EmployeeCard = ({ children, onClick, mode = 'primary', size, ...props }) =
         <BiEditAlt size={'1.2rem'} className={`${classes.edit} ${classes[`${size}`]}`}></BiEditAlt>
         {/* End of buttons block  */}
         <div className={classes.employee_text}>
-          <p className={classes.employee_name}>{props.data.name}</p>
-          <p className={classes.employee_subinfo}>{props.data.role}</p>
-          <p className={classes.employee_subinfo}>{props.data.phone}</p>
+          <p className={classes.employee_name}>name</p>
+          <p className={classes.employee_subinfo}>role</p>
+          <p className={classes.employee_subinfo}>phone</p>
         </div>
       </div>
     </>
