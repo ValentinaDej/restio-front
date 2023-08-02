@@ -7,9 +7,12 @@ import styles from './DishesForCookPage.module.scss';
 import Button from 'shared/Button/Button';
 import Status from 'shared/Status/Status';
 
+const statuses = ['Ordered', 'in progress', 'ready'];
+
 const DishesForCookPage = () => {
   const [dishes, setDishes] = useState([]);
   const { restId } = useParams();
+  console.log(dishes);
 
   const handleChangeStatus = (status) => {
     console.log(status);
@@ -26,40 +29,60 @@ const DishesForCookPage = () => {
 
     fetchDishes();
   }, [restId]);
+
+  const filterDishes = (status) => {
+    return dishes.filter((item) => item.status === status);
+  };
+
   return (
     <div className="main__container">
       <div className={`${styles.container}`}>
         <Title classname={`${styles.title}`}>Cook Dashboard</Title>
-        {dishes.length > 0 && (
-          <ul className={`${styles.list}`}>
-            {dishes.map(({ dish, quantity, status }) => {
-              return (
-                <li key={dish._id} className={`${styles.item}`}>
-                  <Card mode="cook" src={dish.picture} title={dish.name} quantity={quantity} />
-                  <Status statusCurrent={status} className={`${styles.status}`} />
-                  <div className={`${styles.button__container}`}>
-                    <Button
-                      onClick={() => handleChangeStatus('In progress')}
-                      mode="primary"
-                      size="sm"
-                      className={`${styles.button__purple}`}
-                    >
-                      In progress
-                    </Button>
-                    <Button
-                      onClick={() => handleChangeStatus('Ready')}
-                      mode="primary"
-                      size="sm"
-                      className={`${styles.button__green}`}
-                    >
-                      Ready
-                    </Button>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+        <div className={`${styles.status__container}`}>
+          {statuses.map((status) => (
+            <div key={status} className={`${styles.status__card}`}>
+              <Status statusCurrent={status.toLowerCase()} className={`${styles.status__title}`} />
+              {dishes.length > 0 && (
+                <ul className={`${styles.list}`}>
+                  {filterDishes(status).map(({ dish, quantity, status }) => {
+                    return (
+                      <li key={dish._id} className={`${styles.item}`}>
+                        <Card
+                          mode="cook"
+                          src={dish.picture}
+                          title={dish.name}
+                          quantity={quantity}
+                        />
+                        <Status
+                          statusCurrent={status.toLowerCase()}
+                          className={`${styles.status}`}
+                        />
+                        <div className={`${styles.button__container}`}>
+                          <Button
+                            onClick={() => handleChangeStatus('In progress')}
+                            mode="primary"
+                            size="sm"
+                            className={`${styles.button__purple}`}
+                          >
+                            In progress
+                          </Button>
+                          <Button
+                            onClick={() => handleChangeStatus('Ready')}
+                            mode="primary"
+                            size="sm"
+                            className={`${styles.button__green}`}
+                          >
+                            Ready
+                          </Button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

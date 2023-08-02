@@ -18,8 +18,9 @@ const routesAdmin = [
   { path: 'dishes/new/', component: <AddDishPage /> },
   { path: 'tables', component: <TablesWaiterPage /> },
   { path: 'tables/:tableId', component: <TableWaiterPage /> },
-  { path: 'tables/:tableId/menu', component: <MenuPage /> },
   { path: 'cook', component: <DishesForCookPage /> },
 ];
 
 export default routesAdmin;
+
+//   { path: 'tables/:tableId/menu', component: <MenuPage /> },
