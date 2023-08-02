@@ -9,9 +9,9 @@ const Button = memo(({ children, type, onClick, mode, size, className, ...props 
   return (
     <button
       type={type || 'button'}
-      className={`${classes.button} ${className} ${classes[`button_${buttonMode}`]} ${
-        classes[`button_${buttonSize}`]
-      }`}
+      className={`${classes.button} ${className ? className : ''} ${
+        classes[`button_${buttonMode}`]
+      } ${classes[`button_${buttonSize}`]}`}
       onClick={onClick}
       disabled={mode === 'disabled'}
       {...props}
