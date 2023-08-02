@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './EmployeePage.module.scss';
 import EmployeeCard from '../../shared/EmployeeCard/EmployeeCard';
 import axios from 'axios';
 import Title from '../../shared/Title/Title';
 import EmptyCard from '../../shared/EmptyCard/EmptyCard';
 import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 
-const EmployeePage = ({ restaurant_id }) => {
+const EmployeePage = () => {
+  const { restId } = useParams();
+
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/personnel/restaurant/${restaurant_id}`
-      );
+      const response = await axios.get(`http://localhost:3001/personnel/restaurant/${restId}`);
       console.log(response.data);
       return response.data;
     } catch (error) {

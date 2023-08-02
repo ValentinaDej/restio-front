@@ -20,13 +20,13 @@ const AddPersonnelPage = () => {
     }
   }
 
-  const { data, isLoading } = useQuery(['new_personnel', personId], () => fetchData(personId));
+  const { data, isLoading } = useQuery(['new_personnel', personId], () => fetchData(personId), {
+    enabled: !!personId,
+  });
 
   const handleSubmit = (data) => {
     console.log(data);
   };
-
-  console.log(data);
 
   if (isLoading) {
     return (
@@ -37,28 +37,40 @@ const AddPersonnelPage = () => {
   }
 
   // Check if data is null before accessing its properties
-  const firstName = data.name.substring(0, data.name.indexOf(' ')) || '';
-  const lastName = data.name.substring(data.name.indexOf(' ') + 1) || '';
+  const firstName = data?.name.substring(0, data.name.indexOf(' ')) || '';
+  const lastName = data?.name.substring(data.name.indexOf(' ') + 1) || '';
+
+  let initialData = {
+    firstName,
+    lastName,
+    email: data?.email,
+    password: '',
+    role: data?.role,
+    gender: data?.gender,
+    phone: data?.phone,
+    address: data?.address,
+    image: data?.picture,
+  };
+
+  if (!data) {
+    initialData = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      role: '',
+      gender: '',
+      phone: '',
+      address: '',
+      image: '',
+    };
+  }
 
   return (
     <div>
       <main className={styles.addPersonnelContainer}>
         <h1>Add Personnel</h1>
-        <EmployeeForm
-          onSubmit={handleSubmit}
-          size={'md'}
-          initialState={{
-            firstName,
-            lastName,
-            email: data.email,
-            password: '',
-            role: data.role,
-            gender: data.gender,
-            phone: data.phone,
-            address: data.address,
-            image: data.picture,
-          }}
-        />
+        <EmployeeForm onSubmit={handleSubmit} size={'sm'} initialState={initialData} />
       </main>
       <ReactQueryDevtools initialIsOpen />
     </div>
