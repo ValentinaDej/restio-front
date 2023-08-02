@@ -4,10 +4,12 @@ import Button from 'shared/Button/Button';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import FormInput from './FormInput';
 import classes from './LoginForm.module.scss';
-import { loginPersonnel } from 'api/auth';
 import { CHECK_PASSWORD_SCHEMA } from 'utils/constants';
 import * as yup from 'yup';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { loginUser } from 'store/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object({
   email: yup
@@ -25,6 +27,8 @@ const schema = yup.object({
 });
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -61,9 +65,15 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await loginPersonnel(data);
-      localStorage.setItem('userData', JSON.stringify(res));
-      toast.success('Login Successful');
+      const res = await dispatch(loginUser(data));
+      reset();
+      if (res.payload.role === 'admin') {
+        navigate('/admin');
+      } else if (res.payload.role === 'waiter') {
+        navigate('/waiter/tables');
+      } else if (res.payload.role === 'cook') {
+        navigate('/cook');
+      }
     } catch (error) {
       toast.error(error.message);
     }

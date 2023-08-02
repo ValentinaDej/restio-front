@@ -20,9 +20,12 @@ import DishesAdminPage from 'pages/DishesAdminPage/DishesAdminPage';
 import AddPersonnelPage from 'pages/AddPersonnelPage/AddPersonnelPage';
 import AddDishPage from 'pages/AddDishPage/AddDishPage';
 import CustomerOrdersPage from 'pages/CustomerOrdersPage/CustomerOrdersPage';
+import { useSelector } from 'react-redux';
 
 const App = () => {
-  const role = 'administrator';
+  const { role } = useSelector((state) => state.auth);
+  // const role = 'administrator';
+  // console.log(role);
   //useState де сбережені лого, назва ресторану поки що болванка
   const logo = logoImg;
   const restaurantName = 'Restio';
@@ -45,7 +48,7 @@ const App = () => {
               <Route path="orders" element={<PublicRoute component={<CustomerOrdersPage />} />} />
               <Route path="dishes/:dishId" element={<PublicRoute component={<DishPage />} />} />
             </Route>
-            {role === 'administrator' && (
+            {role === 'admin' && (
               <Route
                 path="admin"
                 element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
