@@ -1,4 +1,5 @@
 import OrderCard from 'shared/OrderCard/OrderCard';
+import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -15,7 +16,7 @@ import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
 
-export const OrdersList = () => {
+export const OrdersList = ({ isWaiter, small }) => {
   const dispatch = useDispatch();
   const orders = useSelector(getOrders);
   const selectedOrders = useSelector(getSelectedOrders);
@@ -28,10 +29,10 @@ export const OrdersList = () => {
       payOrders({
         amount: totalPrice,
         // ordersIDs[0]
-        order_id: '64c58973860d0119306ee2c3',
+        order_id: '64c58973860d0119306ee2c7',
         type: 'online',
         // add ordersIDs
-        info: ['64c58973860d0119306ee2c3', '64c58973860d0119306ee2c4'].join(','),
+        info: ['64c58973860d0119306ee2c7', '64c58973860d0119306ee2c8'].join(','),
       })
     );
   }, [dispatch, totalPrice]);
@@ -59,15 +60,14 @@ export const OrdersList = () => {
           Total price ${totalPrice}
         </Text>
         <div className={cls.btnsBox}>
-          <Button size={'sm'} mode={'outlined'}>
-            Request bill
-          </Button>
           <Button size={'sm'} onClick={onClickPayAllBtn}>
-            Pay online
+            {isWaiter ? 'Mark as paid all orders' : 'Pay online'}
           </Button>
         </div>
         <Text classname={cls.text}>
-          Or you can pay for each order separately by selecting the ones you need.
+          {isWaiter
+            ? 'Or select those orders that the customer has paid by selecting the ones you need.'
+            : 'Or you can pay for each order separately by selecting the ones you need.'}
         </Text>
         <ul className={cls.list}>{orders.map(renderOrder)}</ul>
       </div>
@@ -78,4 +78,9 @@ export const OrdersList = () => {
       )}
     </>
   );
+};
+
+OrdersList.propTypes = {
+  isWaiter: PropTypes.bool,
+  small: PropTypes.bool,
 };

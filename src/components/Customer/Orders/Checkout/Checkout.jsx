@@ -40,7 +40,7 @@ export const Checkout = () => {
   }, [amount, dispatch]);
 
   const boxMods = {
-    [cls.isOpen]: isOpen,
+    [cls.isOpen]: isOpen && amount !== 0,
   };
   const checkoutBtnMods = {
     [cls.isShown]: amount !== 0,
@@ -62,10 +62,7 @@ export const Checkout = () => {
           Total price for selected orders: ${amount}
         </Text>
         <div className={cls.btnsBox}>
-          <Button size={'sm'} mode={'outlined'}>
-            Request bill
-          </Button>
-          <Button size={'sm'} onClick={onClickPaySelected}>
+          <Button size={'sm'} onClick={onClickPaySelected} disabled={amount === 0}>
             Pay online
           </Button>
         </div>

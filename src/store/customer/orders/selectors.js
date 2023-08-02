@@ -8,7 +8,11 @@ export const getSelectedOrders = (state) => state.customerOrders.selectedOrders;
 
 export const getTotalPrice = createSelector([getOrders], (orders) => {
   const totalPrice = orders.reduce((acc, order) => {
-    return acc + order.orderItems.reduce((acc, item) => acc + item.dish.price * item.quantity, 0);
+    if (order.status !== 'Paid') {
+      return acc + order.orderItems.reduce((acc, item) => acc + item.dish.price * item.quantity, 0);
+    } else {
+      return acc;
+    }
   }, 0);
 
   return Math.round(totalPrice * 100) / 100;

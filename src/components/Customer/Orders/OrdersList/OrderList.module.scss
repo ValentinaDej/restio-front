@@ -15,11 +15,14 @@
   display: grid;
   justify-content: center;
   grid-template-columns: auto;
-  gap: 10px;
+  gap: 18px;
 
-  // @media screen and (min-width: var(--md-mobile)) {
-  //     grid-template-columns: auto auto;
-  //   }
+  @media screen and (min-width: 767.98px) {
+    grid-template-columns: 350px 350px;
+  }
+  @media screen and (min-width: 1200px) {
+    grid-template-columns: 350px 350px 350px;
+  }
 }
 
 .layout {
