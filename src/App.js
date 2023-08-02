@@ -11,9 +11,10 @@ import routesAdmin from 'routes/routesAdmin';
 import routesCook from 'routes/routesCook';
 import routesWaiter from 'routes/routesWaiter';
 import routesCustomer from 'routes/routesCustomer';
+import { useSelector } from 'react-redux';
 
 const App = () => {
-  const role = 'administrator';
+  const { role } = useSelector((state) => state.auth);
   //useState де сбережені лого, назва ресторану поки що болванка
   const logo = logoImg;
   const restaurantName = 'Restio';
@@ -29,12 +30,11 @@ const App = () => {
           path=":restId/:tableId"
           element={<SharedLayout role="customer" restaurantName={restaurantName} logo={logo} />}
         >
-
           {routesCustomer.map(({ path, component }) => (
             <Route key={path} path={path} element={<PublicRoute component={component} />} />
           ))}
         </Route>
-        {role === 'administrator' && (
+        {role === 'admin' && (
           <Route
             path="admin/:restId"
             element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}

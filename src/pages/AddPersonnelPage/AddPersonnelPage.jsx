@@ -25,7 +25,7 @@ const AddPersonnelPage = () => {
     }
 
     fetchData();
-  }, []);
+  }, [personId]);
 
   // Check if data is null before accessing its properties
   const firstName = data?.name?.substring(0, data.name.indexOf(' ')) || '';

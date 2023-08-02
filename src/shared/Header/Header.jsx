@@ -39,6 +39,6 @@ Header.propTypes = {
   logo: PropTypes.string,
   restaurantName: PropTypes.string,
   table: PropTypes.number,
-  role: PropTypes.oneOf(['customer', 'waiter', 'cook', 'administrator']),
+  role: PropTypes.oneOf(['customer', 'waiter', 'cook', 'admin']),
   onClick: PropTypes.func,
 };

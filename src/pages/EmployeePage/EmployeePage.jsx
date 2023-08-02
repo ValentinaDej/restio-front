@@ -27,7 +27,7 @@ const EmployeePage = ({ restaurant_id }) => {
       }
     };
     fetchData(); // Call the data fetching function
-  }, []); // Empty dependency array ensures this effect runs only once, on component mount
+  }, [restaurant_id]); // Empty dependency array ensures this effect runs only once, on component mount
 
   return (
     <>

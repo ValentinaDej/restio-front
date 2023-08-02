@@ -1,5 +1,11 @@
+import LoginForm from 'shared/LoginForm/LoginForm';
+
 const LoginPage = () => {
-  return <p>Login Page</p>;
+  return (
+    <main>
+      <LoginForm />
+    </main>
+  );
 };
 
 export default LoginPage;
