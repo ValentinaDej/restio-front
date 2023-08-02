@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import Input from '../Input/Input';
 import FileUploader from '../FileUploader/FileUploader';
 import toast from 'react-hot-toast';
+import { CHECK_PASSWORD_SCHEMA } from 'utils/constants';
 
 const validationSchema = Yup.object({
   firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required field'),
@@ -17,7 +18,7 @@ const validationSchema = Yup.object({
     .max(30, 'Too Long!')
     .required('Required field')
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,30}$/,
+      CHECK_PASSWORD_SCHEMA,
       'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
     ),
   gender: Yup.string().required('Required field'),
