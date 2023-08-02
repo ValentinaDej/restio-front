@@ -12,7 +12,7 @@ const DishesForCookPage = lazy(() => import('pages/DishesForCookPage/DishesForCo
 const routesAdmin = [
   { path: '', component: <EmployeePage /> },
   { path: 'dishes', component: <DishesAdminPage /> },
-  { path: 'personnel/new/:personnelId', component: <AddPersonnelPage /> },
+  { path: 'personnel/new/:personId', component: <AddPersonnelPage /> },
   { path: 'personnel/new', component: <AddPersonnelPage /> },
   { path: 'dishes/new/:dishesId', component: <AddDishPage /> },
   { path: 'dishes/new/', component: <AddDishPage /> },
