@@ -13,10 +13,10 @@ import { memo } from 'react';
 import { classNames } from 'helpers/classNames';
 import { IconButton } from 'shared/IconButton/IconButton';
 
-const OrderCard = memo(({ _id, orderItems, status, isChecked, onChange, small }) => {
-  const [isCheckedPay, setIsCheckedPay] = useState(isChecked || false);
-  const [isSmall, setIsSmall] = useState(small);
+const OrderCard = memo(({ _id, orderItems, status, сhecked, onChange, small, isWaiter }) => {
   const cardRef = useRef(null);
+  const [isChecked, setIsChecked] = useState(сhecked || false);
+  const [isSmall, setIsSmall] = useState(small);
   const totalPrice = orderItems.reduce((acc, { dish, quantity }) => {
     const price = acc + dish.price * quantity;
     return Math.round(price * 100) / 100;
@@ -28,10 +28,10 @@ const OrderCard = memo(({ _id, orderItems, status, isChecked, onChange, small })
     }
   }, [isSmall, small]);
 
-  const onChangePay = useCallback(() => {
-    setIsCheckedPay((prev) => !prev);
+  const onChangeСheck = useCallback(() => {
+    setIsChecked((prev) => !prev);
     if (onChange) {
-      onChange({ _id, totalPrice });
+      onChange(_id, totalPrice);
     }
   }, [_id, onChange, totalPrice]);
 
@@ -62,16 +62,12 @@ const OrderCard = memo(({ _id, orderItems, status, isChecked, onChange, small })
         Order total: ${totalPrice}
       </Text>
       <div className={classNames(cls.bottomBlock, { [cls.isSmall]: isSmall }, [])}>
-        {status === 'Paid' ? (
-          <div className={classNames(cls.centered, { [cls.isSmall]: isSmall }, [])}>
-            <Status statusCurrent={'Success'} />
-          </div>
-        ) : (
+        {status !== 'Paid' && (
           <CheckBox
             label={'Select order'}
             className={classNames(cls.centered, { [cls.isSmall]: isSmall }, [])}
-            checked={isCheckedPay}
-            onChange={onChangePay}
+            checked={isChecked}
+            onChange={onChangeСheck}
             size={25}
           />
         )}
@@ -96,6 +92,7 @@ OrderCard.propTypes = {
   isChecked: PropTypes.bool,
   onChange: PropTypes.func,
   small: PropTypes.bool,
+  isWaiter: PropTypes.bool,
 };
 
 export default OrderCard;

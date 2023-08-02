@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { instance } from 'api';
 import { useParams } from 'react-router-dom';
 
 export const getOrdersByTableId = createAsyncThunk(
@@ -8,7 +8,7 @@ export const getOrdersByTableId = createAsyncThunk(
     try {
       const { tableId } = useParams();
 
-      const response = await axios.get(``);
+      const response = await instance.get(``);
       return response.data.orders;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.message);
@@ -22,7 +22,7 @@ export const payOrders = createAsyncThunk(
     try {
       const {
         data: { paymentInfo },
-      } = await axios.post('https://et-back-23.vercel.app/transactions', ordersData);
+      } = await instance.post('https://et-back-23.vercel.app/transactions', ordersData);
 
       console.log(paymentInfo);
       return paymentInfo;

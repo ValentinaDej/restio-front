@@ -3,6 +3,10 @@
   gap: 15px;
   padding-top: 40px;
   padding-bottom: 70px;
+
+  &.isWaiter {
+    padding-bottom: 30px;
+  }
 }
 
 .btnsBox {

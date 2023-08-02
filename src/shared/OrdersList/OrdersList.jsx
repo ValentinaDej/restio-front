@@ -2,26 +2,31 @@ import OrderCard from 'shared/OrderCard/OrderCard';
 import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getIsLoading,
-  getOrders,
-  getOrdersIDs,
-  getSelectedOrders,
-  getTotalPrice,
-} from 'store/customer/orders/selectors';
-import { customerOrdersActions } from 'store/customer/orders/ordersSlice';
-import { useCallback } from 'react';
+import { getIsLoading } from 'store/customer/orders/selectors';
+import { useCallback, useState } from 'react';
 import Button from 'shared/Button/Button';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
+import { classNames } from 'helpers/classNames';
 
-export const OrdersList = ({ isWaiter, small }) => {
+export const OrdersList = ({ isWaiter, list, onChangeSelected, selectedTotal, selectedOrders }) => {
+  const [orders] = useState(list);
+  const [ordersIDs] = useState(orders.map((order) => order._id));
+  const [totalPrice] = useState(
+    orders.reduce((acc, order) => {
+      if (order.status !== 'Paid') {
+        const orderPrice = order.orderItems.reduce(
+          (acc, item) => acc + item.dish.price * item.quantity,
+          0
+        );
+        return acc + orderPrice;
+      } else {
+        return acc;
+      }
+    }, 0)
+  );
   const dispatch = useDispatch();
-  const orders = useSelector(getOrders);
-  const selectedOrders = useSelector(getSelectedOrders);
-  const ordersIDs = useSelector(getOrdersIDs);
-  const totalPrice = useSelector(getTotalPrice);
   const isLoading = useSelector(getIsLoading);
 
   const onClickPayAllBtn = useCallback(() => {
@@ -38,24 +43,39 @@ export const OrdersList = ({ isWaiter, small }) => {
   }, [dispatch, totalPrice]);
 
   const selectPayOrder = useCallback(
-    (id) => {
-      dispatch(customerOrdersActions.selectOrders(id));
+    (id, totalPrice) => {
+      const index = selectedOrders.indexOf(id);
+      const fixedPrice = Math.round(totalPrice * 100) / 100;
+
+      let updatedSelectedOrders;
+      let updatedTotal;
+
+      if (index !== -1) {
+        updatedSelectedOrders = selectedOrders.filter((orderId) => orderId !== id);
+        updatedTotal = selectedTotal - fixedPrice;
+      } else {
+        updatedSelectedOrders = [...selectedOrders, id];
+        updatedTotal = selectedTotal + fixedPrice;
+      }
+
+      onChangeSelected(updatedTotal, updatedSelectedOrders);
     },
-    [dispatch]
+    [onChangeSelected, selectedOrders, selectedTotal]
   );
 
   const renderOrder = (order) => (
     <OrderCard
       key={order._id}
       {...order}
-      isChecked={selectedOrders?.includes(order._id)}
-      onChangePayAction={selectPayOrder}
+      onChange={selectPayOrder}
+      small={!isWaiter}
+      isWaiter={isWaiter}
     />
   );
 
   return (
     <>
-      <div className={cls.box}>
+      <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
         <Text fontWeight={700} fontSize={20} classname={cls.text}>
           Total price ${totalPrice}
         </Text>
@@ -82,5 +102,4 @@ export const OrdersList = ({ isWaiter, small }) => {
 
 OrdersList.propTypes = {
   isWaiter: PropTypes.bool,
-  small: PropTypes.bool,
 };
