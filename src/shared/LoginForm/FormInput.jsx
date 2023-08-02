@@ -1,15 +1,10 @@
 import React from 'react';
 import classes from './LoginForm.module.scss';
 
-const FormInput = ({ placeholder, name, type, autoComplete, validationRules, register, error }) => (
+const FormInput = ({ placeholder, name, type, autoComplete, register, error }) => (
   <>
-    <input
-      {...register(name, validationRules)}
-      type={type}
-      placeholder={placeholder}
-      autoComplete={autoComplete}
-    />
-    {error && <p className={classes.form__error}>{error.message}</p>}
+    <input {...register(name)} type={type} placeholder={placeholder} autoComplete={autoComplete} />
+    {error && <p className={classes.form__error}>{error}</p>}
   </>
 );
 
