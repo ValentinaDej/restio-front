@@ -68,11 +68,11 @@ const LoginForm = () => {
       const res = await dispatch(loginUser(data));
       reset();
       if (res.payload.role === 'admin') {
-        navigate('/admin');
+        navigate(`/admin/${res.payload.restaurantId}`);
       } else if (res.payload.role === 'waiter') {
-        navigate('/waiter/tables');
+        navigate(`/waiter/tables/${res.payload.restaurantId}`);
       } else if (res.payload.role === 'cook') {
-        navigate('/cook');
+        navigate(`/cook/${res.payload.restaurantId}`);
       }
     } catch (error) {
       toast.error(error.message);

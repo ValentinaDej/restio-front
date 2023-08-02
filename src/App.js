@@ -1,25 +1,16 @@
 import './styles.scss';
 import { Toaster } from 'react-hot-toast';
-
 import HomePage from 'pages/HomePage/HomePage';
 import LoginPage from 'pages/LoginPage/LoginPage';
-import { PrivateRoute, PublicRoute } from 'services/routes';
-import SharedLayout from 'shared/SharedLayout/SharedLayout';
+import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
 import logoImg from './img/RESTio.svg';
 import { Route, Routes } from 'react-router-dom';
-import MenuPage from 'pages/MenuPage/MenuPage';
-import DishPage from 'pages/DishPage/DishPage';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
-import TablesWaiterPage from 'pages/TablesWaiterPage/TablesWaiterPage';
-import TableWaiterPage from 'pages/TableWaiterPage/TableWaiterPage';
-import MenuWaiterPage from 'pages/MenuWaiterPage/MenuWaiterPage';
-import PrepareBillWaiterPage from 'pages/PrepareBillWaiterPage/PrepareBillWaiterPage';
-import DishesForCookPage from 'pages/DishesForCookPage/DishesForCookPage';
-import EmployeePage from 'pages/EmployeePage/EmployeePage';
-import DishesAdminPage from 'pages/DishesAdminPage/DishesAdminPage';
-import AddPersonnelPage from 'pages/AddPersonnelPage/AddPersonnelPage';
-import AddDishPage from 'pages/AddDishPage/AddDishPage';
-import CustomerOrdersPage from 'pages/CustomerOrdersPage/CustomerOrdersPage';
+import SharedLayout from 'shared/SharedLayout/SharedLayout';
+import routesAdmin from 'routes/routesAdmin';
+import routesCook from 'routes/routesCook';
+import routesWaiter from 'routes/routesWaiter';
+import routesCustomer from 'routes/routesCustomer';
 import { useSelector } from 'react-redux';
 
 const App = () => {
@@ -28,92 +19,57 @@ const App = () => {
   const logo = logoImg;
   const restaurantName = 'Restio';
   //useEffect с запитом - повертає дані лого, назву ресторану
-
+  //restId =`64c4fdea4055a7111092df32`
   return (
-    <>
-      <Toaster />
-      <main>
-        <div className="main__container">
-          <Routes>
-            <Route path="/" element={<PublicRoute component={<HomePage />} />} />
-            <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
-            <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
+    <main>
+      <div className="main__container">
+        <Routes>
+          <Route path="/" element={<PublicRoute component={<HomePage />} />} />
+          <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
+          <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
+          <Route
+            path=":restId/:tableId"
+            element={<SharedLayout role="customer" restaurantName={restaurantName} logo={logo} />}
+          >
+            {routesCustomer.map(({ path, component }) => (
+              <Route key={path} path={path} element={<PublicRoute component={component} />} />
+            ))}
+          </Route>
+          {role === 'admin' && (
             <Route
-              path="customer/:restId/:tableId"
-              element={<SharedLayout role="customer" restaurantName={restaurantName} logo={logo} />}
+              path="admin/:restId"
+              element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
             >
-              <Route index element={<PublicRoute component={<MenuPage />} />} />
-              <Route path="orders" element={<PublicRoute component={<CustomerOrdersPage />} />} />
-              <Route path="dishes/:dishId" element={<PublicRoute component={<DishPage />} />} />
+              {routesAdmin.map(({ path, component }) => (
+                <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+              ))}
             </Route>
-            {role === 'admin' && (
-              <Route
-                path="admin"
-                element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
-              >
-                <Route
-                  index
-                  element={
-                    <PrivateRoute
-                      component={<EmployeePage restaurant_id={`64c4fdea4055a7111092df32`} />}
-                    />
-                  }
-                />
-                <Route
-                  path="dishesAdmin"
-                  element={<PrivateRoute component={<DishesAdminPage />} />}
-                />
-                <Route
-                  path="addPersonnel/:personId"
-                  element={<PrivateRoute component={<AddPersonnelPage />} />}
-                />
-                <Route path="addDish" element={<PrivateRoute component={<AddDishPage />} />} />
-                <Route path="tables" element={<PrivateRoute component={<TablesWaiterPage />} />} />
-                <Route
-                  path="tables/:tableId"
-                  element={<PrivateRoute component={<TableWaiterPage />} />}
-                />
-                <Route
-                  path="tables/:tableId/menuWaiter"
-                  element={<PrivateRoute component={<MenuWaiterPage />} />}
-                />
-                <Route
-                  path="tables/:tableId/prepareBill"
-                  element={<PrivateRoute component={<PrepareBillWaiterPage />} />}
-                />
-                <Route path="cook" element={<PrivateRoute component={<DishesForCookPage />} />} />
-              </Route>
-            )}
-            {role === 'waiter' && (
-              <Route
-                path="waiter/tables"
-                element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
-              >
-                <Route index element={<PrivateRoute component={<TablesWaiterPage />} />} />
-                <Route path=":tableId" element={<PrivateRoute component={<TableWaiterPage />} />} />
-                <Route
-                  path=":tableId/menuWaiter"
-                  element={<PrivateRoute component={<MenuWaiterPage />} />}
-                />
-                <Route
-                  path=":tableId/prepareBill"
-                  element={<PrivateRoute component={<PrepareBillWaiterPage />} />}
-                />
-              </Route>
-            )}
-            {role === 'cook' && (
-              <Route
-                path="cook"
-                element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
-              >
-                <Route path="dishes" element={<PrivateRoute component={<DishesForCookPage />} />} />
-              </Route>
-            )}
-            <Route path="*" element={<ErrorPage />} />
-          </Routes>
-        </div>
-      </main>
-    </>
+          )}
+          {role === 'waiter' && (
+            <Route
+              path="waiter/tables/:restId"
+              element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
+            >
+              {routesWaiter.map(({ path, component }) => (
+                <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+              ))}
+            </Route>
+          )}
+          {role === 'cook' && (
+            <Route
+              path="cook/:restId"
+              element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
+            >
+              {routesCook.map(({ path, component }) => (
+                <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+              ))}
+            </Route>
+          )}
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+        <Toaster />
+      </div>
+    </main>
   );
 };
 
