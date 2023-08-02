@@ -1,0 +1,31 @@
+// PersonnelPage.module.scss
+.personnel-container {
+  //background-color: #FFD580; /* light-orange background color */
+  padding: 1rem 100px;
+  margin: 3rem;
+}
+
+.menu_wrapper {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Default card width with minimum 250px */
+  gap: 20px; /* Default gap between cards */
+  width: 100%;
+  margin-top: 3rem;
+  justify-content: space-around;
+  padding: 1.5rem 0;
+
+  &.outlined {
+    padding: 1.5rem 0;
+    border: solid gray 1px;
+    //border: 1px solid rgba(8, 8, 8, 0.123);
+    border-radius: 50px;
+  }
+}
+
+.card_wrapper {
+  flex-grow: 1;
+  margin: 40px 0;
+}

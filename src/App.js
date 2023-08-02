@@ -46,9 +46,19 @@ const App = () => {
           path="admin"
           element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
         >
-          <Route index element={<PrivateRoute component={<EmployeePage />} />} />
+          <Route
+            index
+            element={
+              <PrivateRoute
+                component={<EmployeePage restaurant_id={`64c4fdea4055a7111092df32`} />}
+              />
+            }
+          />
           <Route path="dishesAdmin" element={<PrivateRoute component={<DishesAdminPage />} />} />
-          <Route path="addPersonnel" element={<PrivateRoute component={<AddPersonnelPage />} />} />
+          <Route
+            path="addPersonnel/:personId"
+            element={<PrivateRoute component={<AddPersonnelPage />} />}
+          />
           <Route path="addDish" element={<PrivateRoute component={<AddDishPage />} />} />
           <Route path="tables" element={<PrivateRoute component={<TablesWaiterPage />} />} />
           <Route
