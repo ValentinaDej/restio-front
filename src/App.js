@@ -26,7 +26,7 @@ const App = () => {
         <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
         <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
         <Route
-          path="customer/:restId/:tableId"
+          path=":restId/:tableId"
           element={<SharedLayout role="customer" restaurantName={restaurantName} logo={logo} />}
         >
           {routesCustomer.map(({ path, component }) => (
