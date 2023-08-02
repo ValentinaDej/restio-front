@@ -29,6 +29,7 @@ const App = () => {
           path="customer/:restId/:tableId"
           element={<SharedLayout role="customer" restaurantName={restaurantName} logo={logo} />}
         >
+
           {routesCustomer.map(({ path, component }) => (
             <Route key={path} path={path} element={<PublicRoute component={component} />} />
           ))}

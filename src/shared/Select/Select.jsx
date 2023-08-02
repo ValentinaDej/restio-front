@@ -18,9 +18,7 @@ const Select = ({ children, onChange, name, id, label, size, length, register, .
         {...register(label.toLowerCase())}
         {...props}
       >
-        <option disabled={true} value="default">
-          Select an option
-        </option>
+        <option disabled={true}>Select an option</option>
         {children}
       </select>
     </div>
