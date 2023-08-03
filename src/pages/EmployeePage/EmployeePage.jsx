@@ -19,14 +19,13 @@ const EmployeePage = () => {
       console.error('Error fetching data:', error);
     }
   };
-
   const { data } = useQuery('personnel', fetchData);
-
   return (
     <>
       <main>
         <div className={styles['personnel-container']}>
-          <Title>Personnel</Title>
+          <Title textAlign={'left'}>Personnel</Title>
+          <hr className={styles.divider} />
           <ul className={`${styles.menu_wrapper}`}>
             <li key={`empty`} className={styles.card_wrapper}>
               <EmptyCard text={`employee`} mode={`outlined`}></EmptyCard>

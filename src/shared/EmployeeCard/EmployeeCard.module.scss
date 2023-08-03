@@ -4,9 +4,8 @@
     width: 100%;
     // flex: 0 0 1;
     transition: 1s;
-    margin-bottom: 2rem;
-
-    margin-top: -85px;
+    //margin-bottom: 2rem;
+    //margin-top: -85px;
     text-align: center;
     &.outlined {
       border: dashed 1px rgb(212, 211, 211);
@@ -80,7 +79,7 @@
     position: relative;
     width: 100%;
     transition: 1s;
-    margin-bottom: 2rem;
+    //margin-bottom: 2rem;
   }
 
   .trash {
@@ -105,7 +104,7 @@
     position: relative;
     width: 100%;
     transition: 1s;
-    margin-bottom: 2rem;
+    //margin-bottom: 2rem;
   }
 
   .card:hover .employee_text {
