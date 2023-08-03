@@ -84,11 +84,11 @@ export const loginPersonnel = async (body) => {
       if (status === 400) {
         throw new Error('Bad request. Please provide valid credentials.');
       } else if (status === 401) {
-        throw new Error('Unauthorized. Please check your email and password.');
+        throw new Error('Unauthorized. Please check your credentials.');
       } else if (status === 403) {
-        throw new Error('Your password is incorrect. Please check your credentials.');
+        throw new Error('Incorrect credentials. Please check your data.');
       } else if (status === 404) {
-        throw new Error('This email does not exist. Please check your credentials.');
+        throw new Error('Incorrect credentials. Please check your data.');
       } else if (status === 500) {
         throw new Error('Internal server error. Please try again later.');
       } else {
