@@ -5,11 +5,11 @@ import axios from 'axios';
 import Title from '../../shared/Title/Title';
 import EmptyCard from '../../shared/EmptyCard/EmptyCard';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EmployeePage = () => {
   const { restId } = useParams();
-
+  const navigate = useNavigate();
   const fetchData = async () => {
     try {
       const response = await axios.get(`http://localhost:3001/personnel/restaurant/${restId}`);
@@ -19,6 +19,10 @@ const EmployeePage = () => {
       console.error('Error fetching data:', error);
     }
   };
+  const navigateToAddEmpl = () => {
+    navigate(`/admin/${restId}/personnel/new`);
+  };
+
   const { data } = useQuery('personnel', fetchData);
   return (
     <>
@@ -28,7 +32,11 @@ const EmployeePage = () => {
           <hr className={styles.divider} />
           <ul className={`${styles.menu_wrapper}`}>
             <li key={`empty`} className={styles.card_wrapper}>
-              <EmptyCard text={`employee`} mode={`outlined`}></EmptyCard>
+              <EmptyCard
+                text={`employee`}
+                mode={`outlined`}
+                onClick={navigateToAddEmpl}
+              ></EmptyCard>
             </li>
             {data?.map((item) => {
               return (
