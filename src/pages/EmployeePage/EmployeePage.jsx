@@ -6,14 +6,14 @@ import Title from '../../shared/Title/Title';
 import EmptyCard from '../../shared/EmptyCard/EmptyCard';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import { BASE_URL } from 'api';
 
 const EmployeePage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/personnel/restaurant/${restId}`);
-      console.log(response.data);
+      const response = await axios.get(`${BASE_URL}/personnel/restaurant/${restId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -24,6 +24,7 @@ const EmployeePage = () => {
   };
 
   const { data } = useQuery('personnel', fetchData);
+
   return (
     <>
       <main>
@@ -40,7 +41,7 @@ const EmployeePage = () => {
             </li>
             {data?.map((item) => {
               return (
-                <li key={item.id} className={styles.card_wrapper}>
+                <li key={item._id} className={styles.card_wrapper}>
                   <EmployeeCard data={item} mode={'outlined'}></EmployeeCard>
                 </li>
               );
