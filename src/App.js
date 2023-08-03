@@ -15,6 +15,10 @@ import { useSelector } from 'react-redux';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
+const AdminPage = () => <div>Admin Page</div>;
+const WaiterPage = () => <div>Waiter Page</div>;
+const CookPage = () => <div>Cook Page</div>;
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -27,41 +31,50 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
+        {/* Public routes accessible to everyone */}
         <Route path="/" element={<PublicRoute component={<HomePage />} />} />
         <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
         <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
+
+        {/* Routes for customers (no role) */}
         <Route
           path=":restId/:tableId"
-          element={<SharedLayout role="customer" restaurantName={restaurantName} logo={logo} />}
+          element={<SharedLayout restaurantName={restaurantName} logo={logo} />}
         >
           {routesCustomer.map(({ path, component }) => (
             <Route key={path} path={path} element={<PublicRoute component={component} />} />
           ))}
         </Route>
+
+        {/* Routes for admin */}
         {role === 'admin' && (
           <Route
             path="admin/:restId"
-            element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
+            element={<SharedLayout restaurantName={restaurantName} logo={logo} />}
           >
             {routesAdmin.map(({ path, component }) => (
               <Route key={path} path={path} element={<PrivateRoute component={component} />} />
             ))}
           </Route>
         )}
+
+        {/* Routes for waiter */}
         {role === 'waiter' && (
           <Route
             path="waiter/tables/:restId"
-            element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
+            element={<SharedLayout restaurantName={restaurantName} logo={logo} />}
           >
             {routesWaiter.map(({ path, component }) => (
               <Route key={path} path={path} element={<PrivateRoute component={component} />} />
             ))}
           </Route>
         )}
+
+        {/* Routes for cook */}
         {role === 'cook' && (
           <Route
             path="cook/:restId"
-            element={<SharedLayout role={role} restaurantName={restaurantName} logo={logo} />}
+            element={<SharedLayout restaurantName={restaurantName} logo={logo} />}
           >
             {routesCook.map(({ path, component }) => (
               <Route key={path} path={path} element={<PrivateRoute component={component} />} />
