@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
 
-const testdata = ['64c58973860d0119306ee2b1', '64c58973860d0119306ee2b2'];
 export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
@@ -23,18 +22,18 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
     setIsOpen((prev) => !prev);
   }, []);
 
+  const frontLink = location.href;
   const onClickPaySelected = useCallback(() => {
     dispatch(
       payOrders({
         amount,
-        // order_id[0]
-        order_id: '64c58973860d0119306ee2b1',
+        order_id: selectedOrders[0],
         type: 'online',
-        // add selectedOrders
-        info: testdata.join(','),
+        info: selectedOrders.join(','),
+        frontLink,
       })
     );
-  }, [amount, dispatch]);
+  }, [amount, dispatch, frontLink, selectedOrders]);
 
   const boxMods = {
     [cls.isOpen]: isOpen && amount !== 0,

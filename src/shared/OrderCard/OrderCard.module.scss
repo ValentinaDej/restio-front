@@ -1,11 +1,20 @@
 .item {
   position: relative;
+  height: 100%;
   padding: 15px 15px 25px 15px;
   border-radius: 10px;
   border: var(--border-primary);
   width: 100%;
   max-width: 400px;
   min-width: 280px;
+  transition:
+    height 0.2s ease,
+    box-shadow 0.3s ease;
+
+  &.isSmall {
+    height: 115px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .topBlock {
@@ -23,7 +32,7 @@
   gap: 10px;
   margin-top: 20px;
   height: 300px;
-  transition: height 0.3s ease;
+  transition: height 0.2s ease;
 
   &.isSmall {
     height: 0;

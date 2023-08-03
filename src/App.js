@@ -12,6 +12,10 @@ import routesCook from 'routes/routesCook';
 import routesWaiter from 'routes/routesWaiter';
 import routesCustomer from 'routes/routesCustomer';
 import { useSelector } from 'react-redux';
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
+const queryClient = new QueryClient();
 
 const App = () => {
   const { role } = useSelector((state) => state.auth);
@@ -21,7 +25,7 @@ const App = () => {
   //useEffect с запитом - повертає дані лого, назву ресторану
   //restId =`64c4fdea4055a7111092df32`
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path="/" element={<PublicRoute component={<HomePage />} />} />
         <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
@@ -67,7 +71,8 @@ const App = () => {
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Toaster />
-    </>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 };
 

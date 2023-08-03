@@ -10,9 +10,16 @@ import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
 import { classNames } from 'helpers/classNames';
 
-export const OrdersList = ({ isWaiter, list, onChangeSelected, selectedTotal, selectedOrders }) => {
-  const [orders] = useState(list);
-  const [ordersIDs] = useState(orders.map((order) => order._id));
+export const OrdersList = ({
+  isWaiter,
+  orders,
+  onChangeSelected,
+  selectedTotal,
+  selectedOrders,
+}) => {
+  const [ordersIDs] = useState(
+    orders.filter((order) => order.status !== 'Paid').map((order) => order._id)
+  );
   const [totalPrice] = useState(
     orders.reduce((acc, order) => {
       if (order.status !== 'Paid') {
@@ -20,12 +27,16 @@ export const OrdersList = ({ isWaiter, list, onChangeSelected, selectedTotal, se
           (acc, item) => acc + item.dish.price * item.quantity,
           0
         );
+
         return acc + orderPrice;
       } else {
         return acc;
       }
     }, 0)
   );
+
+  const frontLink = location.href;
+
   const dispatch = useDispatch();
   const isLoading = useSelector(getIsLoading);
 
@@ -33,16 +44,15 @@ export const OrdersList = ({ isWaiter, list, onChangeSelected, selectedTotal, se
     dispatch(
       payOrders({
         amount: totalPrice,
-        // ordersIDs[0]
-        order_id: '64c58973860d0119306ee2c7',
+        order_id: ordersIDs[0],
         type: 'online',
-        // add ordersIDs
-        info: ['64c58973860d0119306ee2c7', '64c58973860d0119306ee2c8'].join(','),
+        info: ordersIDs.join(','),
+        frontLink,
       })
     );
-  }, [dispatch, totalPrice]);
+  }, [dispatch, frontLink, ordersIDs, totalPrice]);
 
-  const selectPayOrder = useCallback(
+  const selectOrder = useCallback(
     (id, totalPrice) => {
       const index = selectedOrders.indexOf(id);
       const fixedPrice = Math.round(totalPrice * 100) / 100;
@@ -67,7 +77,7 @@ export const OrdersList = ({ isWaiter, list, onChangeSelected, selectedTotal, se
     <OrderCard
       key={order._id}
       {...order}
-      onChange={selectPayOrder}
+      onChange={selectOrder}
       small={!isWaiter}
       isWaiter={isWaiter}
     />
@@ -77,10 +87,14 @@ export const OrdersList = ({ isWaiter, list, onChangeSelected, selectedTotal, se
     <>
       <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
         <Text fontWeight={700} fontSize={20} classname={cls.text}>
-          Total price ${totalPrice}
+          {!totalPrice
+            ? isWaiter
+              ? 'All orders paid, mark table as free when customers leave.'
+              : 'All orders are paid, thank you for visiting our restaurant.'
+            : `Total price $${totalPrice}`}
         </Text>
         <div className={cls.btnsBox}>
-          <Button size={'sm'} onClick={onClickPayAllBtn}>
+          <Button size={'sm'} onClick={onClickPayAllBtn} mode={!totalPrice && 'disabled'}>
             {isWaiter ? 'Mark as paid all orders' : 'Pay online'}
           </Button>
         </div>

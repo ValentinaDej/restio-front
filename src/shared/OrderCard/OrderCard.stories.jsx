@@ -48,6 +48,15 @@ export const Default = {
   },
 };
 
+export const Small = {
+  args: {
+    _id: '2',
+    orderItems: [orderItem, orderItem, orderItem, orderItem, orderItem, orderItem, orderItem],
+    status: 'Open',
+    small: true,
+  },
+};
+
 export const Success = {
   args: {
     _id: '2',

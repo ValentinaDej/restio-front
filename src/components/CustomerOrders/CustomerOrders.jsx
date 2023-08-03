@@ -1,6 +1,10 @@
+import { useGetOrdersByTableId } from 'api/service';
 import { useState } from 'react';
 import { Checkout } from 'shared/Checkout/Checkout';
+import Loader from 'shared/Loader/Loader';
 import { OrdersList } from 'shared/OrdersList/OrdersList';
+import OrderListSkeleton from 'shared/Skeletons/OrderSkeleton/OrderSkeleton';
+import OrderSkeleton from 'shared/Skeletons/OrderSkeleton/OrderSkeleton';
 const mockOrders = [
   {
     _id: '64c2bdc95c1b58e890309962',
@@ -259,14 +263,22 @@ export const CustomerOrders = () => {
     setSelectedTotal(price);
     setSelectedOrders(selectedOrders);
   };
+
+  const { data: { data } = {}, isError, isLoading, isRefetching } = useGetOrdersByTableId();
+
   return (
     <>
-      <OrdersList
-        list={mockOrders}
-        onChangeSelected={onChangeSelected}
-        selectedTotal={selectedTotal}
-        selectedOrders={selectedOrders}
-      />
+      {isLoading ? (
+        <OrderListSkeleton />
+      ) : (
+        <OrdersList
+          orders={data?.data?.orders || []}
+          onChangeSelected={onChangeSelected}
+          selectedTotal={selectedTotal}
+          selectedOrders={selectedOrders}
+        />
+      )}
+
       <Checkout amount={selectedTotal} selectedOrders={selectedOrders} />
     </>
   );

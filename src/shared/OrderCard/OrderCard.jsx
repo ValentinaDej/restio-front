@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'shared/Card/Card';
 import Title from 'shared/Title/Title';
@@ -6,14 +6,11 @@ import cls from './OrderCard.module.scss';
 import Status from 'shared/Status/Status';
 import Text from 'shared/Text/Text';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
-import { useCallback } from 'react';
-import { useState } from 'react';
 import { BiDish, BiChevronDown } from 'react-icons/bi';
-import { memo } from 'react';
 import { classNames } from 'helpers/classNames';
 import { IconButton } from 'shared/IconButton/IconButton';
 
-const OrderCard = memo(({ _id, orderItems, status, сhecked, onChange, small, isWaiter }) => {
+const OrderCard = memo(({ _id, orderItems, status, сhecked, onChange, small, isLoading }) => {
   const cardRef = useRef(null);
   const [isChecked, setIsChecked] = useState(сhecked || false);
   const [isSmall, setIsSmall] = useState(small);
@@ -48,7 +45,7 @@ const OrderCard = memo(({ _id, orderItems, status, сhecked, onChange, small, is
         <div className={cls.dishes}>
           <BiDish size={20} />
           <Text fontWeight={700} classname={cls.text}>
-            {orderItems.length}
+            {orderItems.reduce((acc, item) => acc + item.quantity, 0)}
           </Text>
         </div>
         <Status statusCurrent={status} />
@@ -92,7 +89,6 @@ OrderCard.propTypes = {
   isChecked: PropTypes.bool,
   onChange: PropTypes.func,
   small: PropTypes.bool,
-  isWaiter: PropTypes.bool,
 };
 
 export default OrderCard;

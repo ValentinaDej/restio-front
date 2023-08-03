@@ -22,9 +22,8 @@ export const payOrders = createAsyncThunk(
     try {
       const {
         data: { paymentInfo },
-      } = await instance.post('https://et-back-23.vercel.app/transactions', ordersData);
+      } = await instance.post('/transactions', ordersData);
 
-      console.log(paymentInfo);
       return paymentInfo;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.message);
