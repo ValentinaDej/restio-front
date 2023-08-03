@@ -1,10 +1,9 @@
-import { Checkout, OrdersList } from 'components/Customer';
+import { CustomerOrders } from 'components';
 
 const CustomerOrdersPage = () => {
   return (
     <div>
-      <OrdersList />
-      <Checkout />
+      <CustomerOrders />
     </div>
   );
 };

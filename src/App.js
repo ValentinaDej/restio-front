@@ -59,6 +59,7 @@ const App = () => {
           </Suspense>
         </main>
         {role && <Footer />}
+        <Toaster />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>

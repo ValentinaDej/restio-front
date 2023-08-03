@@ -3,14 +3,14 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
+import { BASE_URL } from 'api';
 
 const EmployeePage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/personnel/restaurant/${restId}`);
-      console.log(response.data);
+      const response = await axios.get(`${BASE_URL}/personnel/restaurant/${restId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching data:', error);

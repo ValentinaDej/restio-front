@@ -3,13 +3,14 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
+import { BASE_URL } from 'api';
 
 const DishesAdminPage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/dishes/restaurant/${restId}`);
+      const response = await axios.get(`${BASE_URL}/dishes/restaurant/${restId}`);
       console.log(response.data);
       return response.data;
     } catch (error) {
