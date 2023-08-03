@@ -14,7 +14,7 @@ const QuantityButton = ({ quantity = 1, addOne, minusOne, mode, size, classname 
         className={css['quantity-container__button']}
         type="button"
         onClick={minusOne}
-        disabled={quantity <= 1}
+        disabled={quantity <= 0}
       >
         <AiOutlineMinus className={css['quantity-container__icon']} />
       </button>

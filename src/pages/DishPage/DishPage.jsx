@@ -6,13 +6,16 @@ import Title from 'shared/Title/Title';
 import Text from 'shared/Text/Text';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
 import DishCard from 'shared/DishCard/DishCard';
+import Button from 'shared/Button/Button';
 import { IoReturnDownBackOutline } from 'react-icons/io5';
 
 const DishPage = (props) => {
   const [dish, setDish] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [dishQuantity, setDishQuantity] = useState(0);
   const params = useParams().dishId;
   const isTrue = true;
+
   const getDishById = async () => {
     try {
       setIsLoading(false);
@@ -27,9 +30,22 @@ const DishPage = (props) => {
       console.error(err.toJSON());
     }
   };
+
   useEffect(() => {
     getDishById();
   }, []);
+
+  const increaseItem = () => {
+    console.log('hey');
+    setDishQuantity(dishQuantity + 1);
+  };
+
+  const decreaseItem = () => {
+    console.log('hey');
+    setDishQuantity(dishQuantity - 1);
+  };
+
+  console.log(dishQuantity);
   return (
     <>
       {isLoading == false ? (
@@ -62,7 +78,22 @@ const DishPage = (props) => {
                     </Text>
                     <span>{dish.portionWeight} g</span>
                   </div>
-                  <QuantityButton classname={classes.quantity_buttons}></QuantityButton>
+                  {dishQuantity < 1 ? (
+                    <div>
+                      <Button onClick={increaseItem} className={classes.addButton}>
+                        Add +
+                      </Button>
+                    </div>
+                  ) : (
+                    <QuantityButton
+                      classname={classes.quantity_buttons}
+                      addOne={increaseItem}
+                      quantity={dishQuantity}
+                      minusOne={decreaseItem}
+                    >
+                      {dishQuantity}
+                    </QuantityButton>
+                  )}
                 </div>
                 <div className={classes.box}>
                   <Text mode="p" classname={classes.subtitle}>
