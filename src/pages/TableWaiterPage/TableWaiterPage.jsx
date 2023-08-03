@@ -1,5 +1,11 @@
+import { WaiterOrders } from 'components/WaiterOrders/WaiterOrders';
+
 const TableWaiterPage = () => {
-  return <p>One Table Waiter Page</p>;
+  return (
+    <div>
+      <WaiterOrders />
+    </div>
+  );
 };
 
 export default TableWaiterPage;
