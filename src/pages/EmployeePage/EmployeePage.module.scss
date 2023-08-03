@@ -2,7 +2,8 @@
 .personnel-container {
   //background-color: #FFD580; /* light-orange background color */
   padding: 1rem 100px;
-  margin: 3rem;
+  margin: 1rem 3rem;
+  transition: 1s;
 }
 
 .menu_wrapper {
@@ -13,9 +14,10 @@
   ); /* Default card width with minimum 250px */
   gap: 20px; /* Default gap between cards */
   width: 100%;
-  margin-top: 3rem;
+  //margin-top: 3rem;
   justify-content: space-around;
   padding: 1.5rem 0;
+  transition: 1s;
 
   &.outlined {
     padding: 1.5rem 0;
@@ -27,5 +29,12 @@
 
 .card_wrapper {
   flex-grow: 1;
-  margin: 40px 0;
+  transition: 1s;
+}
+
+.divider {
+  border-top: 8px solid var(--color-orange);
+  border-radius: 5px;
+  margin-top: 0.4rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Adding a cool shadow
 }

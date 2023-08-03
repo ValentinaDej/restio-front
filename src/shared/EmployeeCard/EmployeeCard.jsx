@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import classes from './EmployeeCard.module.scss';
 import { BsTrash } from 'react-icons/bs';
 import { BiEditAlt } from 'react-icons/bi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EmployeeCard = ({ children, onClick, mode = 'primary', size, ...props }) => {
   const navigate = useNavigate();
+  const { restId } = useParams();
   const handleClick = () => {
-    navigate(`/admin/addPersonnel/${props.data._id}`);
+    navigate(`/admin/${restId}/personnel/new/${props.data._id}`);
   };
   return (
     <>
