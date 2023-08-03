@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
+  transition: 1s;
 }
 
 .label {
@@ -9,6 +10,7 @@
   font-weight: var(--font-semi-bold);
   color: var(--color-dark);
   margin-bottom: 0.5rem;
+  transition: 1s;
 
   &_sm {
     font-size: 0.8rem;
@@ -33,7 +35,7 @@
   font-size: 1.15rem;
   border-radius: 30px;
   font-weight: var(--font-semi-bold);
-  transition: all 0.3s ease 0s;
+  transition: all 0.7s ease 0s;
 
   &:hover,
   &:focus {
@@ -90,5 +92,14 @@
 
   &_length-lg {
     max-width: 350px;
+  }
+
+  &_error {
+    border: 2px solid #ff0033;
+
+    & :hover,
+    :focus {
+      border: 2px solid #ff0033;
+    }
   }
 }

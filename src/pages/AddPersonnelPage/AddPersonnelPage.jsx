@@ -70,7 +70,7 @@ const AddPersonnelPage = () => {
     <div>
       <main className={styles.addPersonnelContainer}>
         <h1>Add Personnel</h1>
-        <EmployeeForm onSubmit={handleSubmit} size={'sm'} initialState={initialData} />
+        <EmployeeForm onSubmit={handleSubmit} size={'md'} initialState={initialData} />
       </main>
       <ReactQueryDevtools initialIsOpen />
     </div>

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
 import Select from '../Select/Select';
@@ -9,6 +9,7 @@ import Input from '../Input/Input';
 import FileUploader from '../FileUploader/FileUploader';
 import toast from 'react-hot-toast';
 import { CHECK_PASSWORD_SCHEMA } from 'utils/constants';
+import { CheckBox } from '../CheckBox/CheckBox';
 
 const validationSchema = Yup.object({
   firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required field'),
@@ -59,6 +60,7 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
   });
 
   const fileUploaderRef = useRef();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleFormSubmit = async (data) => {
     // Add the file upload response to the form data
@@ -78,97 +80,118 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
 
   return (
     <form
-      className={`${styles.employeeForm} ${styles[`employeeForm_${size}`]}`}
+      className={`${styles.employeeForm} ${styles[`fields_${size}`]}`}
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="firstName"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} placeholder="First Name" size={size} length={'lg'} />
-              {errors.firstName && <div className={styles.error}>{errors.firstName}</div>}
-            </>
-          )}
-        />
+      <div className={`${styles.fields} ${styles[`fields_${size}`]}`}>
+        <div className={styles.field__wrapper}>
+          <Controller
+            name="firstName"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input {...field} placeholder="First Name" size={size} length={'lg'} />
+                {errors.firstName && <div className={styles.error}>{errors.firstName}</div>}
+              </>
+            )}
+          />
+        </div>
+        <div className={styles.field__wrapper}>
+          <Controller
+            name="lastName"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input {...field} placeholder="Last Name" size={size} length={'lg'} />
+                {errors.lastName && <div className={styles.error}>{errors.lastName}</div>}
+              </>
+            )}
+          />
+        </div>
+        <div className={styles.field__wrapper}>
+          <Select
+            label="Gender"
+            size={size}
+            register={register}
+            error={errors.gender ? 'error' : ''}
+          >
+            <option>Male</option>
+            <option>Female</option>
+          </Select>
+          {errors.gender && <div className={styles.error}>{errors.gender}</div>}
+        </div>
+        <div className={styles.field__wrapper}>
+          <Select label="Role" size={size} register={register} error={errors.role ? 'error' : ''}>
+            <option>waiter</option>
+            <option>admin</option>
+            <option>cook</option>
+          </Select>
+          {errors.role && <div className={styles.error}>{errors.role}</div>}
+        </div>
+        <div className={`${styles.field__wrapper}`}>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input
+                  {...field}
+                  type={showPassword ? 'text' : 'password'} // Toggle the input type based on the showPassword state
+                  placeholder="Password"
+                  size={size}
+                  length={`lg`}
+                />
+                <span className={`${styles.showPassword}`}>
+                  <CheckBox
+                    type="checkbox"
+                    label={`Show Password`}
+                    onChange={() => setShowPassword((prevShowPassword) => !prevShowPassword)}
+                    checked={showPassword}
+                  />
+                </span>
+                {errors.password && <div className={styles.error}>{errors.password}</div>}
+              </>
+            )}
+          />
+        </div>
+        <div className={styles.field__wrapper}>
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input {...field} placeholder="Phone" size={size} length={`lg`} />
+                {errors.phone && <div className={styles.error}>{errors.phone}</div>}
+              </>
+            )}
+          />
+        </div>
+        <div className={styles.field__wrapper}>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input {...field} type="email" placeholder="Email" size={size} length={`lg`} />
+                {errors.email && <div className={styles.error}>{errors.email}</div>}
+              </>
+            )}
+          />
+        </div>
+        <div className={styles.field__wrapper}>
+          <Controller
+            name="address"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input {...field} placeholder="Address" size={size} length={`lg`} />
+                {errors.address && <div className={styles.error}>{errors.address}</div>}
+              </>
+            )}
+          />
+        </div>
       </div>
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="lastName"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} placeholder="Last Name" size={size} length={'lg'} />
-              {errors.lastName && <div className={styles.error}>{errors.lastName}</div>}
-            </>
-          )}
-        />
-      </div>
-      <div className={styles.field__wrapper}>
-        <Select label="Gender" size={size} register={register}>
-          <option>Male</option>
-          <option>Female</option>
-        </Select>
-        {errors.gender && <div className={styles.error}>{errors.gender}</div>}
-      </div>
-      <div className={styles.field__wrapper}>
-        <Select label="Role" size={size} register={register}>
-          <option>Waiter</option>
-          <option>Admin</option>
-          <option>Cook</option>
-        </Select>
-        {errors.role && <div className={styles.error}>{errors.role}</div>}
-      </div>
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} type="password" placeholder="Password" size={size} length={`lg`} />
-              {errors.password && <div className={styles.error}>{errors.password}</div>}
-            </>
-          )}
-        />
-      </div>
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="phone"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} placeholder="Phone" size={size} length={`lg`} />
-              {errors.phone && <div className={styles.error}>{errors.phone}</div>}
-            </>
-          )}
-        />
-      </div>
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} type="email" placeholder="Email" size={size} length={`lg`} />
-              {errors.email && <div className={styles.error}>{errors.email}</div>}
-            </>
-          )}
-        />
-      </div>
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="address"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} placeholder="Address" size={size} length={`lg`} />
-              {errors.address && <div className={styles.error}>{errors.address}</div>}
-            </>
-          )}
-        />
-      </div>
-      <div className={styles.field__wrapper}>
+      <div className={`${styles.field__wrapper} ${styles.fileUploader__wrapper}`}>
         <FileUploader ref={fileUploaderRef} />
       </div>
       <div className={styles.btn_group}>
