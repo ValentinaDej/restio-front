@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Controller } from 'react-hook-form';
+import * as Yup from 'yup';
 
 import { FaSearch } from 'react-icons/fa';
 import { BiSolidTrash } from 'react-icons/bi';
@@ -10,6 +12,39 @@ import Text from 'shared/Text/Text';
 import classes from '../DishForm.module.scss';
 import * as initialData from '../InitialState';
 
+const validateSelectedIngredients = (selectedIngredients) => {
+  return selectedIngredients.size > 0 || 'At least one ingredient is required';
+};
+
+const SelectedIngredientsList = ({ selectedIngredients, handleRemoveIngredient, fieldState }) => (
+  <div className={classes.section}>
+    <Text mode="p" textAlign="left" fontSize={14} fontWeight={600} color="var(--color-dark)">
+      Selected ingredients:
+    </Text>
+    <ul>
+      {Array.from(selectedIngredients).map((ingredientId) => {
+        const ingredient = initialData.ingredientsList.find((ing) => ing.id === ingredientId);
+        return (
+          <li key={ingredientId} className={classes.section__item}>
+            {ingredient ? ingredient.name : 'Unknown Ingredient'}
+            <div
+              className={classes.icon_wrapper}
+              onClick={() => handleRemoveIngredient(ingredientId)}
+            >
+              <BiSolidTrash />
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+    {fieldState.invalid && (
+      <Text mode="p" textAlign="center" fontSize={8} fontWeight={400} color="var(--color-danger)">
+        {fieldState.error?.message}
+      </Text>
+    )}
+  </div>
+);
+
 const DishIngredients = ({
   selectedIngredients,
   setSelectedIngredients,
@@ -18,7 +53,7 @@ const DishIngredients = ({
   selectedType,
   handleTypeChange,
   filteredIngredients,
-  errors,
+  control,
 }) => {
   const [inputValue, setInputValue] = useState('');
 
@@ -109,34 +144,21 @@ const DishIngredients = ({
         </div>
       </div>
       <div className={classes.column}>
-        <div className={classes.section}>
-          <Text mode="p" textAlign="left" fontSize={14} fontWeight={600} color="var(--color-dark)">
-            Selected ingredients:
-          </Text>
-          <ul>
-            {Array.from(selectedIngredients).map((ingredientId) => {
-              const ingredient = initialData.ingredientsList.find((ing) => ing.id === ingredientId);
-              return (
-                <li key={ingredientId} className={classes.section__item}>
-                  {ingredient ? ingredient.name : 'Unknown Ingredient'}
-
-                  <div
-                    className={classes.icon_wrapper}
-                    onClick={() => handleRemoveIngredient(ingredientId)}
-                  >
-                    <BiSolidTrash />
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <Controller
+          name="selectedIngredients"
+          control={control}
+          rules={{
+            validate: () => validateSelectedIngredients(selectedIngredients),
+          }}
+          render={({ field, fieldState }) => (
+            <SelectedIngredientsList
+              selectedIngredients={selectedIngredients}
+              handleRemoveIngredient={handleRemoveIngredient}
+              fieldState={fieldState}
+            />
+          )}
+        />
       </div>
-      {errors.ingredients && (
-        <Text mode="p" textAlign="left" fontSize={8} fontWeight={400}>
-          {errors.ingredients.message}
-        </Text>
-      )}
     </>
   );
 };

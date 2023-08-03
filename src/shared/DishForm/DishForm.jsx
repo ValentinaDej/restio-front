@@ -25,10 +25,17 @@ const DishForm = () => {
     formState: { errors },
     handleSubmit,
     reset,
+    control,
   } = useForm({
     shouldUseNativeValidation: false,
     mode: 'onSubmit',
+    defaultValues: { selectedIngredients: new Set() },
   });
+
+  const cleareForm = () => {
+    setSelectedIngredients(new Set());
+    reset();
+  };
 
   const handleRemoveIngredient = (ingredientId) => {
     setSelectedIngredients((prevIngredients) => {
@@ -65,8 +72,11 @@ const DishForm = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
-    console.log(selectedIngredients);
+    const formDataWithIngredients = {
+      ...data,
+      selectedIngredients: Array.from(selectedIngredients),
+    };
+    console.log('Form Data:', formDataWithIngredients);
     reset();
     setSelectedIngredients(new Set());
     setSelectedType('');
@@ -253,7 +263,7 @@ const DishForm = () => {
               selectedType={selectedType}
               handleTypeChange={handleTypeChange}
               filteredIngredients={filteredIngredients}
-              errors={errors}
+              control={control}
             />
           </div>
 
@@ -261,7 +271,7 @@ const DishForm = () => {
             <Button type="submit" size="sm">
               Create
             </Button>
-            <Button type="button" onClick={() => reset()} size="sm">
+            <Button type="button" onClick={cleareForm} size="sm">
               Clear
             </Button>
           </div>
