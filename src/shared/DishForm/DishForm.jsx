@@ -7,7 +7,8 @@ import Input from 'shared/Input/Input';
 import Select from 'shared/Select/Select';
 import Text from 'shared/Text/Text';
 import Title from 'shared/Title/Title';
-import DishIngredients from './DishIngridiens/DishIngridiens';
+import FormSelectGroup from './FormSelectGroup/FormSelectGroup';
+import FormInput from './FormInput/FormInput';
 
 import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
@@ -28,8 +29,10 @@ const DishForm = () => {
     control,
   } = useForm({
     shouldUseNativeValidation: false,
-    mode: 'onSubmit',
-    defaultValues: { selectedIngredients: new Set() },
+    mode: 'onBlur',
+    defaultValues: {
+      selectedIngredients: new Set(), // Початкове значення для selectedIngredients
+    },
   });
 
   const cleareForm = () => {
@@ -87,41 +90,21 @@ const DishForm = () => {
       <div className={classes.form}>
         <Title mode="h2">Create dish</Title>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={classes.field__wrapper}>
-            <Input
-              name="name"
-              placeholder="Dish name"
-              autoComplete="off"
-              size="sm"
-              rules={{
-                required: 'Dish name is required',
-                minLength: {
-                  value: 3,
-                  message: 'Dish name must be at least 3 characters long',
-                },
-                maxLength: {
-                  value: 50,
-                  message: 'Dish name cannot exceed 50 characters',
-                },
-                pattern: {
-                  value: /^[a-zA-Zа-яА-Я0-9\s]+$/,
-                  message: 'Dish name can only contain letters, numbers, and spaces',
-                },
-              }}
-              register={register}
-            />
-            {errors.name && (
-              <Text
-                mode="p"
-                textAlign="center"
-                fontSize={8}
-                fontWeight={400}
-                color="var(--color-danger)"
-              >
-                {errors.name.message}
-              </Text>
-            )}
-          </div>
+          <FormInput
+            name="name"
+            placeholder="Dish name"
+            autoComplete="off"
+            size="sm"
+            error={errors.name}
+            validationRules={{
+              required: 'Name is a required field',
+              pattern: {
+                value: /^[a-zA-Zа-яА-Я0-9\s]{3,50}$/,
+                message: 'Invalid name',
+              },
+            }}
+            register={register}
+          />
           <div className={classes.column__wrapper}>
             <div className={classes.column}>
               <div className={classes.field__wrapper}>Picture</div>
@@ -149,10 +132,10 @@ const DishForm = () => {
                 {errors.type && (
                   <Text
                     mode="p"
-                    textAlign="center"
+                    textAlign="left"
                     fontSize={8}
                     fontWeight={400}
-                    color="var(--color-danger)"
+                    color="var(--color-gray)"
                   >
                     {errors.type.message}
                   </Text>
@@ -190,15 +173,15 @@ const DishForm = () => {
               </div>
               <div className={classes.field__wrapper}>
                 <div className={classes.input__wrapper}>
-                  <Input
-                    type="text"
+                  <FormInput
                     name="portionWeight"
-                    placeholder="Weight (gram)"
-                    autoComplete="off"
+                    placeholder="Dish weight"
+                    autoComplete="Weight (gram)"
                     size="sm"
-                    length="md"
-                    rules={{
-                      required: 'Dish weight is required',
+                    icon={GiWeight}
+                    error={errors.portionWeight}
+                    validationRules={{
+                      required: 'Dish weight is a required field',
                       pattern: {
                         value: /^[1-9]\d{0,3}$|^10000$/,
                         message: 'Dish weight must be a number between 1 and 10000',
@@ -206,56 +189,33 @@ const DishForm = () => {
                     }}
                     register={register}
                   />
-                  <GiWeight className={classes.input__icon} />
                 </div>
-                {errors.portionWeight && (
-                  <Text
-                    mode="p"
-                    textAlign="center"
-                    fontSize={8}
-                    fontWeight={400}
-                    color="var(--color-danger)"
-                  >
-                    {errors.portionWeight.message}
-                  </Text>
-                )}
               </div>
 
               <div className={classes.field__wrapper}>
                 <div className={classes.input__wrapper}>
-                  <Input
-                    type="text"
+                  <FormInput
                     name="price"
                     placeholder="Price"
-                    autoComplete="off"
+                    autoComplete="Weight (gram)"
                     size="sm"
-                    rules={{
-                      required: 'Dish price is required',
+                    icon={FaMoneyBillAlt}
+                    error={errors.price}
+                    validationRules={{
+                      required: 'Dish price is a required field',
                       pattern: {
-                        value: /^(?!0\d)\d+(\.\d{1,2})?$/,
+                        value: /^[1-9]\d{0,3}$|^10000$/,
                         message: 'Dish price must be a positive number with up to 2 decimal places',
                       },
                     }}
                     register={register}
                   />
-                  <FaMoneyBillAlt className={classes.input__icon} />
                 </div>
-                {errors.price && (
-                  <Text
-                    mode="p"
-                    textAlign="center"
-                    fontSize={8}
-                    fontWeight={400}
-                    color="var(--color-danger)"
-                  >
-                    {errors.price.message}
-                  </Text>
-                )}
               </div>
             </div>
           </div>
           <div className={classes.column__wrapper}>
-            <DishIngredients
+            <FormSelectGroup
               selectedIngredients={selectedIngredients}
               setSelectedIngredients={setSelectedIngredients}
               handleRemoveIngredient={handleRemoveIngredient}

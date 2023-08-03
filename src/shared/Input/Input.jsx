@@ -20,11 +20,13 @@ const Input = forwardRef(
       register,
       rules,
       isFullWidth,
+      error,
       ...props
     },
     ref
   ) => {
     const isCheckbox = type === 'checkbox';
+    const hasError = !!error;
 
     return (
       <div
@@ -46,7 +48,7 @@ const Input = forwardRef(
           placeholder={placeholder}
           className={`${styles.input} ${styles[`input_${size}`]} ${
             styles[`input_length-${length}`]
-          }`}
+          } ${hasError ? styles.input_error : ''}`}
           onChange={onChange}
           disabled={mode === 'disabled'}
           {...props}

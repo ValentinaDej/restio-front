@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
-import * as Yup from 'yup';
 
 import { FaSearch } from 'react-icons/fa';
 import { BiSolidTrash } from 'react-icons/bi';
@@ -9,7 +8,7 @@ import Select from 'shared/Select/Select';
 import Input from 'shared/Input/Input';
 import Text from 'shared/Text/Text';
 
-import classes from '../DishForm.module.scss';
+import classes from './FormSelectGroup.module.scss';
 import * as initialData from '../InitialState';
 
 const validateSelectedIngredients = (selectedIngredients) => {
@@ -45,7 +44,7 @@ const SelectedIngredientsList = ({ selectedIngredients, handleRemoveIngredient, 
   </div>
 );
 
-const DishIngredients = ({
+const FormSelectGroup = ({
   selectedIngredients,
   setSelectedIngredients,
   handleRemoveIngredient,
@@ -163,4 +162,4 @@ const DishIngredients = ({
   );
 };
 
-export default DishIngredients;
+export default FormSelectGroup;
