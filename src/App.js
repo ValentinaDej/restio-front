@@ -12,12 +12,8 @@ import routesCook from 'routes/routesCook';
 import routesWaiter from 'routes/routesWaiter';
 import routesCustomer from 'routes/routesCustomer';
 import { useSelector } from 'react-redux';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-
-const AdminPage = () => <div>Admin Page</div>;
-const WaiterPage = () => <div>Waiter Page</div>;
-const CookPage = () => <div>Cook Page</div>;
 
 const queryClient = new QueryClient();
 
