@@ -12,14 +12,21 @@ const skeletonData = [
 ];
 
 const OrderListSkeleton = ({ isSmall, isWaiter }) => {
-  if (isWaiter) {
+  const renderTopBlock = () => {
     return (
-      <div className={classNames(ulCls.box, { [ulCls.isWaiter]: isWaiter }, [])}>
+      <>
         <Skeleton width={80} height={20} containerClassName="text" />
         <div className={ulCls.btnsBox}>
           <Skeleton width={100} height={35} />
         </div>
         <Skeleton width={300} height={15} containerClassName="text" />
+      </>
+    );
+  };
+  if (isWaiter) {
+    return (
+      <div className={classNames(ulCls.box, { [ulCls.isWaiter]: isWaiter }, [])}>
+        {renderTopBlock()}
         <div className={ulCls.list}>
           {skeletonData.map((data, index) => (
             <div key={index} className={classNames(cls.item, { [cls.isSmall]: isSmall }, [])}>
@@ -43,11 +50,7 @@ const OrderListSkeleton = ({ isSmall, isWaiter }) => {
   }
   return (
     <div className={classNames(ulCls.box, { [ulCls.isWaiter]: isWaiter }, [])}>
-      <Skeleton width={80} height={20} containerClassName="text" />
-      <div className={ulCls.btnsBox}>
-        <Skeleton width={100} height={35} />
-      </div>
-      <Skeleton width={300} height={15} containerClassName="text" />
+      {renderTopBlock()}
       {skeletonData.map((data, index) => (
         <div key={index} className={classNames(cls.item, { [cls.isSmall]: isSmall }, [])}>
           <div className={cls.topBlock}>
