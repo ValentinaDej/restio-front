@@ -5,9 +5,9 @@ const TableWaiterPage = lazy(() => import('pages/TableWaiterPage/TableWaiterPage
 const MenuPage = lazy(() => import('pages/MenuPage/MenuPage'));
 
 const routesWaiter = [
-  { path: '', component: <TablesWaiterPage /> },
-  { path: ':tableId', component: <TableWaiterPage /> },
-  { path: ':tableId/menu', component: <MenuPage /> },
+  { path: 'waiter/tables/:restId', component: <TablesWaiterPage /> },
+  { path: 'waiter/tables/:restId/:tableId', component: <TableWaiterPage /> },
+  { path: 'waiter/tables/:restId/:tableId/menu', component: <MenuPage /> },
 ];
 
 export default routesWaiter;

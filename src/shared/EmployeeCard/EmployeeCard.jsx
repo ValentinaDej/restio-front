@@ -14,8 +14,9 @@ const EmployeeCard = ({ children, onClick, mode = 'primary', size, ...props }) =
     <>
       <div className={`${classes.card} ${classes[`${mode}`]} ${classes[`${size}`]}`}>
         <img
-          alt={`Employee ${props.data.name}`}
-          src={props.data.picture}
+          //  alt={`Employee ${props.data.name}`}
+          //  src={props.data.picture}
+          {...props}
           className={classes.card_image}
         />
         {/* Insert 'DELETE BUTTON" and "EDIT BUTTON" component instead of react-icons, but keep a class '.trash' and '.edit' and size={'1.2rem'}  */}
@@ -33,9 +34,10 @@ const EmployeeCard = ({ children, onClick, mode = 'primary', size, ...props }) =
         ></BiEditAlt>
         {/* End of buttons block  */}
         <div className={classes.employee_text}>
-          <p className={classes.employee_name}>{props.data.name}</p>
+          {/* <p className={classes.employee_name}>{props.data.name}</p>
           <p className={classes.employee_subinfo}>{props.data.role}</p>
-          <p className={classes.employee_subinfo}>{props.data.phone}</p>
+          <p className={classes.employee_subinfo}>{props.data.phone}</p> */}
+          {children}
         </div>
       </div>
     </>
