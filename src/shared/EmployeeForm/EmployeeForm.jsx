@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import Input from '../Input/Input';
 import FileUploader from '../FileUploader/FileUploader';
 import toast from 'react-hot-toast';
-import { CHECK_PASSWORD_SCHEMA } from 'utils/constants';
+import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA } from 'utils/constants';
 import { CheckBox } from '../CheckBox/CheckBox';
 
 const validationSchema = Yup.object({
@@ -24,10 +24,12 @@ const validationSchema = Yup.object({
     ),
   gender: Yup.string().required('Required field'),
   role: Yup.string().required('Required field'),
-  phone: Yup.string().min(10, 'Too Short!').max(15, 'Too Long!').required('Required field'),
+  phone: Yup.string()
+    .matches(CHECK_PHONE_SCHEMA, 'Incorrect phone number')
+    .required('Required field'),
   email: Yup.string().email('Invalid email').required('Required field'),
   address: Yup.string().required('Required field'),
-  image: Yup.string(),
+  picture: Yup.string(),
 });
 
 const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
@@ -64,12 +66,14 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
 
   const handleFormSubmit = async (data) => {
     // Add the file upload response to the form data
-    const image = await fileUploaderRef.current.handleUpload();
+    const picture = await fileUploaderRef.current.handleUpload();
 
-    if (image) {
-      onSubmit({ ...data, image: image.data.imageName });
+    delete data.image;
+
+    if (picture) {
+      onSubmit({ ...data, picture: picture.data.imageName });
     } else {
-      onSubmit({ ...data, image: '' });
+      onSubmit({ ...data, picture: '' });
     }
     reset();
 
@@ -160,7 +164,12 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
             control={control}
             render={({ field }) => (
               <>
-                <Input {...field} placeholder="Phone" size={size} length={`lg`} />
+                <Input
+                  {...field}
+                  placeholder="Phone (ex. +380971234567)"
+                  size={size}
+                  length={`lg`}
+                />
                 {errors.phone && <div className={styles.error}>{errors.phone}</div>}
               </>
             )}
@@ -217,7 +226,7 @@ EmployeeForm.propTypes = {
     phone: PropTypes.string,
     email: PropTypes.string,
     address: PropTypes.string,
-    image: PropTypes.string,
+    picture: PropTypes.string,
   }),
   buttonText: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
@@ -233,7 +242,7 @@ EmployeeForm.defaultProps = {
     phone: '',
     email: '',
     address: '',
-    image: '',
+    picture: '',
   },
   buttonText: 'Submit',
   size: 'sm',

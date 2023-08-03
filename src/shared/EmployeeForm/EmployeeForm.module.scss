@@ -5,11 +5,10 @@
   & .fields {
     display: grid;
     gap: 20px;
-
     grid-template-columns: 1fr; /* Default to one-column layout */
 
     /* Two-column layout for screens over 760px width */
-    @media (min-width: 760px) {
+    @media (min-width: 800px) {
       grid-template-columns: 1fr 1fr;
     }
   }
