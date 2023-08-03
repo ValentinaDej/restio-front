@@ -23,7 +23,7 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
   }, []);
 
   const frontLink = location.href;
-  const onClickPaySelected = useCallback(() => {
+  const onClickPaySelectedAsCustomer = useCallback(() => {
     dispatch(
       payOrders({
         amount,
@@ -34,6 +34,9 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
       })
     );
   }, [amount, dispatch, frontLink, selectedOrders]);
+  const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
+    //need to update orders status
+  }, []);
 
   const boxMods = {
     [cls.isOpen]: isOpen && amount !== 0,
@@ -49,7 +52,7 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
         <Text classname={cls.text} fontWeight={700}>
           Total price for selected orders: ${amount}
         </Text>
-        <Button size={'sm'} onClick={onClickPaySelected} disabled={amount === 0}>
+        <Button size={'sm'} onClick={onClickMarkAsPaidSelectedAsWaiter} disabled={amount === 0}>
           Mark as paid for selected
         </Button>
       </div>
@@ -71,7 +74,7 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
           Total price for selected orders: ${amount}
         </Text>
         <div className={cls.btnsBox}>
-          <Button size={'sm'} onClick={onClickPaySelected} disabled={amount === 0}>
+          <Button size={'sm'} onClick={onClickPaySelectedAsCustomer} disabled={amount === 0}>
             Pay online
           </Button>
         </div>

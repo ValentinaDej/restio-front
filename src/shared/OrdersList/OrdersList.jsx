@@ -44,7 +44,7 @@ export const OrdersList = ({
   const dispatch = useDispatch();
   const isLoading = useSelector(getIsLoading);
 
-  const onClickPayAllBtn = useCallback(() => {
+  const onClickPayAllAsCustomer = useCallback(() => {
     dispatch(
       payOrders({
         amount: totalPrice,
@@ -55,6 +55,10 @@ export const OrdersList = ({
       })
     );
   }, [dispatch, frontLink, ordersIDs, totalPrice]);
+
+  const onClickMarkAsPaidAllAsWaiter = useCallback(() => {
+    //need to update orders status
+  }, []);
 
   const selectOrder = useCallback(
     (id, totalPrice) => {
@@ -98,7 +102,11 @@ export const OrdersList = ({
             : `Total price $${totalPrice}`}
         </Text>
         <div className={cls.btnsBox}>
-          <Button size={'sm'} onClick={onClickPayAllBtn} mode={!totalPrice && 'disabled'}>
+          <Button
+            size={'sm'}
+            onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
+            mode={!totalPrice && 'disabled'}
+          >
             {isWaiter ? 'Mark as paid all orders' : 'Pay online'}
           </Button>
         </div>

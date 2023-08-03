@@ -8,7 +8,7 @@
   max-width: 400px;
   min-width: 280px;
   transition:
-    height 0.2s ease,
+    height 0.3s ease,
     box-shadow 0.3s ease;
 
   &.isSmall {
@@ -32,7 +32,7 @@
   gap: 10px;
   margin-top: 20px;
   height: 300px;
-  transition: height 0.2s ease;
+  transition: height 0.3s ease;
 
   &.isSmall {
     height: 0;
