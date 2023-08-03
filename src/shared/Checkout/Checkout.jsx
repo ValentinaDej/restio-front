@@ -33,6 +33,8 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
         frontLink,
       })
     );
+    // console.log(selectedOrders[0]);
+    // console.log(selectedOrders);
   }, [amount, dispatch, frontLink, selectedOrders]);
   const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
     //need to update orders status

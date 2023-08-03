@@ -21,28 +21,26 @@ export const OrdersList = ({
     orders.filter((order) => order.status !== 'Paid').map((order) => order._id)
   );
   const [totalPrice, setTotalPrice] = useState();
-
-  useEffect(() => {
-    setTotalPrice(
-      orders.reduce((acc, order) => {
-        if (order.status !== 'Paid') {
-          const orderPrice = order.orderItems.reduce(
-            (acc, item) => acc + item.dish.price * item.quantity,
-            0
-          );
-
-          return acc + orderPrice;
-        } else {
-          return acc;
-        }
-      }, 0)
-    );
-  }, [orders, totalPrice]);
-
-  const frontLink = location.href;
-
   const dispatch = useDispatch();
   const isLoading = useSelector(getIsLoading);
+  const frontLink = location.href;
+
+  useEffect(() => {
+    const newTotalPrice = orders.reduce((acc, order) => {
+      if (order.status !== 'Paid') {
+        const orderPrice = order.orderItems.reduce(
+          (acc, item) => acc + item.dish.price * item.quantity,
+          0
+        );
+
+        return acc + orderPrice;
+      } else {
+        return acc;
+      }
+    }, 0);
+
+    setTotalPrice(Math.round(newTotalPrice * 100) / 100);
+  }, [orders]);
 
   const onClickPayAllAsCustomer = useCallback(() => {
     dispatch(
