@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIsLoading } from 'store/customer/orders/selectors';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Button from 'shared/Button/Button';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
@@ -20,20 +20,24 @@ export const OrdersList = ({
   const [ordersIDs] = useState(
     orders.filter((order) => order.status !== 'Paid').map((order) => order._id)
   );
-  const [totalPrice] = useState(
-    orders.reduce((acc, order) => {
-      if (order.status !== 'Paid') {
-        const orderPrice = order.orderItems.reduce(
-          (acc, item) => acc + item.dish.price * item.quantity,
-          0
-        );
+  const [totalPrice, setTotalPrice] = useState();
 
-        return acc + orderPrice;
-      } else {
-        return acc;
-      }
-    }, 0)
-  );
+  useEffect(() => {
+    setTotalPrice(
+      orders.reduce((acc, order) => {
+        if (order.status !== 'Paid') {
+          const orderPrice = order.orderItems.reduce(
+            (acc, item) => acc + item.dish.price * item.quantity,
+            0
+          );
+
+          return acc + orderPrice;
+        } else {
+          return acc;
+        }
+      }, 0)
+    );
+  }, [orders, totalPrice]);
 
   const frontLink = location.href;
 

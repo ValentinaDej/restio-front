@@ -25,7 +25,7 @@ Button.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   type: PropTypes.oneOf(['button', 'submit']),
-  mode: PropTypes.string,
+  mode: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   onClick: PropTypes.func,
 };

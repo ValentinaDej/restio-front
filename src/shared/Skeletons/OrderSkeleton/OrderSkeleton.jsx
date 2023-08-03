@@ -6,12 +6,41 @@ import cls from '../../OrderCard/OrderCard.module.scss';
 import ulCls from '../../OrdersList/OrderList.module.scss';
 
 const skeletonData = [
-  { topBlockWidth: 200, bottomBlockWidth: 200 },
+  { topBlockWidth: 180, bottomBlockWidth: 200 },
   { topBlockWidth: 150, bottomBlockWidth: 180 },
   { topBlockWidth: 180, bottomBlockWidth: 220 },
 ];
 
 const OrderListSkeleton = ({ isSmall, isWaiter }) => {
+  if (isWaiter) {
+    return (
+      <div className={classNames(ulCls.box, { [ulCls.isWaiter]: isWaiter }, [])}>
+        <Skeleton width={80} height={20} containerClassName="text" />
+        <div className={ulCls.btnsBox}>
+          <Skeleton width={100} height={35} />
+        </div>
+        <Skeleton width={300} height={15} containerClassName="text" />
+        <div className={ulCls.list}>
+          {skeletonData.map((data, index) => (
+            <div key={index} className={classNames(cls.item, { [cls.isSmall]: isSmall }, [])}>
+              <div className={cls.topBlock}>
+                <Skeleton width={200} height={20} />
+                <Skeleton width={20} height={15} />
+                <Skeleton width={50} height={15} />
+              </div>
+              <div className={cls.list}>
+                <Skeleton width={280} height={60} />
+                <Skeleton width={280} height={60} />
+                <Skeleton width={280} height={60} />
+                <Skeleton width={100} height={15} containerClassName="text" />
+                <Skeleton width={70} height={15} containerClassName="text" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={classNames(ulCls.box, { [ulCls.isWaiter]: isWaiter }, [])}>
       <Skeleton width={80} height={20} containerClassName="text" />
