@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Card from 'shared/Card/Card';
 import Title from 'shared/Title/Title';
 import styles from './DishesForCookPage.module.scss';
-import Button from 'shared/Button/Button';
 import Status from 'shared/Status/Status';
+import DishesList from 'components/Cook/DishesList/DishesList';
 
 const statuses = ['Ordered', 'In progress', 'Ready'];
 
@@ -14,20 +13,27 @@ const DishesForCookPage = () => {
   const { restId } = useParams();
   console.log(dishes);
 
-  const handleChangeStatus = async (id, status) => {
-    const result = await axios.patch(
-      `http://localhost:3001/orders/${restId}/64ca7527e72e435beb0339f0/${id}`,
-      {
-        status,
-      }
-    );
-    console.log(result);
-  };
+  const handleChangeStatus = useCallback(
+    async (id, status) => {
+      const result = await axios.patch(
+        `http://localhost:3002/orders/${restId}/64ca7527e72e435beb0339f0/${id}`,
+        {
+          status,
+        }
+      );
+      console.log(result.data);
+      //прописати оновлення стєйту
+      setDishes((prevState) =>
+        prevState.map((item) => (item.dish._id === id ? { ...item, status } : item))
+      );
+    },
+    [restId, setDishes]
+  );
 
   useEffect(() => {
     const fetchDishes = async () => {
       const request = await axios.get(
-        `http://localhost:3001/orders/${restId}/64ca7527e72e435beb0339f0`
+        `http://localhost:3002/orders/${restId}/64ca7527e72e435beb0339f0`
       );
       console.log(request.data.data.order);
       setDishes(request.data.data.order.orderItems);
@@ -49,39 +55,7 @@ const DishesForCookPage = () => {
             <div key={status} className={`${styles.status__card}`}>
               <Status statusCurrent={status} className={`${styles.status__title}`} />
               {dishes.length > 0 && (
-                <ul className={`${styles.list}`}>
-                  {filterDishes(status).map(({ dish, quantity, status }) => {
-                    return (
-                      <li key={dish._id} className={`${styles.item}`}>
-                        <Card
-                          mode="cook"
-                          src={dish.picture}
-                          title={dish.name}
-                          quantity={quantity}
-                        />
-                        <Status statusCurrent={status} className={`${styles.status}`} />
-                        <div className={`${styles.button__container}`}>
-                          <Button
-                            onClick={() => handleChangeStatus(dish._id, 'In progress')}
-                            mode="primary"
-                            size="sm"
-                            className={`${styles.button__purple}`}
-                          >
-                            In progress
-                          </Button>
-                          <Button
-                            onClick={() => handleChangeStatus(dish._id, 'Ready')}
-                            mode="primary"
-                            size="sm"
-                            className={`${styles.button__green}`}
-                          >
-                            Ready
-                          </Button>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <DishesList dishes={filterDishes(status)} handleChangeStatus={handleChangeStatus} />
               )}
             </div>
           ))}

@@ -6,44 +6,6 @@
   margin-bottom: 30px;
 }
 
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.item {
-  position: relative;
-  border: 1px solid var(--color-orange-focus);
-  border-radius: 20px;
-  padding: 10px;
-  background-color: var(--color-white);
-}
-
-.button__container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 10px;
-}
-
-.status {
-  position: absolute;
-  right: 50px;
-  top: 40px;
-}
-
-.button__purple {
-  background-color: var(--color-purple);
-  border: none;
-}
-
-.button__green {
-  background-color: var(--color-green);
-  border: none;
-}
-
 .status__container {
   display: flex;
   align-items: center;
