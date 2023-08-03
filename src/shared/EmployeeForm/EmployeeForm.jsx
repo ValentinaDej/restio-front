@@ -106,14 +106,14 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
         />
       </div>
       <div className={styles.field__wrapper}>
-        <Select label="Gender" size={size} length={`lg`} register={register}>
+        <Select label="Gender" size={size} register={register}>
           <option>Male</option>
           <option>Female</option>
         </Select>
         {errors.gender && <div className={styles.error}>{errors.gender}</div>}
       </div>
       <div className={styles.field__wrapper}>
-        <Select label="Role" size={size} length={`lg`} register={register}>
+        <Select label="Role" size={size} register={register}>
           <option>Waiter</option>
           <option>Admin</option>
           <option>Cook</option>
