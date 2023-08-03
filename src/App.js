@@ -16,6 +16,8 @@ import Header from 'shared/Header/Header';
 import MenuPage from 'pages/MenuPage/MenuPage';
 import Loader from 'shared/Loader/Loader';
 import { Suspense } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 const variantPath = {
   admin: routesAdmin,
@@ -23,9 +25,11 @@ const variantPath = {
   cook: routesCook,
 };
 
+const queryClient = new QueryClient();
+
 const App = () => {
-  //   const { role } = useSelector((state) => state.auth);
-  const role = 'admin';
+  const { role } = useSelector((state) => state.auth);
+
   //useState де сбережені лого, назва ресторану поки що болванка
   const logo = logoImg;
   const restaurantName = 'Restio';
@@ -33,28 +37,30 @@ const App = () => {
   //restId =`64c4fdea4055a7111092df32`
   return (
     <>
-      {role && <Header logo={logo} restaurantName={restaurantName} role={role} />}
-      <main>
-        <Suspense fallback={<Loader size="lg" />}>
-          <Routes>
-            <Route path="/" element={<PublicRoute component={<MenuPage />} />} />
-            <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
-            <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
-            {routesCustomer.map(({ path, component }) => (
-              <Route key={path} path={path} element={<PublicRoute component={component} />} />
-            ))}
-
-            {(role === 'admin' || role === 'waiter' || role === 'cook') &&
-              variantPath[role].map(({ path, component }) => (
-                <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+      <QueryClientProvider client={queryClient}>
+        {role && <Header logo={logo} restaurantName={restaurantName} role={role} />}
+        <main>
+          <Suspense fallback={<Loader size="lg" />}>
+            <Routes>
+              <Route path="/" element={<PublicRoute component={<MenuPage />} />} />
+              <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
+              <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
+              {routesCustomer.map(({ path, component }) => (
+                <Route key={path} path={path} element={<PublicRoute component={component} />} />
               ))}
 
-            <Route path="*" element={<ErrorPage />} />
-          </Routes>
-        </Suspense>
-      </main>
-      {role && <Footer />}
-      <Toaster />
+              {(role === 'admin' || role === 'waiter' || role === 'cook') &&
+                variantPath[role].map(({ path, component }) => (
+                  <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+                ))}
+
+              <Route path="*" element={<ErrorPage />} />
+            </Routes>
+          </Suspense>
+        </main>
+        {role && <Footer />}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </>
   );
 };
