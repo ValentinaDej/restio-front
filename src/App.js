@@ -13,6 +13,9 @@ import routesCustomer from 'routes/routesCustomer';
 import { useSelector } from 'react-redux';
 import Footer from 'shared/Footer/Footer';
 import Header from 'shared/Header/Header';
+import MenuPage from 'pages/MenuPage/MenuPage';
+import Loader from 'shared/Loader/Loader';
+import { Suspense } from 'react';
 
 const variantPath = {
   admin: routesAdmin,
@@ -22,7 +25,7 @@ const variantPath = {
 
 const App = () => {
   //   const { role } = useSelector((state) => state.auth);
-  const role = 'customer';
+  const role = 'admin';
   //useState де сбережені лого, назва ресторану поки що болванка
   const logo = logoImg;
   const restaurantName = 'Restio';
@@ -32,19 +35,23 @@ const App = () => {
     <>
       {role && <Header logo={logo} restaurantName={restaurantName} role={role} />}
       <main>
-        <Routes>
-          <Route path="/" element={<PublicRoute component={<HomePage />} />} />
-          <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
-          <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
-          {routesCustomer.map(({ path, component }) => (
-            <Route key={path} path={path} element={<PublicRoute component={component} />} />
-          ))}
-          {(role === 'admin' || role === 'waiter' || role === 'cook') &&
-            variantPath[role].map(({ path, component }) => (
-              <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+        <Suspense fallback={<Loader size="lg" />}>
+          <Routes>
+            <Route path="/" element={<PublicRoute component={<MenuPage />} />} />
+            <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
+            <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
+            {routesCustomer.map(({ path, component }) => (
+              <Route key={path} path={path} element={<PublicRoute component={component} />} />
             ))}
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+
+            {(role === 'admin' || role === 'waiter' || role === 'cook') &&
+              variantPath[role].map(({ path, component }) => (
+                <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+              ))}
+
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </Suspense>
       </main>
       {role && <Footer />}
       <Toaster />

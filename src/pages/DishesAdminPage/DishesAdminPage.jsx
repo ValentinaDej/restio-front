@@ -1,26 +1,34 @@
-import { useState } from 'react';
-import EmptyCard from 'shared/EmptyCard/EmptyCard';
-import Title from 'shared/Title/Title';
+import React from 'react';
+import axios from 'axios';
+import { useQuery } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
 
 const DishesAdminPage = () => {
-  const [dishesList, setDishesList] = useState([]);
+  const { restId } = useParams();
+  const navigate = useNavigate();
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/dishes/restaurant/${restId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const navigateToAddDish = () => {
+    navigate(`/admin/${restId}/dishes/new`);
+  };
+
+  const { data } = useQuery('dishes', fetchData);
+
   return (
-    <div className={styles['personnel-container']}>
-      <Title>Dishes List</Title>
-      <ul className={`${styles.menu_wrapper}`}>
-        <li className={styles.card_wrapper}>
-          <EmptyCard text={`dish`} mode={`outlined`}></EmptyCard>
-        </li>
-        {personnelData.map((item) => {
-          return (
-            <li className={styles.card_wrapper} key={item.id}>
-              {/* <EmployeeCard data={item} mode={'outlined'}></EmployeeCard> */}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <AdminPageContainer
+      title="Dishes list"
+      variant="dish"
+      onClick={navigateToAddDish}
+      data={data}
+    />
   );
 };
-
 export default DishesAdminPage;
