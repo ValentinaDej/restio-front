@@ -2,8 +2,20 @@ import Title from 'shared/Title/Title';
 import styles from './AdminPageContainer.module.scss';
 import EmployeeCard from 'shared/EmployeeCard/EmployeeCard';
 import EmptyCard from 'shared/EmptyCard/EmptyCard';
+import { useNavigate, useParams } from 'react-router-dom';
+
+const value = {
+  employee: 'personnel',
+  dish: 'dishes',
+};
 
 const AdminPageContainer = ({ title, variant, onClick, data }) => {
+  const { restId } = useParams();
+  const navigate = useNavigate();
+  const navigateToEditEmpl = (id) => {
+    navigate(`/admin/${restId}/${value[variant]}/new/${id}`);
+  };
+
   return (
     <div className={styles['personnel-container']}>
       <Title textAlign={'left'}>{title}</Title>
@@ -20,6 +32,7 @@ const AdminPageContainer = ({ title, variant, onClick, data }) => {
                 mode={'outlined'}
                 alt={`Employee ${item.name}`}
                 src={item.picture}
+                onClick={() => navigateToEditEmpl(item._id)}
               >
                 {variant === 'employee' && (
                   <>
