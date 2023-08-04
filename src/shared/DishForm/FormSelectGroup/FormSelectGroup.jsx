@@ -95,34 +95,19 @@ const FormSelectGroup = ({
   });
 
   return (
-    <>
-      <div className={classes.column}>
-        <div className={classes.field__wrapper}>
-          <div className={classes.input__wrapper}>
-            {/* <FormInput
-              name="ingredient"
-              placeholder="Your ingredient"
-              autoComplete="off"
-              size="sm"
-              onChange={handleInputChange}
-              onKeyDown={handleInputKeyDown}
-              value={inputValue}
-            /> */}
-            <Input
-              type="text"
-              name="ingredient"
-              placeholder="Your ingredient"
-              size="sm"
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={handleInputKeyDown}
-              autoComplete="off"
-              isFullWidth={true}
-            />
-            <FaSearch onClick={handleAddIngredient} className={classes.input__icon} />
-          </div>
-        </div>
-        <div className={classes.field__wrapper}>
+    <div className={classes.group__wrapper}>
+      <div className={classes.column__wrapper}>
+        <div className={classes.column}>
+          <FormInput
+            name="ingredient"
+            placeholder="Your ingredient"
+            autoComplete="off"
+            size="sm"
+            onChange={handleInputChange}
+            onKeyDown={handleInputKeyDown}
+            value={inputValue}
+            icon={FaSearch}
+          />
           <Select id="type" value={selectedType} onChange={handleTypeChange} size="sm">
             <option value="">All</option>
             {initialData.typesOfIngredients.map((option) => (
@@ -131,8 +116,7 @@ const FormSelectGroup = ({
               </option>
             ))}
           </Select>
-        </div>
-        <div className={classes.field__wrapper}>
+
           <div className={classes.section__select}>
             <ul>
               {filteredIngredientsToShow.map((ingredient) => {
@@ -145,33 +129,34 @@ const FormSelectGroup = ({
             </ul>
           </div>
         </div>
-      </div>
-      <div className={classes.column}>
-        {fields.map((field, index) => (
-          <div key={field.id}>
-            <Controller
-              name={`ingredients[${index}]`}
-              control={control}
-              render={({ field }) => (
-                <div>
-                  <input {...field} type="hidden" />{' '}
-                  {initialData.ingredientsList.find((ing) => ing.id === parseInt(field.value))
-                    ?.name || 'Unknown Ingredient'}
-                  <div className={classes.icon_wrapper} onClick={() => remove(index)}>
-                    <BiSolidTrash />
+        <div className={classes.column}>
+          {fields.map((field, index) => (
+            <div key={field.id}>
+              <Controller
+                name={`ingredients[${index}]`}
+                control={control}
+                render={({ field }) => (
+                  <div>
+                    <input {...field} type="hidden" />{' '}
+                    {initialData.ingredientsList.find((ing) => ing.id === parseInt(field.value))
+                      ?.name || 'Unknown Ingredient'}
+                    <div className={classes.icon_wrapper} onClick={() => remove(index)}>
+                      <BiSolidTrash />
+                    </div>
                   </div>
-                </div>
-              )}
-            />
-          </div>
-        ))}
-        {error.ingredients && (
-          <Text mode="p" textAlign="left" fontSize={8} fontWeight={400} color="var(--color-gray)">
-            {error.ingredients.message}
-          </Text>
-        )}
+                )}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    </>
+
+      {error.ingredients && (
+        <Text mode="p" textAlign="left" fontSize={8} fontWeight={400} color="var(--color-gray)">
+          {error.ingredients.message}
+        </Text>
+      )}
+    </div>
   );
 };
 
