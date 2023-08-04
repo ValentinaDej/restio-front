@@ -30,9 +30,7 @@ const EmployeeCard = ({
           className={`${classes.edit} ${classes[`${size}`]}`}
         ></BiEditAlt>
         {/* End of buttons block  */}
-
         <div className={classes.employee_text}>{children}</div>
-
       </div>
     </>
   );
