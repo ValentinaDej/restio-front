@@ -3,18 +3,18 @@ import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 
 import css from './QuantityButton.module.scss';
 
-const QuantityButton = ({ quantity = 1, addOne, minusOne, mode, size }) => {
+const QuantityButton = ({ quantity = 1, addOne, minusOne, mode, size, classname }) => {
   return (
     <div
-      className={`${css['quantity-container']} ${css[`quantity-container_${mode}`]} ${
-        css[`quantity-container_${size}`]
-      }`}
+      className={`${css['quantity-container']} ${css[`quantity-container_${mode}`]}
+        ${classname} 
+        ${css[`quantity-container_${size}`]}`}
     >
       <button
         className={css['quantity-container__button']}
         type="button"
         onClick={minusOne}
-        disabled={quantity <= 1}
+        disabled={quantity <= 0}
       >
         <AiOutlineMinus className={css['quantity-container__icon']} />
       </button>
