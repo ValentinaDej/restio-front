@@ -20,13 +20,11 @@ export const OrdersList = ({
   onTotalPrice,
   urlParams,
 }) => {
-  const [ordersIDs] = useState(
-    orders.filter((order) => order.status !== 'Paid').map((order) => order._id)
-  );
-  const { isLoading, mutate } = useUpdateOrderStatusByWaiterOrCook(urlParams, ordersIDs);
+  const [ordersIDs, setOrdersIDs] = useState([]);
   const [totalPrice, setTotalPrice] = useState();
   const dispatch = useDispatch();
   const { payment } = useSelector(getIsLoading);
+  const { isLoading, mutate } = useUpdateOrderStatusByWaiterOrCook(urlParams, ordersIDs);
   const frontLink = location.href;
 
   const sortedOrders = useMemo(() => {
@@ -54,7 +52,11 @@ export const OrdersList = ({
         return acc;
       }
     }, 0);
+    const updateOrdersIds = orders
+      .filter((order) => order.status !== 'Paid')
+      .map((order) => order._id);
 
+    setOrdersIDs(updateOrdersIds);
     setTotalPrice(Math.round(newTotalPrice * 100) / 100);
   }, [onTotalPrice, orders]);
 
@@ -117,7 +119,8 @@ export const OrdersList = ({
           <Button
             size={'sm'}
             onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
-            mode={!totalPrice && 'disabled'}
+            mode={(!totalPrice || isLoading) && 'disabled'}
+            className={cls.btn}
           >
             {isWaiter ? (
               isLoading ? (

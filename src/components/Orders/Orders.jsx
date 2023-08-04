@@ -20,7 +20,7 @@ const Orders = ({ isWaiter }) => {
   return (
     <>
       {isLoading ? (
-        <OrderListSkeleton isWaiter={isWaiter} />
+        <OrderListSkeleton isWaiter={isWaiter} isSmall={!isWaiter} />
       ) : (
         <OrdersList
           orders={data?.data?.orders || []}
@@ -34,6 +34,7 @@ const Orders = ({ isWaiter }) => {
       <Checkout
         amount={selectedTotal}
         selectedOrders={selectedOrders}
+        onChangeSelected={onChangeSelected}
         isWaiter={isWaiter}
         urlParams={params}
       />

@@ -7,11 +7,13 @@ import { classNames } from 'helpers/classNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
+import { useUpdateOrderStatusByWaiterOrCook } from 'api/service';
+import Loader from 'shared/Loader/Loader';
 
-export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
+export const Checkout = ({ isWaiter, amount, selectedOrders, onChangeSelected, urlParams }) => {
   const dispatch = useDispatch();
-
   const [isOpen, setIsOpen] = useState(false);
+  const { isLoading, mutate } = useUpdateOrderStatusByWaiterOrCook(urlParams, selectedOrders);
   const { data, signature } = useSelector(getPaymentInfo);
 
   useEffect(() => {
@@ -35,17 +37,11 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
       })
     );
   }, [amount, dispatch, frontLink, selectedOrders]);
-  const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
-    //need to update orders status
-  }, []);
 
-  const boxMods = {
-    [cls.isOpen]: isOpen && amount !== 0,
-  };
-  const checkoutBtnMods = {
-    [cls.isShown]: amount !== 0,
-    [cls.isOpen]: isOpen,
-  };
+  const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
+    mutate();
+    onChangeSelected(0, []);
+  }, [mutate, onChangeSelected]);
 
   if (isWaiter) {
     return (
@@ -54,10 +50,20 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
           Total price for selected orders: ${amount}
         </Text>
         <div className={cls.btnsBox}>
-          <Button size={'sm'} onClick={onClickMarkAsPaidSelectedAsWaiter} disabled={amount === 0}>
-            Mark as paid for selected
+          <Button
+            size={'sm'}
+            onClick={onClickMarkAsPaidSelectedAsWaiter}
+            disabled={amount === 0 || isLoading}
+            className={cls.btn}
+          >
+            {isLoading ? <Loader size={'xs'} /> : 'Mark as paid for selected'}
           </Button>
-          <Button size={'sm'} onClick={onClickMarkAsPaidSelectedAsWaiter} disabled>
+          <Button
+            size={'sm'}
+            onClick={onClickMarkAsPaidSelectedAsWaiter}
+            disabled
+            className={cls.btn}
+          >
             Table is free
           </Button>
         </div>
@@ -67,9 +73,24 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
 
   return (
     <>
-      <div className={classNames(cls.box, boxMods, [])}>
+      <div
+        className={classNames(
+          cls.box,
+          {
+            [cls.isOpen]: isOpen && amount !== 0,
+          },
+          []
+        )}
+      >
         <Button
-          className={classNames(cls.checkoutBtn, checkoutBtnMods, [])}
+          className={classNames(
+            cls.checkoutBtn,
+            {
+              [cls.isShown]: amount !== 0,
+              [cls.isOpen]: isOpen,
+            },
+            []
+          )}
           onClick={onOpenModal}
           size={isOpen ? 'sm' : 'md'}
           disabled={amount === 0}

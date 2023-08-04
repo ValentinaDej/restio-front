@@ -49,10 +49,16 @@
 
 .btnsBox {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   margin-top: 10px;
   justify-content: center;
   gap: 10px;
+}
+
+.btn {
+  height: 48px;
+  width: 150px;
 }
 
 .text {
@@ -60,7 +66,6 @@
 }
 
 .waiterBtn {
-  width: 250px;
   display: grid;
   gap: 10px;
   margin-left: auto;
