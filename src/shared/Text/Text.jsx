@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classes from './Text.module.scss';
 import { memo } from 'react';
 
-const Text = ({ mode, children, fontWeight, fontSize, color, textAlign, classname }) => {
+const Text = memo(({ mode, children, fontWeight, fontSize, color, textAlign, classname }) => {
   switch (mode) {
     case 'p':
       return (
@@ -34,7 +34,7 @@ const Text = ({ mode, children, fontWeight, fontSize, color, textAlign, classnam
       );
     default:
   }
-};
+});
 
 Text.propTypes = {
   mode: PropTypes.oneOf(['p', 'span']),

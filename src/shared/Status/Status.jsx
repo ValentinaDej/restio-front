@@ -4,7 +4,7 @@ import classes from './Status.module.scss';
 import Text from '../Text/Text';
 
 const Status = ({ statusCurrent }) => {
-  const [statusColor, setStatusColor] = useState('green');
+  const [statusColor, setStatusColor] = useState('#50D1AA');
 
   useEffect(() => {
     switch (statusCurrent?.toLowerCase()) {
@@ -12,12 +12,12 @@ const Status = ({ statusCurrent }) => {
       case 'served':
       case 'paid':
       case 'success':
-        setStatusColor('green');
+        setStatusColor('#50D1AA');
         break;
 
       case 'in progress':
       case 'taken':
-        setStatusColor('#FFD700');
+        setStatusColor('#9290FE');
         break;
 
       case 'called waiter':
@@ -28,7 +28,7 @@ const Status = ({ statusCurrent }) => {
       case 'request bill':
       case 'ordered':
       case 'open':
-        setStatusColor('red');
+        setStatusColor('#EB966A');
         break;
     }
   }, [statusCurrent]);

@@ -64,12 +64,15 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
   if (personId) {
     validationSchema.fields.password = Yup.string().matches(
       /^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,30})?$/,
-      'Debil pon'
+      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
     );
   }
 
   if (!personId) {
-    validationSchema.fields.password = Yup.string().matches(CHECK_PASSWORD_SCHEMA, 'Tiraisa tiip');
+    validationSchema.fields.password = Yup.string().matches(
+      CHECK_PASSWORD_SCHEMA,
+      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
+    );
   }
 
   const handleFormSubmit = async (data) => {

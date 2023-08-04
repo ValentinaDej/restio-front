@@ -3,8 +3,14 @@ import Title from 'shared/Title/Title';
 import Text from 'shared/Text/Text';
 import Button from 'shared/Button/Button';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 
-const Header = ({ logo, restaurantName, table = 0, role, onClick }) => {
+const Header = ({ logo, restaurantName, role, onClick }) => {
+  const { pathname } = useLocation();
+  const arrParams = pathname.split('/');
+  const tableId = arrParams[arrParams.length - 1];
+  const table = tableId ?? 0;
+
   return (
     <header className={classes.header}>
       <div className="header__container">
@@ -38,7 +44,6 @@ export default Header;
 Header.propTypes = {
   logo: PropTypes.string,
   restaurantName: PropTypes.string,
-  table: PropTypes.number,
   role: PropTypes.oneOf(['customer', 'waiter', 'cook', 'admin']),
   onClick: PropTypes.func,
 };
