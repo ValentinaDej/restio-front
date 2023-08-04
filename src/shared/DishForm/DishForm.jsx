@@ -28,7 +28,6 @@ const DishForm = () => {
     control,
     setError,
     clearErrors,
-    methods,
   } = useForm({
     shouldUseNativeValidation: false,
     mode: 'onBlur',

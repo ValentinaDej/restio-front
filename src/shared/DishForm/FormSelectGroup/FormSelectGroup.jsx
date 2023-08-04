@@ -6,6 +6,7 @@ import { BiSolidTrash } from 'react-icons/bi';
 
 import Select from 'shared/Select/Select';
 import Input from 'shared/Input/Input';
+import FormInput from '../FormInput/FormInput';
 import Text from 'shared/Text/Text';
 
 import classes from './FormSelectGroup.module.scss';
@@ -43,11 +44,16 @@ const FormSelectGroup = ({
     }
   }, [fields, isSubmitted, isSubmitSuccessful, setError, clearErrors]);
 
-  const AddIngredient = (ingredientId) => {
-    const isAlreadyAdded = fields.some((field) => field === ingredientId);
+  const handleAddIngredient = (ingredientId) => {
+    const isAlreadyAdded = fields.some((field) => {
+      const valuesWithoutId = Object.values(field)
+        .filter((key) => key !== field.id)
+        .join('');
+      return valuesWithoutId.toString() === ingredientId.toString();
+    });
 
     if (!isAlreadyAdded) {
-      append(ingredientId.toString()); // Додаємо об'єкт із ідентифікатором
+      append(ingredientId.toString());
     }
   };
 
@@ -55,29 +61,24 @@ const FormSelectGroup = ({
     if (event.key === 'Enter') {
       event.preventDefault();
       const enteredIngredient = event.target.value;
-      const isAlreadyAdded = fields.some((field) => field === enteredIngredient);
+      const matchedIngredient = initialData.ingredientsList.find(
+        (ingredient) => ingredient.name.toLowerCase() === enteredIngredient.toLowerCase()
+      );
 
-      if (!isAlreadyAdded) {
-        const matchedIngredient = filteredIngredients.find(
-          (ingredient) => ingredient.name.toLowerCase() === enteredIngredient.toLowerCase()
-        );
+      console.log(matchedIngredient);
+      if (matchedIngredient) {
+        const isAlreadyAdded = fields.some((field) => {
+          const valuesWithoutId = Object.values(field)
+            .filter((key) => key !== field.id)
+            .join('');
+          return valuesWithoutId.toString() === matchedIngredient.id.toString();
+        });
 
-        if (matchedIngredient) {
+        if (!isAlreadyAdded) {
           append(matchedIngredient.id.toString());
         }
       }
 
-      setInputValue('');
-    }
-  };
-
-  const handleAddIngredient = () => {
-    const matchedIngredient = initialData.ingredientsList.find(
-      (ingredient) => ingredient.name.toLowerCase() === inputValue.toLowerCase()
-    );
-
-    if (matchedIngredient) {
-      setSelectedIngredients((prevIngredients) => [...prevIngredients, matchedIngredient]);
       setInputValue('');
     }
   };
@@ -98,6 +99,15 @@ const FormSelectGroup = ({
       <div className={classes.column}>
         <div className={classes.field__wrapper}>
           <div className={classes.input__wrapper}>
+            {/* <FormInput
+              name="ingredient"
+              placeholder="Your ingredient"
+              autoComplete="off"
+              size="sm"
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyDown}
+              value={inputValue}
+            /> */}
             <Input
               type="text"
               name="ingredient"
@@ -127,7 +137,7 @@ const FormSelectGroup = ({
             <ul>
               {filteredIngredientsToShow.map((ingredient) => {
                 return (
-                  <li key={ingredient.id} onClick={() => AddIngredient(ingredient.id)}>
+                  <li key={ingredient.id} onClick={() => handleAddIngredient(ingredient.id)}>
                     {ingredient.name}
                   </li>
                 );

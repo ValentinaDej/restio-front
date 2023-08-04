@@ -14,15 +14,21 @@ const FormInput = ({
   validationRules,
   register,
   error,
+  onChange,
+  onKeyDown,
+  value,
 }) => (
   <div className={classes.field__wrapper}>
     <div className={classes.input__wrapper}>
       <Input
-        {...register(name, validationRules)}
+        {...(register ? register(name, validationRules) : {})}
         type={type}
         placeholder={placeholder}
         autoComplete={autoComplete}
         size={size}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        value={value}
       />
       {IconComponent && (
         <div className={classes.icon__wrapper}>
