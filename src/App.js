@@ -6,82 +6,63 @@ import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
 import logoImg from './img/RESTio.svg';
 import { Route, Routes } from 'react-router-dom';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
-import SharedLayout from 'shared/SharedLayout/SharedLayout';
 import routesAdmin from 'routes/routesAdmin';
 import routesCook from 'routes/routesCook';
 import routesWaiter from 'routes/routesWaiter';
 import routesCustomer from 'routes/routesCustomer';
 import { useSelector } from 'react-redux';
+import Footer from 'shared/Footer/Footer';
+import Header from 'shared/Header/Header';
+import MenuPage from 'pages/MenuPage/MenuPage';
+import Loader from 'shared/Loader/Loader';
+import { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+
+const variantPath = {
+  admin: routesAdmin,
+  waiter: routesWaiter,
+  cook: routesCook,
+};
 
 const queryClient = new QueryClient();
 
 const App = () => {
   const { role } = useSelector((state) => state.auth);
+
   //useState де сбережені лого, назва ресторану поки що болванка
   const logo = logoImg;
   const restaurantName = 'Restio';
   //useEffect с запитом - повертає дані лого, назву ресторану
   //restId =`64c4fdea4055a7111092df32`
   return (
-    <QueryClientProvider client={queryClient}>
-      <Routes>
-        {/* Public routes accessible to everyone */}
-        <Route path="/" element={<PublicRoute component={<HomePage />} />} />
-        <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
-        <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
+    <>
+      <QueryClientProvider client={queryClient}>
+        {role && <Header logo={logo} restaurantName={restaurantName} role={role} />}
+        <main>
+          <Suspense fallback={<Loader size="lg" />}>
+            <Routes>
+              <Route path="/" element={<PublicRoute component={<MenuPage />} />} />
+              <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
+              <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
+              {routesCustomer.map(({ path, component }) => (
+                <Route key={path} path={path} element={<PublicRoute component={component} />} />
+              ))}
 
-        {/* Routes for customers (no role) */}
-        <Route
-          path=":restId/:tableId"
-          element={<SharedLayout restaurantName={restaurantName} logo={logo} />}
-        >
-          {routesCustomer.map(({ path, component }) => (
-            <Route key={path} path={path} element={<PublicRoute component={component} />} />
-          ))}
-        </Route>
+              {(role === 'admin' || role === 'waiter' || role === 'cook') &&
+                variantPath[role].map(({ path, component }) => (
+                  <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+                ))}
 
-        {/* Routes for admin */}
-        {role === 'admin' && (
-          <Route
-            path="admin/:restId"
-            element={<SharedLayout restaurantName={restaurantName} logo={logo} />}
-          >
-            {routesAdmin.map(({ path, component }) => (
-              <Route key={path} path={path} element={<PrivateRoute component={component} />} />
-            ))}
-          </Route>
-        )}
-
-        {/* Routes for waiter */}
-        {role === 'waiter' && (
-          <Route
-            path="waiter/tables/:restId"
-            element={<SharedLayout restaurantName={restaurantName} logo={logo} />}
-          >
-            {routesWaiter.map(({ path, component }) => (
-              <Route key={path} path={path} element={<PrivateRoute component={component} />} />
-            ))}
-          </Route>
-        )}
-
-        {/* Routes for cook */}
-        {role === 'cook' && (
-          <Route
-            path="cook/:restId"
-            element={<SharedLayout restaurantName={restaurantName} logo={logo} />}
-          >
-            {routesCook.map(({ path, component }) => (
-              <Route key={path} path={path} element={<PrivateRoute component={component} />} />
-            ))}
-          </Route>
-        )}
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-      <Toaster />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+              <Route path="*" element={<ErrorPage />} />
+            </Routes>
+          </Suspense>
+        </main>
+        {role && <Footer />}
+        <Toaster />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </>
   );
 };
 

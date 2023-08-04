@@ -1,11 +1,8 @@
 import React from 'react';
-import styles from './EmployeePage.module.scss';
-import EmployeeCard from '../../shared/EmployeeCard/EmployeeCard';
 import axios from 'axios';
-import Title from '../../shared/Title/Title';
-import EmptyCard from '../../shared/EmptyCard/EmptyCard';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
 import { BASE_URL } from 'api';
 
 const EmployeePage = () => {
@@ -26,31 +23,12 @@ const EmployeePage = () => {
   const { data } = useQuery('personnel', fetchData);
 
   return (
-    <>
-      <main>
-        <div className={styles['personnel-container']}>
-          <Title textAlign={'left'}>Personnel</Title>
-          <hr className={styles.divider} />
-          <ul className={`${styles.menu_wrapper}`}>
-            <li key={`empty`} className={styles.card_wrapper}>
-              <EmptyCard
-                text={`employee`}
-                mode={`outlined`}
-                onClick={navigateToAddEmpl}
-              ></EmptyCard>
-            </li>
-            {data?.map((item) => {
-              return (
-                <li key={item._id} className={styles.card_wrapper}>
-                  <EmployeeCard data={item} mode={'outlined'}></EmployeeCard>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </main>
-    </>
+    <AdminPageContainer
+      title="Personnel"
+      variant="employee"
+      onClick={navigateToAddEmpl}
+      data={data}
+    />
   );
 };
-
 export default EmployeePage;
