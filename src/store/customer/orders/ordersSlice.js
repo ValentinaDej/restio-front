@@ -1,13 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { payOrders } from './asyncOperations';
-import { selectOrders } from './operations';
 
 const initialState = {
   paymentInfo: {},
-  amount: 0,
-  selectedOrders: [],
   isLoading: {
-    orders: false,
     payment: false,
   },
   error: undefined,
@@ -16,9 +12,7 @@ const initialState = {
 const customerOrdersSlice = createSlice({
   name: 'customerOrders',
   initialState,
-  reducers: {
-    selectOrders,
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(payOrders.pending, (state) => {

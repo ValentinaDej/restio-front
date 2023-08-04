@@ -1,31 +1,22 @@
+import { useState } from 'react';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router';
+import { toast } from 'react-hot-toast';
+
 import CategoryTabs from 'shared/CategoryTabs/CategoryTabs';
-
 import DishCard from 'shared/DishCard/DishCard';
-import css from './MenuPage.module.scss';
-import defaultSrc from '../../assets/img-template.jpg';
 import Cart from 'components/Cart/Cart';
-
-const defaultValues = {
-  src: defaultSrc,
-  title: 'Pork Tenderloin',
-  ingredients: [
-    'Pork',
-    'Garlic',
-    'Oil',
-    'White wine',
-    'Shallot',
-    'Pork',
-    'Garlic',
-    'Oil',
-    'White wine',
-    'Shallot',
-  ],
-  weight: 320,
-  price: 7.89,
-};
+import css from './MenuPage.module.scss';
+import { getDishes } from 'api/dish';
 
 const MenuPage = () => {
-  const { src, title, ingredients, weight, price } = defaultValues;
+  const { restId } = useParams();
+  const [category, setActiveTab] = useState('Salads');
+
+  const { isError, isLoading, data } = useQuery(
+    ['dishes', category],
+    async () => await getDishes(restId, category)
+  );
 
   // const subscribe = async () => {
   //   const eventSource = new EventSource('http://localhost:3001/sse');
@@ -44,19 +35,21 @@ const MenuPage = () => {
   // useEffect(() => {
   //   subscribe();
   // }, []);
+
   return (
     <>
+      {isError && toast.error('Something went wrong... Please try again in few minutes')}
       <main className={css.main}>
-        <CategoryTabs mode="outlined" />
+        <CategoryTabs mode="outlined" setActiveTab={setActiveTab} activeTab={category} />
         <ul className={css.list}>
-          {[1, 2, 3, 4, 5].map((item, index) => (
-            <li className={css.list__item} key={index}>
+          {data?.data?.map(({ _id, picture, price, portionWeight, ingredients, name }) => (
+            <li className={css.list__item} key={_id}>
               <DishCard
-                id={item}
-                src={src}
-                title={title}
+                id={_id}
+                src={picture}
+                title={name}
                 ingredients={ingredients}
-                weight={weight}
+                weight={portionWeight}
                 price={price}
               />
             </li>

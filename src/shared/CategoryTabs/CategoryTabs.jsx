@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classes from './CategoryTabs.module.scss';
+import { DISH_CATEGORIES } from 'utils/constants';
 
-const testCategories = [
-  'burger',
-  'snack',
-  'sauce',
-  'hot-dog',
-  'combo',
-  'drinks',
-  'pizza',
-  'wok',
-  'dessert',
-];
-
-const CategoryTabs = ({ mode = 'primary', categories = testCategories }) => {
-  const [activeTab, setActiveTab] = useState(categories[0]);
+const CategoryTabs = ({
+  mode = 'primary',
+  categories = DISH_CATEGORIES,
+  setActiveTab,
+  activeTab,
+}) => {
+  // const [activeTab, setActiveTab] = useState(categories[0]);
 
   const handleTabClick = (category) => {
     setActiveTab(category);
@@ -49,6 +43,8 @@ const CategoryTabs = ({ mode = 'primary', categories = testCategories }) => {
 CategoryTabs.propTypes = {
   mode: PropTypes.oneOf(['primary', 'outlined']).isRequired,
   categories: PropTypes.arrayOf(PropTypes.string),
+  setActiveTab: PropTypes.func,
+  activeTab: PropTypes.string,
 };
 
 export default CategoryTabs;

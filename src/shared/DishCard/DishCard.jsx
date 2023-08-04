@@ -22,7 +22,9 @@ const DishCard = memo(({ id, src, title, ingredients, weight, price }) => {
         <h2 className={css['card-container__title']}>{title}</h2>
         <p className={css['card-container__weight']}>{weight}g</p>
       </div>
-      <p className={css['card-container__ingredients']}>{ingredients?.join(', ')}</p>
+      <p className={css['card-container__ingredients']}>
+        {ingredients?.map((ingredient) => ingredient.name).join(', ')}
+      </p>
       <div className={css['card-container__wrapper']}>
         <p className={css['card-container__price']}>${price?.toFixed(2)}</p>
         <button type="button" onClick={onClickHandler}>

@@ -1,21 +1,34 @@
-import Card from 'shared/Card/Card';
-import css from './Cart.module.scss';
-import Title from 'shared/Title/Title';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductFromState } from 'store/cart/cartSelectors';
 import { BiDish } from 'react-icons/bi';
-import { clearCart, decreaseQuantity, deleteProduct, increaseQuantity } from 'store/cart/cartSlice';
+
+import Card from 'shared/Card/Card';
+import Title from 'shared/Title/Title';
 import Button from 'shared/Button/Button';
 import Text from 'shared/Text/Text';
+import css from './Cart.module.scss';
+import { getProductFromState } from 'store/cart/cartSelectors';
+import { clearCart, decreaseQuantity, deleteProduct, increaseQuantity } from 'store/cart/cartSlice';
+import { createOrder } from 'api/order';
+import { useParams } from 'react-router';
+import { toast } from 'react-hot-toast';
 
 const Cart = () => {
+  const { restId, tableId } = useParams();
   const dispatch = useDispatch();
   const cart = useSelector(getProductFromState);
 
-  const onClickHandler = () => {
-    console.log(cart);
-    //add function to send an order
-    dispatch(clearCart());
+  const onClickHandler = async () => {
+    try {
+      const order = cart.map(({ id, quantity }) => ({ dish: id, quantity }));
+      const data = {
+        orderItems: order,
+        table_id: tableId,
+      };
+      await createOrder(data, restId);
+      dispatch(clearCart());
+    } catch (error) {
+      return toast.error('Something went wrong... Please call the waiter');
+    }
   };
   const addOneItemHandler = (id) => {
     dispatch(increaseQuantity(id));

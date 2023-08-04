@@ -3,23 +3,34 @@ import classes from './EmployeeCard.module.scss';
 import { BsTrash } from 'react-icons/bs';
 import { BiEditAlt } from 'react-icons/bi';
 
-const EmployeeCard = ({ children, onClick, mode = 'primary', size, ...props }) => {
+const EmployeeCard = ({
+  children,
+  onClick,
+  mode = 'primary',
+  size,
+  src,
+  alt,
+  handleDelete,
+  handleEdit,
+  ...props
+}) => {
   return (
     <>
       <div className={`${classes.card} ${classes[`${mode}`]} ${classes[`${size}`]}`}>
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5pbc3H9yYgdymFpJ5frN32l13IYwYSocmDA&usqp=CAU"
-          className={classes.card_image}
-        />
+        <img src={src} alt={alt} className={classes.card_image} />
         {/* Insert 'DELETE BUTTON" and "EDIT BUTTON" component instead of react-icons, but keep a class '.trash' and '.edit' and size={'1.2rem'}  */}
-        <BsTrash size={'1.2rem'} className={`${classes.trash} ${classes[`${size}`]}`}></BsTrash>
-        <BiEditAlt size={'1.2rem'} className={`${classes.edit} ${classes[`${size}`]}`}></BiEditAlt>
+        <BsTrash
+          onClick={handleDelete}
+          size={'1.6rem'}
+          className={`${classes.trash} ${classes[`${size}`]}`}
+        ></BsTrash>
+        <BiEditAlt
+          onClick={handleEdit}
+          size={'1.6rem'}
+          className={`${classes.edit} ${classes[`${size}`]}`}
+        ></BiEditAlt>
         {/* End of buttons block  */}
-        <div className={classes.employee_text}>
-          <p className={classes.employee_name}>{props.data.name}</p>
-          <p className={classes.employee_subinfo}>{props.data.role}</p>
-          <p className={classes.employee_subinfo}>{props.data.phone}</p>
-        </div>
+        <div className={classes.employee_text}>{children}</div>
       </div>
     </>
   );
@@ -30,6 +41,10 @@ EmployeeCard.propTypes = {
   mode: PropTypes.oneOf(['primary', 'outlined']),
   size: PropTypes.oneOf(['sm', 'md']),
   onClick: PropTypes.func,
+  handleEdit: PropTypes.func,
+  handleDelete: PropTypes.func,
+  src: PropTypes.string,
+  alt: PropTypes.string,
 };
 
 export default EmployeeCard;

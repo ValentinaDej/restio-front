@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
 import Select from '../Select/Select';
@@ -7,25 +7,25 @@ import Button from '../Button/Button';
 import * as Yup from 'yup';
 import Input from '../Input/Input';
 import FileUploader from '../FileUploader/FileUploader';
-import toast from 'react-hot-toast';
+import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA } from 'utils/constants';
+import { CheckBox } from '../CheckBox/CheckBox';
+import { useParams } from 'react-router-dom';
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required field'),
-  lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required field'),
-  password: Yup.string()
-    .min(8, 'Too Short!')
-    .max(30, 'Too Long!')
-    .required('Required field')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,30}$/,
-      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
-    ),
+  firstName: Yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required field'),
+  lastName: Yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required field'),
+  password: Yup.string().matches(
+    CHECK_PASSWORD_SCHEMA,
+    'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
+  ),
   gender: Yup.string().required('Required field'),
   role: Yup.string().required('Required field'),
-  phone: Yup.string().min(10, 'Too Short!').max(15, 'Too Long!').required('Required field'),
+  phone: Yup.string()
+    .matches(CHECK_PHONE_SCHEMA, 'Incorrect phone number')
+    .required('Required field'),
   email: Yup.string().email('Invalid email').required('Required field'),
   address: Yup.string().required('Required field'),
-  image: Yup.string(),
+  picture: Yup.string(),
 });
 
 const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
@@ -58,116 +58,160 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
   });
 
   const fileUploaderRef = useRef();
+  const [showPassword, setShowPassword] = useState(false);
+  const { personId } = useParams();
+
+  if (personId) {
+    validationSchema.fields.password = Yup.string().matches(
+      /^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,30})?$/,
+      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
+    );
+  }
+
+  if (!personId) {
+    validationSchema.fields.password = Yup.string().matches(
+      CHECK_PASSWORD_SCHEMA,
+      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
+    );
+  }
 
   const handleFormSubmit = async (data) => {
     // Add the file upload response to the form data
-    const image = await fileUploaderRef.current.handleUpload();
+    const picture = await fileUploaderRef.current.handleUpload();
 
-    if (image) {
-      onSubmit({ ...data, image: image.data.imageName });
+    delete data.image;
+
+    console.log(data);
+
+    if (picture) {
+      onSubmit({ ...data, picture: picture.data.imageName });
     } else {
-      onSubmit({ ...data, image: '' });
+      onSubmit({ ...data, picture: '' });
     }
     reset();
-
-    toast.success('Employee updated!');
 
     fileUploaderRef.current.clearFile();
   };
 
   return (
     <form
-      className={`${styles.employeeForm} ${styles[`employeeForm_${size}`]}`}
+      className={`${styles.employeeForm} ${styles[`fields_${size}`]}`}
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="firstName"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} placeholder="First Name" size={size} length={'lg'} />
-              {errors.firstName && <div className={styles.error}>{errors.firstName}</div>}
-            </>
-          )}
-        />
+      <div className={`${styles.fields} ${styles[`fields_${size}`]}`}>
+        <div className={styles.field__wrapper}>
+          <Controller
+            name="firstName"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input {...field} placeholder="First Name" size={size} length={'lg'} />
+                {errors.firstName && <div className={styles.error}>{errors.firstName}</div>}
+              </>
+            )}
+          />
+        </div>
+        <div className={styles.field__wrapper}>
+          <Controller
+            name="lastName"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input {...field} placeholder="Last Name" size={size} length={'lg'} />
+                {errors.lastName && <div className={styles.error}>{errors.lastName}</div>}
+              </>
+            )}
+          />
+        </div>
+        <div className={styles.field__wrapper}>
+          <Select
+            label="Gender"
+            size={size}
+            register={register}
+            error={errors.gender ? 'error' : ''}
+          >
+            <option>Male</option>
+            <option>Female</option>
+          </Select>
+          {errors.gender && <div className={styles.error}>{errors.gender}</div>}
+        </div>
+        <div className={styles.field__wrapper}>
+          <Select label="Role" size={size} register={register} error={errors.role ? 'error' : ''}>
+            <option>waiter</option>
+            <option>admin</option>
+            <option>cook</option>
+          </Select>
+          {errors.role && <div className={styles.error}>{errors.role}</div>}
+        </div>
+        <div className={`${styles.field__wrapper}`}>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input
+                  {...field}
+                  type={showPassword ? 'text' : 'password'} // Toggle the input type based on the showPassword state
+                  placeholder="Password"
+                  size={size}
+                  length={`lg`}
+                />
+                <span className={`${styles.showPassword}`}>
+                  <CheckBox
+                    type="checkbox"
+                    label={`Show Password`}
+                    onChange={() => setShowPassword((prevShowPassword) => !prevShowPassword)}
+                    checked={showPassword}
+                  />
+                </span>
+                {errors.password && <div className={styles.error}>{errors.password}</div>}
+              </>
+            )}
+          />
+        </div>
+        <div className={styles.field__wrapper}>
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input
+                  {...field}
+                  placeholder="Phone (ex. +380971234567)"
+                  size={size}
+                  length={`lg`}
+                />
+                {errors.phone && <div className={styles.error}>{errors.phone}</div>}
+              </>
+            )}
+          />
+        </div>
+        <div className={styles.field__wrapper}>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input {...field} type="email" placeholder="Email" size={size} length={`lg`} />
+                {errors.email && <div className={styles.error}>{errors.email}</div>}
+              </>
+            )}
+          />
+        </div>
+        <div className={styles.field__wrapper}>
+          <Controller
+            name="address"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input {...field} placeholder="Address" size={size} length={`lg`} />
+                {errors.address && <div className={styles.error}>{errors.address}</div>}
+              </>
+            )}
+          />
+        </div>
       </div>
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="lastName"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} placeholder="Last Name" size={size} length={'lg'} />
-              {errors.lastName && <div className={styles.error}>{errors.lastName}</div>}
-            </>
-          )}
-        />
-      </div>
-      <div className={styles.field__wrapper}>
-        <Select label="Gender" size={size} length={`lg`} register={register}>
-          <option>Male</option>
-          <option>Female</option>
-        </Select>
-        {errors.gender && <div className={styles.error}>{errors.gender}</div>}
-      </div>
-      <div className={styles.field__wrapper}>
-        <Select label="Role" size={size} length={`lg`} register={register}>
-          <option>Waiter</option>
-          <option>Admin</option>
-          <option>Cook</option>
-        </Select>
-        {errors.role && <div className={styles.error}>{errors.role}</div>}
-      </div>
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} type="password" placeholder="Password" size={size} length={`lg`} />
-              {errors.password && <div className={styles.error}>{errors.password}</div>}
-            </>
-          )}
-        />
-      </div>
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="phone"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} placeholder="Phone" size={size} length={`lg`} />
-              {errors.phone && <div className={styles.error}>{errors.phone}</div>}
-            </>
-          )}
-        />
-      </div>
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} type="email" placeholder="Email" size={size} length={`lg`} />
-              {errors.email && <div className={styles.error}>{errors.email}</div>}
-            </>
-          )}
-        />
-      </div>
-      <div className={styles.field__wrapper}>
-        <Controller
-          name="address"
-          control={control}
-          render={({ field }) => (
-            <>
-              <Input {...field} placeholder="Address" size={size} length={`lg`} />
-              {errors.address && <div className={styles.error}>{errors.address}</div>}
-            </>
-          )}
-        />
-      </div>
-      <div className={styles.field__wrapper}>
+      <div className={`${styles.field__wrapper} ${styles.fileUploader__wrapper}`}>
         <FileUploader ref={fileUploaderRef} />
       </div>
       <div className={styles.btn_group}>
@@ -193,7 +237,7 @@ EmployeeForm.propTypes = {
     phone: PropTypes.string,
     email: PropTypes.string,
     address: PropTypes.string,
-    image: PropTypes.string,
+    picture: PropTypes.string,
   }),
   buttonText: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
@@ -209,7 +253,7 @@ EmployeeForm.defaultProps = {
     phone: '',
     email: '',
     address: '',
-    image: '',
+    picture: '',
   },
   buttonText: 'Submit',
   size: 'sm',
