@@ -9,18 +9,15 @@ import Input from '../Input/Input';
 import FileUploader from '../FileUploader/FileUploader';
 import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA } from 'utils/constants';
 import { CheckBox } from '../CheckBox/CheckBox';
+import { useParams } from 'react-router-dom';
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required field'),
-  lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required field'),
-  password: Yup.string()
-    .min(8, 'Too Short!')
-    .max(30, 'Too Long!')
-    .required('Required field')
-    .matches(
-      CHECK_PASSWORD_SCHEMA,
-      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
-    ),
+  firstName: Yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required field'),
+  lastName: Yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required field'),
+  password: Yup.string().matches(
+    CHECK_PASSWORD_SCHEMA,
+    'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
+  ),
   gender: Yup.string().required('Required field'),
   role: Yup.string().required('Required field'),
   phone: Yup.string()
@@ -62,12 +59,26 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
 
   const fileUploaderRef = useRef();
   const [showPassword, setShowPassword] = useState(false);
+  const { personId } = useParams();
+
+  if (personId) {
+    validationSchema.fields.password = Yup.string().matches(
+      /^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,30})?$/,
+      'Debil pon'
+    );
+  }
+
+  if (!personId) {
+    validationSchema.fields.password = Yup.string().matches(CHECK_PASSWORD_SCHEMA, 'Tiraisa tiip');
+  }
 
   const handleFormSubmit = async (data) => {
     // Add the file upload response to the form data
     const picture = await fileUploaderRef.current.handleUpload();
 
     delete data.image;
+
+    console.log(data);
 
     if (picture) {
       onSubmit({ ...data, picture: picture.data.imageName });

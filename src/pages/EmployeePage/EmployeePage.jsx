@@ -26,26 +26,21 @@ const EmployeePage = () => {
   };
 
   const deleteEmployeeMutation = useMutation((employeeId) =>
-    axios
-      .delete(`${BASE_URL}/personnel/${employeeId}`, {
-        data: { restaurant_id: restId },
-      })
-      .then(() => {
-        // Handle the successful response if needed
-        toast.success('Employee deleted successfully');
-        console.log('Employee deleted successfully');
-      })
-      .catch((error) => {
-        // Handle errors here
-        toast.error('Error deleting employee');
-        console.error(error);
-      })
+    axios.delete(`${BASE_URL}/personnel/${employeeId}`, {
+      data: { restaurant_id: restId },
+    })
   );
+
   const { data, refetch } = useQuery('personnel', fetchData);
 
   const handleDelete = async (employeeId) => {
     try {
-      await deleteEmployeeMutation.mutateAsync(employeeId);
+      // await deleteEmployeeMutation.mutateAsync(employeeId);
+      await toast.promise(deleteEmployeeMutation.mutateAsync(employeeId), {
+        loading: 'Deleting...',
+        success: 'Employee deleted successfully',
+        error: 'Error deleting employee',
+      });
       await refetch();
     } catch (error) {
       console.error('Error deleting employee:', error);
