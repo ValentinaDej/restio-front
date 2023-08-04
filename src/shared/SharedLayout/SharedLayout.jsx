@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 
 const SharedLayout = ({ logo, restaurantName, table = 0 }) => {
   const { role } = useSelector((state) => state.auth);
-  console.log('Role:', role);
 
   const location = useLocation();
   const allowedRoutes = {
