@@ -17,7 +17,6 @@ import classes from './DishForm.module.scss';
 import * as initialData from './InitialState';
 
 const DishForm = () => {
-  const [selectedIngredients, setSelectedIngredients] = useState(new Set());
   const [selectedType, setSelectedType] = useState('');
   const [filteredIngredients, setFilteredIngredients] = useState(initialData.ingredientsList);
 
@@ -34,41 +33,17 @@ const DishForm = () => {
     shouldUseNativeValidation: false,
     mode: 'onBlur',
     defaultValues: {
-      selectedIngredients: new Set(), // Початкове значення для selectedIngredients
       ingredients: [],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'ingredients', // Назва масиву в даних форми
+    name: 'ingredients',
   });
 
   const cleareForm = () => {
-    setSelectedIngredients(new Set());
     reset();
-  };
-
-  const handleRemoveIngredient = (ingredientId) => {
-    setSelectedIngredients((prevIngredients) => {
-      const newIngredients = new Set(prevIngredients);
-      newIngredients.delete(ingredientId);
-      return newIngredients;
-    });
-  };
-
-  const handleIngredientChange = (ingredientId) => {
-    //append(ingredientId);
-    console.log(fields);
-    setSelectedIngredients((prevIngredients) => {
-      if (prevIngredients.has(ingredientId)) {
-        return prevIngredients;
-      } else {
-        const newIngredients = new Set(prevIngredients);
-        newIngredients.add(ingredientId);
-        return newIngredients;
-      }
-    });
   };
 
   const handleTypeChange = (event) => {
@@ -86,13 +61,8 @@ const DishForm = () => {
   };
 
   const onSubmit = async (data) => {
-    const formDataWithIngredients = {
-      ...data,
-      selectedIngredients: Array.from(selectedIngredients),
-    };
-    console.log('Form Data:', formDataWithIngredients);
+    console.log('Form Data:', data);
     reset();
-    setSelectedIngredients(new Set());
     setSelectedType('');
   };
 
@@ -227,10 +197,6 @@ const DishForm = () => {
           </div>
           <div className={classes.column__wrapper}>
             <FormSelectaGroup
-              selectedIngredients={selectedIngredients}
-              setSelectedIngredients={setSelectedIngredients}
-              handleRemoveIngredient={handleRemoveIngredient}
-              handleIngredientChange={handleIngredientChange}
               selectedType={selectedType}
               handleTypeChange={handleTypeChange}
               filteredIngredients={filteredIngredients}

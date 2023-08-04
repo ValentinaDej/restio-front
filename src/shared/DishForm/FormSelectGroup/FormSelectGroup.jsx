@@ -11,44 +11,7 @@ import Text from 'shared/Text/Text';
 import classes from './FormSelectGroup.module.scss';
 import * as initialData from '../InitialState';
 
-const validateSelectedIngredients = (selectedIngredients) => {
-  return selectedIngredients.size > 0 || 'At least one ingredient is required';
-};
-
-const SelectedIngredientsList = ({ selectedIngredients, handleRemoveIngredient, fieldState }) => (
-  <div className={classes.section}>
-    <Text mode="p" textAlign="left" fontSize={14} fontWeight={600} color="var(--color-dark)">
-      Selected ingredients:
-    </Text>
-    <ul>
-      {Array.from(selectedIngredients).map((ingredientId) => {
-        const ingredient = initialData.ingredientsList.find((ing) => ing.id === ingredientId);
-        return (
-          <li key={ingredientId} className={classes.section__item}>
-            {ingredient ? ingredient.name : 'Unknown Ingredient'}
-            <div
-              className={classes.icon_wrapper}
-              onClick={() => handleRemoveIngredient(ingredientId)}
-            >
-              <BiSolidTrash />
-            </div>
-          </li>
-        );
-      })}
-    </ul>
-    {fieldState.invalid && (
-      <Text mode="p" textAlign="center" fontSize={8} fontWeight={400} color="var(--color-danger)">
-        {fieldState.error?.message}
-      </Text>
-    )}
-  </div>
-);
-
 const FormSelectGroup = ({
-  selectedIngredients,
-  setSelectedIngredients,
-  handleRemoveIngredient,
-  handleIngredientChange,
   selectedType,
   handleTypeChange,
   filteredIngredients,
@@ -78,12 +41,13 @@ const FormSelectGroup = ({
     } else {
       clearErrors('ingredients');
     }
-  }, [fields, isSubmitted, isSubmitSuccessful]);
+  }, [fields, isSubmitted, isSubmitSuccessful, setError, clearErrors]);
 
-  const AddIngredient = (el) => {
-    const isAlreadyAdded = fields.some((field) => field.name === el.name);
+  const AddIngredient = (ingredientId) => {
+    const isAlreadyAdded = fields.some((field) => field === ingredientId);
+
     if (!isAlreadyAdded) {
-      append(el);
+      append(ingredientId.toString()); // Додаємо об'єкт із ідентифікатором
     }
   };
 
@@ -91,16 +55,19 @@ const FormSelectGroup = ({
     if (event.key === 'Enter') {
       event.preventDefault();
       const enteredIngredient = event.target.value;
-      const matchedIngredient = filteredIngredients.find(
-        (ingredient) => ingredient.name.toLowerCase() === enteredIngredient.toLowerCase()
-      );
+      const isAlreadyAdded = fields.some((field) => field === enteredIngredient);
 
-      if (matchedIngredient) {
-        const newSelectedIngredients = new Set(selectedIngredients);
-        newSelectedIngredients.add(matchedIngredient.id);
-        setSelectedIngredients(newSelectedIngredients);
-        setInputValue('');
+      if (!isAlreadyAdded) {
+        const matchedIngredient = filteredIngredients.find(
+          (ingredient) => ingredient.name.toLowerCase() === enteredIngredient.toLowerCase()
+        );
+
+        if (matchedIngredient) {
+          append(matchedIngredient.id.toString());
+        }
       }
+
+      setInputValue('');
     }
   };
 
@@ -129,15 +96,6 @@ const FormSelectGroup = ({
   return (
     <>
       <div className={classes.column}>
-        <button type="button" onClick={() => AddIngredient('Hello')}>
-          Add Ingredient
-        </button>
-        <button type="button" onClick={() => AddIngredient('Hello1')}>
-          Add Ingredient 1
-        </button>
-        <button type="button" onClick={() => AddIngredient('Hello2')}>
-          Add Ingredient 2
-        </button>
         <div className={classes.field__wrapper}>
           <div className={classes.input__wrapper}>
             <Input
@@ -169,13 +127,7 @@ const FormSelectGroup = ({
             <ul>
               {filteredIngredientsToShow.map((ingredient) => {
                 return (
-                  <li
-                    key={ingredient.id}
-                    // className={`${classes.section__item_select} ${
-                    //   selectedIngredients.has(ingredient.id) ? classes.selected : ''
-                    // }`}
-                    onClick={() => handleIngredientChange(ingredient.id)}
-                  >
+                  <li key={ingredient.id} onClick={() => AddIngredient(ingredient.id)}>
                     {ingredient.name}
                   </li>
                 );
@@ -189,11 +141,12 @@ const FormSelectGroup = ({
           <div key={field.id}>
             <Controller
               name={`ingredients[${index}]`}
-              //name={ingredients}
               control={control}
               render={({ field }) => (
                 <div>
-                  <input {...field} />
+                  <input {...field} type="hidden" />{' '}
+                  {initialData.ingredientsList.find((ing) => ing.id === parseInt(field.value))
+                    ?.name || 'Unknown Ingredient'}
                   <div className={classes.icon_wrapper} onClick={() => remove(index)}>
                     <BiSolidTrash />
                   </div>
