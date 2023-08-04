@@ -9,11 +9,11 @@ const value = {
   dish: 'dishes',
 };
 
-const AdminPageContainer = ({ title, variant, onClick, data }) => {
+const AdminPageContainer = ({ title, variant, onClick, handleDelete, goToAdd, data }) => {
   const { restId } = useParams();
   const navigate = useNavigate();
-  const navigateToEditEmpl = (id) => {
-    navigate(`/admin/${restId}/${value[variant]}/new/${id}`);
+  const navigateToEdit = (id) => {
+    navigate(`/admin/${restId}/${value[variant]}/edit/${id}`);
   };
 
   return (
@@ -22,7 +22,7 @@ const AdminPageContainer = ({ title, variant, onClick, data }) => {
       <hr className={styles.divider} />
       <ul className={`${styles.menu_wrapper}`}>
         <li key={`empty`} className={styles.card_wrapper}>
-          <EmptyCard text={variant} mode={`outlined`} onClick={onClick}></EmptyCard>
+          <EmptyCard text={variant} mode={`outlined`} onClick={goToAdd}></EmptyCard>
         </li>
         {data?.map((item) => {
           return (
@@ -32,7 +32,8 @@ const AdminPageContainer = ({ title, variant, onClick, data }) => {
                 mode={'outlined'}
                 alt={`Employee ${item.name}`}
                 src={item.picture}
-                onClick={() => navigateToEditEmpl(item._id)}
+                handleEdit={() => navigateToEdit(item._id)}
+                handleDelete={() => handleDelete(item._id)}
               >
                 {variant === 'employee' && (
                   <>

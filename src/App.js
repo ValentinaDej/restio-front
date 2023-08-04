@@ -37,31 +37,29 @@ const App = () => {
   //restId =`64c4fdea4055a7111092df32`
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        {role && <Header logo={logo} restaurantName={restaurantName} role={role} />}
-        <main>
-          <Suspense fallback={<Loader size="lg" />}>
-            <Routes>
-              <Route path="/" element={<PublicRoute component={<MenuPage />} />} />
-              <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
-              <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
-              {routesCustomer.map(({ path, component }) => (
-                <Route key={path} path={path} element={<PublicRoute component={component} />} />
+      {role && <Header logo={logo} restaurantName={restaurantName} role={role} />}
+      <main>
+        <Suspense fallback={<Loader size="lg" />}>
+          <Routes>
+            <Route path="/" element={<PublicRoute component={<MenuPage />} />} />
+            <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
+            <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
+            {routesCustomer.map(({ path, component }) => (
+              <Route key={path} path={path} element={<PublicRoute component={component} />} />
+            ))}
+
+            {(role === 'admin' || role === 'waiter' || role === 'cook') &&
+              variantPath[role].map(({ path, component }) => (
+                <Route key={path} path={path} element={<PrivateRoute component={component} />} />
               ))}
 
-              {(role === 'admin' || role === 'waiter' || role === 'cook') &&
-                variantPath[role].map(({ path, component }) => (
-                  <Route key={path} path={path} element={<PrivateRoute component={component} />} />
-                ))}
-
-              <Route path="*" element={<ErrorPage />} />
-            </Routes>
-          </Suspense>
-        </main>
-        {role && <Footer />}
-        <Toaster />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </Suspense>
+      </main>
+      {role && <Footer />}
+      <Toaster />
+      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 };
