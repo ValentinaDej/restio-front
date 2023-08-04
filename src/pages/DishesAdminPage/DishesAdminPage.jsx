@@ -36,6 +36,10 @@ const DishesAdminPage = () => {
     setSearchText(normalizedValue);
   };
 
+  const handleCategoryChange = () => {
+    console.log('k');
+  };
+
   const filterDishesList = dishesList.filter((item) =>
     item.name.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -44,8 +48,8 @@ const DishesAdminPage = () => {
     <AdminPageContainer
       title="Dishes list"
       variant="dish"
-      onClick={navigateToAddDish}
       data={filterDishesList}
+      goToAdd={navigateToAddDish}
     >
       <div className={`${styles.input__container}`}>
         <Input
@@ -57,6 +61,9 @@ const DishesAdminPage = () => {
           size="md"
           className={`${styles.input}`}
         />
+        {/* <Select id="type" onChange={handleCategoryChange} size="sm">
+          <option value="">All</option>
+        </Select> */}
       </div>
     </AdminPageContainer>
   );

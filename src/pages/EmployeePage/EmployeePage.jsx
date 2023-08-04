@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
 import { BASE_URL } from 'api';
+import toast from 'react-hot-toast';
 
 const EmployeePage = () => {
   const { restId } = useParams();
@@ -20,13 +21,34 @@ const EmployeePage = () => {
     navigate(`/admin/${restId}/personnel/new`);
   };
 
-  const { data } = useQuery('personnel', fetchData);
+  const deleteEmployeeMutation = useMutation((employeeId) =>
+    axios.delete(`${BASE_URL}/personnel/${employeeId}`, {
+      data: { restaurant_id: restId },
+    })
+  );
+
+  const { data, refetch } = useQuery('personnel', fetchData);
+
+  const handleDelete = async (employeeId) => {
+    try {
+      // await deleteEmployeeMutation.mutateAsync(employeeId);
+      await toast.promise(deleteEmployeeMutation.mutateAsync(employeeId), {
+        loading: 'Deleting...',
+        success: 'Employee deleted successfully',
+        error: 'Error deleting employee',
+      });
+      await refetch();
+    } catch (error) {
+      console.error('Error deleting employee:', error);
+    }
+  };
 
   return (
     <AdminPageContainer
       title="Personnel"
       variant="employee"
-      onClick={navigateToAddEmpl}
+      goToAdd={navigateToAddEmpl}
+      handleDelete={handleDelete}
       data={data}
     />
   );
