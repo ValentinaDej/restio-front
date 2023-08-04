@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
 import Button from 'shared/Button/Button';
@@ -7,7 +7,7 @@ import Input from 'shared/Input/Input';
 import Select from 'shared/Select/Select';
 import Text from 'shared/Text/Text';
 import Title from 'shared/Title/Title';
-import FormSelectGroup from './FormSelectGroup/FormSelectGroup';
+import FormSelectaGroup from './FormSelectGroup/FormSelectGroup';
 import FormInput from './FormInput/FormInput';
 
 import { FaMoneyBillAlt } from 'react-icons/fa';
@@ -23,16 +23,25 @@ const DishForm = () => {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitted, isSubmitSuccessful },
     handleSubmit,
     reset,
     control,
+    setError,
+    clearErrors,
+    methods,
   } = useForm({
     shouldUseNativeValidation: false,
     mode: 'onBlur',
     defaultValues: {
       selectedIngredients: new Set(), // Початкове значення для selectedIngredients
+      ingredients: [],
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'ingredients', // Назва масиву в даних форми
   });
 
   const cleareForm = () => {
@@ -49,6 +58,8 @@ const DishForm = () => {
   };
 
   const handleIngredientChange = (ingredientId) => {
+    //append(ingredientId);
+    console.log(fields);
     setSelectedIngredients((prevIngredients) => {
       if (prevIngredients.has(ingredientId)) {
         return prevIngredients;
@@ -215,7 +226,7 @@ const DishForm = () => {
             </div>
           </div>
           <div className={classes.column__wrapper}>
-            <FormSelectGroup
+            <FormSelectaGroup
               selectedIngredients={selectedIngredients}
               setSelectedIngredients={setSelectedIngredients}
               handleRemoveIngredient={handleRemoveIngredient}
@@ -224,6 +235,14 @@ const DishForm = () => {
               handleTypeChange={handleTypeChange}
               filteredIngredients={filteredIngredients}
               control={control}
+              fields={fields}
+              append={append}
+              remove={remove}
+              setError={setError}
+              error={errors}
+              clearErrors={clearErrors}
+              isSubmitted={isSubmitted}
+              isSubmitSuccessful={isSubmitSuccessful}
             />
           </div>
 

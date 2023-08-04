@@ -53,8 +53,39 @@ const FormSelectGroup = ({
   handleTypeChange,
   filteredIngredients,
   control,
+  fields,
+  append,
+  remove,
+  setError,
+  clearErrors,
+  error,
+  isSubmitted,
+  isSubmitSuccessful,
 }) => {
   const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      clearErrors('ingredients');
+      return;
+    }
+
+    if (fields.length === 0 && isSubmitted) {
+      setError('ingredients', {
+        type: 'manual',
+        message: 'At least one ingredient is required',
+      });
+    } else {
+      clearErrors('ingredients');
+    }
+  }, [fields, isSubmitted, isSubmitSuccessful]);
+
+  const AddIngredient = (el) => {
+    const isAlreadyAdded = fields.some((field) => field.name === el.name);
+    if (!isAlreadyAdded) {
+      append(el);
+    }
+  };
 
   const handleInputKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -98,6 +129,15 @@ const FormSelectGroup = ({
   return (
     <>
       <div className={classes.column}>
+        <button type="button" onClick={() => AddIngredient('Hello')}>
+          Add Ingredient
+        </button>
+        <button type="button" onClick={() => AddIngredient('Hello1')}>
+          Add Ingredient 1
+        </button>
+        <button type="button" onClick={() => AddIngredient('Hello2')}>
+          Add Ingredient 2
+        </button>
         <div className={classes.field__wrapper}>
           <div className={classes.input__wrapper}>
             <Input
@@ -127,36 +167,46 @@ const FormSelectGroup = ({
         <div className={classes.field__wrapper}>
           <div className={classes.section__select}>
             <ul>
-              {filteredIngredientsToShow.map((ingredient) => (
-                <li
-                  key={ingredient.id}
-                  className={`${classes.section__item_select} ${
-                    selectedIngredients.has(ingredient.id) ? classes.selected : ''
-                  }`}
-                  onClick={() => handleIngredientChange(ingredient.id)}
-                >
-                  {ingredient.name}
-                </li>
-              ))}
+              {filteredIngredientsToShow.map((ingredient) => {
+                return (
+                  <li
+                    key={ingredient.id}
+                    // className={`${classes.section__item_select} ${
+                    //   selectedIngredients.has(ingredient.id) ? classes.selected : ''
+                    // }`}
+                    onClick={() => handleIngredientChange(ingredient.id)}
+                  >
+                    {ingredient.name}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
       </div>
       <div className={classes.column}>
-        <Controller
-          name="selectedIngredients"
-          control={control}
-          rules={{
-            validate: () => validateSelectedIngredients(selectedIngredients),
-          }}
-          render={({ field, fieldState }) => (
-            <SelectedIngredientsList
-              selectedIngredients={selectedIngredients}
-              handleRemoveIngredient={handleRemoveIngredient}
-              fieldState={fieldState}
+        {fields.map((field, index) => (
+          <div key={field.id}>
+            <Controller
+              name={`ingredients[${index}]`}
+              //name={ingredients}
+              control={control}
+              render={({ field }) => (
+                <div>
+                  <input {...field} />
+                  <div className={classes.icon_wrapper} onClick={() => remove(index)}>
+                    <BiSolidTrash />
+                  </div>
+                </div>
+              )}
             />
-          )}
-        />
+          </div>
+        ))}
+        {error.ingredients && (
+          <Text mode="p" textAlign="left" fontSize={8} fontWeight={400} color="var(--color-gray)">
+            {error.ingredients.message}
+          </Text>
+        )}
       </div>
     </>
   );
