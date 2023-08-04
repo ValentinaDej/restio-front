@@ -54,3 +54,16 @@
   justify-content: center;
   gap: 10px;
 }
+
+.text {
+  color: var(--color-blue-dark);
+}
+
+.waiterBtn {
+  width: 250px;
+  display: grid;
+  gap: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 20px;
+}

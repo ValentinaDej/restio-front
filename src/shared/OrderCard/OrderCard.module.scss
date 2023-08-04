@@ -1,10 +1,20 @@
 .item {
-  padding: 15px;
+  position: relative;
+  height: 100%;
+  padding: 15px 15px 25px 15px;
   border-radius: 10px;
   border: var(--border-primary);
   width: 100%;
   max-width: 400px;
   min-width: 280px;
+  transition:
+    height 0.3s ease,
+    box-shadow 0.3s ease;
+
+  &.isSmall {
+    height: 115px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .topBlock {
@@ -15,18 +25,6 @@
   margin-bottom: 10px;
 }
 
-.bottomBlock {
-  margin-top: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.status {
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .list {
   padding: 10px;
   overflow-y: auto;
@@ -34,15 +32,68 @@
   gap: 10px;
   margin-top: 20px;
   height: 300px;
+  transition: height 0.3s ease;
+
+  &.isSmall {
+    height: 0;
+    padding: 0;
+    gap: 0;
+    margin: 0;
+    overflow: hidden;
+  }
 }
 
-.checkBox {
+.text {
+  color: var(--color-blue-dark);
+
+  &.isSmall {
+    position: absolute;
+  }
+}
+
+.total {
+  color: var(--color-blue-dark);
+
+  &.isSmall {
+    margin-top: 10px;
+    position: absolute;
+  }
+}
+
+.bottomBlock {
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &.isSmall {
+    margin-top: 8px;
+  }
+}
+
+.centered {
   margin-left: auto;
   margin-right: auto;
+
+  &.isSmall {
+    margin-right: 0;
+  }
 }
 
-.btnsBox {
+.dishes {
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  align-items: center;
+  gap: 2px;
+}
+
+.btn {
+  position: absolute;
+  left: 50%;
+  bottom: -15px;
+  transform: translate(-50%) rotate(180deg);
+  transition: transform 0.3s ease;
+
+  &.isSmall {
+    transform: translate(-50%) rotate(0);
+  }
 }
