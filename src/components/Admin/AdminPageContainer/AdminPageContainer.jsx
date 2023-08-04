@@ -9,17 +9,18 @@ const value = {
   dish: 'dishes',
 };
 
-const AdminPageContainer = ({ title, variant, onClick, data }) => {
+const AdminPageContainer = ({ title, variant, onClick, data, children }) => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const navigateToEditEmpl = (id) => {
-    navigate(`/admin/${restId}/${value[variant]}/new/${id}`);
+    navigate(`/admin/${restId}/${value[variant]}/${id}`);
   };
 
   return (
     <div className={styles['personnel-container']}>
       <Title textAlign={'left'}>{title}</Title>
       <hr className={styles.divider} />
+      {children}
       <ul className={`${styles.menu_wrapper}`}>
         <li key={`empty`} className={styles.card_wrapper}>
           <EmptyCard text={variant} mode={`outlined`} onClick={onClick}></EmptyCard>
