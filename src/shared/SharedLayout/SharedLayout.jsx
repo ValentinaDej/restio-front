@@ -8,24 +8,34 @@ import { useSelector } from 'react-redux';
 
 const SharedLayout = ({ logo, restaurantName, table = 0 }) => {
   const { role } = useSelector((state) => state.auth);
+
   const location = useLocation();
-  const allowedRoutes = {
-    admin: ['admin'], // Admin can access all routes
-    cook: ['cook'], // Cook can access cook routes
-    waiter: ['waiter'], // Waiter can access waiter routes
-  };
 
   const currentPath = location.pathname;
-  const isNotAllowed =
-    role &&
-    role !== 'admin' &&
-    !allowedRoutes[role]?.some((route) => currentPath.includes(`/${route}/`));
 
-  if (!role) {
+  // Redirect users without a role from admin, cook, and waiter routes
+  if (
+    !role &&
+    (currentPath.includes('/admin') ||
+      currentPath.includes('/cook') ||
+      currentPath.includes('/waiter'))
+  ) {
     return <Navigate to="/" />;
   }
 
-  if (isNotAllowed) {
+  if (
+    role &&
+    role === 'waiter' &&
+    (currentPath.includes('/admin') || currentPath.includes('/cook'))
+  ) {
+    return <Navigate to="/personnel" />;
+  }
+
+  if (
+    role &&
+    role === 'cook' &&
+    (currentPath.includes('/admin') || currentPath.includes('/waiter'))
+  ) {
     return <Navigate to="/personnel" />;
   }
 
