@@ -2,21 +2,17 @@ import React from 'react';
 import Input from 'shared/Input/Input';
 import Text from 'shared/Text/Text';
 
-import classes from './FormInput.module.scss';
+import classes from './InputValid.module.scss';
 
-const FormInput = ({
+const InputValid = ({
   placeholder,
   name,
   type,
   autoComplete,
-  size,
   icon: IconComponent,
   validationRules,
   register,
   error,
-  onChange,
-  onKeyDown,
-  value,
 }) => {
   const hasError = error !== undefined;
 
@@ -28,10 +24,6 @@ const FormInput = ({
           type={type}
           placeholder={placeholder}
           autoComplete={autoComplete}
-          size={size}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-          value={value}
         />
         {IconComponent && (
           <div className={classes.icon__wrapper}>
@@ -51,4 +43,4 @@ const FormInput = ({
   );
 };
 
-export default FormInput;
+export default InputValid;

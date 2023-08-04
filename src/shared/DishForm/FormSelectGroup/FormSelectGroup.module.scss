@@ -15,11 +15,12 @@
 
 .column {
   flex: 1;
+
   margin-bottom: 1rem;
   @media screen and (min-width: 768px) {
+    margin-bottom: 0;
     &:not(:last-child) {
       margin-right: 1rem;
-      margin-bottom: 0;
     }
   }
 }
@@ -30,8 +31,8 @@
 
 %base-style-section {
   width: 100%;
-  max-height: 200px;
-  height: 200px;
+  max-height: 220px;
+  height: 220px;
   border: 1px solid var(--color-orange);
   background: var(--color-white);
   color: var(--color-dark);

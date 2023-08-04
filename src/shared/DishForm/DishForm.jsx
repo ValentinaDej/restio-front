@@ -8,7 +8,7 @@ import Select from 'shared/Select/Select';
 import Text from 'shared/Text/Text';
 import Title from 'shared/Title/Title';
 import FormSelectaGroup from './FormSelectGroup/FormSelectGroup';
-import FormInput from './FormInput/FormInput';
+import InputValid from 'shared/InputValid/InputValid';
 
 import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
@@ -70,7 +70,7 @@ const DishForm = () => {
       <div className={classes.form}>
         <Title mode="h3">Create dish</Title>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormInput
+          <InputValid
             name="name"
             placeholder="Dish name"
             autoComplete="off"
@@ -151,7 +151,7 @@ const DishForm = () => {
               </div>
               <div className={classes.field__wrapper}>
                 <div className={classes.input__wrapper}>
-                  <FormInput
+                  <InputValid
                     name="portionWeight"
                     placeholder="Dish weight"
                     autoComplete="Weight (gram)"
@@ -172,7 +172,7 @@ const DishForm = () => {
 
               <div className={classes.field__wrapper}>
                 <div className={classes.input__wrapper}>
-                  <FormInput
+                  <InputValid
                     name="price"
                     placeholder="Price"
                     autoComplete="Weight (gram)"

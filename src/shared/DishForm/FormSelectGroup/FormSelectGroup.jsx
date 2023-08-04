@@ -5,8 +5,7 @@ import { FaSearch } from 'react-icons/fa';
 import { BiSolidTrash } from 'react-icons/bi';
 
 import Select from 'shared/Select/Select';
-import Input from 'shared/Input/Input';
-import FormInput from '../FormInput/FormInput';
+import InputValid from 'shared/InputValid/InputValid';
 import Text from 'shared/Text/Text';
 
 import classes from './FormSelectGroup.module.scss';
@@ -98,7 +97,7 @@ const FormSelectGroup = ({
     <div className={classes.group__wrapper}>
       <div className={classes.column__wrapper}>
         <div className={classes.column}>
-          <FormInput
+          <InputValid
             name="ingredient"
             placeholder="Your ingredient"
             autoComplete="off"

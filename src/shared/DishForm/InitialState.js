@@ -6,7 +6,7 @@ export const ingredientsList = [
   { id: 5, type: 'Spices', name: 'Solt' },
   { id: 6, type: 'Spices', name: 'Chili' },
   { id: 7, type: 'Beverage', name: 'Fanta' },
-  { id: 7, type: 'Beverage', name: 'Sprite' },
+  { id: 8, type: 'Beverage', name: 'Sprite' },
 ];
 
 export const typesOfIngredients = ['Beverage', 'Spices'];
