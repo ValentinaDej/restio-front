@@ -4,9 +4,11 @@ import EmployeeCard from '../../shared/EmployeeCard/EmployeeCard';
 import axios from 'axios';
 import Title from '../../shared/Title/Title';
 import EmptyCard from '../../shared/EmptyCard/EmptyCard';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BASE_URL } from 'api';
+import toast from 'react-hot-toast';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 const EmployeePage = () => {
   const { restId } = useParams();
@@ -23,7 +25,32 @@ const EmployeePage = () => {
     navigate(`/admin/${restId}/personnel/new`);
   };
 
-  const { data } = useQuery('personnel', fetchData);
+  const deleteEmployeeMutation = useMutation((employeeId) =>
+    axios
+      .delete(`${BASE_URL}/personnel/${employeeId}`, {
+        data: { restaurant_id: restId },
+      })
+      .then(() => {
+        // Handle the successful response if needed
+        toast.success('Employee deleted successfully');
+        console.log('Employee deleted successfully');
+      })
+      .catch((error) => {
+        // Handle errors here
+        toast.error('Error deleting employee');
+        console.error(error);
+      })
+  );
+  const { data, refetch } = useQuery('personnel', fetchData);
+
+  const handleDelete = async (employeeId) => {
+    try {
+      await deleteEmployeeMutation.mutateAsync(employeeId);
+      await refetch();
+    } catch (error) {
+      console.error('Error deleting employee:', error);
+    }
+  };
 
   return (
     <>
@@ -42,13 +69,20 @@ const EmployeePage = () => {
             {data?.map((item) => {
               return (
                 <li key={item._id} className={styles.card_wrapper}>
-                  <EmployeeCard data={item} mode={'outlined'}></EmployeeCard>
+                  <EmployeeCard
+                    data={item}
+                    mode={'outlined'}
+                    handleDelete={() => {
+                      handleDelete(item._id);
+                    }}
+                  ></EmployeeCard>
                 </li>
               );
             })}
           </ul>
         </div>
       </main>
+      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 };

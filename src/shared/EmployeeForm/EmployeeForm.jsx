@@ -7,7 +7,6 @@ import Button from '../Button/Button';
 import * as Yup from 'yup';
 import Input from '../Input/Input';
 import FileUploader from '../FileUploader/FileUploader';
-import toast from 'react-hot-toast';
 import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA } from 'utils/constants';
 import { CheckBox } from '../CheckBox/CheckBox';
 
@@ -76,8 +75,6 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
       onSubmit({ ...data, picture: '' });
     }
     reset();
-
-    toast.success('Employee updated!');
 
     fileUploaderRef.current.clearFile();
   };

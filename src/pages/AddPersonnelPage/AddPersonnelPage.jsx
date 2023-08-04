@@ -45,6 +45,7 @@ const AddPersonnelPage = () => {
           ...formData,
           restaurant_id: restId,
         });
+        toast.success('Personnel updated successfully');
         console.log('Personnel updated successfully:', response.data);
       } else {
         // If personId doesn't exist, it means we are adding a new personnel
@@ -52,6 +53,7 @@ const AddPersonnelPage = () => {
           ...formData,
           restaurant_id: restId,
         });
+        toast.success('Personnel added successfully');
         console.log('Personnel added successfully:', response.data);
       }
       handleBack();

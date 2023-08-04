@@ -4,7 +4,7 @@ import { BsTrash } from 'react-icons/bs';
 import { BiEditAlt } from 'react-icons/bi';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const EmployeeCard = ({ children, onClick, mode = 'primary', size, ...props }) => {
+const EmployeeCard = ({ children, onClick, mode = 'primary', size, handleDelete, ...props }) => {
   const navigate = useNavigate();
   const { restId } = useParams();
   const handleClick = () => {
@@ -18,11 +18,8 @@ const EmployeeCard = ({ children, onClick, mode = 'primary', size, ...props }) =
           src={props.data.picture}
           className={classes.card_image}
         />
-        {/* Insert 'DELETE BUTTON" and "EDIT BUTTON" component instead of react-icons, but keep a class '.trash' and '.edit' and size={'1.2rem'}  */}
         <BsTrash
-          onClick={() => {
-            console.log(props.data);
-          }}
+          onClick={handleDelete}
           size={'1.6rem'}
           className={`${classes.trash} ${classes[`${size}`]}`}
         ></BsTrash>
@@ -47,6 +44,7 @@ EmployeeCard.propTypes = {
   mode: PropTypes.oneOf(['primary', 'outlined']),
   size: PropTypes.oneOf(['sm', 'md']),
   onClick: PropTypes.func,
+  handleDelete: PropTypes.func,
 };
 
 export default EmployeeCard;
