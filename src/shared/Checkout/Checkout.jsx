@@ -10,8 +10,10 @@ import { getPaymentInfo } from 'store/customer/orders/selectors';
 
 export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
   const dispatch = useDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
   const { data, signature } = useSelector(getPaymentInfo);
+
   useEffect(() => {
     if (data && signature) {
       location.href = `${process.env.REACT_APP_LIQPAY_BASE_URL}/checkout?data=${data}&signature=${signature}`;
@@ -27,14 +29,11 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
     dispatch(
       payOrders({
         amount,
-        order_id: selectedOrders[0],
         type: 'online',
         info: selectedOrders.join(','),
         frontLink,
       })
     );
-    // console.log(selectedOrders[0]);
-    // console.log(selectedOrders);
   }, [amount, dispatch, frontLink, selectedOrders]);
   const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
     //need to update orders status
@@ -54,9 +53,14 @@ export const Checkout = ({ isWaiter, amount, selectedOrders }) => {
         <Text classname={cls.text} fontWeight={700}>
           Total price for selected orders: ${amount}
         </Text>
-        <Button size={'sm'} onClick={onClickMarkAsPaidSelectedAsWaiter} disabled={amount === 0}>
-          Mark as paid for selected
-        </Button>
+        <div className={cls.btnsBox}>
+          <Button size={'sm'} onClick={onClickMarkAsPaidSelectedAsWaiter} disabled={amount === 0}>
+            Mark as paid for selected
+          </Button>
+          <Button size={'sm'} onClick={onClickMarkAsPaidSelectedAsWaiter} disabled>
+            Table is free
+          </Button>
+        </div>
       </div>
     );
   }

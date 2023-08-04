@@ -9,8 +9,9 @@ import { CheckBox } from 'shared/CheckBox/CheckBox';
 import { BiDish, BiChevronDown } from 'react-icons/bi';
 import { classNames } from 'helpers/classNames';
 import { IconButton } from 'shared/IconButton/IconButton';
+import StatusSelector from 'shared/StatusSelector/StatusSelector';
 
-const OrderCard = memo(({ _id, orderItems, status, сhecked, onChange, small, isLoading }) => {
+const OrderCard = memo(({ _id, orderItems, status, сhecked, onChange, small, isWaiter }) => {
   const cardRef = useRef(null);
   const [isChecked, setIsChecked] = useState(сhecked || false);
   const [isSmall, setIsSmall] = useState(small);
@@ -52,7 +53,14 @@ const OrderCard = memo(({ _id, orderItems, status, сhecked, onChange, small, is
       </div>
       <ul className={classNames(cls.list, { [cls.isSmall]: isSmall }, [])}>
         {orderItems.map(({ dish: { _id, picture, name, price }, quantity }) => (
-          <Card key={_id} src={picture} title={name} quantity={quantity} price={price} />
+          <Card
+            key={_id}
+            src={picture}
+            title={name}
+            quantity={quantity}
+            price={price}
+            variant={isWaiter && 'waiter'}
+          />
         ))}
       </ul>
       <Text fontWeight={700} classname={classNames(cls.total, { [cls.isSmall]: isSmall }, [])}>

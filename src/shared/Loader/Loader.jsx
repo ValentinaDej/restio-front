@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classes from './Loader.module.scss';
 
 const sizeValues = {
+  xs: '20',
   sm: '54',
   md: '80',
   lg: '96',
@@ -23,7 +24,7 @@ const Loader = ({ size = 'sm' }) => {
 };
 
 Loader.propTypes = {
-  size: PropTypes.oneOf(['sm', 'md', 'lg']),
+  size: PropTypes.oneOf(['sm', 'md', 'lg', 'xs']),
 };
 
 export default Loader;
