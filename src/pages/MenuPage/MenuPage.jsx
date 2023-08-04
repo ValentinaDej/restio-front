@@ -1,5 +1,5 @@
 import CategoryTabs from 'shared/CategoryTabs/CategoryTabs';
-import Header from 'shared/Header/Header';
+
 import DishCard from 'shared/DishCard/DishCard';
 import css from './MenuPage.module.scss';
 import defaultSrc from '../../assets/img-template.jpg';
@@ -27,9 +27,25 @@ const defaultValues = {
 const MenuPage = () => {
   const { src, title, ingredients, weight, price } = defaultValues;
 
+  // const subscribe = async () => {
+  //   const eventSource = new EventSource('http://localhost:3001/sse');
+
+  //   eventSource.onmessage = (event) => {
+  //     const eventData = JSON.parse(event.data);
+  //     // Handle the updated dish status here and update your UI accordingly
+  //     setMessage(eventData);
+  //     console.log('eventData', eventData);
+  //   };
+
+  //   eventSource.onerror = (error) => {
+  //     console.error('Error occurred with SSE connection:', error);
+  //   };
+  // };
+  // useEffect(() => {
+  //   subscribe();
+  // }, []);
   return (
     <>
-      <Header role="customer" />
       <main className={css.main}>
         <CategoryTabs mode="outlined" />
         <ul className={css.list}>
