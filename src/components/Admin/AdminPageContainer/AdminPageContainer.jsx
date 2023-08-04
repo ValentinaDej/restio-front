@@ -3,6 +3,8 @@ import styles from './AdminPageContainer.module.scss';
 import EmployeeCard from 'shared/EmployeeCard/EmployeeCard';
 import EmptyCard from 'shared/EmptyCard/EmptyCard';
 import { useNavigate, useParams } from 'react-router-dom';
+import Input from 'shared/Input/Input';
+import { useState } from 'react';
 
 const value = {
   employee: 'personnel',
@@ -12,20 +14,43 @@ const value = {
 const AdminPageContainer = ({ title, variant, handleDelete, goToAdd, data, children }) => {
   const { restId } = useParams();
   const navigate = useNavigate();
+
+  const [searchText, setSearchText] = useState('');
+  const handleChange = (e) => {
+    const { value } = e.target;
+    const normalizedValue = value.trim();
+    setSearchText(normalizedValue);
+  };
+
   const navigateToEdit = (id) => {
     navigate(`/admin/${restId}/${value[variant]}/edit/${id}`);
   };
+
+  const filterDishesList = data?.filter((item) =>
+    item.name.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <div className={styles['personnel-container']}>
       <Title textAlign={'left'}>{title}</Title>
       <hr className={styles.divider} />
+      <div className={`${styles.input__container}`}>
+        <Input
+          type="text"
+          name="search"
+          value={searchText}
+          onChange={handleChange}
+          placeholder="Search dish..."
+          size="md"
+          className={`${styles.input}`}
+        />
+      </div>
       {children}
       <ul className={`${styles.menu_wrapper}`}>
         <li key={`empty`} className={styles.card_wrapper}>
           <EmptyCard text={variant} mode={`outlined`} onClick={goToAdd}></EmptyCard>
         </li>
-        {data?.map((item) => {
+        {filterDishesList?.map((item) => {
           return (
             <li key={item._id} className={styles.card_wrapper}>
               <EmployeeCard
