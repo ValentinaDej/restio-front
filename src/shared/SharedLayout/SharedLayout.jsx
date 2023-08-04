@@ -21,9 +21,9 @@ const SharedLayout = ({ logo, restaurantName, table = 0 }) => {
     role !== 'admin' &&
     !allowedRoutes[role]?.some((route) => currentPath.includes(`/${route}/`));
 
-  if (!role) {
-    return <Navigate to="/" />;
-  }
+  // if (!role) {
+  //   return <Navigate to="/" />;
+  // }
 
   if (isNotAllowed) {
     return <Navigate to="/personnel" />;
