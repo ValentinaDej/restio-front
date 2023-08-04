@@ -16,22 +16,21 @@ const DishPage = (props) => {
   const params = useParams().dishId;
   const isTrue = true;
 
-  const getDishById = async () => {
-    try {
-      setIsLoading(false);
-      const response = await axios.get(`http://localhost:3001/dishes/${params}`);
-      console.log(response.data);
-      setDish(response.data);
-      setTimeout(() => {
-        setIsLoading(true);
-      }, 2000);
-      return response.data;
-    } catch (err) {
-      console.error(err.toJSON());
-    }
-  };
-
   useEffect(() => {
+    const getDishById = async () => {
+      try {
+        setIsLoading(false);
+        const response = await axios.get(`http://localhost:3001/dishes/${params}`);
+        console.log(response.data);
+        setDish(response.data);
+        setTimeout(() => {
+          setIsLoading(true);
+        }, 2000);
+        return response.data;
+      } catch (err) {
+        console.error(err.toJSON());
+      }
+    };
     getDishById();
   }, []);
 
