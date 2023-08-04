@@ -107,6 +107,7 @@ const FormSelectGroup = ({
             onKeyDown={handleInputKeyDown}
             value={inputValue}
             icon={FaSearch}
+            error={error.ingredients}
           />
           <Select id="type" value={selectedType} onChange={handleTypeChange} size="sm">
             <option value="">All</option>
@@ -121,7 +122,11 @@ const FormSelectGroup = ({
             <ul>
               {filteredIngredientsToShow.map((ingredient) => {
                 return (
-                  <li key={ingredient.id} onClick={() => handleAddIngredient(ingredient.id)}>
+                  <li
+                    key={ingredient.id}
+                    onClick={() => handleAddIngredient(ingredient.id)}
+                    className={classes.section__item_select}
+                  >
                     {ingredient.name}
                   </li>
                 );
@@ -130,32 +135,33 @@ const FormSelectGroup = ({
           </div>
         </div>
         <div className={classes.column}>
-          {fields.map((field, index) => (
-            <div key={field.id}>
-              <Controller
-                name={`ingredients[${index}]`}
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <input {...field} type="hidden" />{' '}
-                    {initialData.ingredientsList.find((ing) => ing.id === parseInt(field.value))
-                      ?.name || 'Unknown Ingredient'}
-                    <div className={classes.icon_wrapper} onClick={() => remove(index)}>
-                      <BiSolidTrash />
-                    </div>
-                  </div>
-                )}
-              />
+          <div className={classes.section}>
+            <div className={classes.field__wrapper}>
+              <Text mode="p" textAlign="left" fontSize={16} fontWeight={600}>
+                Selected ingridients:
+              </Text>
             </div>
-          ))}
+            {fields.map((field, index) => (
+              <div key={field.id}>
+                <Controller
+                  name={`ingredients[${index}]`}
+                  control={control}
+                  render={({ field }) => (
+                    <div className={classes.section__item}>
+                      <input {...field} type="hidden" />{' '}
+                      {initialData.ingredientsList.find((ing) => ing.id === parseInt(field.value))
+                        ?.name || 'Unknown Ingredient'}
+                      <div className={classes.icon__wrapper} onClick={() => remove(index)}>
+                        <BiSolidTrash />
+                      </div>
+                    </div>
+                  )}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-
-      {error.ingredients && (
-        <Text mode="p" textAlign="left" fontSize={8} fontWeight={400} color="var(--color-gray)">
-          {error.ingredients.message}
-        </Text>
-      )}
     </div>
   );
 };

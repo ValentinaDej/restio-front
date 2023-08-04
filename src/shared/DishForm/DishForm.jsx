@@ -68,7 +68,7 @@ const DishForm = () => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.form}>
-        <Title mode="h2">Create dish</Title>
+        <Title mode="h3">Create dish</Title>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormInput
             name="name"
@@ -86,9 +86,7 @@ const DishForm = () => {
             register={register}
           />
           <div className={classes.column__wrapper}>
-            <div className={classes.column}>
-              <div className={classes.field__wrapper}>Picture</div>
-            </div>
+            <div className={classes.column}>Picture</div>
             <div className={classes.column}>
               <div className={classes.field__wrapper}>
                 <Select

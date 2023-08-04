@@ -17,34 +17,38 @@ const FormInput = ({
   onChange,
   onKeyDown,
   value,
-}) => (
-  <div className={classes.field__wrapper}>
-    <div className={classes.input__wrapper}>
-      <Input
-        {...(register ? register(name, validationRules) : {})}
-        type={type}
-        placeholder={placeholder}
-        autoComplete={autoComplete}
-        size={size}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        value={value}
-      />
-      {IconComponent && (
-        <div className={classes.icon__wrapper}>
-          <IconComponent />
-        </div>
-      )}
-    </div>
+}) => {
+  const hasError = error !== undefined;
 
-    <div className={classes.eror__wrapper}>
-      {error && (
-        <Text mode="p" textAlign="left" fontSize={8} fontWeight={400} color="var(--color-gray)">
-          {error.message}
-        </Text>
-      )}
+  return (
+    <div className={classes.field__wrapper}>
+      <div className={`${classes.input__wrapper} ${hasError ? classes.error : ''}`}>
+        <Input
+          {...(register ? register(name, validationRules) : {})}
+          type={type}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          size={size}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          value={value}
+        />
+        {IconComponent && (
+          <div className={classes.icon__wrapper}>
+            <IconComponent />
+          </div>
+        )}
+      </div>
+
+      <div className={classes.eror__wrapper}>
+        {error && (
+          <Text mode="p" textAlign="left" fontSize={10} fontWeight={400} color="var(--color-gray)">
+            {error.message}
+          </Text>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default FormInput;
