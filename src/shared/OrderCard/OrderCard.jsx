@@ -9,7 +9,6 @@ import { CheckBox } from 'shared/CheckBox/CheckBox';
 import { BiDish, BiChevronDown } from 'react-icons/bi';
 import { classNames } from 'helpers/classNames';
 import { IconButton } from 'shared/IconButton/IconButton';
-import StatusSelector from 'shared/StatusSelector/StatusSelector';
 
 const OrderCard = memo(({ _id, orderItems, status, сhecked, onChange, small, isWaiter }) => {
   const cardRef = useRef(null);
@@ -63,7 +62,14 @@ const OrderCard = memo(({ _id, orderItems, status, сhecked, onChange, small, is
           />
         ))}
       </ul>
-      <Text fontWeight={700} classname={classNames(cls.total, { [cls.isSmall]: isSmall }, [])}>
+      <Text
+        fontWeight={700}
+        classname={classNames(
+          cls.total,
+          { [cls.isSmall]: isSmall, [cls.isPaid]: status === 'Paid' },
+          []
+        )}
+      >
         Order total: ${totalPrice}
       </Text>
       <div className={classNames(cls.bottomBlock, { [cls.isSmall]: isSmall }, [])}>
