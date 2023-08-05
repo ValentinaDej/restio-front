@@ -77,8 +77,8 @@ InputDisabled.args = {
   mode: 'disabled',
 };
 
-export const СheckBox = Template.bind({});
-СheckBox.args = {
+export const CheckBox = Template.bind({});
+CheckBox.args = {
   id: 'checkBox1',
   name: 'checkBox1',
   label: 'checkBox',

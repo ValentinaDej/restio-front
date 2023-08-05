@@ -14,6 +14,7 @@ const EmployeeCard = ({
   handleEdit,
   ...props
 }) => {
+
   return (
     <>
       <div className={`${classes.card} ${classes[`${mode}`]} ${classes[`${size}`]}`}>

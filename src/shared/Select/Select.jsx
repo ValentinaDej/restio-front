@@ -10,6 +10,9 @@ const Select = ({
   size,
   length,
   register,
+  rules,
+  multiple,
+  value,
   error,
   ...props
 }) => {
@@ -24,9 +27,11 @@ const Select = ({
         } ${styles[`select_${error}`]}  `}
         id={id}
         name={name}
-        defaultValue={'default'}
+        //defaultValue={'default'}
+        multiple={multiple}
+        value={value}
         onChange={onChange}
-        {...register(label.toLowerCase())}
+        {...(register && register(name, rules))}
         {...props}
       >
         <option disabled={true}>Select an option</option>
