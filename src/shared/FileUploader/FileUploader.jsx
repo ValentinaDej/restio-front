@@ -2,7 +2,7 @@ import React, { forwardRef, useRef, useImperativeHandle, useState } from 'react'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-import { BsPlusCircle } from 'react-icons/bs';
+import { LiaPlusSolid } from 'react-icons/lia';
 
 import defaultImage from '../../img/defaultUploadImg.png';
 import styles from './FileUploader.module.scss';
@@ -70,7 +70,7 @@ const FileUploader = forwardRef(({ size }, ref) => {
 
   return (
     <div>
-      <div className={styles.photoContainer}>
+      <div className={`${styles.photoContainer} ${styles[`photoContainer_${size}`]}`}>
         {/* {previewUrl ? (
         
         ) : (
@@ -78,7 +78,7 @@ const FileUploader = forwardRef(({ size }, ref) => {
         )} */}
         <img src={previewUrl ? previewUrl : defaultImage} alt="Preview" className={styles.photo} />
         <div className={styles.addButton} onClick={handleFileInputClick}>
-          <BsPlusCircle className={styles.icon} />
+          <LiaPlusSolid className={`${styles.icon} ${styles[`icon_${size}`]}`} />
           <input
             type="file"
             accept="image/jpeg, image/png, image/gif, image/jpg"
@@ -87,11 +87,6 @@ const FileUploader = forwardRef(({ size }, ref) => {
             className={styles.hiddenInput}
           />
         </div>
-        {/* <input
-          type="file"
-          accept="image/jpeg, image/png, image/gif, image/jpg"
-          onChange={onFileChange}
-        /> */}
       </div>
     </div>
   );
