@@ -6,6 +6,7 @@ import { BiSolidTrash } from 'react-icons/bi';
 import css from './Card.module.scss';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
 import { IconButton } from 'shared/IconButton/IconButton';
+import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import Status from 'shared/Status/Status';
 import StatusSelector from 'shared/StatusSelector/StatusSelector';
 
@@ -30,7 +31,7 @@ const Card = memo(
     statusCurrent,
     changeStatusFunction,
   }) => {
-    const sum = (price * quantity).toFixed(2);
+    const sum = formatNumberWithTwoDecimals(price * quantity);
     return (
       <div className={css['card']}>
         <div className={css['card__image-container']}>

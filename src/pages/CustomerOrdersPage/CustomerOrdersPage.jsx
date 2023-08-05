@@ -1,9 +1,9 @@
-import { CustomerOrders } from 'components';
+import Orders from 'components/Orders/Orders';
 
 const CustomerOrdersPage = () => {
   return (
     <div>
-      <CustomerOrders />
+      <Orders />
     </div>
   );
 };

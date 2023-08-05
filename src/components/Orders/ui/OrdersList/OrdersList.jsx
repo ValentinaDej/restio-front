@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIsLoading } from 'store/customer/orders/selectors';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from 'shared/Button/Button';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
 import { classNames } from 'helpers/classNames';
+import { useUpdateOrderStatusByWaiter } from 'api/service';
+import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 
 export const OrdersList = ({
   isWaiter,
@@ -16,14 +18,27 @@ export const OrdersList = ({
   onChangeSelected,
   selectedTotal,
   selectedOrders,
+  onTotalPrice,
+  urlParams,
 }) => {
-  const [ordersIDs] = useState(
-    orders.filter((order) => order.status !== 'Paid').map((order) => order._id)
-  );
-  const [totalPrice, setTotalPrice] = useState();
   const dispatch = useDispatch();
-  const isLoading = useSelector(getIsLoading);
+  const [ordersIDs, setOrdersIDs] = useState([]);
+  const [totalPrice, setTotalPrice] = useState();
+  const { payment } = useSelector(getIsLoading);
+  const { isLoading, mutate } = useUpdateOrderStatusByWaiter(urlParams, ordersIDs);
   const frontLink = location.href;
+
+  const sortedOrders = useMemo(() => {
+    return [...orders].sort((orderA, orderB) => {
+      if (orderA.status === 'Paid' && orderB.status !== 'Paid') {
+        return 1;
+      }
+      if (orderA.status !== 'Paid' && orderB.status === 'Paid') {
+        return -1;
+      }
+      return new Date(orderB.created_at) - new Date(orderA.created_at);
+    });
+  }, [orders]);
 
   useEffect(() => {
     const newTotalPrice = orders.reduce((acc, order) => {
@@ -38,15 +53,18 @@ export const OrdersList = ({
         return acc;
       }
     }, 0);
+    const updateOrdersIds = orders
+      .filter((order) => order.status !== 'Paid')
+      .map((order) => order._id);
 
-    setTotalPrice(Math.round(newTotalPrice * 100) / 100);
-  }, [orders]);
+    setOrdersIDs(updateOrdersIds);
+    setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
+  }, [onTotalPrice, orders]);
 
   const onClickPayAllAsCustomer = useCallback(() => {
     dispatch(
       payOrders({
         amount: totalPrice,
-        order_id: ordersIDs[0],
         type: 'online',
         info: ordersIDs.join(','),
         frontLink,
@@ -55,14 +73,13 @@ export const OrdersList = ({
   }, [dispatch, frontLink, ordersIDs, totalPrice]);
 
   const onClickMarkAsPaidAllAsWaiter = useCallback(() => {
-    //need to update orders status
-  }, []);
+    mutate();
+  }, [mutate]);
 
   const selectOrder = useCallback(
     (id, totalPrice) => {
       const index = selectedOrders.indexOf(id);
-      const fixedPrice = Math.round(totalPrice * 100) / 100;
-
+      const fixedPrice = formatNumberWithTwoDecimals(totalPrice);
       let updatedSelectedOrders;
       let updatedTotal;
 
@@ -103,9 +120,18 @@ export const OrdersList = ({
           <Button
             size={'sm'}
             onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
-            mode={!totalPrice && 'disabled'}
+            mode={(!totalPrice || isLoading) && 'disabled'}
+            className={cls.btn}
           >
-            {isWaiter ? 'Mark as paid all orders' : 'Pay online'}
+            {isWaiter ? (
+              isLoading ? (
+                <Loader size={'xs'} />
+              ) : (
+                'Mark as paid all orders'
+              )
+            ) : (
+              'Pay online'
+            )}
           </Button>
         </div>
         <Text classname={cls.text}>
@@ -113,9 +139,9 @@ export const OrdersList = ({
             ? 'Or select those orders that the customer has paid by selecting the ones you need.'
             : 'Or you can pay for each order separately by selecting the ones you need.'}
         </Text>
-        <ul className={cls.list}>{orders.map(renderOrder)}</ul>
+        <ul className={cls.list}>{sortedOrders.map(renderOrder)}</ul>
       </div>
-      {isLoading.payment && (
+      {payment && (
         <div className={cls.layout}>
           <Loader />
         </div>

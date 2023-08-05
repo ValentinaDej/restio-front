@@ -1,9 +1,9 @@
-import { WaiterOrders } from 'components/WaiterOrders/WaiterOrders';
+import Orders from 'components/Orders/Orders';
 
 const TableWaiterPage = () => {
   return (
     <div>
-      <WaiterOrders />
+      <Orders isWaiter />
     </div>
   );
 };
