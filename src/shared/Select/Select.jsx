@@ -1,7 +1,21 @@
 import PropTypes from 'prop-types';
 import styles from './Select.module.scss';
 
-const Select = ({ children, onChange, name, id, label, size, length, register, ...props }) => {
+const Select = ({
+  children,
+  onChange,
+  name,
+  id,
+  label,
+  size,
+  length,
+  register,
+  rules,
+  multiple,
+  value,
+  error,
+  ...props
+}) => {
   return (
     <div className={`${styles.select_wrapper}`}>
       <label className={`${styles.label} ${styles[`label_${size}`]}`} htmlFor={id}>
@@ -10,12 +24,14 @@ const Select = ({ children, onChange, name, id, label, size, length, register, .
       <select
         className={`${styles.select} ${styles[`select_${size}`]} ${
           styles[`select_length-${length}`]
-        }`}
+        } ${styles[`select_${error}`]}  `}
         id={id}
         name={name}
-        defaultValue={'default'}
+        //defaultValue={'default'}
+        multiple={multiple}
+        value={value}
         onChange={onChange}
-        {...register(label.toLowerCase())}
+        {...(register && register(name, rules))}
         {...props}
       >
         <option disabled={true}>Select an option</option>
@@ -33,6 +49,7 @@ Select.propTypes = {
   label: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   length: PropTypes.oneOf(['sm', 'md', 'lg']),
+  error: PropTypes.oneOf(['error', 'noError']),
 };
 
 export default Select;

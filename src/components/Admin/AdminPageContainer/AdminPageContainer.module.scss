@@ -38,3 +38,15 @@
   margin-top: 0.4rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Adding a cool shadow
 }
+
+.employee_name {
+  font-weight: bolder;
+  padding: 1rem 0.5rem 0.5rem;
+  font-size: 1.2rem;
+}
+
+.employee_subinfo {
+  color: var(--color-gray-600);
+  padding: 0 0 0.3rem;
+  font-size: 0.9rem;
+}

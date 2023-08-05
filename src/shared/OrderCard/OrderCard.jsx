@@ -59,14 +59,15 @@ const OrderCard = memo(
           </Text>
         )}
         <ul className={classNames(cls.list, { [cls.isSmall]: isSmall })}>
-          {orderItems.map(({ dish: { _id, picture, name, price }, quantity }) => (
+          {orderItems.map(({ dish: { _id, picture, name, price }, quantity, status }) => (
             <Card
               key={_id}
               src={picture}
               title={name}
               quantity={quantity}
               price={price}
-              variant={isWaiter && 'waiter'}
+              statusCurrent={status}
+              mode={isWaiter && 'waiter'}
             />
           ))}
         </ul>

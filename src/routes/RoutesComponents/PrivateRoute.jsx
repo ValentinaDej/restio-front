@@ -5,12 +5,15 @@ import { Navigate, useLocation } from 'react-router-dom';
 export const PrivateRoute = ({ component: Element }) => {
   const { role } = useSelector((state) => state.auth);
   const location = useLocation();
-  let isNotAllowed = false;
-  let redirectTo = '/personnel';
 
-  if (!role) {
-    isNotAllowed = true;
-    redirectTo = '/';
+  // Redirect users without a role from admin, cook, and waiter routes
+  if (
+    !role &&
+    (currentPath.includes('/admin') ||
+      currentPath.includes('/cook') ||
+      currentPath.includes('/waiter'))
+  ) {
+    return <Navigate to="/" />;
   }
 
   const allowedRoutes = {
@@ -20,11 +23,11 @@ export const PrivateRoute = ({ component: Element }) => {
   };
 
   const currentPath = location.pathname;
-  isNotAllowed =
+  const isNotAllowed =
     role !== 'admin' && !allowedRoutes[role]?.some((route) => currentPath.includes(`/${route}/`));
 
   if (isNotAllowed) {
-    return <Navigate to={redirectTo} />;
+    return <Navigate to="/personnel" />;
   }
 
   return Element;

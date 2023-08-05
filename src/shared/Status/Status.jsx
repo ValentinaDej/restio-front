@@ -7,27 +7,32 @@ const Status = ({ statusCurrent }) => {
   const [statusColor, setStatusColor] = useState('#50D1AA');
 
   useEffect(() => {
-    switch (statusCurrent?.toLowerCase()) {
-      case 'free':
-      case 'served':
-      case 'paid':
-      case 'success':
+    switch (statusCurrent) {
+      case 'Free':
+      case 'Served':
+      case 'Paid':
+      case 'Success':
         setStatusColor('#50D1AA');
         break;
 
-      case 'in progress':
-      case 'taken':
+      case 'In progress':
+      case 'Taken':
         setStatusColor('#9290FE');
         break;
 
-      case 'called waiter':
-      case 'ready':
+      case 'Called waiter':
+      case 'Ready':
         setStatusColor('orange');
         break;
 
-      case 'request bill':
-      case 'ordered':
-      case 'open':
+      case 'Closed':
+      case 'Canceled':
+        setStatusColor('#d15f50');
+        break;
+
+      case 'Request bill':
+      case 'Ordered':
+      case 'Open':
         setStatusColor('#EB966A');
         break;
     }
@@ -49,18 +54,20 @@ const Status = ({ statusCurrent }) => {
 
 Status.propTypes = {
   statusCurrent: PropTypes.oneOf([
-    'free',
+    'Free',
     'Success',
-    'taken',
-    'called waiter',
-    'request bill',
-    'ordered',
-    'in progress',
-    'ready',
-    'served',
+    'Taken',
+    'Called waiter',
+    'Request bill',
+    'Ordered',
+    'In progress',
+    'Ready',
+    'Served',
     'Open',
     'Paid',
-  ]).isRequired,
+    'Closed',
+    'Canceled',
+  ]),
 };
 
 export default Status;

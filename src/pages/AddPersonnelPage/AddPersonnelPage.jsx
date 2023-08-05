@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import EmployeeForm from '../../shared/EmployeeForm/EmployeeForm';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import Loader from '../../shared/Loader/Loader';
 import styles from './AddPersonnelPage.module.scss';
+import Title from '../../shared/Title/Title';
+import Button from '../../shared/Button/Button';
+import toast from 'react-hot-toast';
+import { BASE_URL } from '../../api';
 
 const AddPersonnelPage = () => {
-  const { personId } = useParams();
+  const { personId, restId } = useParams();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function fetchData(personId) {
     try {
-      const response = await axios.get(`http://localhost:3001/personnel/${personId}`);
+      const response = await axios.get(`${BASE_URL}/personnel/${personId}`);
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -24,8 +30,39 @@ const AddPersonnelPage = () => {
     enabled: !!personId,
   });
 
-  const handleSubmit = (data) => {
-    console.log(data);
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  const handleSubmit = async (formData) => {
+    try {
+      setIsSubmitting(true);
+      console.log('Form data:', formData);
+      let response;
+      if (personId) {
+        // If personId exists, it means we are updating an existing personnel
+        response = await axios.patch(`${BASE_URL}/personnel/${personId}`, {
+          ...formData,
+          restaurant_id: restId,
+        });
+        toast.success('Personnel updated successfully');
+        console.log('Personnel updated successfully:', response.data);
+      } else {
+        // If personId doesn't exist, it means we are adding a new personnel
+        response = await axios.post(`${BASE_URL}/personnel`, {
+          ...formData,
+          restaurant_id: restId,
+        });
+        toast.success('Personnel added successfully');
+        console.log('Personnel added successfully:', response.data);
+      }
+      handleBack();
+    } catch (error) {
+      toast.error('Error saving or editing personnel');
+      console.error('Error saving personnel:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isLoading) {
@@ -49,7 +86,7 @@ const AddPersonnelPage = () => {
     gender: data?.gender,
     phone: data?.phone,
     address: data?.address,
-    image: data?.picture,
+    picture: data?.picture,
   };
 
   if (!data) {
@@ -62,15 +99,23 @@ const AddPersonnelPage = () => {
       gender: '',
       phone: '',
       address: '',
-      image: '',
+      picture: '',
     };
   }
 
   return (
     <div>
       <main className={styles.addPersonnelContainer}>
-        <h1>Add Personnel</h1>
-        <EmployeeForm onSubmit={handleSubmit} size={'sm'} initialState={initialData} />
+        <div className={styles.formWrapper}>
+          {/* Back button in one line with the Title */}
+          <div className={styles.header}>
+            <Button mode={'outlined'} onClick={handleBack}>
+              Back
+            </Button>
+            <Title>Add Personnel</Title>
+          </div>
+          <EmployeeForm onSubmit={handleSubmit} size={'md'} initialState={initialData} />
+        </div>
       </main>
       <ReactQueryDevtools initialIsOpen />
     </div>

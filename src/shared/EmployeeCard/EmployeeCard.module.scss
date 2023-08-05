@@ -4,8 +4,10 @@
     width: 100%;
     // flex: 0 0 1;
     transition: 1s;
+
     //margin-bottom: 2rem;
     //margin-top: -85px;
+
     text-align: center;
     &.outlined {
       border: dashed 1px rgb(212, 211, 211);
@@ -42,18 +44,6 @@
     border-radius: 25px;
     border: 0 solid rgba(0, 0, 0, 0.125);
     transition: 0.7s;
-  }
-
-  .employee_name {
-    font-weight: bolder;
-    padding: 1rem 0.5rem 0.5rem;
-    font-size: 1.2rem;
-  }
-
-  .employee_subinfo {
-    color: var(--color-gray-600);
-    padding: 0 0 0.3rem;
-    font-size: 0.9rem;
   }
 
   .trash {
