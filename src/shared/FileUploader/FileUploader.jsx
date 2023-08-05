@@ -20,12 +20,14 @@ const FileUploader = forwardRef(({ size }, ref) => {
 
   const onFileChange = (event) => {
     const file = event.target.files[0];
-    const fileExtension = getFileExtension(file.name);
-    if (ALLOWED_EXTENSIONS.includes(fileExtension)) {
-      setUploadedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    } else {
-      toast.error('Invalid file format. Allowed formats: png, jpeg, jpg, gif');
+    if (file) {
+      const fileExtension = getFileExtension(file.name);
+      if (ALLOWED_EXTENSIONS.includes(fileExtension)) {
+        setUploadedFile(file);
+        setPreviewUrl(URL.createObjectURL(file));
+      } else {
+        toast.error('Invalid file format. Allowed formats: png, jpeg, jpg, gif');
+      }
     }
   };
 
@@ -71,11 +73,6 @@ const FileUploader = forwardRef(({ size }, ref) => {
   return (
     <div>
       <div className={`${styles.photoContainer} ${styles[`photoContainer_${size}`]}`}>
-        {/* {previewUrl ? (
-        
-        ) : (
-          <p>Drag & drop an image file here, or click to select one (jpeg, png, gif)</p>
-        )} */}
         <img src={previewUrl ? previewUrl : defaultImage} alt="Preview" className={styles.photo} />
         <div className={styles.addButton} onClick={handleFileInputClick}>
           <LiaPlusSolid className={`${styles.icon} ${styles[`icon_${size}`]}`} />
