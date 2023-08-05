@@ -1,6 +1,10 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useRef, useImperativeHandle, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+
+import { BsPlusCircle } from 'react-icons/bs';
+
+import defaultImage from '../../img/defaultUploadImg.png';
 import styles from './FileUploader.module.scss';
 
 const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg', 'gif'];
@@ -8,6 +12,7 @@ const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg', 'gif'];
 const FileUploader = forwardRef(({ size }, ref) => {
   const [uploadedFile, setUploadedFile] = useState();
   const [previewUrl, setPreviewUrl] = useState('');
+  const fileInputRef = useRef();
 
   const getFileExtension = (fileName) => {
     return fileName.split('.').pop().toLowerCase();
@@ -56,19 +61,37 @@ const FileUploader = forwardRef(({ size }, ref) => {
     },
   }));
 
+  const handleFileInputClick = () => {
+    // Проксімований клік на інпут, щоб відкрити вікно вибору файлу
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   return (
     <div>
-      <div className={`${styles.fileUploader} ${styles[`fileUploader_${size}`]}`}>
-        {previewUrl ? (
-          <img src={previewUrl} alt="Preview" />
+      <div className={styles.photoContainer}>
+        {/* {previewUrl ? (
+        
         ) : (
           <p>Drag & drop an image file here, or click to select one (jpeg, png, gif)</p>
-        )}
-        <input
+        )} */}
+        <img src={previewUrl ? previewUrl : defaultImage} alt="Preview" className={styles.photo} />
+        <div className={styles.addButton} onClick={handleFileInputClick}>
+          <BsPlusCircle className={styles.icon} />
+          <input
+            type="file"
+            accept="image/jpeg, image/png, image/gif, image/jpg"
+            onChange={onFileChange}
+            ref={fileInputRef}
+            className={styles.hiddenInput}
+          />
+        </div>
+        {/* <input
           type="file"
           accept="image/jpeg, image/png, image/gif, image/jpg"
           onChange={onFileChange}
-        />
+        /> */}
       </div>
     </div>
   );
