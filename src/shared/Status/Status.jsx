@@ -4,19 +4,20 @@ import classes from './Status.module.scss';
 import Text from '../Text/Text';
 
 const Status = ({ statusCurrent }) => {
-  const [statusColor, setStatusColor] = useState('green');
+  const [statusColor, setStatusColor] = useState('#50D1AA');
 
   useEffect(() => {
-    switch (statusCurrent) {
+    switch (statusCurrent?.toLowerCase()) {
       case 'free':
       case 'served':
       case 'paid':
-        setStatusColor('green');
+      case 'success':
+        setStatusColor('#50D1AA');
         break;
 
       case 'in progress':
       case 'taken':
-        setStatusColor('#FFD700');
+        setStatusColor('#9290FE');
         break;
 
       case 'called waiter':
@@ -27,7 +28,7 @@ const Status = ({ statusCurrent }) => {
       case 'request bill':
       case 'ordered':
       case 'open':
-        setStatusColor('red');
+        setStatusColor('#EB966A');
         break;
     }
   }, [statusCurrent]);
@@ -49,6 +50,7 @@ const Status = ({ statusCurrent }) => {
 Status.propTypes = {
   statusCurrent: PropTypes.oneOf([
     'free',
+    'Success',
     'taken',
     'called waiter',
     'request bill',
@@ -56,8 +58,8 @@ Status.propTypes = {
     'in progress',
     'ready',
     'served',
-    'open',
-    'paid',
+    'Open',
+    'Paid',
   ]).isRequired,
 };
 

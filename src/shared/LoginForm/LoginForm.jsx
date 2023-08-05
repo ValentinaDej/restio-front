@@ -4,12 +4,31 @@ import Button from 'shared/Button/Button';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import FormInput from './FormInput';
 import classes from './LoginForm.module.scss';
+import { CHECK_PASSWORD_SCHEMA } from 'utils/constants';
+import * as yup from 'yup';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { loginUser } from 'store/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
-const CHECK_EMAIL_SCHEMA =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const CHECK_PASSWORD_SCHEMA = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,30}$/;
+const schema = yup.object({
+  email: yup
+    .string()
+    .email('Email should have correct format')
+    .required('Email is a required field'),
+  password: yup
+    .string()
+    .min(8, 'Password is too short - should be 8 chars minimum.')
+    .matches(
+      CHECK_PASSWORD_SCHEMA,
+      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
+    )
+    .required('Please provide a password'),
+});
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -23,11 +42,41 @@ const LoginForm = () => {
     reset,
   } = useForm({
     shouldUseNativeValidation: false,
-    mode: 'onBlur',
+    mode: 'onSubmit',
+    resolver: async (data) => {
+      try {
+        await schema.validate(data, { abortEarly: false });
+        return {
+          values: data,
+          errors: {},
+        };
+      } catch (err) {
+        const errors = err.inner.reduce((acc, curr) => {
+          acc[curr.path] = curr.message;
+          return acc;
+        }, {});
+        return {
+          values: {},
+          errors: errors,
+        };
+      }
+    },
   });
 
   const onSubmit = async (data) => {
-    reset();
+    try {
+      const res = await dispatch(loginUser(data));
+      reset();
+      if (res.payload.role === 'admin') {
+        navigate(`/admin/${res.payload.restaurantId}`);
+      } else if (res.payload.role === 'waiter') {
+        navigate(`/waiter/tables/${res.payload.restaurantId}`);
+      } else if (res.payload.role === 'cook') {
+        navigate(`/cook/${res.payload.restaurantId}`);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -40,13 +89,6 @@ const LoginForm = () => {
             name="email"
             type="email"
             autoComplete="username"
-            validationRules={{
-              required: 'Email is a required field',
-              pattern: {
-                value: CHECK_EMAIL_SCHEMA,
-                message: 'Invalid email address',
-              },
-            }}
             register={register}
             error={errors.email}
           />
@@ -55,14 +97,6 @@ const LoginForm = () => {
             name="password"
             type={passwordShown ? 'text' : 'password'}
             autoComplete="current-password"
-            validationRules={{
-              required: 'Password is a required field',
-              pattern: {
-                value: CHECK_PASSWORD_SCHEMA,
-                message:
-                  'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.',
-              },
-            }}
             register={register}
             error={errors.password}
           />

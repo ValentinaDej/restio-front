@@ -1,25 +1,65 @@
 import './styles.scss';
-import Footer from './shared/Footer/Footer';
-import Header from './shared/Header/Header';
-import Button from './shared/Button/Button';
 import { Toaster } from 'react-hot-toast';
+import HomePage from 'pages/HomePage/HomePage';
+import LoginPage from 'pages/LoginPage/LoginPage';
+import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
+import logoImg from './img/RESTio.svg';
+import { Route, Routes } from 'react-router-dom';
+import ErrorPage from 'pages/ErrorPage/ErrorPage';
+import routesAdmin from 'routes/routesAdmin';
+import routesCook from 'routes/routesCook';
+import routesWaiter from 'routes/routesWaiter';
+import routesCustomer from 'routes/routesCustomer';
+import { useSelector } from 'react-redux';
+import Footer from 'shared/Footer/Footer';
+import Header from 'shared/Header/Header';
+import MenuPage from 'pages/MenuPage/MenuPage';
+import Loader from 'shared/Loader/Loader';
+import { Suspense } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
+const variantPath = {
+  admin: routesAdmin,
+  waiter: routesWaiter,
+  cook: routesCook,
+};
+
+const queryClient = new QueryClient();
 
 const App = () => {
+  const { role } = useSelector((state) => state.auth);
+
+  //useState де сбережені лого, назва ресторану поки що болванка
+  const logo = logoImg;
+  const restaurantName = 'Restio';
+  //useEffect с запитом - повертає дані лого, назву ресторану
+  //restId =`64c4fdea4055a7111092df32`
   return (
     <>
-      <div>
-        <Toaster />
-      </div>
-      <Header role="customer" />
-      <main className="main">
-        <div className="main__container">
-          <h1>RESTio</h1>
-          <div className="centered">
-            <Button>Start</Button>
-          </div>
-        </div>
+      {role && <Header logo={logo} restaurantName={restaurantName} role={role} />}
+      <main>
+        <Suspense fallback={<Loader size="lg" />}>
+          <Routes>
+            <Route path="/" element={<PublicRoute component={<MenuPage />} />} />
+            <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
+            <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
+            {routesCustomer.map(({ path, component }) => (
+              <Route key={path} path={path} element={<PublicRoute component={component} />} />
+            ))}
+
+            {(role === 'admin' || role === 'waiter' || role === 'cook') &&
+              variantPath[role].map(({ path, component }) => (
+                <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+              ))}
+
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </Suspense>
       </main>
-      <Footer />
+      {role && <Footer />}
+      <Toaster />
+      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 };

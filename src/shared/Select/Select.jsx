@@ -13,6 +13,7 @@ const Select = ({
   rules,
   multiple,
   value,
+  error,
   ...props
 }) => {
   return (
@@ -23,7 +24,7 @@ const Select = ({
       <select
         className={`${styles.select} ${styles[`select_${size}`]} ${
           styles[`select_length-${length}`]
-        }`}
+        } ${styles[`select_${error}`]}  `}
         id={id}
         name={name}
         //defaultValue={'default'}
@@ -33,9 +34,7 @@ const Select = ({
         {...(register && register(name, rules))}
         {...props}
       >
-        <option disabled={true} value="default">
-          Select an option
-        </option>
+        <option disabled={true}>Select an option</option>
         {children}
       </select>
     </div>
@@ -50,6 +49,7 @@ Select.propTypes = {
   label: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   length: PropTypes.oneOf(['sm', 'md', 'lg']),
+  error: PropTypes.oneOf(['error', 'noError']),
 };
 
 export default Select;

@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import { MdOutlineAddCircle } from 'react-icons/md';
 
 import css from './DishCard.module.scss';
+import { memo } from 'react';
 
-const DishCard = ({ src, title, ingredients, weight, price, onClick }) => {
+const DishCard = memo(({ src, title, ingredients, weight, price, onClick }) => {
   return (
     <div className={css['card-container']}>
       <div className={css['card-container__image-wrapper']}>
@@ -22,7 +23,7 @@ const DishCard = ({ src, title, ingredients, weight, price, onClick }) => {
       </div>
     </div>
   );
-};
+});
 
 DishCard.propTypes = {
   src: PropTypes.string,

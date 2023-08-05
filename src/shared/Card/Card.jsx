@@ -6,6 +6,7 @@ import { MdOutlineAddCircle } from 'react-icons/md';
 import css from './Card.module.scss';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
 import { IconButton } from 'shared/IconButton/IconButton';
+import { memo } from 'react';
 
 const variant = {
   order: 'order',
@@ -14,67 +15,59 @@ const variant = {
   cook: 'cook',
 };
 
-const Card = ({
-  src,
-  title,
-  price,
-  quantity,
-  mode = variant.order,
-  addOne,
-  minusOne,
-  onDelete,
-  onClick,
-}) => {
-  const sum = (price * quantity).toFixed(2);
-  return (
-    <div className={css['card']}>
-      <div className={css['card__image-container']}>
-        <img className={css['card__image']} src={src} alt={title} />
-      </div>
-      <div className={css['card__wrapper']}>
-        <div className={css['card__flex-container']}>
-          <h3 className={css['card__title']}>{title}</h3>
-
-          {mode === variant.cart && (
-            <div className={css['card__icon-wrapper']}>
-              <IconButton Svg={BiSolidTrash} size={16} onClick={onDelete} />
-            </div>
-          )}
+const Card = memo(
+  ({ src, title, price, quantity, mode = variant.order, addOne, minusOne, onDelete, onClick }) => {
+    const sum = (price * quantity).toFixed(2);
+    return (
+      <div className={css['card']}>
+        <div className={css['card__image-container']}>
+          <img className={css['card__image']} src={src} alt={title} />
         </div>
+        <div className={css['card__wrapper']}>
+          <div className={css['card__flex-container']}>
+            <h3 className={css['card__title']}>{title}</h3>
 
-        <div className={css['card__flex-container']}>
-          {mode === variant.cart && (
-            <QuantityButton size="sm" quantity={quantity} addOne={addOne} minusOne={minusOne} />
-          )}
-          {mode === variant.waiter && (
-            <QuantityButton size="sm" quantity={quantity} addOne={addOne} minusOne={minusOne} />
-          )}
-          {mode === variant.cook && (
-            <>
-              <IoIosClose className={css['card__icon']} />
-              <p className={css['card__quantity']}>{quantity}</p>
-            </>
-          )}
-          {mode === variant.order && (
-            <>
-              <IoIosClose className={css['card__icon']} />
-              <p className={css['card__quantity']}>{quantity}</p>
-            </>
-          )}
+            {mode === variant.cart && (
+              <div className={css['card__icon-wrapper']}>
+                <IconButton Svg={BiSolidTrash} size={16} onClick={onDelete} />
+              </div>
+            )}
+          </div>
 
-          {mode === variant.cart && <p className={css['card__sum']}>${sum}</p>}
+          <div className={css['card__flex-container']}>
+            {mode === variant.cart && (
+              <QuantityButton size="sm" quantity={quantity} addOne={addOne} minusOne={minusOne} />
+            )}
+            {mode === variant.waiter && (
+              <QuantityButton size="sm" quantity={quantity} addOne={addOne} minusOne={minusOne} />
+            )}
+            {mode === variant.cook && (
+              <>
+                <IoIosClose className={css['card__icon']} />
+                <p className={css['card__quantity']}>{quantity}</p>
+              </>
+            )}
+            {mode === variant.order && (
+              <>
+                <IoIosClose className={css['card__icon']} />
+                <p className={css['card__quantity']}>{quantity}</p>
+              </>
+            )}
 
-          {mode === variant.order && <p className={css['card__sum']}>${sum}</p>}
+            {mode === variant.cart && <p className={css['card__sum']}>${sum}</p>}
+
+            {mode === variant.order && <p className={css['card__sum']}>${sum}</p>}
+          </div>
         </div>
+        {mode === variant.waiter && (
+          <button className={css['card__add-button']} type="button" onClick={onClick}>
+            <MdOutlineAddCircle className={`${css['card__add-icon']} ${css['card__icon']}`} />
+          </button>
+        )}
       </div>
-      {mode === variant.waiter && (
-        <button className={css['card__add-button']} type="button" onClick={onClick}>
-          <MdOutlineAddCircle className={`${css['card__add-icon']} ${css['card__icon']}`} />
-        </button>
-      )}
-    </div>
-  );
-};
+    );
+  }
+);
 
 Card.propTypes = {
   mode: PropTypes.string,
