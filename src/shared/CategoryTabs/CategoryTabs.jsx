@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classes from './CategoryTabs.module.scss';
 import { DISH_CATEGORIES } from 'utils/constants';
@@ -6,11 +6,9 @@ import { DISH_CATEGORIES } from 'utils/constants';
 const CategoryTabs = ({
   mode = 'primary',
   categories = DISH_CATEGORIES,
-  setActiveTab,
+  setActiveTab = () => {},
   activeTab,
 }) => {
-  // const [activeTab, setActiveTab] = useState(categories[0]);
-
   const handleTabClick = (category) => {
     setActiveTab(category);
   };

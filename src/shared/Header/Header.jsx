@@ -1,18 +1,16 @@
+import PropTypes from 'prop-types';
+import { Link, useLocation } from 'react-router-dom';
+import { ImList2 } from 'react-icons/im';
+
 import classes from './Header.module.scss';
 import Title from 'shared/Title/Title';
 import Button from 'shared/Button/Button';
-import PropTypes from 'prop-types';
-
-import { Link } from 'react-router-dom';
-import { RiFileList3Line } from 'react-icons/ri';
-
-import { useLocation } from 'react-router-dom';
 
 const Header = ({ logo, restaurantName, role, onClick }) => {
   const { pathname } = useLocation();
   const arrParams = pathname.split('/');
-  const tableId = arrParams[arrParams.length - 1];
-  const table = tableId ?? 0;
+  const restId = arrParams[1];
+  const tableId = arrParams[2];
 
   return (
     <header className={classes.header}>
@@ -31,8 +29,8 @@ const Header = ({ logo, restaurantName, role, onClick }) => {
               Call waiter
             </Button>
           </div>
-          <Link to="" className={classes.header__link}>
-            <RiFileList3Line className={classes.header__icon} />
+          <Link to={`/${restId}/${tableId}/orders`} className={classes.header__link}>
+            <ImList2 className={classes.header__icon} />
           </Link>
         </div>
       )}
