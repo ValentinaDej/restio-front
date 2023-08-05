@@ -7,13 +7,25 @@ import { classNames } from 'helpers/classNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
-import { useUpdateOrderStatusByWaiterOrCook } from 'api/service';
+import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/service';
 import Loader from 'shared/Loader/Loader';
 
-export const Checkout = ({ isWaiter, amount, selectedOrders, onChangeSelected, urlParams }) => {
+export const Checkout = ({
+  isWaiter,
+  amount,
+  selectedOrders,
+  onChangeSelected,
+  urlParams,
+  isAllOrdersPaid,
+}) => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const { isLoading, mutate } = useUpdateOrderStatusByWaiterOrCook(urlParams, selectedOrders);
+  const { isLoading, mutate } = useUpdateOrderStatusByWaiter(urlParams, selectedOrders);
+  const { isLoadingTableStatus, mutate: mutateTableStatus } = useUpdateTableStatusByWaiter(
+    urlParams,
+    'Free'
+  );
+
   const { data, signature } = useSelector(getPaymentInfo);
 
   useEffect(() => {
@@ -43,6 +55,10 @@ export const Checkout = ({ isWaiter, amount, selectedOrders, onChangeSelected, u
     onChangeSelected(0, []);
   }, [mutate, onChangeSelected]);
 
+  const onClickMarkAsFreeTable = useCallback(() => {
+    mutateTableStatus();
+  }, [mutateTableStatus]);
+
   if (isWaiter) {
     return (
       <div className={cls.waiterBtn}>
@@ -60,11 +76,11 @@ export const Checkout = ({ isWaiter, amount, selectedOrders, onChangeSelected, u
           </Button>
           <Button
             size={'sm'}
-            onClick={onClickMarkAsPaidSelectedAsWaiter}
-            disabled
+            onClick={onClickMarkAsFreeTable}
+            disabled={!isAllOrdersPaid}
             className={cls.btn}
           >
-            Table is free
+            {isLoadingTableStatus ? <Loader size={'xs'} /> : 'Mark table as free'}
           </Button>
         </div>
       </div>
@@ -74,23 +90,15 @@ export const Checkout = ({ isWaiter, amount, selectedOrders, onChangeSelected, u
   return (
     <>
       <div
-        className={classNames(
-          cls.box,
-          {
-            [cls.isOpen]: isOpen && amount !== 0,
-          },
-          []
-        )}
+        className={classNames(cls.box, {
+          [cls.isOpen]: isOpen && amount !== 0,
+        })}
       >
         <Button
-          className={classNames(
-            cls.checkoutBtn,
-            {
-              [cls.isShown]: amount !== 0,
-              [cls.isOpen]: isOpen,
-            },
-            []
-          )}
+          className={classNames(cls.checkoutBtn, {
+            [cls.isShown]: amount !== 0,
+            [cls.isOpen]: isOpen,
+          })}
           onClick={onOpenModal}
           size={isOpen ? 'sm' : 'md'}
           disabled={amount === 0}

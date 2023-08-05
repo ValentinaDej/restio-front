@@ -9,7 +9,8 @@ import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
 import { classNames } from 'helpers/classNames';
-import { useUpdateOrderStatusByWaiterOrCook } from 'api/service';
+import { useUpdateOrderStatusByWaiter } from 'api/service';
+import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 
 export const OrdersList = ({
   isWaiter,
@@ -20,11 +21,11 @@ export const OrdersList = ({
   onTotalPrice,
   urlParams,
 }) => {
+  const dispatch = useDispatch();
   const [ordersIDs, setOrdersIDs] = useState([]);
   const [totalPrice, setTotalPrice] = useState();
-  const dispatch = useDispatch();
   const { payment } = useSelector(getIsLoading);
-  const { isLoading, mutate } = useUpdateOrderStatusByWaiterOrCook(urlParams, ordersIDs);
+  const { isLoading, mutate } = useUpdateOrderStatusByWaiter(urlParams, ordersIDs);
   const frontLink = location.href;
 
   const sortedOrders = useMemo(() => {
@@ -57,7 +58,7 @@ export const OrdersList = ({
       .map((order) => order._id);
 
     setOrdersIDs(updateOrdersIds);
-    setTotalPrice(Math.round(newTotalPrice * 100) / 100);
+    setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
   }, [onTotalPrice, orders]);
 
   const onClickPayAllAsCustomer = useCallback(() => {
@@ -78,7 +79,7 @@ export const OrdersList = ({
   const selectOrder = useCallback(
     (id, totalPrice) => {
       const index = selectedOrders.indexOf(id);
-      const fixedPrice = Math.round(totalPrice * 100) / 100;
+      const fixedPrice = formatNumberWithTwoDecimals(totalPrice);
       let updatedSelectedOrders;
       let updatedTotal;
 

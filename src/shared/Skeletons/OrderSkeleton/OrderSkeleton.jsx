@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './OrderListSkeleton.scss';
 import cls from '../../OrderCard/OrderCard.module.scss';
-import ulCls from '../../OrdersList/OrderList.module.scss';
+import ulCls from '../../../components/Orders/ui/OrdersList/OrderList.module.scss';
 
 const skeletonData = [
   { topBlockWidth: 180, bottomBlockWidth: 200 },
