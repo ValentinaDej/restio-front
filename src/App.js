@@ -42,7 +42,7 @@ const App = () => {
       <main>
         <Suspense fallback={<Loader size="lg" />}>
           <Routes>
-            <Route path="/" element={<PublicRoute component={<MenuPage />} />} />
+            <Route path="/" element={<PublicRoute component={<HomePage />} />} />
             <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
             <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
             {routesCustomer.map(({ path, component }) => (
