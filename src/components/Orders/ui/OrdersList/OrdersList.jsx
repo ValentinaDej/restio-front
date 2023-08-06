@@ -9,8 +9,9 @@ import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
 import { classNames } from 'helpers/classNames';
-import { useUpdateDishStatusByWaiter, useUpdateOrderStatusByWaiter } from 'api/service';
+
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
+import { useUpdateDishStatusByWaiter, useUpdateOrderStatusByWaiter } from 'api/order';
 
 export const OrdersList = ({
   isWaiter,

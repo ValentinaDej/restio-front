@@ -8,9 +8,9 @@ import { classNames } from 'helpers/classNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
-import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/service';
 import Loader from 'shared/Loader/Loader';
 import { toast } from 'react-hot-toast';
+import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
 
 export const Checkout = ({
   isWaiter,

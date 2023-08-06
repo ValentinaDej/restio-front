@@ -1,4 +1,3 @@
-import { useGetOrdersByTableId } from 'api/service';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
@@ -11,6 +10,7 @@ import cls from './Order.module.scss';
 import Button from 'shared/Button/Button';
 import { TbMoodSearch } from 'react-icons/tb';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
+import { useGetOrdersByTableId } from 'api/order';
 
 const Orders = ({ isWaiter }) => {
   const [selectedTotal, setSelectedTotal] = useState(0);
