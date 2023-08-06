@@ -5,7 +5,7 @@ import HomePage from 'pages/HomePage/HomePage';
 import LoginPage from 'pages/LoginPage/LoginPage';
 import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
 import logoImg from './img/RESTio.svg';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import routesAdmin from 'routes/routesAdmin';
 import routesCook from 'routes/routesCook';
@@ -28,8 +28,13 @@ const variantPath = {
 const queryClient = new QueryClient();
 
 const App = () => {
+  const location = useLocation();
   const { role } = useSelector((state) => state.auth);
 
+  const pathName = {
+    login: '/login',
+    main: '/',
+  };
   //useState де сбережені лого, назва ресторану поки що болванка
   const logo = logoImg;
   const restaurantName = 'Restio';
@@ -37,7 +42,11 @@ const App = () => {
   //restId =`64c4fdea4055a7111092df32`
   return (
     <>
-      {role && <Header logo={logo} restaurantName={restaurantName} role={role} />}
+      {location.pathname === pathName.login || location.pathname === pathName.main ? (
+        ''
+      ) : (
+        <Header logo={logo} restaurantName={restaurantName} role={role ? role : 'customer'} />
+      )}
       <main>
         <Suspense fallback={<Loader size="lg" />}>
           <Routes>

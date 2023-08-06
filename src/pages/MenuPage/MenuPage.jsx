@@ -10,12 +10,19 @@ import css from './MenuPage.module.scss';
 import { getDishes } from 'api/dish';
 
 const MenuPage = () => {
-  const { restId } = useParams();
+  const { restId, tableId } = useParams();
   const [category, setActiveTab] = useState('Salads');
 
   const { isError, isLoading, data } = useQuery(
     ['dishes', category],
-    async () => await getDishes(restId, category)
+    async () => await getDishes(restId, category),
+    {
+      // staleTime: 0, // Data is immediately considered stale and will be refetched on the next request
+      // cacheTime: 0, // Data is never considered stale, and automatic refetching is disabled
+      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
+      refetchOnReconnect: false, // Disable refetching when the network reconnects
+      refetchInterval: false, // Disable automatic periodic refetching
+    }
   );
 
   return (
@@ -33,6 +40,7 @@ const MenuPage = () => {
                 ingredients={ingredients}
                 weight={portionWeight}
                 price={price}
+                link={`/${restId}/${tableId}/${_id}`}
               />
             </li>
           ))}

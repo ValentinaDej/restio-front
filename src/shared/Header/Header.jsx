@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ImList2 } from 'react-icons/im';
 
 import classes from './Header.module.scss';
@@ -7,8 +7,15 @@ import Title from 'shared/Title/Title';
 import Button from 'shared/Button/Button';
 import { callWaiter } from 'api/table';
 import { toast } from 'react-hot-toast';
+import { MdRestaurantMenu, MdTableBar } from 'react-icons/md';
+import { IoPeopleSharp } from 'react-icons/io5';
+import { FiLogOut } from 'react-icons/fi';
+import { GiCook } from 'react-icons/gi';
+import { useSelector } from 'react-redux';
+import { getRestaurantId } from 'store/auth/authSelector';
 
 const Header = ({ logo, restaurantName, role }) => {
+  const restaurantId = useSelector(getRestaurantId);
   const { pathname } = useLocation();
   const arrParams = pathname.split('/');
   const restId = arrParams[1];
@@ -33,6 +40,29 @@ const Header = ({ logo, restaurantName, role }) => {
           </Title>
         </div>
       )}
+      {role === 'admin' && (
+        <div className={classes.header__wrapper}>
+          <NavLink className={classes.header__link} to={`admin/${restaurantId}/dishes`}>
+            <MdRestaurantMenu className={classes.header__icon} />
+          </NavLink>
+          <NavLink className={classes.header__link} to={`admin/${restaurantId}`}>
+            <IoPeopleSharp className={classes.header__icon} />
+          </NavLink>
+          <NavLink className={classes.header__link} to={`admin/${restaurantId}/tables`}>
+            <MdTableBar className={classes.header__icon} />
+          </NavLink>
+          <NavLink className={classes.header__link} to={`admin/${restaurantId}/cook`}>
+            <GiCook className={classes.header__icon} />
+          </NavLink>
+        </div>
+      )}
+      {role !== 'customer' && (
+        <div className={classes.header__wrapper}>
+          <button className={classes.header__link}>
+            <FiLogOut className={classes.header__icon} />
+          </button>
+        </div>
+      )}
       {role === 'customer' && (
         <div className={classes.header__wrapper}>
           <div className={classes.header__button}>
@@ -40,9 +70,9 @@ const Header = ({ logo, restaurantName, role }) => {
               Call waiter
             </Button>
           </div>
-          <Link to={`/${restId}/${tableId}/orders`} className={classes.header__link}>
+          <NavLink to={`/${restId}/${tableId}/orders`} className={classes.header__link}>
             <ImList2 className={classes.header__icon} />
-          </Link>
+          </NavLink>
         </div>
       )}
     </header>
