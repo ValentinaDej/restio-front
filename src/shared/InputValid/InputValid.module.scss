@@ -1,0 +1,33 @@
+.field__wrapper {
+  position: relative;
+  transition: margin-bottom 0.3s ease;
+  height: 50px;
+  margin-bottom: 1rem;
+}
+
+.input__wrapper {
+  position: relative;
+
+  &:hover > .icon__wrapper {
+    color: var(--color-orange-hover);
+  }
+}
+
+.error {
+  border: 1px solid var(--color-danger);
+  border-radius: 30px;
+}
+
+.icon__wrapper {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  color: var(--color-orange);
+  transform: translateY(-50%);
+  transition: opacity 0.3s ease;
+}
+
+.error__wrapper {
+  position: relative;
+  margin-top: 0.5rem;
+}

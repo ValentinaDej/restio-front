@@ -6,7 +6,7 @@ const DishesForCookPage = lazy(() => import('pages/DishesForCookPage/DishesForCo
 
 const routesCook = [
   {
-    path: '',
+    path: 'cook/:restId',
     component: <DishesForCookPage />,
   },
 ];

@@ -49,8 +49,26 @@
 
 .btnsBox {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   margin-top: 10px;
   justify-content: center;
   gap: 10px;
+}
+
+.btn {
+  height: 48px;
+  width: 150px;
+}
+
+.text {
+  color: var(--color-blue-dark);
+}
+
+.waiterBtn {
+  display: grid;
+  gap: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 20px;
 }

@@ -1,0 +1,47 @@
+.box {
+  display: grid;
+  justify-content: center;
+  gap: 15px;
+  padding-top: 40px;
+  padding-bottom: 70px;
+
+  &.isWaiter {
+    padding-bottom: 30px;
+  }
+}
+
+.btnsBox {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.list {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: auto;
+  gap: 18px;
+
+  @media screen and (min-width: 767.98px) {
+    grid-template-columns: 350px 350px;
+  }
+  @media screen and (min-width: 1200px) {
+    grid-template-columns: 350px 350px 350px;
+  }
+}
+
+.btn {
+  height: 40px;
+}
+
+.layout {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-orange-transparent);
+}
+
+.text {
+  color: var(--color-blue-dark);
+}

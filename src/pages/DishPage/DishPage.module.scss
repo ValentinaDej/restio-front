@@ -1,0 +1,296 @@
+@media (min-width: 320px) {
+  .loader {
+    width: 100%;
+    height: 82vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    display: block;
+    z-index: 1;
+    left: 50%;
+  }
+
+  .spinner {
+    width: 64px;
+    height: 64px;
+    border: 8px solid;
+    border-color: #e7ac84 transparent #ea6a12 transparent;
+    border-radius: 50%;
+    animation: spin-anim 3s linear infinite;
+    opacity: 1;
+    margin-top: 50px;
+  }
+
+  @keyframes spin-anim {
+    0% {
+      transform: rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  .dish {
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  .fullDish {
+    margin: 30px auto 100px;
+    padding: 2rem 2rem;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0px 2px 25px -16px rgba(128, 128, 128, 1);
+    border-radius: 25px;
+  }
+
+  .back {
+    display: flex;
+    align-items: center;
+    width: 120px;
+    justify-content: space-between;
+    margin: 0 auto 1.5rem;
+    color: #ea6a12;
+    transition: 0.5s;
+  }
+
+  .dishTitle {
+    text-align: center;
+    font-size: 1.7rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .dishInfoWarapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+  }
+
+  .dishImage {
+    display: block;
+    width: 75%;
+    height: auto;
+    object-fit: cover;
+    margin: 1rem auto;
+    border-radius: 10%;
+  }
+
+  .dishText {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 90%;
+    margin: 10px auto;
+    & .ingr_item {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      color: #ea6a12;
+      padding-bottom: 1rem;
+      & li {
+        margin-bottom: -20px;
+      }
+    }
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    padding-bottom: 0.3rem;
+    text-align: left;
+    &_main {
+      font-size: 2rem;
+    }
+  }
+
+  .box {
+    margin: 1rem 0;
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  .price_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    & div {
+      align-items: center;
+      min-width: 100px;
+      flex-grow: 1;
+      // flex-basis: 0;
+      margin-top: 10px;
+    }
+    &:last-of-type {
+      width: 130px;
+    }
+    & span {
+      color: #ea6a12;
+      font-size: 1.3rem;
+    }
+  }
+
+  .addButton {
+    min-width: 130px;
+    width: 100%;
+    padding: 6px 0;
+  }
+
+  .spicy_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2%;
+  }
+
+  .spicy_item {
+    margin-bottom: 15px;
+    & ul {
+      display: flex;
+      gap: 5px;
+    }
+  }
+
+  .tab {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border: 0.5px solid rgba(128, 128, 128, 0.3);
+    border-radius: 25px;
+    &.true {
+      color: white;
+      background-color: #ea6a12;
+    }
+    &.false {
+      color: white;
+      background-color: rgba(128, 128, 128, 0.3);
+    }
+  }
+
+  .quantity_buttons {
+    width: 60px;
+    margin: 0 auto;
+    border: #ea6a12 1px solid;
+    border-radius: 50px;
+    padding: 10px 0;
+  }
+
+  .recommend_wrapp {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 5%;
+    margin: 100px 50px 50px;
+  }
+
+  .card_wrapper {
+    flex-grow: 1;
+    margin-bottom: 70px;
+    max-width: 250px;
+  }
+}
+
+@media (min-width: 576px) {
+  .dishTitle {
+    text-align: left;
+    font-size: 2rem;
+  }
+  .back {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 1.5rem;
+  }
+
+  .dishInfoWarapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5%;
+    padding: 1.5rem 0 0.5rem;
+    align-items: center;
+  }
+  .dishImage {
+    height: 300px;
+    width: 50%;
+    margin: 0;
+    height: 250px;
+  }
+
+  .dishText {
+    width: 60%;
+    text-align: left;
+    margin: 0px auto;
+  }
+  .subtitle {
+    font-size: 1rem;
+    padding-bottom: 0.3rem;
+    text-align: left;
+  }
+
+  .box {
+    margin: 0.5rem 0;
+  }
+
+  .quantity_buttons {
+    margin: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .dish {
+    padding: 2rem 2.5rem;
+  }
+
+  .back:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.5s;
+  }
+
+  .dishImage {
+    width: 45%;
+    max-height: 350px;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    margin: 0;
+    border-radius: 25px;
+  }
+
+  .dishInfoWarapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 0;
+    gap: 5%;
+  }
+
+  .dishText {
+    text-align: left;
+    width: 45%;
+    margin: 0 auto;
+    & .ingr_item {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      color: #ea6a12;
+    }
+  }
+
+  .subtitle {
+    font-size: 1.3rem;
+    padding-bottom: 0.3rem;
+    text-align: left;
+  }
+
+  .box {
+    margin: 0.7rem 0;
+  }
+}

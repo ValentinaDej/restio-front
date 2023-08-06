@@ -1,13 +1,17 @@
 .input_wrapper {
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
+}
+
+.input_wrapper.full_width {
+  width: 100%;
 }
 
 .checkbox_wrapper {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 10px;
+  gap: 5px;
 }
 
 .checkbox_wrapper .label {
@@ -21,6 +25,7 @@
   font-weight: var(--font-semi-bold);
   color: var(--color-dark);
   margin-bottom: 0.5rem;
+  align-self: flex-start;
 
   &_sm {
     font-size: 0.8rem;
@@ -37,6 +42,8 @@
 
 .input {
   display: inline-block;
+  position: relative;
+  width: 100%;
   border: 1px solid var(--color-orange);
   background: var(--color-white);
   color: var(--color-dark);
@@ -50,6 +57,10 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+
+  &::placeholder {
+    color: var(--color-dark);
+  }
 
   &:hover,
   &:focus {
@@ -71,7 +82,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     outline: none;
-    border: 2px solid var(--color-orange);
+    border: 1px solid var(--color-orange);
     border-radius: 4px;
     background-color: transparent;
     padding: 0;
@@ -79,8 +90,8 @@
     &::before {
       content: '';
       position: absolute;
-      top: 2px;
-      left: 2px;
+      top: 3px;
+      left: 3px;
       background-color: var(--color-orange);
       border-radius: 2px;
       opacity: 0;
@@ -138,8 +149,8 @@
     height: 20px;
 
     &::before {
-      top: 2px;
-      left: 2px;
+      top: 3px;
+      left: 3px;
       width: 12px;
       height: 12px;
     }
@@ -168,4 +179,8 @@
       height: 28px;
     }
   }
+}
+
+.input_error {
+  background-color: var(--color-orange-transparent);
 }

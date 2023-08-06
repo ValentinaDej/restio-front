@@ -5,9 +5,9 @@ const CustomerOrdersPage = lazy(() => import('pages/CustomerOrdersPage/CustomerO
 const DishPage = lazy(() => import('pages/DishPage/DishPage'));
 
 const routesCustomer = [
-  { path: '', component: <MenuPage /> },
-  { path: 'orders', component: <CustomerOrdersPage /> },
-  { path: ':dishId', component: <DishPage /> },
+  { path: ':restId/:tableId', component: <MenuPage /> },
+  { path: ':restId/:tableId/orders', component: <CustomerOrdersPage /> },
+  { path: ':restId/:tableId/:dishId', component: <DishPage /> },
 ];
 
 export default routesCustomer;

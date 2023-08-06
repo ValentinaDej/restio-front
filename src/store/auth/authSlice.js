@@ -1,14 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { loginPersonnel } from 'api/auth';
 import { toast } from 'react-hot-toast';
+import storage from 'utils/storage';
+
+const userData = storage.getItem('userData');
 
 const initialState = {
-  name: '',
-  token: '',
-  refreshToken: '',
-  restaurantId: '',
-  role: '',
-  userId: '',
+  name: userData?.name || '',
+  token: userData?.token || '',
+  refreshToken: userData?.refreshToken || '',
+  restaurantId: userData?.restaurantId || '',
+  role: userData?.role || '',
+  userId: userData?.userId || '',
   isLoading: false,
   isError: false,
 };
