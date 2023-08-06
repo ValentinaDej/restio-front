@@ -16,7 +16,6 @@ import Footer from 'shared/Footer/Footer';
 import Header from 'shared/Header/Header';
 import Loader from 'shared/Loader/Loader';
 import { Suspense } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 const variantPath = {
@@ -24,8 +23,6 @@ const variantPath = {
   waiter: routesWaiter,
   cook: routesCook,
 };
-
-const queryClient = new QueryClient();
 
 const App = () => {
   const { role } = useSelector((state) => state.auth);

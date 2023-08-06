@@ -9,8 +9,9 @@ import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
 import { classNames } from 'helpers/classNames';
-import { useUpdateOrderStatusByWaiter } from 'api/service';
+
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
+import { useUpdateDishStatusByWaiter, useUpdateOrderStatusByWaiter } from 'api/order';
 
 export const OrdersList = ({
   isWaiter,
@@ -26,19 +27,8 @@ export const OrdersList = ({
   const [totalPrice, setTotalPrice] = useState();
   const { payment } = useSelector(getIsLoading);
   const { isLoading, mutate } = useUpdateOrderStatusByWaiter(urlParams, ordersIDs);
+  const { isLoadingDishStatus, mutate: mutateDishStatus } = useUpdateDishStatusByWaiter();
   const frontLink = location.href;
-
-  const sortedOrders = useMemo(() => {
-    return [...orders].sort((orderA, orderB) => {
-      if (orderA.status === 'Paid' && orderB.status !== 'Paid') {
-        return 1;
-      }
-      if (orderA.status !== 'Paid' && orderB.status === 'Paid') {
-        return -1;
-      }
-      return new Date(orderB.created_at) - new Date(orderA.created_at);
-    });
-  }, [orders]);
 
   useEffect(() => {
     const newTotalPrice = orders.reduce((acc, order) => {
@@ -61,21 +51,6 @@ export const OrdersList = ({
     setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
   }, [onTotalPrice, orders]);
 
-  const onClickPayAllAsCustomer = useCallback(() => {
-    dispatch(
-      payOrders({
-        amount: totalPrice,
-        type: 'online',
-        info: ordersIDs.join(','),
-        frontLink,
-      })
-    );
-  }, [dispatch, frontLink, ordersIDs, totalPrice]);
-
-  const onClickMarkAsPaidAllAsWaiter = useCallback(() => {
-    mutate();
-  }, [mutate]);
-
   const selectOrder = useCallback(
     (id, totalPrice) => {
       const index = selectedOrders.indexOf(id);
@@ -96,6 +71,29 @@ export const OrdersList = ({
     [onChangeSelected, selectedOrders, selectedTotal]
   );
 
+  const onClickPayAllAsCustomer = useCallback(() => {
+    dispatch(
+      payOrders({
+        amount: totalPrice,
+        type: 'online',
+        info: ordersIDs.join(','),
+        frontLink,
+      })
+    );
+  }, [dispatch, frontLink, ordersIDs, totalPrice]);
+
+  const onClickMarkAsPaidAllAsWaiter = useCallback(() => {
+    mutate();
+    onChangeSelected(0, []);
+  }, [mutate, onChangeSelected]);
+
+  const onClickChangeDishStatusAsWaiter = useCallback(
+    (status, dishId, orderId) => {
+      mutateDishStatus({ urlParams, status, dishId, orderId });
+    },
+    [mutateDishStatus, urlParams]
+  );
+
   const renderOrder = (order) => (
     <OrderCard
       key={order._id}
@@ -103,8 +101,29 @@ export const OrdersList = ({
       onChange={selectOrder}
       small={!isWaiter}
       isWaiter={isWaiter}
+      onChangeStatus={onClickChangeDishStatusAsWaiter}
+      idx={order.orderNumber}
     />
   );
+
+  const sortedOrders = useCallback(() => {
+    const sortedOrders = [...orders].sort((orderA, orderB) => {
+      if (orderA.status === 'Paid' && orderB.status !== 'Paid') {
+        return 1;
+      }
+      if (orderA.status !== 'Paid' && orderB.status === 'Paid') {
+        return -1;
+      }
+      return new Date(orderB.created_at) - new Date(orderA.created_at);
+    });
+
+    const numberedOrders = sortedOrders.reverse().map((order, index) => ({
+      ...order,
+      orderNumber: index + 1,
+    }));
+
+    return numberedOrders.reverse();
+  }, [orders]);
 
   return (
     <>
@@ -112,7 +131,7 @@ export const OrdersList = ({
         <Text fontWeight={700} fontSize={20} classname={cls.text}>
           {!totalPrice
             ? isWaiter
-              ? 'All orders paid, mark table as free when customers leave.'
+              ? 'All orders paid, mark table as free when customer leave.'
               : 'All orders are paid, thank you for visiting our restaurant.'
             : `Total price $${totalPrice}`}
         </Text>
@@ -139,7 +158,7 @@ export const OrdersList = ({
             ? 'Or select those orders that the customer has paid by selecting the ones you need.'
             : 'Or you can pay for each order separately by selecting the ones you need.'}
         </Text>
-        <ul className={cls.list}>{sortedOrders.map(renderOrder)}</ul>
+        <ul className={cls.list}>{sortedOrders().map(renderOrder)}</ul>
       </div>
       {payment && (
         <div className={cls.layout}>
@@ -152,4 +171,10 @@ export const OrdersList = ({
 
 OrdersList.propTypes = {
   isWaiter: PropTypes.bool,
+  orders: PropTypes.array,
+  onChangeSelected: PropTypes.func,
+  selectedTotal: PropTypes.number,
+  selectedOrders: PropTypes.array,
+  onTotalPrice: PropTypes.func,
+  urlParams: PropTypes.object,
 };

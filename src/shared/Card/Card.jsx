@@ -30,6 +30,7 @@ const Card = memo(
     currentSelectStatus = 'Ordered',
     statusCurrent,
     changeStatusFunction,
+    dishId,
   }) => {
     const sum = formatNumberWithTwoDecimals(price * quantity);
     return (
@@ -49,6 +50,7 @@ const Card = memo(
               <div className={css['card__icon-wrapper']}>
                 <StatusSelector
                   mode="dishes"
+                  itemId={dishId}
                   currentStatus={currentSelectStatus}
                   changeStatusFunction={changeStatusFunction}
                 />
@@ -107,6 +109,7 @@ Card.propTypes = {
   statusCurrent: PropTypes.string,
   currentSelectStatus: PropTypes.string,
   changeStatusFunction: PropTypes.func,
+  dishId: PropTypes.string,
 };
 
 export default Card;

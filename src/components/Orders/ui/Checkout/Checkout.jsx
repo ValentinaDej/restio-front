@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Text from 'shared/Text/Text';
 import cls from './Checkout.module.scss';
 import Button from 'shared/Button/Button';
@@ -7,8 +8,9 @@ import { classNames } from 'helpers/classNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
-import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/service';
 import Loader from 'shared/Loader/Loader';
+import { toast } from 'react-hot-toast';
+import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
 
 export const Checkout = ({
   isWaiter,
@@ -21,24 +23,38 @@ export const Checkout = ({
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const { isLoading, mutate } = useUpdateOrderStatusByWaiter(urlParams, selectedOrders);
-  const { isLoadingTableStatus, mutate: mutateTableStatus } = useUpdateTableStatusByWaiter(
-    urlParams,
-    'Free'
-  );
-
+  const {
+    isLoading: isLoadingTableStatus,
+    mutate: mutateTableStatus,
+    isError,
+    error,
+  } = useUpdateTableStatusByWaiter(urlParams, 'Free');
   const { data, signature } = useSelector(getPaymentInfo);
+  const frontLink = location.href;
 
   useEffect(() => {
     if (data && signature) {
       location.href = `${process.env.REACT_APP_LIQPAY_BASE_URL}/checkout?data=${data}&signature=${signature}`;
     }
-  }, [data, signature]);
+
+    if (isError) {
+      toast.error(error?.response.data.message, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    }
+  }, [data, error, isError, signature]);
 
   const onOpenModal = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
 
-  const frontLink = location.href;
   const onClickPaySelectedAsCustomer = useCallback(() => {
     dispatch(
       payOrders({
@@ -116,4 +132,13 @@ export const Checkout = ({
       </div>
     </>
   );
+};
+
+Checkout.propTypes = {
+  isWaiter: PropTypes.bool,
+  amount: PropTypes.number,
+  selectedOrders: PropTypes.array,
+  onChangeSelected: PropTypes.func,
+  urlParams: PropTypes.object,
+  isAllOrdersPaid: PropTypes.bool,
 };
