@@ -27,7 +27,7 @@ const EmployeePage = () => {
     })
   );
 
-  const { data, refetch } = useQuery('personnel', fetchData);
+  const { data, isLoading, refetch } = useQuery('personnel', fetchData);
 
   const handleDelete = async (employeeId) => {
     try {
@@ -50,6 +50,7 @@ const EmployeePage = () => {
       goToAdd={navigateToAddEmpl}
       handleDelete={handleDelete}
       data={data}
+      isLoading={isLoading}
     />
   );
 };

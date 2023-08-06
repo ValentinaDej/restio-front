@@ -12,16 +12,7 @@ const value = {
   dish: 'dishes',
 };
 
-const AdminPageContainer = ({
-  title,
-  variant,
-  handleDelete,
-  goToAdd,
-  data,
-  children,
-  isLoading,
-  isError,
-}) => {
+const AdminPageContainer = ({ title, variant, handleDelete, goToAdd, data, children }) => {
   const { restId } = useParams();
   const navigate = useNavigate();
 
@@ -44,55 +35,59 @@ const AdminPageContainer = ({
     <div className={styles['personnel-container']}>
       <Title textAlign={'left'}>{title}</Title>
       <hr className={styles.divider} />
-      <div className={`${styles.input__container}`}>
-        <Input
-          type="text"
-          name="search"
-          value={searchText}
-          onChange={handleChange}
-          placeholder="Search dish..."
-          size="md"
-          className={`${styles.input}`}
-        />
-      </div>
-      {children}
-      <ul className={`${styles.menu_wrapper}`}>
-        <li key={`empty`} className={styles.card_wrapper}>
-          <EmptyCard text={variant} mode={`outlined`} onClick={goToAdd}></EmptyCard>
-        </li>
-        {filterDishesList &&
-          filterDishesList.length > 0 &&
-          filterDishesList.map((item) => {
-            return (
-              <li key={item._id} className={styles.card_wrapper}>
-                <EmployeeCard
-                  data={item}
-                  mode={'outlined'}
-                  alt={`Employee ${item.name}`}
-                  src={item.picture}
-                  handleEdit={() => navigateToEdit(item._id)}
-                  handleDelete={() => handleDelete(item._id)}
-                >
-                  {variant === 'employee' && (
-                    <>
-                      <p className={styles.employee_name}>{item.name}</p>
-                      <p className={styles.employee_subinfo}>{item.role}</p>
-                      <p className={styles.employee_subinfo}>{item.phone}</p>
-                    </>
-                  )}
-                  {variant === 'dish' && (
-                    <>
-                      <p className={styles.employee_name}>{item.name}</p>
-                      <p className={styles.employee_subinfo}>$ {item.price}</p>
-                    </>
-                  )}
-                </EmployeeCard>
-              </li>
-            );
-          })}
-        {isLoading && <Loader size="sm" />}
-        {isError && <p>Something went wrong</p>}
-      </ul>
+      {isLoading ? (
+        <Loader size="sm" />
+      ) : (
+        <>
+          <div className={`${styles.input__container}`}>
+            <Input
+              type="text"
+              name="search"
+              value={searchText}
+              onChange={handleChange}
+              placeholder="Search dish..."
+              size="md"
+              className={`${styles.input}`}
+            />
+          </div>
+          {children}
+          <ul className={`${styles.menu_wrapper}`}>
+            <li key={`empty`} className={styles.card_wrapper}>
+              <EmptyCard text={variant} mode={`outlined`} onClick={goToAdd}></EmptyCard>
+            </li>
+            {filterDishesList &&
+              filterDishesList.length > 0 &&
+              filterDishesList.map((item) => {
+                return (
+                  <li key={item._id} className={styles.card_wrapper}>
+                    <EmployeeCard
+                      data={item}
+                      mode={'outlined'}
+                      alt={`Employee ${item.name}`}
+                      src={item.picture}
+                      handleEdit={() => navigateToEdit(item._id)}
+                      handleDelete={() => handleDelete(item._id)}
+                    >
+                      {variant === 'employee' && (
+                        <>
+                          <p className={styles.employee_name}>{item.name}</p>
+                          <p className={styles.employee_subinfo}>{item.role}</p>
+                          <p className={styles.employee_subinfo}>{item.phone}</p>
+                        </>
+                      )}
+                      {variant === 'dish' && (
+                        <>
+                          <p className={styles.employee_name}>{item.name}</p>
+                          <p className={styles.employee_subinfo}>$ {item.price}</p>
+                        </>
+                      )}
+                    </EmployeeCard>
+                  </li>
+                );
+              })}
+          </ul>
+        </>
+      )}
     </div>
   );
 };
