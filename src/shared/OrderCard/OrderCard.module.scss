@@ -1,19 +1,19 @@
 .item {
   position: relative;
   height: 460px;
-  padding: 15px 15px 25px 15px;
-  border-radius: 10px;
-  border: var(--border-primary);
+  padding: 1rem 1rem;
+  background-color: var(--color-white);
+  border-radius: 1.5rem;
+  box-shadow: var(--box-shadow);
   width: 100%;
-  max-width: 400px;
-  min-width: 280px;
+  // max-width: 400px;
+  min-width: 320px;
   transition:
     height 0.3s ease,
     box-shadow 0.3s ease;
 
   &.isSmall {
     height: 115px;
-    width: 360px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 }
@@ -29,8 +29,6 @@
 .list {
   padding: 10px;
   overflow-y: auto;
-  display: grid;
-  gap: 10px;
   margin-top: 20px;
   height: 300px;
   transition: height 0.3s ease;
@@ -41,6 +39,10 @@
     gap: 0;
     margin: 0;
     overflow: hidden;
+  }
+
+  li {
+    margin-top: 10px;
   }
 }
 

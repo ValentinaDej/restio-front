@@ -44,3 +44,20 @@ export const useUpdateTableStatusByWaiter = ({ restId, tableId }, status) => {
 
   return mutation;
 };
+
+export const useUpdateDishStatusByWaiter = () => {
+  const queryClient = useQueryClient();
+
+  const updateDishStatus = async ({ urlParams: { restId }, status, dishId, orderId }) => {
+    const response = await instance.patch(`orders/${restId}/${orderId}/${dishId}`, { status });
+    return response.data;
+  };
+
+  const mutation = useMutation(updateDishStatus, {
+    onSuccess: () => {
+      queryClient.refetchQueries(['orders']);
+    },
+  });
+
+  return mutation;
+};

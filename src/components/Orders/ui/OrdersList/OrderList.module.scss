@@ -1,12 +1,12 @@
 .box {
   display: grid;
-  justify-content: center;
   gap: 15px;
-  padding-top: 40px;
-  padding-bottom: 70px;
 
   &.isWaiter {
     padding-bottom: 30px;
+  }
+  @media screen and (min-width: 670.98px) {
+    justify-content: center;
   }
 }
 
@@ -18,15 +18,14 @@
 
 .list {
   display: grid;
-  justify-content: center;
   grid-template-columns: auto;
   gap: 18px;
 
-  @media screen and (min-width: 767.98px) {
-    grid-template-columns: 350px 350px;
+  @media screen and (min-width: 670.98px) {
+    grid-template-columns: auto auto;
   }
   @media screen and (min-width: 1200px) {
-    grid-template-columns: 350px 350px 350px;
+    grid-template-columns: auto auto auto;
   }
 }
 

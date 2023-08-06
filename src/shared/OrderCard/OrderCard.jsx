@@ -13,7 +13,7 @@ import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals
 import { getDate } from 'helpers/getDate';
 
 const OrderCard = memo(
-  ({ _id, orderItems, created_at, status, сhecked, onChange, small, isWaiter }) => {
+  ({ _id, orderItems, created_at, status, сhecked, onChange, small, isWaiter, onChangeStatus }) => {
     const cardRef = useRef(null);
     const [isChecked, setIsChecked] = useState(сhecked || false);
     const [isSmall, setIsSmall] = useState(small);
@@ -39,6 +39,13 @@ const OrderCard = memo(
       setIsSmall((prev) => !prev);
     }, []);
 
+    const onChangeStatusByWaiter = useCallback(
+      (status, dishId) => {
+        onChangeStatus(status, dishId, _id);
+      },
+      [_id, onChangeStatus]
+    );
+
     return (
       <div className={classNames(cls.item, { [cls.isSmall]: isSmall })} ref={cardRef}>
         <div className={cls.topBlock}>
@@ -60,15 +67,19 @@ const OrderCard = memo(
         )}
         <ul className={classNames(cls.list, { [cls.isSmall]: isSmall })}>
           {orderItems.map(({ dish: { _id, picture, name, price }, quantity, status }) => (
-            <Card
-              key={_id}
-              src={picture}
-              title={name}
-              quantity={quantity}
-              price={price}
-              statusCurrent={status}
-              mode={isWaiter && 'waiter'}
-            />
+            <li key={_id}>
+              <Card
+                src={picture}
+                title={name}
+                quantity={quantity}
+                price={price}
+                statusCurrent={status}
+                currentSelectStatus={status}
+                dishId={_id}
+                changeStatusFunction={onChangeStatusByWaiter}
+                mode={isWaiter && 'waiter'}
+              />
+            </li>
           ))}
         </ul>
         <Text

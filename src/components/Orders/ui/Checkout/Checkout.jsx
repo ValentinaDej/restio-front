@@ -25,8 +25,8 @@ export const Checkout = ({
     urlParams,
     'Free'
   );
-
   const { data, signature } = useSelector(getPaymentInfo);
+  const frontLink = location.href;
 
   useEffect(() => {
     if (data && signature) {
@@ -38,7 +38,6 @@ export const Checkout = ({
     setIsOpen((prev) => !prev);
   }, []);
 
-  const frontLink = location.href;
   const onClickPaySelectedAsCustomer = useCallback(() => {
     dispatch(
       payOrders({
