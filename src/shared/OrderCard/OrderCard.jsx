@@ -13,7 +13,18 @@ import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals
 import { getDate } from 'helpers/getDate';
 
 const OrderCard = memo(
-  ({ _id, orderItems, created_at, status, сhecked, onChange, small, isWaiter, onChangeStatus }) => {
+  ({
+    _id,
+    orderItems,
+    created_at,
+    status,
+    сhecked,
+    onChange,
+    small,
+    isWaiter,
+    onChangeStatus,
+    idx,
+  }) => {
     const cardRef = useRef(null);
     const [isChecked, setIsChecked] = useState(сhecked || false);
     const [isSmall, setIsSmall] = useState(small);
@@ -50,7 +61,7 @@ const OrderCard = memo(
       <div className={classNames(cls.item, { [cls.isSmall]: isSmall })} ref={cardRef}>
         <div className={cls.topBlock}>
           <Title mode={'h3'} fontSize={12} textAlign="left" classname={cls.text}>
-            Order #{_id}
+            Order #{idx}
           </Title>
           <div className={cls.dishes}>
             <BiDish size={20} />

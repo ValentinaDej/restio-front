@@ -101,11 +101,12 @@ export const OrdersList = ({
       small={!isWaiter}
       isWaiter={isWaiter}
       onChangeStatus={onClickChangeDishStatusAsWaiter}
+      idx={order.orderNumber}
     />
   );
 
-  const sortedOrders = useMemo(() => {
-    return [...orders].sort((orderA, orderB) => {
+  const sortedOrders = useCallback(() => {
+    const sortedOrders = [...orders].sort((orderA, orderB) => {
       if (orderA.status === 'Paid' && orderB.status !== 'Paid') {
         return 1;
       }
@@ -114,6 +115,13 @@ export const OrdersList = ({
       }
       return new Date(orderB.created_at) - new Date(orderA.created_at);
     });
+
+    const numberedOrders = sortedOrders.reverse().map((order, index) => ({
+      ...order,
+      orderNumber: index + 1,
+    }));
+
+    return numberedOrders.reverse();
   }, [orders]);
 
   return (
@@ -149,7 +157,7 @@ export const OrdersList = ({
             ? 'Or select those orders that the customer has paid by selecting the ones you need.'
             : 'Or you can pay for each order separately by selecting the ones you need.'}
         </Text>
-        <ul className={cls.list}>{sortedOrders.map(renderOrder)}</ul>
+        <ul className={cls.list}>{sortedOrders().map(renderOrder)}</ul>
       </div>
       {payment && (
         <div className={cls.layout}>
