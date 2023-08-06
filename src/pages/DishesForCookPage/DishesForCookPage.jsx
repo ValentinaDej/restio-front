@@ -7,11 +7,15 @@ import Loader from 'shared/Loader/Loader';
 import { getAllOrders } from 'api/order';
 import { changeDishStatus } from 'api/dish';
 import StatusCardItem from 'components/Cook/StatusCardItem/StatusCardItem';
+import { useMediaQuery } from 'react-responsive';
+import Button from 'shared/Button/Button';
+import { useState } from 'react';
 
 const statuses = ['Ordered', 'In progress', 'Ready'];
 
 const DishesForCookPage = () => {
   const { restId } = useParams();
+  const [currentStatus, setCurrentStatus] = useState('Ordered');
 
   const { data, isLoading, refetch } = useQuery(
     'all dishes by restaurant',
@@ -22,6 +26,16 @@ const DishesForCookPage = () => {
       },
     }
   );
+
+  const isDesktop = useMediaQuery({
+    query: '(min-width: 1024px)',
+  });
+  const isTablet = useMediaQuery({
+    query: '(max-width: 1023px)',
+  });
+  const isMobile = useMediaQuery({
+    query: '(max-width: 767px)',
+  });
 
   const { mutateAsync } = useMutation(changeDishStatus);
 
@@ -48,21 +62,52 @@ const DishesForCookPage = () => {
 
   return (
     <div className="main__container">
-      <div className={`${styles.container}`}>
+      <div className={`${styles.section}`}>
         <Title classname={`${styles.title}`}>Cook Dashboard</Title>
         {isLoading ? (
           <Loader size="lg" />
         ) : (
-          <div className={`${styles.status__container}`}>
-            {statuses.map((status) => (
-              <StatusCardItem
-                key={status}
-                status={status}
-                data={data}
-                handleChangeStatus={handleChangeStatus}
-              />
-            ))}
-          </div>
+          <>
+            {isTablet && (
+              <div className={`${styles.button__section}`}>
+                {statuses.map((status) => (
+                  <Button
+                    key={`btn_${status}`}
+                    size={isMobile ? 'sm' : 'md'}
+                    mode={currentStatus === status ? 'primary' : 'outlined'}
+                    onClick={() => setCurrentStatus(status)}
+                  >
+                    {status}
+                  </Button>
+                ))}
+              </div>
+            )}
+
+            <div className={`${styles.status__section}`}>
+              {statuses.map((status) => {
+                if (isTablet && currentStatus === status) {
+                  return (
+                    <StatusCardItem
+                      key={status}
+                      status={status}
+                      data={data}
+                      handleChangeStatus={handleChangeStatus}
+                    />
+                  );
+                }
+                if (isDesktop) {
+                  return (
+                    <StatusCardItem
+                      key={status}
+                      status={status}
+                      data={data}
+                      handleChangeStatus={handleChangeStatus}
+                    />
+                  );
+                }
+              })}
+            </div>
+          </>
         )}
       </div>
     </div>

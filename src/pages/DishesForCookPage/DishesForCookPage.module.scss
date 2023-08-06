@@ -1,13 +1,19 @@
-.container {
-  padding: 20px;
+.section {
+  padding: 20px 0;
 }
 
 .title {
   margin-bottom: 30px;
 }
 
-.status__container {
+.status__section {
   display: flex;
   gap: 10px;
   width: 100%;
+}
+
+.button__section {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
 }

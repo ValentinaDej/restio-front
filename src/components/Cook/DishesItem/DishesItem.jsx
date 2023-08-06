@@ -5,7 +5,7 @@ import styles from './DishesItem.module.scss';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 
-const DishesItem = ({ dish, quantity, handleChangeStatus, orderId }) => {
+const DishesItem = ({ dish, quantity, handleChangeStatus, status, orderId }) => {
   const { restId } = useParams();
 
   return (
@@ -14,6 +14,7 @@ const DishesItem = ({ dish, quantity, handleChangeStatus, orderId }) => {
       <div className={`${styles.button__container}`}>
         <Button
           onClick={() => handleChangeStatus(restId, orderId, dish._id, 'In progress')}
+          disabled={status === 'In progress'}
           mode="primary"
           size="sm"
           className={`${styles.button__purple}`}
@@ -24,6 +25,7 @@ const DishesItem = ({ dish, quantity, handleChangeStatus, orderId }) => {
           onClick={() => handleChangeStatus(restId, orderId, dish._id, 'Ready')}
           mode="primary"
           size="sm"
+          disabled={status === 'Ready'}
           className={`${styles.button__green}`}
         >
           Ready

@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 const DishesList = ({ dishes, handleChangeStatus, orderId }) => {
   return (
     <ul className={`${styles.list}`}>
-      {dishes.map(({ dish, quantity }) => {
+      {dishes.map(({ dish, quantity, status }) => {
         return (
           <DishesItem
             key={dish._id}
             dish={dish}
+            status={status}
             quantity={quantity}
             orderId={orderId}
             handleChangeStatus={handleChangeStatus}
