@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Text from 'shared/Text/Text';
 import cls from './Checkout.module.scss';
 import Button from 'shared/Button/Button';
@@ -131,4 +132,13 @@ export const Checkout = ({
       </div>
     </>
   );
+};
+
+Checkout.propTypes = {
+  isWaiter: PropTypes.bool,
+  amount: PropTypes.number,
+  selectedOrders: PropTypes.array,
+  onChangeSelected: PropTypes.func,
+  urlParams: PropTypes.object,
+  isAllOrdersPaid: PropTypes.bool,
 };

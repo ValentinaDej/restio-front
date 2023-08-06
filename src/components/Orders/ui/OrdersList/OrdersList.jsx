@@ -162,4 +162,10 @@ export const OrdersList = ({
 
 OrdersList.propTypes = {
   isWaiter: PropTypes.bool,
+  orders: PropTypes.array,
+  onChangeSelected: PropTypes.func,
+  selectedTotal: PropTypes.number,
+  selectedOrders: PropTypes.array,
+  onTotalPrice: PropTypes.func,
+  urlParams: PropTypes.object,
 };

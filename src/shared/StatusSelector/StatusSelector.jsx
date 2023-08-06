@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classes from './StatusSelector.module.scss';
 import Status from '../Status/Status';
 
-const StatusSelector = ({ mode, currentStatus, changeStatusFunction = () => {}, dishId }) => {
+const StatusSelector = ({ mode, currentStatus, changeStatusFunction = () => {}, itemId }) => {
   const [selectedCurrent, setSelectCurrent] = useState(currentStatus);
   const [currentMode, setCurrentMode] = useState([]);
   const [visibleBody, setVisibleBody] = useState(false);
@@ -27,7 +27,7 @@ const StatusSelector = ({ mode, currentStatus, changeStatusFunction = () => {}, 
   const handleItemBody = (item) => {
     setSelectCurrent(item);
     setVisibleBody(false);
-    changeStatusFunction(item, dishId); //function to handle status changing
+    changeStatusFunction(item, itemId); //function to handle status changing
   };
 
   return (
@@ -65,7 +65,7 @@ const StatusSelector = ({ mode, currentStatus, changeStatusFunction = () => {}, 
 
 StatusSelector.propTypes = {
   mode: PropTypes.oneOf(['tables', 'dishes', 'orders']).isRequired,
-  dishId: PropTypes.string,
+  itemId: PropTypes.string,
 };
 
 export default StatusSelector;
