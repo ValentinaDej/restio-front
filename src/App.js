@@ -14,7 +14,6 @@ import routesCustomer from 'routes/routesCustomer';
 import { useSelector } from 'react-redux';
 import Footer from 'shared/Footer/Footer';
 import Header from 'shared/Header/Header';
-import MenuPage from 'pages/MenuPage/MenuPage';
 import Loader from 'shared/Loader/Loader';
 import { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -42,7 +41,7 @@ const App = () => {
       <main>
         <Suspense fallback={<Loader size="lg" />}>
           <Routes>
-            <Route path="/" element={<PublicRoute component={<MenuPage />} />} />
+            <Route path="/" element={<PublicRoute component={<HomePage />} />} />
             <Route path="personnel" element={<PublicRoute component={<HomePage />} />} />
             <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
             {routesCustomer.map(({ path, component }) => (
