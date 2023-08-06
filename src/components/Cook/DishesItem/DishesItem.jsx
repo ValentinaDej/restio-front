@@ -4,14 +4,14 @@ import Status from 'shared/Status/Status';
 import styles from './DishesItem.module.scss';
 import PropTypes from 'prop-types';
 
-const DishesItem = ({ dish, quantity, status, handleChangeStatus }) => {
+const DishesItem = ({ dish, quantity, status, handleChangeStatus, orderId }) => {
   return (
     <li className={`${styles.item}`}>
       <Card mode="cook" src={dish.picture} title={dish.name} quantity={quantity} />
       <Status statusCurrent={status} className={`${styles.status}`} />
       <div className={`${styles.button__container}`}>
         <Button
-          onClick={() => handleChangeStatus(dish._id, 'In progress')}
+          onClick={() => handleChangeStatus(dish._id, orderId, 'In progress')}
           mode="primary"
           size="sm"
           className={`${styles.button__purple}`}
