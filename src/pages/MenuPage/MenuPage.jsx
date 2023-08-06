@@ -18,24 +18,6 @@ const MenuPage = () => {
     async () => await getDishes(restId, category)
   );
 
-  // const subscribe = async () => {
-  //   const eventSource = new EventSource('http://localhost:3001/sse');
-
-  //   eventSource.onmessage = (event) => {
-  //     const eventData = JSON.parse(event.data);
-  //     // Handle the updated dish status here and update your UI accordingly
-  //     setMessage(eventData);
-  //     console.log('eventData', eventData);
-  //   };
-
-  //   eventSource.onerror = (error) => {
-  //     console.error('Error occurred with SSE connection:', error);
-  //   };
-  // };
-  // useEffect(() => {
-  //   subscribe();
-  // }, []);
-
   return (
     <>
       {isError && toast.error('Something went wrong... Please try again in few minutes')}
