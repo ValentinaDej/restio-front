@@ -14,7 +14,6 @@ import routesCustomer from 'routes/routesCustomer';
 import { useSelector } from 'react-redux';
 import Footer from 'shared/Footer/Footer';
 import Header from 'shared/Header/Header';
-import MenuPage from 'pages/MenuPage/MenuPage';
 import Loader from 'shared/Loader/Loader';
 import { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';

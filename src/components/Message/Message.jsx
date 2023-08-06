@@ -1,8 +1,10 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { MdOutlineClose } from 'react-icons/md';
+
 import Text from 'shared/Text/Text';
 import css from './Message.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { getMessagesFromState } from 'store/messages/messagesSelector';
-import { MdOutlineClose } from 'react-icons/md';
 import { deleteMessage } from 'store/messages/messagesSlice';
 
 const Message = () => {
@@ -11,6 +13,7 @@ const Message = () => {
   const onClickHandler = (id) => {
     dispatch(deleteMessage(id));
   };
+
   return (
     <>
       {messages?.length > 0 && (
