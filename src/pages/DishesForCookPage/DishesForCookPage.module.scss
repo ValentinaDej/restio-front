@@ -8,34 +8,6 @@
 
 .status__container {
   display: flex;
-  align-items: center;
   gap: 10px;
   width: 100%;
-}
-
-.status__card {
-  background-color: var(--color-orange-transparent);
-  width: calc(100% / 3);
-  box-shadow: var(--box-shadow);
-  min-height: 100vh;
-  border-radius: 20px;
-  padding: 20px;
-}
-
-.status__title {
-  margin-bottom: 20px;
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.item {
-  position: relative;
-  border: 1px solid var(--color-orange-focus);
-  border-radius: 20px;
-  padding: 10px;
-  background-color: var(--color-white);
 }

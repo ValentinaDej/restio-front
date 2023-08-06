@@ -13,3 +13,9 @@ export const fetchDishesList = async (restId) => {
 export const deleteDishById = async (dishId, restId) => {
   await instance.delete(`/dishes/${dishId}/restaurant/${restId}`);
 };
+
+export const changeDishStatus = async ({ id, orderId, dishId, status }) => {
+  await instance.patch(`/orders/${id}/${orderId}/${dishId}`, {
+    status,
+  });
+};

@@ -1,6 +1,9 @@
 .item {
   position: relative;
+  border: 1px solid var(--color-orange-focus);
+  border-radius: 20px;
   padding: 10px;
+  background-color: var(--color-white);
 }
 
 .button__container {
@@ -9,12 +12,6 @@
   justify-content: center;
   gap: 30px;
   margin-top: 10px;
-}
-
-.status {
-  position: absolute;
-  right: 50px;
-  top: 40px;
 }
 
 .button__purple {

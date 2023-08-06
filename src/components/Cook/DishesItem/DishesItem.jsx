@@ -3,15 +3,17 @@ import Card from 'shared/Card/Card';
 import Status from 'shared/Status/Status';
 import styles from './DishesItem.module.scss';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 
-const DishesItem = ({ dish, quantity, status, handleChangeStatus, orderId }) => {
+const DishesItem = ({ dish, quantity, handleChangeStatus, orderId }) => {
+  const { restId } = useParams();
+
   return (
     <li className={`${styles.item}`}>
       <Card mode="cook" src={dish.picture} title={dish.name} quantity={quantity} />
-      <Status statusCurrent={status} className={`${styles.status}`} />
       <div className={`${styles.button__container}`}>
         <Button
-          onClick={() => handleChangeStatus(dish._id, orderId, 'In progress')}
+          onClick={() => handleChangeStatus(restId, orderId, dish._id, 'In progress')}
           mode="primary"
           size="sm"
           className={`${styles.button__purple}`}
@@ -19,7 +21,7 @@ const DishesItem = ({ dish, quantity, status, handleChangeStatus, orderId }) => 
           In progress
         </Button>
         <Button
-          onClick={() => handleChangeStatus(dish._id, 'Ready')}
+          onClick={() => handleChangeStatus(restId, orderId, dish._id, 'Ready')}
           mode="primary"
           size="sm"
           className={`${styles.button__green}`}
@@ -38,8 +40,8 @@ DishesItem.propTypes = {
     picture: PropTypes.string.isRequired,
   }).isRequired,
   quantity: PropTypes.number.isRequired,
-  status: PropTypes.string.isRequired,
   handleChangeStatus: PropTypes.func.isRequired,
+  orderId: PropTypes.string.isRequired,
 };
 
 export default DishesItem;
