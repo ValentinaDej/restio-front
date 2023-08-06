@@ -5,13 +5,23 @@ import EmptyCard from 'shared/EmptyCard/EmptyCard';
 import { useNavigate, useParams } from 'react-router-dom';
 import Input from 'shared/Input/Input';
 import { useState } from 'react';
+import Loader from 'shared/Loader/Loader';
 
 const value = {
   employee: 'personnel',
   dish: 'dishes',
 };
 
-const AdminPageContainer = ({ title, variant, handleDelete, goToAdd, data, children }) => {
+const AdminPageContainer = ({
+  title,
+  variant,
+  handleDelete,
+  goToAdd,
+  data,
+  children,
+  isLoading,
+  isError,
+}) => {
   const { restId } = useParams();
   const navigate = useNavigate();
 
@@ -50,34 +60,38 @@ const AdminPageContainer = ({ title, variant, handleDelete, goToAdd, data, child
         <li key={`empty`} className={styles.card_wrapper}>
           <EmptyCard text={variant} mode={`outlined`} onClick={goToAdd}></EmptyCard>
         </li>
-        {filterDishesList?.map((item) => {
-          return (
-            <li key={item._id} className={styles.card_wrapper}>
-              <EmployeeCard
-                data={item}
-                mode={'outlined'}
-                alt={`Employee ${item.name}`}
-                src={item.picture}
-                handleEdit={() => navigateToEdit(item._id)}
-                handleDelete={() => handleDelete(item._id)}
-              >
-                {variant === 'employee' && (
-                  <>
-                    <p className={styles.employee_name}>{item.name}</p>
-                    <p className={styles.employee_subinfo}>{item.role}</p>
-                    <p className={styles.employee_subinfo}>{item.phone}</p>
-                  </>
-                )}
-                {variant === 'dish' && (
-                  <>
-                    <p className={styles.employee_name}>{item.name}</p>
-                    <p className={styles.employee_subinfo}>$ {item.price}</p>
-                  </>
-                )}
-              </EmployeeCard>
-            </li>
-          );
-        })}
+        {filterDishesList &&
+          filterDishesList.length > 0 &&
+          filterDishesList.map((item) => {
+            return (
+              <li key={item._id} className={styles.card_wrapper}>
+                <EmployeeCard
+                  data={item}
+                  mode={'outlined'}
+                  alt={`Employee ${item.name}`}
+                  src={item.picture}
+                  handleEdit={() => navigateToEdit(item._id)}
+                  handleDelete={() => handleDelete(item._id)}
+                >
+                  {variant === 'employee' && (
+                    <>
+                      <p className={styles.employee_name}>{item.name}</p>
+                      <p className={styles.employee_subinfo}>{item.role}</p>
+                      <p className={styles.employee_subinfo}>{item.phone}</p>
+                    </>
+                  )}
+                  {variant === 'dish' && (
+                    <>
+                      <p className={styles.employee_name}>{item.name}</p>
+                      <p className={styles.employee_subinfo}>$ {item.price}</p>
+                    </>
+                  )}
+                </EmployeeCard>
+              </li>
+            );
+          })}
+        {isLoading && <Loader size="sm" />}
+        {isError && <p>Something went wrong</p>}
       </ul>
     </div>
   );
