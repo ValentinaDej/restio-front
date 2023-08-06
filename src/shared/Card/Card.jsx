@@ -50,7 +50,7 @@ const Card = memo(
               <div className={css['card__icon-wrapper']}>
                 <StatusSelector
                   mode="dishes"
-                  dishId={dishId}
+                  itemId={dishId}
                   currentStatus={currentSelectStatus}
                   changeStatusFunction={changeStatusFunction}
                 />
