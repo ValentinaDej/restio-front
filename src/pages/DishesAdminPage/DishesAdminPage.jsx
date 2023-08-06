@@ -1,45 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
-import { BASE_URL } from 'api';
-import styles from './DishesAdminPage.module.scss';
-import Input from 'shared/Input/Input';
-import Select from 'shared/Select/Select';
 import { useMutation, useQuery } from 'react-query';
 import { toast } from 'react-hot-toast';
+import { deleteDishById, fetchDishesList, getDishes } from 'api/dish';
 
 const DishesAdminPage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
 
-  const fetchDishesList = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/dishes/restaurant/${restId}`);
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching dishes:', error);
+  const { data, isLoading, refetch } = useQuery(
+    'fetchDishesList',
+    async () => fetchDishesList(restId),
+    {
+      onError: (error) => {
+        toast.error(error.message);
+      },
     }
-  };
-
-  const { data, isLoading, refetch } = useQuery('fetchDishesList', fetchDishesList, {
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
+  );
 
   const { mutateAsync } = useMutation((dishId) => {
-    axios.delete(`${BASE_URL}/dishes/${dishId}/restaurant/${restId}`);
+    deleteDishById(dishId, restId);
   });
 
   const navigateToAddDish = () => {
     navigate(`/admin/${restId}/dishes/new`);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, restId) => {
     try {
-      await toast.promise(mutateAsync(id), {
+      await toast.promise(mutateAsync(id, restId), {
         loading: 'Deleting...',
         success: 'Dish deleted successfully',
         error: 'Error deleting dish',

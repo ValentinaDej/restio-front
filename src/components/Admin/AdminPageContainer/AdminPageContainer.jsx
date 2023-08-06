@@ -12,7 +12,15 @@ const value = {
   dish: 'dishes',
 };
 
-const AdminPageContainer = ({ title, variant, handleDelete, goToAdd, data, children }) => {
+const AdminPageContainer = ({
+  title,
+  variant,
+  handleDelete,
+  goToAdd,
+  data,
+  children,
+  isLoading,
+}) => {
   const { restId } = useParams();
   const navigate = useNavigate();
 
