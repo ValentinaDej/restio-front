@@ -1,6 +1,23 @@
 import DishCard from './DishCard';
 import defaultSrc from '../../assets/img-template.jpg';
-
+const defaultValues = {
+  src: defaultSrc,
+  title: 'Pork Tenderloin',
+  ingredients: [
+    'Pork',
+    'Garlic',
+    'Oil',
+    'White wine',
+    'Shallot',
+    'Pork',
+    'Garlic',
+    'Oil',
+    'White wine',
+    'Shallot',
+  ],
+  weight: 320,
+  price: 7.89,
+};
 const meta = {
   component: DishCard,
   tags: ['autodocs'],
@@ -8,6 +25,7 @@ const meta = {
     src: {
       type: 'string',
       description: 'Image source url',
+      defaultValue: defaultValues.src,
     },
     title: {
       type: 'string',
@@ -33,25 +51,6 @@ const meta = {
 };
 
 export default meta;
-
-const defaultValues = {
-  src: defaultSrc,
-  title: 'Pork Tenderloin',
-  ingredients: [
-    'Pork',
-    'Garlic',
-    'Oil',
-    'White wine',
-    'Shallot',
-    'Pork',
-    'Garlic',
-    'Oil',
-    'White wine',
-    'Shallot',
-  ],
-  weight: 320,
-  price: 7.89,
-};
 
 export const Default = {
   args: {

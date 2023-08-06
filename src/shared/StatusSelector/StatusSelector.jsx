@@ -3,38 +3,31 @@ import PropTypes from 'prop-types';
 import classes from './StatusSelector.module.scss';
 import Status from '../Status/Status';
 
-const StatusSelector = ({ mode }) => {
-  const statusTables = ['free', 'taken', 'called waiter', 'request bill'];
-  const statusDishes = ['ordered', 'in progress', 'ready', 'served'];
-  const statusOrders = ['open', 'paid'];
-
-  const [selectedCurrent, setSelectCurrent] = useState();
+const StatusSelector = ({ mode, currentStatus, changeStatusFunction = () => {} }) => {
+  const [selectedCurrent, setSelectCurrent] = useState(currentStatus);
   const [currentMode, setCurrentMode] = useState([]);
   const [visibleBody, setVisibleBody] = useState(false);
 
   useEffect(() => {
     switch (mode) {
       case 'tables':
-        setSelectCurrent(statusTables[0]);
-        setCurrentMode(statusTables);
+        setCurrentMode(['Free', 'Taken', 'Called waiter', 'Request bill']);
         break;
       case 'dishes':
-        setSelectCurrent(statusDishes[0]);
-        setCurrentMode(statusDishes);
+        setCurrentMode(['Ordered', 'In progress', 'Ready', 'Served']);
         break;
       case 'orders':
-        setSelectCurrent(statusOrders[0]);
-        setCurrentMode(statusOrders);
+        setCurrentMode(['Open', 'Paid', 'Closed']);
         break;
       default:
         break;
     }
-  }, []);
+  }, [mode]);
 
   const handleItemBody = (item) => {
     setSelectCurrent(item);
     setVisibleBody(false);
-    //dispatch
+    changeStatusFunction(); //function to handle status changing
   };
   return (
     <div>

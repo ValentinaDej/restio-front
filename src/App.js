@@ -1,6 +1,7 @@
 import './styles.scss';
 import { Toaster } from 'react-hot-toast';
 import HomePage from 'pages/HomePage/HomePage';
+
 import LoginPage from 'pages/LoginPage/LoginPage';
 import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
 import logoImg from './img/RESTio.svg';
