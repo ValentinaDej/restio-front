@@ -1,6 +1,10 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useRef, useImperativeHandle, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+
+import { LiaPlusSolid } from 'react-icons/lia';
+
+import defaultImage from '../../img/defaultUploadImg.png';
 import styles from './FileUploader.module.scss';
 
 const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg', 'gif'];
@@ -8,6 +12,7 @@ const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg', 'gif'];
 const FileUploader = forwardRef(({ size }, ref) => {
   const [uploadedFile, setUploadedFile] = useState();
   const [previewUrl, setPreviewUrl] = useState('');
+  const fileInputRef = useRef();
 
   const getFileExtension = (fileName) => {
     return fileName.split('.').pop().toLowerCase();
@@ -15,12 +20,14 @@ const FileUploader = forwardRef(({ size }, ref) => {
 
   const onFileChange = (event) => {
     const file = event.target.files[0];
-    const fileExtension = getFileExtension(file.name);
-    if (ALLOWED_EXTENSIONS.includes(fileExtension)) {
-      setUploadedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    } else {
-      toast.error('Invalid file format. Allowed formats: png, jpeg, jpg, gif');
+    if (file) {
+      const fileExtension = getFileExtension(file.name);
+      if (ALLOWED_EXTENSIONS.includes(fileExtension)) {
+        setUploadedFile(file);
+        setPreviewUrl(URL.createObjectURL(file));
+      } else {
+        toast.error('Invalid file format. Allowed formats: png, jpeg, jpg, gif');
+      }
     }
   };
 
@@ -56,19 +63,27 @@ const FileUploader = forwardRef(({ size }, ref) => {
     },
   }));
 
+  const handleFileInputClick = () => {
+    // Проксімований клік на інпут, щоб відкрити вікно вибору файлу
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   return (
     <div>
-      <div className={`${styles.fileUploader} ${styles[`fileUploader_${size}`]}`}>
-        {previewUrl ? (
-          <img src={previewUrl} alt="Preview" />
-        ) : (
-          <p>Drag & drop an image file here, or click to select one (jpeg, png, gif)</p>
-        )}
-        <input
-          type="file"
-          accept="image/jpeg, image/png, image/gif, image/jpg"
-          onChange={onFileChange}
-        />
+      <div className={`${styles.photoContainer} ${styles[`photoContainer_${size}`]}`}>
+        <img src={previewUrl ? previewUrl : defaultImage} alt="Preview" className={styles.photo} />
+        <div className={styles.addButton} onClick={handleFileInputClick}>
+          <LiaPlusSolid className={`${styles.icon} ${styles[`icon_${size}`]}`} />
+          <input
+            type="file"
+            accept="image/jpeg, image/png, image/gif, image/jpg"
+            onChange={onFileChange}
+            ref={fileInputRef}
+            className={styles.hiddenInput}
+          />
+        </div>
       </div>
     </div>
   );
