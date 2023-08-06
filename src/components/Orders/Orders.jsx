@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
 import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
+import { DownloadBill } from './ui/DownloadBill/DownloadBill';
 import OrderListSkeleton from 'shared/Skeletons/OrderSkeleton/OrderSkeleton';
 import PropTypes from 'prop-types';
 import Text from 'shared/Text/Text';
@@ -22,7 +23,6 @@ const Orders = ({ isWaiter }) => {
   };
 
   const navigate = useNavigate();
-
   const onClickBackBtn = useCallback(() => {
     navigate(-1);
   }, [navigate]);
@@ -66,6 +66,7 @@ const Orders = ({ isWaiter }) => {
             urlParams={params}
             isWaiter={isWaiter}
           />
+
           <Checkout
             amount={selectedTotal}
             selectedOrders={selectedOrders}
@@ -73,6 +74,14 @@ const Orders = ({ isWaiter }) => {
             urlParams={params}
             isWaiter={isWaiter}
             isAllOrdersPaid={isAllOrdersPaid}
+          />
+          <DownloadBill
+            orders={data?.data?.orders || []}
+            // onChangeSelected={onChangeSelected}
+            // selectedTotal={selectedTotal}
+            // selectedOrders={selectedOrders}
+            urlParams={params}
+            isWaiter={isWaiter}
           />
         </>
       )}
