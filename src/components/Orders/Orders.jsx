@@ -10,6 +10,7 @@ import Title from 'shared/Title/Title';
 import cls from './Order.module.scss';
 import Button from 'shared/Button/Button';
 import { TbMoodSearch } from 'react-icons/tb';
+import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 
 const Orders = ({ isWaiter }) => {
   const [selectedTotal, setSelectedTotal] = useState(0);
@@ -17,7 +18,7 @@ const Orders = ({ isWaiter }) => {
   const [isAllOrdersPaid, setIsAllOrdersPaid] = useState(false);
   const params = useParams();
   const onChangeSelected = (price, selectedOrders) => {
-    setSelectedTotal(price);
+    setSelectedTotal(formatNumberWithTwoDecimals(price));
     setSelectedOrders(selectedOrders);
   };
 

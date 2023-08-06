@@ -82,17 +82,17 @@ const OrderCard = memo(
             </li>
           ))}
         </ul>
-        <Text
-          fontWeight={700}
-          classname={classNames(
-            cls.total,
-            { [cls.isSmall]: isSmall, [cls.isPaid]: status === 'Paid' },
-            []
-          )}
-        >
-          Order total: ${totalPrice}
-        </Text>
         <div className={classNames(cls.bottomBlock, { [cls.isSmall]: isSmall })}>
+          <Text
+            fontWeight={700}
+            classname={classNames(
+              cls.total,
+              { [cls.isSmall]: isSmall, [cls.isPaid]: status === 'Paid' },
+              []
+            )}
+          >
+            Order total: ${totalPrice}
+          </Text>
           {status !== 'Paid' && (
             <CheckBox
               label={'Select order'}

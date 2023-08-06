@@ -6,7 +6,7 @@
   border-radius: 1.5rem;
   box-shadow: var(--box-shadow);
   width: 100%;
-  // max-width: 400px;
+  max-width: 350px;
   min-width: 320px;
   transition:
     height 0.3s ease,
@@ -57,11 +57,6 @@
 .total {
   color: var(--color-blue-dark);
 
-  &.isSmall {
-    margin-top: 10px;
-    position: absolute;
-  }
-
   &.isPaid {
     margin-top: 20px;
   }
@@ -70,11 +65,14 @@
 .bottomBlock {
   margin-top: 10px;
   display: flex;
+  gap: 10px;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
 
   &.isSmall {
     margin-top: 8px;
+    flex-direction: row;
   }
 }
 
