@@ -1,0 +1,21 @@
+.tables {
+  background-color: var(--color-bg-dark);
+  // height: 100%;
+  border-radius: 0.75rem;
+  flex: 1 1 auto;
+  margin: 1rem;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.tables__container {
+  // border: 1px solid red;
+  flex: 1 1 auto;
+  padding: 1rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+}
