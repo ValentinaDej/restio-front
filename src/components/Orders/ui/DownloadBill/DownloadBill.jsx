@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from 'react-query';
-import jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 import { toast } from 'react-hot-toast';
 import PropTypes from 'prop-types';
 
@@ -54,45 +55,66 @@ const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
 
   const printData = getOrderData();
 
-  const downloadBillPdf = () => {
-    const pdf = new jsPDF();
+  const downloadBillPdf = async () => {
+    const doc = new jsPDF();
 
-    let y = 20;
+    doc.addImage(data.picture, 'PNG', 95, 20, 20, 20);
 
-    // Виводимо обов'язкові поля
-    pdf.text('Restaurant Name: My Restaurant', 20, y);
-    y += 10;
-    pdf.text('Date: July 30, 2023', 20, y);
-    y += 10;
-    pdf.text('Table Number: 5', 20, y);
-    y += 20;
+    doc.setFontSize(12);
+    const restaurant = data.name;
+    const restaurantWidth = doc.getTextWidth(restaurant);
+    doc.text(restaurant, (210 - restaurantWidth) / 2, 50);
 
-    // Виводимо заголовки для колонок
-    pdf.text('Name', 20, y);
-    pdf.text('Quantity', 90, y);
-    pdf.text('Unit Price', 120, y);
-    pdf.text('Total Price', 150, y);
-    y += 10;
+    doc.setFontSize(8);
+    const address = `Address: ${data.address}`;
+    const addressWidth = doc.getTextWidth(address);
+    doc.text(address, 210 - addressWidth - 20, 55);
 
-    // Проходимося по кожному елементу даних для PDF
-    printData.forEach((data, index) => {
-      // Виводимо дані на PDF
-      pdf.text(data.name, 20, y);
-      pdf.text(data.price.toString(), 90, y);
-      pdf.text(data.quantity.toString(), 120, y);
-      pdf.text(data.amount.toString(), 150, y);
+    const phone = `Phone: ${data.phone}`;
+    const phoneWidth = doc.getTextWidth(phone);
+    doc.text(phone, 210 - phoneWidth - 20, 60);
 
-      // Збільшуємо координату y для наступного рядка
-      y += 10;
-    });
+    const website = `Website: ${data.website}`;
+    const websiteWidth = doc.getTextWidth(website);
+    doc.text(website, 210 - websiteWidth - 20, 65);
 
-    // Обчислюємо підсумок
+    const tableData = printData.map((item) => [
+      item.name,
+      item.quantity,
+      `${formatNumberWithTwoDecimals(item.price)}`,
+      `${formatNumberWithTwoDecimals(item.quantity * item.price)}`,
+    ]);
+
     const subtotal = printData.reduce((total, data) => total + data.amount, 0);
-    y += 10;
-    pdf.text(`Subtotal: $${subtotal}`, 20, y);
+    const subtotalRow = ['Total', '', '', `$${formatNumberWithTwoDecimals(subtotal)}`];
+    tableData.push(subtotalRow);
 
-    // Зберігаємо PDF документ
-    pdf.save('bill.pdf');
+    const tableStyles = {
+      fontSize: 10,
+      cellPadding: 5,
+      valign: 'middle',
+      halign: 'center',
+      lineColor: [248, 156, 95],
+    };
+
+    doc.autoTable({
+      head: [['Description', 'Qty', 'Price', 'Total']],
+      body: tableData,
+      startY: 70,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [248, 156, 95], // Задайте свій колір у форматі RGB
+      },
+      styles: tableStyles,
+    });
+    const tableHeight = 80 + (printData.length + 2) * 15;
+
+    doc.setFontSize(8);
+    const dateDoc = formatDateTime(new Date());
+    const dateDocWidth = doc.getTextWidth(dateDoc);
+    doc.text(dateDoc, 210 - dateDocWidth - 20, tableHeight);
+
+    doc.save(`${data.name.replace(/\s+/g, '')}.pdf`);
   };
 
   return (
