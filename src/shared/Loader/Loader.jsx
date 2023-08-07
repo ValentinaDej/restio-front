@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classes from './Loader.module.scss';
 
 const sizeValues = {
-  xs: '17',
+  xs: '24',
   sm: '54',
   md: '80',
   lg: '96',

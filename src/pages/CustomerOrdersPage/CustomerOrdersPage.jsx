@@ -1,8 +1,9 @@
 import Orders from 'components/Orders/Orders';
+import cls from './CustomerOrdersPage.module.scss';
 
 const CustomerOrdersPage = () => {
   return (
-    <div>
+    <div className={cls.main}>
       <Orders />
     </div>
   );
