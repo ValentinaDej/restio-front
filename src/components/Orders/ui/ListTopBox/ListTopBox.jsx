@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import Button from 'shared/Button/Button';
 import Loader from 'shared/Loader/Loader';
 import Text from 'shared/Text/Text';
+import PropTypes from 'prop-types';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import cls from './ListTopBox.module.scss';
 
@@ -66,4 +67,12 @@ export const ListTopBox = ({ orders, totalPrice, onChangeSelected, urlParams, is
       </Text>
     </>
   );
+};
+
+ListTopBox.propTypes = {
+  isWaiter: PropTypes.bool,
+  urlParams: PropTypes.object,
+  orders: PropTypes.array,
+  totalPrice: PropTypes.number,
+  onChangeSelected: PropTypes.func,
 };

@@ -95,6 +95,5 @@ OrdersList.propTypes = {
   onChangeSelected: PropTypes.func,
   selectedTotal: PropTypes.number,
   selectedOrders: PropTypes.array,
-  onTotalPrice: PropTypes.func,
   urlParams: PropTypes.object,
 };

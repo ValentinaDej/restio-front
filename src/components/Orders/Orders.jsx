@@ -69,7 +69,6 @@ const Orders = ({ isWaiter }) => {
               orders={data?.data?.orders || []}
               onChangeSelected={onChangeSelected}
               selectedTotal={selectedTotal}
-              totalPrice={totalPrice}
               selectedOrders={selectedOrders}
               urlParams={params}
               isWaiter={isWaiter}

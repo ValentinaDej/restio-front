@@ -5,6 +5,7 @@ import Title from 'shared/Title/Title';
 import cls from './EmptyListBox.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 export const EmptyListBox = ({ params, isWaiter }) => {
   const navigate = useNavigate();
@@ -29,4 +30,9 @@ export const EmptyListBox = ({ params, isWaiter }) => {
       </Button>
     </div>
   );
+};
+
+EmptyListBox.propTypes = {
+  isWaiter: PropTypes.bool,
+  urlParams: PropTypes.object,
 };
