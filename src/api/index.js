@@ -3,7 +3,7 @@ import storage from 'utils/storage';
 
 export const BASE_URL =
   process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3001'
+    ? 'https://restio-test.onrender.com'
     : 'https://restio-test.onrender.com';
 
 axios.defaults.baseURL = BASE_URL;

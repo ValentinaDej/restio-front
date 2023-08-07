@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIsLoading } from 'store/customer/orders/selectors';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Button from 'shared/Button/Button';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
 import { classNames } from 'helpers/classNames';
-
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { useUpdateDishStatusByWaiter, useUpdateOrderStatusByWaiter } from 'api/order';
 
@@ -19,37 +18,23 @@ export const OrdersList = ({
   onChangeSelected,
   selectedTotal,
   selectedOrders,
-  onTotalPrice,
+  totalPrice,
   urlParams,
 }) => {
   const dispatch = useDispatch();
   const [ordersIDs, setOrdersIDs] = useState([]);
-  const [totalPrice, setTotalPrice] = useState();
   const { payment } = useSelector(getIsLoading);
   const { isLoading, mutate } = useUpdateOrderStatusByWaiter(urlParams, ordersIDs);
   const { isLoadingDishStatus, mutate: mutateDishStatus } = useUpdateDishStatusByWaiter();
   const frontLink = location.href;
 
   useEffect(() => {
-    const newTotalPrice = orders.reduce((acc, order) => {
-      if (order.status !== 'Paid') {
-        const orderPrice = order.orderItems.reduce(
-          (acc, item) => acc + item.dish.price * item.quantity,
-          0
-        );
-
-        return acc + orderPrice;
-      } else {
-        return acc;
-      }
-    }, 0);
     const updateOrdersIds = orders
       .filter((order) => order.status !== 'Paid')
       .map((order) => order._id);
 
     setOrdersIDs(updateOrdersIds);
-    setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
-  }, [onTotalPrice, orders]);
+  }, [totalPrice, orders]);
 
   const selectOrder = useCallback(
     (id, totalPrice) => {
@@ -94,18 +79,6 @@ export const OrdersList = ({
     [mutateDishStatus, urlParams]
   );
 
-  const renderOrder = (order) => (
-    <OrderCard
-      key={order._id}
-      {...order}
-      onChange={selectOrder}
-      small={!isWaiter}
-      isWaiter={isWaiter}
-      onChangeStatus={onClickChangeDishStatusAsWaiter}
-      idx={order.orderNumber}
-    />
-  );
-
   const sortedOrders = useCallback(() => {
     const sortedOrders = [...orders].sort((orderA, orderB) => {
       if (orderA.status === 'Paid' && orderB.status !== 'Paid') {
@@ -125,16 +98,30 @@ export const OrdersList = ({
     return numberedOrders.reverse();
   }, [orders]);
 
+  const renderOrder = (order) => (
+    <OrderCard
+      key={order._id}
+      {...order}
+      onChange={selectOrder}
+      small={!isWaiter}
+      isWaiter={isWaiter}
+      onChangeStatus={onClickChangeDishStatusAsWaiter}
+      idx={order.orderNumber}
+    />
+  );
+
   return (
     <>
       <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
-        <Text fontWeight={700} fontSize={20} classname={cls.text}>
-          {!totalPrice
-            ? isWaiter
-              ? 'All orders paid, mark table as free when customer leave.'
-              : 'All orders are paid, thank you for visiting our restaurant.'
-            : `Total price $${totalPrice}`}
-        </Text>
+        <div>
+          <Text fontWeight={700} fontSize={20} classname={cls.text}>
+            {totalPrice === 0
+              ? isWaiter
+                ? 'All orders paid, mark table as free when customer leave.'
+                : 'All orders are paid, thank you for visiting our restaurant.'
+              : `Total price $${totalPrice}`}
+          </Text>
+        </div>
         <div className={cls.btnsBox}>
           <Button
             size={'sm'}
