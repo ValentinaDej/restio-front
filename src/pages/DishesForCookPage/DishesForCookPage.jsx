@@ -1,11 +1,10 @@
 import { useParams } from 'react-router-dom';
 import Title from 'shared/Title/Title';
 import styles from './DishesForCookPage.module.scss';
-import { useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { toast } from 'react-hot-toast';
 import Loader from 'shared/Loader/Loader';
-import { getAllOrders } from 'api/order';
-import { changeDishStatus } from 'api/dish';
+import { getAllOrders, useUpdateDishStatusByWaiter } from 'api/order';
 import StatusCardItem from 'components/Cook/StatusCardItem/StatusCardItem';
 import { useMediaQuery } from 'react-responsive';
 import Button from 'shared/Button/Button';
@@ -17,7 +16,7 @@ const DishesForCookPage = () => {
   const { restId } = useParams();
   const [currentStatus, setCurrentStatus] = useState('Ordered');
 
-  const { data, isLoading, refetch } = useQuery('all dishes', async () => getAllOrders(restId), {
+  const { data, isLoading, refetch } = useQuery(['orders'], async () => getAllOrders(restId), {
     onError: (error) => {
       toast.error(error.message);
     },
@@ -32,28 +31,10 @@ const DishesForCookPage = () => {
   const isMobile = useMediaQuery({
     query: '(max-width: 767px)',
   });
+  const { mutate } = useUpdateDishStatusByWaiter();
 
-  const { mutateAsync } = useMutation(changeDishStatus);
-
-  const handleChangeStatus = async (id, orderId, dishId, status) => {
-    try {
-      await toast.promise(
-        mutateAsync({
-          id,
-          orderId,
-          dishId,
-          status,
-        }),
-        {
-          loading: 'Loading...',
-          success: `Dish change status to ${status}`,
-          error: 'Error change status',
-        }
-      );
-      await refetch();
-    } catch (error) {
-      console.error('Error change dish status:', error);
-    }
+  const handleChangeStatus = (restId, orderId, dishId, status) => {
+    mutate({ urlParams: { restId }, status, dishId, orderId });
   };
 
   const filterDishes = useCallback(
