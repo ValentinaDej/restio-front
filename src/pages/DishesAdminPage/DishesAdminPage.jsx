@@ -16,6 +16,10 @@ const DishesAdminPage = () => {
       onError: (error) => {
         toast.error(error.message);
       },
+
+      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
+      refetchOnReconnect: false, // Disable refetching when the network reconnects
+      refetchInterval: false, // Disable automatic periodic refetching
     }
   );
 

@@ -10,7 +10,7 @@ const MenuPage = lazy(() => import('pages/MenuPage/MenuPage'));
 const DishesForCookPage = lazy(() => import('pages/DishesForCookPage/DishesForCookPage'));
 
 const routesAdmin = [
-  { path: 'admin/:restId', component: <EmployeePage /> },
+  { path: 'admin/:restId/personnel', component: <EmployeePage /> },
   { path: 'admin/:restId/dishes', component: <DishesAdminPage /> },
   { path: 'admin/:restId/personnel/edit/:personId', component: <AddPersonnelPage /> },
   { path: 'admin/:restId/personnel/new', component: <AddPersonnelPage /> },
