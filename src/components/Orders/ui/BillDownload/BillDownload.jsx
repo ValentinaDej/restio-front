@@ -24,7 +24,7 @@ export const BillDownload = ({ orders }) => {
         />
       )}
       <Button size={'sm'} onClick={onClickDownload}>
-        Download
+        Download bill
       </Button>
     </>
   );
