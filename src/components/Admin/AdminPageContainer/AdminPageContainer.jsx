@@ -23,8 +23,8 @@ const AdminPageContainer = ({
 }) => {
   const { restId } = useParams();
   const navigate = useNavigate();
-
   const [searchText, setSearchText] = useState('');
+
   const handleChange = (e) => {
     const { value } = e.target;
     const normalizedValue = value.trim();
@@ -53,7 +53,7 @@ const AdminPageContainer = ({
               name="search"
               value={searchText}
               onChange={handleChange}
-              placeholder="Search dish..."
+              placeholder="Search..."
               size="md"
               className={`${styles.input}`}
             />

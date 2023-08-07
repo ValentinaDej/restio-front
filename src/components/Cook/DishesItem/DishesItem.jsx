@@ -12,24 +12,26 @@ const DishesItem = ({ dish, quantity, handleChangeStatus, status, orderId }) => 
     <li className={`${styles.item}`}>
       <Card mode="cook" src={dish.picture} title={dish.name} quantity={quantity} />
       <div className={`${styles.button__container}`}>
-        <Button
-          onClick={() => handleChangeStatus(restId, orderId, dish._id, 'In progress')}
-          disabled={status === 'In progress'}
-          mode="primary"
-          size="sm"
-          className={`${styles.button__purple}`}
-        >
-          In progress
-        </Button>
-        <Button
-          onClick={() => handleChangeStatus(restId, orderId, dish._id, 'Ready')}
-          mode="primary"
-          size="sm"
-          disabled={status === 'Ready'}
-          className={`${styles.button__green}`}
-        >
-          Ready
-        </Button>
+        {status !== 'In progress' && (
+          <Button
+            onClick={() => handleChangeStatus(restId, orderId, dish._id, 'In progress')}
+            mode="primary"
+            size="sm"
+            className={`${styles.button__purple}`}
+          >
+            In progress
+          </Button>
+        )}
+        {status !== 'Ready' && (
+          <Button
+            onClick={() => handleChangeStatus(restId, orderId, dish._id, 'Ready')}
+            mode="primary"
+            size="sm"
+            className={`${styles.button__green}`}
+          >
+            Ready
+          </Button>
+        )}
       </div>
     </li>
   );
