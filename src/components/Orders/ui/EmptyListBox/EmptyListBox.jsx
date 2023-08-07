@@ -4,6 +4,7 @@ import Text from 'shared/Text/Text';
 import Title from 'shared/Title/Title';
 import cls from './EmptyListBox.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 
 export const EmptyListBox = ({ params, isWaiter }) => {
   const navigate = useNavigate();

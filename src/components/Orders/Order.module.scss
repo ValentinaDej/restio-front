@@ -1,0 +1,9 @@
+.box {
+  display: grid;
+  justify-content: center;
+  gap: 15px;
+
+  &.isWaiter {
+    padding-bottom: 30px;
+  }
+}

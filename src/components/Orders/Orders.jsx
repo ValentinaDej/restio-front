@@ -8,6 +8,9 @@ import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals
 import { useGetOrdersByTableId } from 'api/order';
 import { NavigateButtons } from './ui/NavigateButtons/NavigateButtons';
 import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
+import { ListTopBox } from './ui/ListTopBox/ListTopBox';
+import { classNames } from 'helpers/classNames';
+import cls from './Order.module.scss';
 
 const Orders = ({ isWaiter }) => {
   const [selectedTotal, setSelectedTotal] = useState(0);
@@ -54,15 +57,24 @@ const Orders = ({ isWaiter }) => {
         <EmptyListBox params={params} isWaiter={isWaiter} />
       ) : (
         <>
-          <OrdersList
-            orders={data?.data?.orders || []}
-            onChangeSelected={onChangeSelected}
-            selectedTotal={selectedTotal}
-            totalPrice={totalPrice}
-            selectedOrders={selectedOrders}
-            urlParams={params}
-            isWaiter={isWaiter}
-          />
+          <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
+            <ListTopBox
+              orders={data?.data?.orders || []}
+              totalPrice={totalPrice}
+              onChangeSelected={onChangeSelected}
+              urlParams={params}
+              isWaiter={isWaiter}
+            />
+            <OrdersList
+              orders={data?.data?.orders || []}
+              onChangeSelected={onChangeSelected}
+              selectedTotal={selectedTotal}
+              totalPrice={totalPrice}
+              selectedOrders={selectedOrders}
+              urlParams={params}
+              isWaiter={isWaiter}
+            />
+          </div>
           <Checkout
             amount={selectedTotal}
             selectedOrders={selectedOrders}
