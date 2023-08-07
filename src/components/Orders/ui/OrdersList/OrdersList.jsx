@@ -8,6 +8,7 @@ import Button from 'shared/Button/Button';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
+import { BillDownload } from '../BillDownload/BillDownload';
 import { classNames } from 'helpers/classNames';
 import { useUpdateOrderStatusByWaiter } from 'api/service';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
@@ -117,6 +118,7 @@ export const OrdersList = ({
             : `Total price $${totalPrice}`}
         </Text>
         <div className={cls.btnsBox}>
+          <BillDownload orders={orders || []} />
           <Button
             size={'sm'}
             onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
