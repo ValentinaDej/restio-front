@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { ImList2 } from 'react-icons/im';
 
 import classes from './Header.module.scss';
