@@ -1,6 +1,5 @@
 import Button from 'shared/Button/Button';
 import Card from 'shared/Card/Card';
-import Status from 'shared/Status/Status';
 import styles from './DishesItem.module.scss';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
@@ -10,6 +9,7 @@ const DishesItem = ({ dish, quantity, handleChangeStatus, status, orderId }) => 
 
   return (
     <li className={`${styles.item}`}>
+      <p className={`${styles.item__title}`}>Order # {orderId}</p>
       <Card mode="cook" src={dish.picture} title={dish.name} quantity={quantity} />
       <div className={`${styles.button__container}`}>
         {status !== 'In progress' && (
@@ -46,6 +46,7 @@ DishesItem.propTypes = {
   quantity: PropTypes.number.isRequired,
   handleChangeStatus: PropTypes.func.isRequired,
   orderId: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
 export default DishesItem;

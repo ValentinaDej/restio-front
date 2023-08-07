@@ -1,14 +1,15 @@
 import styles from './DishesList.module.scss';
 import DishesItem from '../DishesItem/DishesItem';
 import PropTypes from 'prop-types';
+import { nanoid } from 'nanoid';
 
-const DishesList = ({ dishes, handleChangeStatus, orderId }) => {
+const DishesList = ({ dishes, handleChangeStatus }) => {
   return (
     <ul className={`${styles.list}`}>
-      {dishes.map(({ dish, quantity, status }) => {
+      {dishes.map(({ dish, quantity, status, orderId }) => {
         return (
           <DishesItem
-            key={dish._id}
+            key={nanoid()}
             dish={dish}
             status={status}
             quantity={quantity}
@@ -26,10 +27,11 @@ DishesList.propTypes = {
     PropTypes.shape({
       dish: PropTypes.object.isRequired,
       quantity: PropTypes.number.isRequired,
+      status: PropTypes.string.isRequired,
+      orderId: PropTypes.string.isRequired,
     })
   ).isRequired,
   handleChangeStatus: PropTypes.func.isRequired,
-  orderId: PropTypes.string.isRequired,
 };
 
 export default DishesList;

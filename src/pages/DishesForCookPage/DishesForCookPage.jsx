@@ -9,7 +9,7 @@ import { changeDishStatus } from 'api/dish';
 import StatusCardItem from 'components/Cook/StatusCardItem/StatusCardItem';
 import { useMediaQuery } from 'react-responsive';
 import Button from 'shared/Button/Button';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const statuses = ['Ordered', 'In progress', 'Ready'];
 
@@ -17,15 +17,11 @@ const DishesForCookPage = () => {
   const { restId } = useParams();
   const [currentStatus, setCurrentStatus] = useState('Ordered');
 
-  const { data, isLoading, refetch } = useQuery(
-    'all dishes by restaurant',
-    async () => getAllOrders(restId),
-    {
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    }
-  );
+  const { data, isLoading, refetch } = useQuery('all dishes', async () => getAllOrders(restId), {
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
   const isDesktop = useMediaQuery({
     query: '(min-width: 1024px)',
@@ -60,6 +56,13 @@ const DishesForCookPage = () => {
     }
   };
 
+  const filterDishes = useCallback(
+    (status) => {
+      return data.filter((item) => item.status === status);
+    },
+    [data]
+  );
+
   return (
     <div className="main__container">
       <div className={`${styles.section}`}>
@@ -90,7 +93,7 @@ const DishesForCookPage = () => {
                     <StatusCardItem
                       key={status}
                       status={status}
-                      data={data}
+                      data={filterDishes(status)}
                       handleChangeStatus={handleChangeStatus}
                     />
                   );
@@ -100,7 +103,7 @@ const DishesForCookPage = () => {
                     <StatusCardItem
                       key={status}
                       status={status}
-                      data={data}
+                      data={filterDishes(status)}
                       handleChangeStatus={handleChangeStatus}
                     />
                   );
