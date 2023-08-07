@@ -8,10 +8,15 @@ import DishCard from 'shared/DishCard/DishCard';
 import Cart from 'components/Cart/Cart';
 import css from './MenuPage.module.scss';
 import { getDishes } from 'api/dish';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Button from 'shared/Button/Button';
 
 const MenuPage = () => {
+  const navigate = useNavigate();
   const { restId, tableId } = useParams();
   const [category, setActiveTab] = useState('Salads');
+  const { role } = useSelector((state) => state.auth);
 
   const { isError, isLoading, data } = useQuery(
     ['dishes', category],
@@ -29,6 +34,15 @@ const MenuPage = () => {
     <>
       {isError && toast.error('Something went wrong... Please try again in few minutes')}
       <main className={css.main}>
+        {role === 'admin' ||
+          (role === 'waiter' && (
+            <div className={css.wrapper}>
+              <Button onClick={() => navigate(-1)} size="sm" mode="outlined">
+                Back to dashboard
+              </Button>
+            </div>
+          ))}
+
         <CategoryTabs mode="outlined" setActiveTab={setActiveTab} activeTab={category} />
         <ul className={css.list}>
           {data?.data?.map(({ _id, picture, price, portionWeight, ingredients, name }) => (

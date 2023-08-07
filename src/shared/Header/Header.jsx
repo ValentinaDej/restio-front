@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { ImList2 } from 'react-icons/im';
+import { MdRestaurantMenu, MdTableBar } from 'react-icons/md';
+import { IoPeopleSharp } from 'react-icons/io5';
+import { FiLogOut } from 'react-icons/fi';
+import { GiCook } from 'react-icons/gi';
 
 import classes from './Header.module.scss';
 import Title from 'shared/Title/Title';
 import Button from 'shared/Button/Button';
 import { callWaiter } from 'api/table';
-import { toast } from 'react-hot-toast';
-import { MdRestaurantMenu, MdTableBar } from 'react-icons/md';
-import { IoPeopleSharp } from 'react-icons/io5';
-import { FiLogOut } from 'react-icons/fi';
-import { GiCook } from 'react-icons/gi';
-import { useSelector } from 'react-redux';
 import { getRestaurantId } from 'store/auth/authSelector';
 
 const Header = ({ logo, restaurantName, role }) => {
@@ -22,7 +22,7 @@ const Header = ({ logo, restaurantName, role }) => {
   const tableId = arrParams[2];
   const onClickHandler = async () => {
     try {
-      await callWaiter(tableId, { status: 'Requested', restaurant_id: restId });
+      await callWaiter(tableId, { status: 'Waiting', restaurant_id: restId });
       return toast.success('Please wait, the waiter will be there in a few minutes');
     } catch (error) {
       return toast.error('Something went wrong... Please, try again in few minutes');
