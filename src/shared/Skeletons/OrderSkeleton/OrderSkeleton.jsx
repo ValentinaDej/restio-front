@@ -17,13 +17,11 @@ const skeletonData = [
 const OrderListSkeleton = ({ isSmall, isWaiter }) => {
   const renderTopBlock = () => {
     return (
-      <>
+      <div className="topBox">
         <Skeleton width={200} height={25} containerClassName="text" />
-        <div className={ulCls.btnsBox}>
-          <Skeleton width={100} height={35} />
-        </div>
+        <Skeleton width={100} height={35} containerClassName="text" />
         <Skeleton width={300} height={15} containerClassName="text" />
-      </>
+      </div>
     );
   };
   if (isWaiter) {
