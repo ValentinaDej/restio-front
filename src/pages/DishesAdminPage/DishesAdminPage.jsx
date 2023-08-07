@@ -10,7 +10,7 @@ const DishesAdminPage = () => {
   const navigate = useNavigate();
 
   const { data, isLoading, refetch } = useQuery(
-    'fetchDishesList',
+    ['fetchDishesList', restId],
     async () => fetchDishesList(restId),
     {
       onError: (error) => {
