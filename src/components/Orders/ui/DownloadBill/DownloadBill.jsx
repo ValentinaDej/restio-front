@@ -1,19 +1,23 @@
 import { useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import jsPDF from 'jspdf';
-import PropTypes from 'prop-types';
-import { useParams } from 'react-router';
 import { toast } from 'react-hot-toast';
+import PropTypes from 'prop-types';
 
 import { LiaDownloadSolid } from 'react-icons/lia';
+
 import Button from 'shared/Button/Button';
 import Modal from 'shared/Modal/Modal';
 import Loader from 'shared/Loader/Loader';
+import Title from 'shared/Title/Title';
+import Text from 'shared/Text/Text';
+import logoImg from 'img/RESTio.svg';
 
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
+import { formatDateTime } from 'helpers/formatDateTime';
 import { getRestaurant } from 'api/restaurant';
-import { classNames } from 'helpers/classNames';
-import cls from './DownloadBill.module.scss';
+
+import classes from './DownloadBill.module.scss';
 
 const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
   const { data, isLoading, isError } = useQuery(['restaurant', restId], async () => {
@@ -24,7 +28,7 @@ const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
   if (isLoading) {
     return <Loader size="lg" />;
   }
-  //   console.log('isError', isError);
+
   if (isError) {
     toast.error('Something went wrong... Please call the waiter');
   }
@@ -53,7 +57,6 @@ const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
   const downloadBillPdf = () => {
     const pdf = new jsPDF();
 
-    // Визначаємо координати для початку виводу контенту на PDF
     let y = 20;
 
     // Виводимо обов'язкові поля
@@ -97,17 +100,87 @@ const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
       {!isError && (
         <Modal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}>
           <div>
-            <LiaDownloadSolid onClick={downloadBillPdf} />
-            <h2>{data.name}</h2>
-            <p>Address: {data.address}</p>
-            <p>Phone: {data.phone}</p>
-            <p>Website: {data.webSite}</p>
-            <p>Type: {data.type}</p>
-            {printData.map((data, index) => (
-              <div key={index}>
-                {data.name}, {data.price}, {data.quantity}, {data.amount}
+            <div className={classes.section__wrapper}>
+              <div className={classes.head__wrapper}>
+                <Text textAlign={'center'} fontSize={'0.6rem'} fontWeight={600}>
+                  table #
+                </Text>
+                <LiaDownloadSolid onClick={downloadBillPdf} className={classes.icon} />
               </div>
-            ))}
+            </div>
+            <div className={classes.section__wrapper}>
+              <img src={data.picture} alt={data.name} className={classes.img__wrapper} />
+            </div>
+            <div className={classes.section__wrapper}>
+              <Title textAlign={'center'} fontSize={'1rem'}>
+                {data.name}
+              </Title>
+            </div>
+            <div className={classes.section__wrapper}>
+              <Text textAlign={'right'} fontSize={'0.6rem'}>
+                Address: {data.address}
+              </Text>
+              <Text textAlign={'right'} fontSize={'0.6rem'}>
+                Phone: {data.phone}
+              </Text>
+              <Text textAlign={'right'} fontSize={'0.6rem'}>
+                Website: {data.website}
+              </Text>
+            </div>
+            <div className={classes.section__wrapper}>
+              <table className={classes.table}>
+                <thead>
+                  <tr>
+                    <th className={classes.description}>Description</th>
+                    <th className={classes.qty}>Qty</th>
+                    <th className={classes.price}>Price</th>
+                    <th className={classes.total}>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {printData.map((item, index) => (
+                    <tr key={index}>
+                      <td className={classes.description}>{item.name}</td>
+                      <td className={classes.qty}>{item.quantity}</td>
+                      <td className={classes.price}>{formatNumberWithTwoDecimals(item.price)}</td>
+                      <td className={classes.total}>
+                        {formatNumberWithTwoDecimals(item.quantity * item.price)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan="2" className={classes.totalLabel}>
+                      Total
+                    </td>
+                    <td colSpan="2" className={classes.totalAmount}>
+                      $
+                      {' ' +
+                        formatNumberWithTwoDecimals(
+                          printData.reduce((total, item) => total + item.quantity * item.price, 0)
+                        )}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div className={classes.section__wrapper}>
+              <Text textAlign={'right'} fontSize={'0.6rem'}>
+                {formatDateTime(new Date())}
+              </Text>
+            </div>
+
+            <div className={classes.section__wrapper}>
+              <div className={classes.foot__wrapper}>
+                <div>
+                  <Text textAlign={'center'} fontSize={'0.6rem'}>
+                    Have a nice day
+                  </Text>
+                </div>
+                <img src={logoImg} alt="RESTio" className={classes.logo} />
+              </div>
+            </div>
           </div>
         </Modal>
       )}
@@ -117,7 +190,8 @@ const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
 
 export const DownloadBill = ({ isWaiter, orders, urlParams }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const restId = '64c4fdea4055a7111092df34';
+  const { restId } = urlParams;
+
   const onClickDownloadAsWaiter = () => {
     setIsModalOpsen(true);
   };
@@ -136,11 +210,7 @@ export const DownloadBill = ({ isWaiter, orders, urlParams }) => {
           restId={restId}
         />
       )}
-      <Button
-        size={'sm'}
-        onClick={isWaiter ? onClickDownloadAsWaiter : onClickDownloadAsCustomer}
-        className={cls.btn}
-      >
+      <Button size={'sm'} onClick={isWaiter ? onClickDownloadAsWaiter : onClickDownloadAsCustomer}>
         {isWaiter ? 'Download & Print' : 'Download'}
       </Button>
     </>
