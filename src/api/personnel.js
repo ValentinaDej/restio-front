@@ -1,3 +1,5 @@
+import instance from 'api';
+
 export const PERSONNEL = `/personnel`;
 
 export const getPersonnelById = (id) => {

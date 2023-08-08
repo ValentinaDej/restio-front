@@ -1,5 +1,5 @@
 import { PERSONNEL } from './personnel';
-import { instance } from 'api';
+import instance from 'api';
 
 export const getTokenConfig = () => {
   return {
