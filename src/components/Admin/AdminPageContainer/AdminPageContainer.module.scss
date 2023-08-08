@@ -28,7 +28,6 @@
 }
 
 .card_wrapper {
-  flex-grow: 1;
   transition: 1s;
 }
 
@@ -51,9 +50,12 @@
   font-size: 0.9rem;
 }
 
-.input__container {
+.input__section {
   padding: 30px 20px 10px 0;
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .input {
