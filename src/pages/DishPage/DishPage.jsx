@@ -44,10 +44,14 @@ const DishPage = () => {
     }
     idsToExclude.push(dishId);
     const filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
-    const first = Math.floor(Math.random() * (filteredItems.length - 3));
-    const second = first + 3;
-    let several = filteredItems.slice(first, second);
-    setRecommendedDishes(several);
+    if (filteredItems.length <= 3) {
+      setRecommendedDishes(filteredItems);
+    } else {
+      const first = Math.floor(Math.random() * (filteredItems.length - 3));
+      const second = first + 3;
+      let several = filteredItems.slice(first, second);
+      setRecommendedDishes(several);
+    }
   };
 
   useEffect(() => {
