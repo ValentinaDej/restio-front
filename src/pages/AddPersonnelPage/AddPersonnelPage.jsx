@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import EmployeeForm from '../../shared/EmployeeForm/EmployeeForm';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
@@ -9,26 +8,23 @@ import styles from './AddPersonnelPage.module.scss';
 import Title from '../../shared/Title/Title';
 import Button from '../../shared/Button/Button';
 import toast from 'react-hot-toast';
-import { BASE_URL } from '../../api';
+import { createPersonnel, getPersonnelById, updatePersonnel } from '../../api/personnel';
 
 const AddPersonnelPage = () => {
   const { personId, restId } = useParams();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function fetchData(personId) {
-    try {
-      const response = await axios.get(`${BASE_URL}/personnel/${personId}`);
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
+  const { data, isLoading } = useQuery(
+    ['new_personnel', personId],
+    () => getPersonnelById(personId),
+    {
+      enabled: !!personId,
+      onError: () => {
+        toast.error('Error fetching personnel data');
+      },
     }
-  }
-
-  const { data, isLoading } = useQuery(['new_personnel', personId], () => fetchData(personId), {
-    enabled: !!personId,
-  });
+  );
 
   const handleBack = () => {
     navigate(-1);
@@ -38,23 +34,12 @@ const AddPersonnelPage = () => {
     try {
       setIsSubmitting(true);
       console.log('Form data:', formData);
-      let response;
       if (personId) {
-        // If personId exists, it means we are updating an existing personnel
-        response = await axios.patch(`${BASE_URL}/personnel/${personId}`, {
-          ...formData,
-          restaurant_id: restId,
-        });
+        await updatePersonnel(personId, formData, restId);
         toast.success('Personnel updated successfully');
-        console.log('Personnel updated successfully:', response.data);
       } else {
-        // If personId doesn't exist, it means we are adding a new personnel
-        response = await axios.post(`${BASE_URL}/personnel`, {
-          ...formData,
-          restaurant_id: restId,
-        });
+        await createPersonnel(formData, restId);
         toast.success('Personnel added successfully');
-        console.log('Personnel added successfully:', response.data);
       }
       handleBack();
     } catch (error) {
@@ -74,8 +59,8 @@ const AddPersonnelPage = () => {
   }
 
   // Check if data is null before accessing its properties
-  const firstName = data?.name.substring(0, data.name.indexOf(' ')) || '';
-  const lastName = data?.name.substring(data.name.indexOf(' ') + 1) || '';
+  const firstName = data?.name ? data.name.substring(0, data.name.indexOf(' ')) : '';
+  const lastName = data?.name ? data.name.substring(data.name.indexOf(' ') + 1) : '';
 
   let initialData = {
     firstName,
