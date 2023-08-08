@@ -5,18 +5,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
 import { BASE_URL } from 'api';
 import toast from 'react-hot-toast';
+import { getPersonnel } from '../../api/personnel';
 
 const EmployeePage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/personnel/restaurant/${restId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
   const navigateToAddEmpl = () => {
     navigate(`/admin/${restId}/personnel/new`);
   };
@@ -27,7 +20,11 @@ const EmployeePage = () => {
     })
   );
 
-  const { data, isLoading, refetch } = useQuery('personnel', fetchData);
+  const { data, isLoading, refetch } = useQuery('personnel', () => getPersonnel(restId), {
+    onError: () => {
+      toast.error('Error fetching personnel data');
+    },
+  });
 
   const handleDelete = async (employeeId) => {
     try {
