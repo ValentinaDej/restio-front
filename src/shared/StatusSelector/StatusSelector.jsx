@@ -11,7 +11,7 @@ const StatusSelector = ({ mode, currentStatus, changeStatusFunction = () => {}, 
   useEffect(() => {
     switch (mode) {
       case 'tables':
-        setCurrentMode(['Free', 'Taken', 'Called waiter', 'Request bill']);
+        setCurrentMode(['Free', 'Taken', 'Waiting']);
         break;
       case 'dishes':
         setCurrentMode(['Ordered', 'In progress', 'Ready', 'Served']);

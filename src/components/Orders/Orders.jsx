@@ -11,6 +11,7 @@ import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
 import cls from './Order.module.scss';
+import useSSESubscription from 'hooks/useSSESubscription';
 
 const Orders = ({ isWaiter }) => {
   const [selectedTotal, setSelectedTotal] = useState(0);
@@ -23,7 +24,18 @@ const Orders = ({ isWaiter }) => {
     setSelectedOrders(selectedOrders);
   };
 
-  const { data: { data } = {}, isError, isLoading, isRefetching } = useGetOrdersByTableId(params);
+  const {
+    data: { data } = {},
+    isError,
+    isLoading,
+    isRefetching,
+    refetch,
+  } = useGetOrdersByTableId(params);
+  const subscription = useSSESubscription(refetch);
+
+  useEffect(() => {
+    subscription();
+  }, [subscription]);
 
   useEffect(() => {
     if (data) {
