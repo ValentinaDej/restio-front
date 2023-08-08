@@ -12,9 +12,18 @@ const DishesAdminPage = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState('');
 
-  const { isError, isLoading, data } = useQuery(
+  const { isLoading, data, refetch } = useQuery(
     ['dishes', category],
-    async () => await getDishes(restId, category)
+    async () => await getDishes(restId, category),
+    {
+      onError: (error) => {
+        toast.error(error.message);
+      },
+
+      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
+      refetchOnReconnect: false, // Disable refetching when the network reconnects
+      refetchInterval: false, // Disable automatic periodic refetching
+    }
   );
 
   const { mutateAsync } = useMutation((dishId) => {
