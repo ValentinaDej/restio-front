@@ -14,7 +14,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (request) => {
     if (
-      request.url.startsWith('admin') ||
+      request.url.includes('admin') ||
       request.url.includes('waiter') ||
       request.url.includes('cook')
     ) {

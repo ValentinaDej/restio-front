@@ -115,14 +115,3 @@ export const loginPersonnel = async (body) => {
     }
   }
 };
-
-// const refreshAccessToken = async () => {
-//   try {
-//     await getNewToken();
-//   } catch (error) {
-//     localStorage.removeItem('userData');
-//     window.location.replace('/login');
-//   }
-// };
-
-// setInterval(refreshAccessToken, 60000);
