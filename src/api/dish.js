@@ -5,11 +5,6 @@ export const getDishes = async (restId, category) => {
   return data;
 };
 
-export const fetchDishesList = async (restId) => {
-  const response = await instance(`/dishes/restaurant/${restId}`);
-  return response.data;
-};
-
 export const getDishById = async (dishId) => {
   const response = await instance(`/dishes/${dishId}`);
   return response.data;
