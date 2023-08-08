@@ -29,25 +29,24 @@ const DishPage = () => {
   const { isLoading, data: dish, error } = useQuery(['dish', dishId], () => getDishById(dishId));
 
   const fetchDishesList = async () => {
-    const res = await axios.get(`${BASE_URL}/dishes/restaurant/${restId}`);
-    console.log(res.data);
+    const res = await axios.get(`${BASE_URL}/dishes/restaurant/${restId}`, {
+      params: {
+        isActive: true,
+      },
+    });
     idUsed(res.data);
   };
 
   const idUsed = (data) => {
-    console.log(storeData);
     let idsToExclude = [];
     for (const item of storeData) {
       idsToExclude.push(item.id);
     }
-    console.log(idsToExclude);
     idsToExclude.push(dishId);
     const filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
-    console.log(filteredItems);
     const first = Math.floor(Math.random() * (filteredItems.length - 3));
     const second = first + 3;
     let several = filteredItems.slice(first, second);
-    console.log(several);
     setRecommendedDishes(several);
   };
 
@@ -56,9 +55,7 @@ const DishPage = () => {
   }, [dishId, restId]);
 
   useEffect(() => {
-    console.log(dishQuantity);
     const isDishAlreadyAdded = storeData.filter((item) => item.id === dishId);
-    console.log(isDishAlreadyAdded);
     if (isDishAlreadyAdded.length > 0) {
       setDishQuantity(isDishAlreadyAdded[0].quantity);
     } else {
