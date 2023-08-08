@@ -8,20 +8,41 @@ import DishCard from 'shared/DishCard/DishCard';
 import Cart from 'components/Cart/Cart';
 import css from './MenuPage.module.scss';
 import { getDishes } from 'api/dish';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Button from 'shared/Button/Button';
 
 const MenuPage = () => {
-  const { restId } = useParams();
+  const navigate = useNavigate();
+  const { restId, tableId } = useParams();
   const [category, setActiveTab] = useState('Salads');
+  const { role } = useSelector((state) => state.auth);
 
   const { isError, isLoading, data } = useQuery(
     ['dishes', category],
-    async () => await getDishes(restId, category)
+    async () => await getDishes(restId, category),
+    {
+      // staleTime: 0, // Data is immediately considered stale and will be refetched on the next request
+      // cacheTime: 0, // Data is never considered stale, and automatic refetching is disabled
+      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
+      refetchOnReconnect: false, // Disable refetching when the network reconnects
+      refetchInterval: false, // Disable automatic periodic refetching
+    }
   );
 
   return (
     <>
       {isError && toast.error('Something went wrong... Please try again in few minutes')}
       <main className={css.main}>
+        {role === 'admin' ||
+          (role === 'waiter' && (
+            <div className={css.wrapper}>
+              <Button onClick={() => navigate(-1)} size="sm" mode="outlined">
+                Back to dashboard
+              </Button>
+            </div>
+          ))}
+
         <CategoryTabs mode="outlined" setActiveTab={setActiveTab} activeTab={category} />
         <ul className={css.list}>
           {data?.data?.map(({ _id, picture, price, portionWeight, ingredients, name }) => (
@@ -33,6 +54,7 @@ const MenuPage = () => {
                 ingredients={ingredients}
                 weight={portionWeight}
                 price={price}
+                link={`/${restId}/${tableId}/${_id}`}
               />
             </li>
           ))}

@@ -5,8 +5,9 @@ import css from './DishCard.module.scss';
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { addProduct } from 'store/cart/cartSlice';
+import { Link } from 'react-router-dom';
 
-const DishCard = memo(({ id, src, title, ingredients, weight, price }) => {
+const DishCard = memo(({ id, src, title, ingredients, weight, price, link }) => {
   const dispatch = useDispatch();
 
   const onClickHandler = () => {
@@ -31,6 +32,9 @@ const DishCard = memo(({ id, src, title, ingredients, weight, price }) => {
           <MdOutlineAddCircle className={css['card-container__icon']} />
         </button>
       </div>
+      <Link className={css['card-container__link']} to={link}>
+        Show details...
+      </Link>
     </div>
   );
 });
@@ -41,6 +45,7 @@ DishCard.propTypes = {
   ingredients: PropTypes.array,
   weight: PropTypes.number,
   price: PropTypes.number,
+  link: PropTypes.string,
   onClick: PropTypes.func,
 };
 
