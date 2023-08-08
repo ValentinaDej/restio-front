@@ -47,7 +47,7 @@ const AdminPageContainer = ({
         <Loader size="sm" />
       ) : (
         <>
-          <div className={`${styles.input__container}`}>
+          <div className={`${styles.input__section}`}>
             <Input
               type="text"
               name="search"
@@ -57,8 +57,8 @@ const AdminPageContainer = ({
               size="md"
               className={`${styles.input}`}
             />
+            {children}
           </div>
-          {children}
           <ul className={`${styles.menu_wrapper}`}>
             <li key={`empty`} className={styles.card_wrapper}>
               <EmptyCard text={variant} mode={`outlined`} onClick={goToAdd}></EmptyCard>
