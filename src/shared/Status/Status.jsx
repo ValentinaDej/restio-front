@@ -20,7 +20,7 @@ const Status = ({ statusCurrent, className }) => {
         setStatusColor('#9290FE');
         break;
 
-      case 'Called waiter':
+      case 'Waiting':
       case 'Ready':
         setStatusColor('orange');
         break;
@@ -30,7 +30,6 @@ const Status = ({ statusCurrent, className }) => {
         setStatusColor('#d15f50');
         break;
 
-      case 'Request bill':
       case 'Ordered':
       case 'Open':
         setStatusColor('#EB966A');

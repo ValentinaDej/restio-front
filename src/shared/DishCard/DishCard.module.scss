@@ -61,4 +61,11 @@
     align-items: center;
     margin-top: 12px;
   }
+  &__link {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-top: 8px;
+    color: var(--color-gray-600);
+  }
 }

@@ -1,7 +1,13 @@
 .main {
   padding: 40px 0;
 }
-
+.wrapper {
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  margin-top: -20px;
+}
 .list {
   margin: 0 auto;
   padding: 40px 10px;

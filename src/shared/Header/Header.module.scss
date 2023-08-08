@@ -1,20 +1,15 @@
 .header {
-  background-color: var(--color-bg-dark);
+  background-color: #f5dccc;
   display: flex;
   justify-content: space-between;
-  padding: 1rem 0.5rem;
+  padding: 1rem 1.5rem;
 
   &__logo {
     object-fit: cover;
-    margin-right: 1rem;
   }
   &__img {
     width: 80px;
     height: 50px;
-    @media screen and (min-width: 767px) {
-      width: 80px;
-      height: 80px;
-    }
   }
   &__button {
     display: flex;
@@ -23,14 +18,24 @@
   &__icon {
     width: 30px;
     height: 30px;
-    color: var(--color-orange);
+    color: currentColor;
+    margin-left: 20px;
   }
   &__link {
     display: flex;
     align-items: center;
     margin-left: 1.5rem;
+    color: var(--color-gray);
+    &:hover,
+    &:focus {
+      color: var(--color-orange);
+    }
+    &:global.active {
+      color: var(--color-orange);
+    }
   }
   &__wrapper {
     display: flex;
+    align-items: center;
   }
 }

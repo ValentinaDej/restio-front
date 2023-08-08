@@ -6,7 +6,6 @@ import { BiSolidTrash } from 'react-icons/bi';
 import css from './Card.module.scss';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
 import { IconButton } from 'shared/IconButton/IconButton';
-import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import Status from 'shared/Status/Status';
 import StatusSelector from 'shared/StatusSelector/StatusSelector';
 
@@ -32,7 +31,7 @@ const Card = memo(
     changeStatusFunction,
     dishId,
   }) => {
-    const sum = formatNumberWithTwoDecimals(price * quantity);
+    const sum = (price * quantity).toFixed(2);
     return (
       <div className={css['card']}>
         <div className={css['card__image-container']}>
@@ -47,7 +46,7 @@ const Card = memo(
               </div>
             )}
             {mode === variant.waiter && (
-              <div className={css['card__icon-wrapper']}>
+              <div className={css['card__status']}>
                 <StatusSelector
                   mode="dishes"
                   itemId={dishId}
