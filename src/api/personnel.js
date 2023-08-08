@@ -1,4 +1,4 @@
-import { BASE_URL, instance } from './index';
+import { instance } from './index';
 import toast from 'react-hot-toast';
 
 export const PERSONNEL = `/personnel`;
@@ -24,7 +24,7 @@ const sendCorrectErrMsg = (error) => {
 
 export const getPersonnel = async (restId) => {
   try {
-    const response = await instance.get(`${BASE_URL}/personnel/restaurant/${restId}`);
+    const response = await instance(`/personnel/restaurant/${restId}`);
     return response.data;
   } catch (error) {
     sendCorrectErrMsg(error);
@@ -33,7 +33,7 @@ export const getPersonnel = async (restId) => {
 
 export const getPersonnelById = async (personId) => {
   try {
-    const response = await instance.get(`${BASE_URL}/personnel/${personId}`);
+    const response = await instance(`/personnel/${personId}`);
     return response.data;
   } catch (error) {
     sendCorrectErrMsg(error);
@@ -42,7 +42,7 @@ export const getPersonnelById = async (personId) => {
 
 export const createPersonnel = async (formData, rest_id) => {
   try {
-    const response = await instance.post(`${BASE_URL}/personnel`, {
+    const response = await instance.post(`/personnel`, {
       ...formData,
       rest_id: rest_id,
     });
@@ -54,7 +54,7 @@ export const createPersonnel = async (formData, rest_id) => {
 
 export const updatePersonnel = async (personId, formData, rest_id) => {
   try {
-    const response = await instance.patch(`${BASE_URL}/personnel/${personId}`, {
+    const response = await instance.patch(`/personnel/${personId}`, {
       ...formData,
       restaurant_id: rest_id,
     });
