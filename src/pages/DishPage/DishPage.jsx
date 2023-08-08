@@ -32,7 +32,7 @@ const DishPage = (props) => {
       }
     };
     getDishById();
-  }, []);
+  }, [params]);
 
   const increaseItem = () => {
     console.log('hey');

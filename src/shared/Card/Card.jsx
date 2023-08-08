@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 import { IoIosClose } from 'react-icons/io';
 import { BiSolidTrash } from 'react-icons/bi';
-import { MdOutlineAddCircle } from 'react-icons/md';
 
 import css from './Card.module.scss';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
 import { IconButton } from 'shared/IconButton/IconButton';
-import { memo } from 'react';
+import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
+import Status from 'shared/Status/Status';
+import StatusSelector from 'shared/StatusSelector/StatusSelector';
 
 const variant = {
   order: 'order',
@@ -16,8 +18,21 @@ const variant = {
 };
 
 const Card = memo(
-  ({ src, title, price, quantity, mode = variant.order, addOne, minusOne, onDelete, onClick }) => {
-    const sum = (price * quantity).toFixed(2);
+  ({
+    src,
+    title,
+    price,
+    quantity = 1,
+    mode = variant.order,
+    addOne,
+    minusOne,
+    onDelete,
+    currentSelectStatus = 'Ordered',
+    statusCurrent,
+    changeStatusFunction,
+    dishId,
+  }) => {
+    const sum = formatNumberWithTwoDecimals(price * quantity);
     return (
       <div className={css['card']}>
         <div className={css['card__image-container']}>
@@ -26,7 +41,21 @@ const Card = memo(
         <div className={css['card__wrapper']}>
           <div className={css['card__flex-container']}>
             <h3 className={css['card__title']}>{title}</h3>
-
+            {mode === variant.order && (
+              <div className={css['card__icon-wrapper']}>
+                <Status statusCurrent={statusCurrent} />
+              </div>
+            )}
+            {mode === variant.waiter && (
+              <div className={css['card__icon-wrapper']}>
+                <StatusSelector
+                  mode="dishes"
+                  itemId={dishId}
+                  currentStatus={currentSelectStatus}
+                  changeStatusFunction={changeStatusFunction}
+                />
+              </div>
+            )}
             {mode === variant.cart && (
               <div className={css['card__icon-wrapper']}>
                 <IconButton Svg={BiSolidTrash} size={16} onClick={onDelete} />
@@ -39,7 +68,10 @@ const Card = memo(
               <QuantityButton size="sm" quantity={quantity} addOne={addOne} minusOne={minusOne} />
             )}
             {mode === variant.waiter && (
-              <QuantityButton size="sm" quantity={quantity} addOne={addOne} minusOne={minusOne} />
+              <>
+                <IoIosClose className={css['card__icon']} />
+                <p className={css['card__quantity']}>{quantity}</p>
+              </>
             )}
             {mode === variant.cook && (
               <>
@@ -59,11 +91,6 @@ const Card = memo(
             {mode === variant.order && <p className={css['card__sum']}>${sum}</p>}
           </div>
         </div>
-        {mode === variant.waiter && (
-          <button className={css['card__add-button']} type="button" onClick={onClick}>
-            <MdOutlineAddCircle className={`${css['card__add-icon']} ${css['card__icon']}`} />
-          </button>
-        )}
       </div>
     );
   }
@@ -79,6 +106,10 @@ Card.propTypes = {
   minusOne: PropTypes.func,
   onDelete: PropTypes.func,
   onClick: PropTypes.func,
+  statusCurrent: PropTypes.string,
+  currentSelectStatus: PropTypes.string,
+  changeStatusFunction: PropTypes.func,
+  dishId: PropTypes.string,
 };
 
 export default Card;

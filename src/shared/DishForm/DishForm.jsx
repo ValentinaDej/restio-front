@@ -9,6 +9,7 @@ import Text from 'shared/Text/Text';
 import Title from 'shared/Title/Title';
 import FormSelectaGroup from './FormSelectGroup/FormSelectGroup';
 import InputValid from 'shared/InputValid/InputValid';
+import FileUploader from 'shared/FileUploader/FileUploader';
 
 import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
@@ -86,7 +87,11 @@ const DishForm = () => {
             register={register}
           />
           <div className={classes.column__wrapper}>
-            <div className={classes.column}>Picture</div>
+            <div className={classes.column}>
+              <div className={classes.img__wrapper}>
+                <FileUploader />
+              </div>
+            </div>
             <div className={classes.column}>
               <div className={classes.field__wrapper}>
                 <Select

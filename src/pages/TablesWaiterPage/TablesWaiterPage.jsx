@@ -4,72 +4,75 @@ import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import Title from 'shared/Title/Title';
 import styles from './TablesWaiterPage.module.scss';
 import TableCard from 'components/TableCard/TableCard';
+import { toast } from 'react-hot-toast';
+import { useParams } from 'react-router-dom';
 
 const dumbTables = [
   {
     table_number: '1',
     restaurant_id: '64c4fdea4055a7111092df32',
     seats: '3',
-    status: 'called waiter',
+    status: 'Called waiter',
     _id: '64ce43064f5d2308d5e67258',
   },
   {
     table_number: '2',
     restaurant_id: '64c4fdea4055a7111092df32',
     seats: '3',
-    status: 'free',
+    status: 'Free',
     _id: '64c4f7db4055a7111092df12',
   },
   {
     table_number: '3',
     restaurant_id: '64c4fdea4055a7111092df32',
     seats: '3',
-    status: 'taken',
+    status: 'Taken',
     _id: '64c4fe004055a7111092df34',
   },
   {
     table_number: '4',
     restaurant_id: '64c4fdea4055a7111092df32',
     seats: '3',
-    status: 'free',
+    status: 'Free',
     _id: '64c4f7db4055a7111092df12',
   },
   {
     table_number: '5',
     restaurant_id: '64c4fdea4055a7111092df32',
     seats: '3',
-    status: 'taken',
+    status: 'Taken',
     _id: '64c4f7db4055a7111092df12',
   },
   {
     table_number: '6',
     restaurant_id: '64c4fdea4055a7111092df32',
     seats: '3',
-    status: 'free',
+    status: 'Free',
     _id: '64c4f7db4055a7111092df12',
   },
 ];
 
 const TablesWaiterPage = () => {
+  const { restId } = useParams();
   const {
     data: tablesData,
     isLoading: isLoadingTables,
     isError: isErrorTables,
     error: errorTables,
-  } = useGetTablesByRestaurantId('64c4fdea4055a7111092df32');
+  } = useGetTablesByRestaurantId(restId);
 
   const {
     data: ordersData,
     isLoading: isLoadingOrders,
     isError: isErrorOrders,
     error: errorOrders,
-  } = useGetOrdersByRestaurantId('64c4fdea4055a7111092df32');
+  } = useGetOrdersByRestaurantId(restId);
 
   const tables = tablesData?.data;
   const orders = ordersData?.data.data.orders;
 
   // console.log(tables);
-  console.log(orders);
+  // console.log(orders);
 
   const isLoading = isLoadingTables || isLoadingOrders;
 
@@ -77,33 +80,32 @@ const TablesWaiterPage = () => {
     return <Loader size="lg" />;
   }
 
-  // const hasError = isErrorTables || isErrorOrders;
+  const hasError = isErrorTables || isErrorOrders;
 
-  // if (hasError) {
-  //   return <ErrorPage />;
-  // }
+  if (hasError) {
+    toast.error('Something went wrong!');
+  }
 
   const filterOrdersByTableId = (orders, table_id) =>
-    orders.filter((order) => order.table_id === table_id);
+    orders?.filter((order) => order.table_id === table_id);
 
   return (
-    <>
-      <div className={styles.tables}>
-        <Title>Tables Board</Title>
-        <div className={styles.tables__container}>
-          {dumbTables.map((table) => (
-            <TableCard
-              key={table.table_number}
-              restaurant_id={table.restaurant_id}
-              seats={table.seats}
-              status={table.status}
-              table_id={table._id}
-              orders={filterOrdersByTableId(orders, table._id)}
-            />
-          ))}
-        </div>
+    <div className={styles.tables}>
+      <Title>Tables Board</Title>
+      <div className={styles.tables__container}>
+        {tables?.map((table) => (
+          <TableCard
+            key={table.table_number}
+            table_number={table.table_number}
+            restaurant_id={table.restaurant_id}
+            seats={table.seats}
+            status={table.status}
+            table_id={table._id}
+            orders={filterOrdersByTableId(orders, table._id)}
+          />
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 
@@ -112,3 +114,23 @@ export default TablesWaiterPage;
 // <div className="tables__container">
 
 // </div>
+
+// import { useEffect } from 'react';
+
+// import Message from 'components/Message/Message';
+// import useSSESubscription from 'hooks/useSSESubscription';
+
+// const TablesWaiterPage = () => {
+//   const subscription = useSSESubscription();
+
+//   useEffect(() => {
+//     subscription();
+//   }, [subscription]);
+
+//   return (
+//     <div>
+//       TablesWaiter Page
+//       <Message />
+//     </div>
+//   );
+// }

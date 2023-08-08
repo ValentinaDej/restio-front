@@ -1,5 +1,5 @@
-const { instance } = require('api');
-const { useQuery } = require('react-query');
+import { instance } from 'api';
+import { useQuery, useMutation } from 'react-query';
 
 export const useGetOrdersByTableId = (restId, tableId) => {
   const queryResp = useQuery(
@@ -14,7 +14,7 @@ export const useGetOrdersByTableId = (restId, tableId) => {
 
 export const useGetOrdersByRestaurantId = (restId) => {
   const queryResp = useQuery(
-    'orders',
+    ['ordersByRestaurantId'],
     async () => await instance.get(`orders/${restId}`)
     // {
     //   refetchInterval: 30000,
@@ -25,11 +25,19 @@ export const useGetOrdersByRestaurantId = (restId) => {
 
 export const useGetTablesByRestaurantId = (restId) => {
   const queryResp = useQuery(
-    'tables',
+    ['tablesByRestaurantId'],
     async () => await instance.get(`tables/restaurant/${restId}`)
     // {
     //   refetchInterval: 30000,
     // }
   );
   return queryResp;
+};
+
+export const useChangeTableStatus = () => {
+  const mutationResp = useMutation(
+    async ({ status, restaurant_id, table_id: id }) =>
+      await instance.patch(`tables/${id}`, { status, restaurant_id })
+  );
+  return mutationResp;
 };

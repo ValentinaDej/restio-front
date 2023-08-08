@@ -2,40 +2,37 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classes from './StatusSelector.module.scss';
 import Status from '../Status/Status';
+import { toast } from 'react-hot-toast';
 
-const StatusSelector = ({ mode }) => {
-  const statusTables = ['free', 'taken', 'called waiter', 'request bill'];
-  const statusDishes = ['ordered', 'in progress', 'ready', 'served'];
-  const statusOrders = ['open', 'paid'];
-
-  const [selectedCurrent, setSelectCurrent] = useState();
+const StatusSelector = ({ mode, currentStatus, changeStatusFunction = () => {}, itemId }) => {
+  const [selectedCurrent, setSelectCurrent] = useState(currentStatus);
   const [currentMode, setCurrentMode] = useState([]);
   const [visibleBody, setVisibleBody] = useState(false);
 
   useEffect(() => {
     switch (mode) {
       case 'tables':
-        setSelectCurrent(statusTables[0]);
-        setCurrentMode(statusTables);
+        setCurrentMode(['Free', 'Taken', 'Waiting']);
         break;
       case 'dishes':
-        setSelectCurrent(statusDishes[0]);
-        setCurrentMode(statusDishes);
+        setCurrentMode(['Ordered', 'In progress', 'Ready', 'Served']);
         break;
       case 'orders':
-        setSelectCurrent(statusOrders[0]);
-        setCurrentMode(statusOrders);
+        setCurrentMode(['Open', 'Paid', 'Closed']);
         break;
       default:
         break;
     }
-  }, []);
+  }, [mode]);
 
-  const handleItemBody = (item) => {
-    setSelectCurrent(item);
+  const handleItemBody = async (item) => {
     setVisibleBody(false);
-    //dispatch
+    const isResolved = await changeStatusFunction(item);
+    if (isResolved === 'success') {
+      setSelectCurrent(item);
+    }
   };
+
   return (
     <div>
       <div className={classes.select}>
@@ -71,6 +68,7 @@ const StatusSelector = ({ mode }) => {
 
 StatusSelector.propTypes = {
   mode: PropTypes.oneOf(['tables', 'dishes', 'orders']).isRequired,
+  itemId: PropTypes.string,
 };
 
 export default StatusSelector;
