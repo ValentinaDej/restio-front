@@ -189,6 +189,7 @@
   }
 
   .card_wrapper {
+    display: flex;
     flex-grow: 1;
     margin-bottom: 70px;
     max-width: 250px;
@@ -239,6 +240,15 @@
 
   .quantity_buttons {
     margin: 0;
+  }
+
+  .card_wrapper {
+    display: flex;
+    flex: 1;
+  }
+
+  .recommended_block {
+    margin-top: 70px;
   }
 }
 

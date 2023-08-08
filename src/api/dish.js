@@ -10,6 +10,11 @@ export const fetchDishesList = async (restId) => {
   return response.data;
 };
 
+export const getDishById = async (dishId) => {
+  const response = await instance(`/dishes/${dishId}`);
+  return response.data;
+};
+
 export const deleteDishById = async (dishId, restId) => {
   await instance.delete(`/dishes/${dishId}/restaurant/${restId}`);
 };
