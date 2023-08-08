@@ -10,7 +10,7 @@ import QuantityButton from 'shared/QuantityButton/QuantityButton';
 import DishCard from 'shared/DishCard/DishCard';
 import Button from 'shared/Button/Button';
 import Cart from 'components/Cart/Cart';
-import { getDishById, fetchDishesList } from 'api/dish';
+import { getDishById } from 'api/dish';
 import { addProduct, decreaseQuantity, increaseQuantity } from 'store/cart/cartSlice';
 import { getProductFromState } from '../../store/cart/cartSelectors';
 import { IoReturnDownBackOutline } from 'react-icons/io5';
