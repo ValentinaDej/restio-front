@@ -1,7 +1,7 @@
 import { instance } from 'api';
 
-export const getDishes = async (restId, category) => {
-  const data = await instance(`/dishes/restaurant/${restId}?type=${category}`);
+export const getDishes = async (restId, category, type) => {
+  const data = await instance(`/dishes/restaurant/${restId}?type=${category}&isActive=${type}`);
   return data;
 };
 

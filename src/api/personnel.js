@@ -1,4 +1,4 @@
-import { instance } from './index';
+import { instance } from 'api';
 import toast from 'react-hot-toast';
 
 export const PERSONNEL = `/personnel`;

@@ -6,20 +6,21 @@ import { toast } from 'react-hot-toast';
 import { deleteDishById, getDishes } from 'api/dish';
 import Select from 'shared/Select/Select';
 import { DISH_CATEGORIES } from 'utils/constants';
+import styles from './DishesAdminPage.module.scss';
 
 const DishesAdminPage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const [category, setCategory] = useState('');
+  const [type, setType] = useState('active');
 
   const { isLoading, data, refetch } = useQuery(
-    ['dishes', category],
-    async () => await getDishes(restId, category),
+    ['dishes', category, type],
+    async () => await getDishes(restId, category, type === 'active'),
     {
       onError: (error) => {
         toast.error(error.message);
       },
-
       refetchOnWindowFocus: false, // Disable refetching when the window gains focus
       refetchOnReconnect: false, // Disable refetching when the network reconnects
       refetchInterval: false, // Disable automatic periodic refetching
@@ -37,19 +38,24 @@ const DishesAdminPage = () => {
   const handleDelete = async (id, restId) => {
     try {
       await toast.promise(mutateAsync(id, restId), {
-        loading: 'Deleting...',
-        success: 'Dish deleted successfully',
-        error: 'Error deleting dish',
+        loading: 'Removing...',
+        success: 'Dish removed from the menu',
+        error: 'Error removing dish',
       });
       await refetch();
     } catch (error) {
-      console.error('Error deleting dish:', error);
+      console.error('Error removing dish:', error);
     }
   };
 
   const handleCategory = (e) => {
     const categoryChoose = e.target.value;
     setCategory(categoryChoose);
+  };
+
+  const handleType = (e) => {
+    const typeValue = e.target.value;
+    setType(typeValue);
   };
 
   return (
@@ -61,14 +67,20 @@ const DishesAdminPage = () => {
       goToAdd={navigateToAddDish}
       handleDelete={handleDelete}
     >
-      <Select id="category" value={category} onChange={handleCategory} size="sm" length="sm">
-        <option value="">All category</option>
-        {DISH_CATEGORIES.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </Select>
+      <div className={`${styles.select__section}`}>
+        <Select id="type" value={type} onChange={handleType} size="sm" length="sm">
+          <option value="active">Active</option>
+          <option value="noActive">No Active</option>
+        </Select>
+        <Select id="category" value={category} onChange={handleCategory} size="sm" length="sm">
+          <option value="">All category</option>
+          {DISH_CATEGORIES.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </Select>
+      </div>
     </AdminPageContainer>
   );
 };
