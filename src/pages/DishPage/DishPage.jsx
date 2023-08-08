@@ -3,8 +3,7 @@ import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
 import classes from './DishPage.module.scss';
-import axios from 'axios';
-import { BASE_URL } from 'api';
+import { instance } from 'api';
 import Title from 'shared/Title/Title';
 import Text from 'shared/Text/Text';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
@@ -26,10 +25,18 @@ const DishPage = () => {
   const storeData = useSelector(getProductFromState);
   const { pathname } = useLocation();
 
-  const { isLoading, data: dish, error } = useQuery(['dish', dishId], () => getDishById(dishId));
+  const {
+    isLoading,
+    data: dish,
+    error,
+  } = useQuery(['dish', dishId], () => getDishById(dishId), {
+    refetchOnWindowFocus: false, // Disable refetching when the window gains focus
+    refetchOnReconnect: false, // Disable refetching when the network reconnects
+    refetchInterval: false, // Disable automatic periodic refetching
+  });
 
   const fetchDishesList = async () => {
-    const res = await axios.get(`${BASE_URL}/dishes/restaurant/${restId}`, {
+    const res = await instance(`/dishes/restaurant/${restId}`, {
       params: {
         isActive: true,
       },
@@ -85,7 +92,6 @@ const DishPage = () => {
   };
 
   const increaseItem = () => {
-    console.log(storeData);
     const { picture: src, name: title, price, _id: id } = dish;
     dispatch(increaseQuantity(id));
   };
