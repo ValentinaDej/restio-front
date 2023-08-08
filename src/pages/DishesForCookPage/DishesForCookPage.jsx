@@ -17,7 +17,7 @@ const DishesForCookPage = () => {
   const { restId } = useParams();
   const [currentStatus, setCurrentStatus] = useState('Ordered');
 
-  const { data, isLoading } = useQuery(['orders'], async () => getAllOrders(restId), {
+  const { data, isLoading, refetch } = useQuery(['orders'], async () => getAllOrders(restId), {
     onError: (error) => {
       toast.error(error.message);
     },
@@ -26,6 +26,7 @@ const DishesForCookPage = () => {
     refetchInterval: false, // Disable automatic periodic refetching
   });
   const subscription = useSSESubscription(refetch);
+
   useEffect(() => {
     subscription();
   }, [subscription]);
