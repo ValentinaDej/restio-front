@@ -45,7 +45,7 @@ const Header = ({ logo, restaurantName, role }) => {
           <NavLink className={classes.header__link} to={`admin/${restaurantId}/dishes`}>
             <MdRestaurantMenu className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}/personnel`}>
+          <NavLink className={classes.header__link} to={`admin/${restaurantId}`}>
             <IoPeopleSharp className={classes.header__icon} />
           </NavLink>
           <NavLink className={classes.header__link} to={`admin/${restaurantId}/tables`}>

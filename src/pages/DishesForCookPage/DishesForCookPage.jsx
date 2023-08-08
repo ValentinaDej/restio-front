@@ -8,7 +8,8 @@ import { getAllOrders, useUpdateDishStatusByWaiter } from 'api/order';
 import StatusCardItem from 'components/Cook/StatusCardItem/StatusCardItem';
 import { useMediaQuery } from 'react-responsive';
 import Button from 'shared/Button/Button';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import useSSESubscription from 'hooks/useSSESubscription';
 
 const statuses = ['Ordered', 'In progress', 'Ready'];
 
@@ -21,6 +22,10 @@ const DishesForCookPage = () => {
       toast.error(error.message);
     },
   });
+  const subscription = useSSESubscription(refetch);
+  useEffect(() => {
+    subscription();
+  }, [subscription]);
 
   const isDesktop = useMediaQuery({
     query: '(min-width: 1024px)',

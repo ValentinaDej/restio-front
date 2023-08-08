@@ -25,6 +25,11 @@ const useSSESubscription = (cb) => {
             cb();
           }
         }
+        if (eventData.eventType === 'New order') {
+          if (location.pathname.includes(restId)) {
+            cb();
+          }
+        }
       };
 
       eventSource.onerror = (error) => {
