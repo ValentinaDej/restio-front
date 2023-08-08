@@ -20,7 +20,7 @@ instance.interceptors.request.use(
     ) {
       const auth = storage.getItem('userData');
       if (auth?.token && request.headers) {
-        request.headers['Authorization'] = 'Bearer ' + auth.token;
+        request.headers['Authorization'] = `Bearer ${auth.token}`;
       }
     }
 
