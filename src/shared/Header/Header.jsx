@@ -34,6 +34,7 @@ const Header = ({ logo, restaurantName, role }) => {
       return toast.error('Something went wrong... Please, try again in few minutes');
     }
   };
+
   return (
     <header className={classes.header}>
       <div className={classes.header__logo}>
@@ -51,7 +52,7 @@ const Header = ({ logo, restaurantName, role }) => {
           <NavLink className={classes.header__link} to={`admin/${restaurantId}/dishes`}>
             <MdRestaurantMenu className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}`}>
+          <NavLink className={classes.header__link} to={`admin/${restaurantId}/personnel`}>
             <IoPeopleSharp className={classes.header__icon} />
           </NavLink>
           <NavLink className={classes.header__link} to={`admin/${restaurantId}/tables`}>
@@ -76,8 +77,8 @@ const Header = ({ logo, restaurantName, role }) => {
               Call waiter
             </Button>
           </div>
-          <NavLink to={`/${restId}/${tableId}/orders`} className={classes.header__link}>
-            <ImList2 className={classes.header__icon} />
+          <NavLink to={`/${restId}/${tableId}/orders`} className={classes['header__link-button']}>
+            Orders
           </NavLink>
         </div>
       )}
