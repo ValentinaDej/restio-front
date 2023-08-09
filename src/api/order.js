@@ -30,10 +30,27 @@ export const useGetOrdersByTableId = ({ restId, tableId }) => {
   return queryResp;
 };
 
-export const useUpdateOrderStatusByWaiter = ({ restId, tableId }, orders) => {
+export const useUpdateOrderStatusByWaiter = (
+  { restId, tableId },
+  orders,
+  amount,
+  userId,
+  paymentType
+) => {
   const queryClient = useQueryClient();
 
+  const createTransactionOffline = async () => {
+    const response = await instance.post(`transactions/manual`, {
+      info: orders,
+      amount,
+      userId,
+      type: paymentType,
+    });
+    return response.data;
+  };
+
   const updateOrderStatus = async () => {
+    const data = await createTransactionOffline();
     const response = await instance.patch(`orders/${restId}/table/${tableId}`, { orders });
     return response.data;
   };

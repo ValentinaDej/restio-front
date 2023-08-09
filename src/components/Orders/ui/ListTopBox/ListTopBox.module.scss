@@ -1,13 +1,19 @@
 .btn {
-  height: 40px;
+  height: 50px;
 }
 
 .btnsBox {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 10px;
 }
 
 .text {
   color: var(--color-blue-dark);
+}
+
+.checkboxes {
+  display: grid;
+  gap: 5px;
 }

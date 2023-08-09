@@ -6,7 +6,7 @@ import { nanoid } from '@reduxjs/toolkit';
 import { classNames } from 'helpers/classNames';
 
 export const CheckBox = memo(
-  ({ label, disabled, checked, onChange, className, size = 20, ...props }) => {
+  ({ label, disabled, checked, onChange, className, size = 20, ariaLabel, ...props }) => {
     const inputClasses = `visually-hidden ${cls.checkBox}`;
     const [checkBoxId] = useState(nanoid());
 
@@ -23,6 +23,7 @@ export const CheckBox = memo(
             checked={checked}
             onChange={onChange}
             disabled={disabled}
+            aria-label={ariaLabel}
             className={inputClasses}
             {...props}
           />
@@ -36,6 +37,7 @@ export const CheckBox = memo(
 
 CheckBox.propTypes = {
   label: PropTypes.string,
+  ariaLabel: PropTypes.string,
   size: PropTypes.number,
   disabled: PropTypes.bool,
   checked: PropTypes.bool,

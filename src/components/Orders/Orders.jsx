@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
 import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
@@ -14,6 +14,7 @@ import cls from './Order.module.scss';
 import useSSESubscription from 'hooks/useSSESubscription';
 
 const Orders = ({ isWaiter }) => {
+  const [paymentType, setPaymentType] = useState('');
   const [selectedTotal, setSelectedTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedOrders, setSelectedOrders] = useState([]);
@@ -36,6 +37,20 @@ const Orders = ({ isWaiter }) => {
   useEffect(() => {
     subscription();
   }, [subscription]);
+
+  const onChangeTypeOfPay = useCallback((e) => {
+    const value = e.target.ariaLabel;
+    const checked = e.target.checked;
+    if (value === 'cash') {
+      setPaymentType('cash');
+    }
+    if (value === 'POS') {
+      setPaymentType('POS');
+    }
+    if (!checked) {
+      setPaymentType('');
+    }
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -74,8 +89,10 @@ const Orders = ({ isWaiter }) => {
               orders={data?.data?.orders || []}
               totalPrice={totalPrice}
               onChangeSelected={onChangeSelected}
+              onChangeTypeOfPay={onChangeTypeOfPay}
               urlParams={params}
               isWaiter={isWaiter}
+              paymentType={paymentType}
             />
             <OrdersList
               orders={data?.data?.orders || []}
@@ -93,6 +110,7 @@ const Orders = ({ isWaiter }) => {
             urlParams={params}
             isWaiter={isWaiter}
             isAllOrdersPaid={isAllOrdersPaid}
+            paymentType={paymentType}
           />
         </>
       )}

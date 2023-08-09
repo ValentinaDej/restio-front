@@ -11,6 +11,7 @@ import { getPaymentInfo } from 'store/customer/orders/selectors';
 import Loader from 'shared/Loader/Loader';
 import { toast } from 'react-hot-toast';
 import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
+import { getUserId } from 'store/auth/authSelector';
 
 export const Checkout = ({
   isWaiter,
@@ -19,17 +20,25 @@ export const Checkout = ({
   onChangeSelected,
   urlParams,
   isAllOrdersPaid,
+  paymentType,
 }) => {
   const dispatch = useDispatch();
+  const userId = useSelector(getUserId);
+  const { data, signature } = useSelector(getPaymentInfo);
   const [isOpen, setIsOpen] = useState(false);
-  const { isLoading, mutate } = useUpdateOrderStatusByWaiter(urlParams, selectedOrders);
+  const { isLoading, mutate } = useUpdateOrderStatusByWaiter(
+    urlParams,
+    selectedOrders,
+    amount,
+    userId,
+    paymentType
+  );
   const {
     isLoading: isLoadingTableStatus,
     mutate: mutateTableStatus,
     isError,
     error,
   } = useUpdateTableStatusByWaiter(urlParams, 'Free');
-  const { data, signature } = useSelector(getPaymentInfo);
   const frontLink = location.href;
 
   useEffect(() => {
@@ -58,13 +67,14 @@ export const Checkout = ({
   const onClickPaySelectedAsCustomer = useCallback(() => {
     dispatch(
       payOrders({
+        rest_id: urlParams.restId,
         amount,
         type: 'online',
         info: selectedOrders.join(','),
         frontLink,
       })
     );
-  }, [amount, dispatch, frontLink, selectedOrders]);
+  }, [amount, dispatch, frontLink, selectedOrders, urlParams.restId]);
 
   const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
     mutate();
@@ -85,7 +95,7 @@ export const Checkout = ({
           <Button
             size={'sm'}
             onClick={onClickMarkAsPaidSelectedAsWaiter}
-            disabled={amount === 0 || isLoading}
+            disabled={amount === 0 || isLoading || !paymentType}
             className={cls.btn}
           >
             {isLoading ? <Loader size={'xs'} /> : 'Mark as paid for selected'}
