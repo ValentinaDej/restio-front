@@ -1,10 +1,15 @@
 .backdrop {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
-  background-color: var(--color-orange-transparent);
-  overflow-y: auto;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .modal {
@@ -18,6 +23,7 @@
     0px 1px 1px rgba(0, 0, 0, 0.14),
     0px 2px 1px rgba(0, 0, 0, 0.2);
   border-radius: 0.4rem;
+  z-index: 1001;
 
   @media screen and (min-width: 320px) {
     position: absolute;

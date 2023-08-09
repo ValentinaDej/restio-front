@@ -1,205 +1,263 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { NavLink, useParams, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useQuery } from 'react-query';
 import classes from './DishPage.module.scss';
+import instance from 'api';
 import Title from 'shared/Title/Title';
 import Text from 'shared/Text/Text';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
 import DishCard from 'shared/DishCard/DishCard';
 import Button from 'shared/Button/Button';
+import Cart from 'components/Cart/Cart';
+import { getDishById } from 'api/dish';
+import { addProduct, decreaseQuantity, increaseQuantity } from 'store/cart/cartSlice';
+import { getProductFromState } from '../../store/cart/cartSelectors';
 import { IoReturnDownBackOutline } from 'react-icons/io5';
+import { toast } from 'react-hot-toast';
 
-const DishPage = (props) => {
-  const [dish, setDish] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+const DishPage = () => {
   const [dishQuantity, setDishQuantity] = useState(0);
-  const params = useParams().dishId;
-  const isTrue = true;
+  const [recommendedDishes, setRecommendedDishes] = useState([]);
+  const dishId = useParams().dishId;
+  const restId = useParams().restId;
+  const dispatch = useDispatch();
+  const storeData = useSelector(getProductFromState);
+  const { pathname } = useLocation();
+
+  const {
+    isLoading,
+    data: dish,
+    error,
+  } = useQuery(['dish', dishId], () => getDishById(dishId), {
+    refetchOnWindowFocus: false, // Disable refetching when the window gains focus
+    refetchOnReconnect: false, // Disable refetching when the network reconnects
+    refetchInterval: false, // Disable automatic periodic refetching
+  });
+
+  const fetchDishesList = async () => {
+    const res = await instance(`/dishes/restaurant/${restId}`, {
+      params: {
+        isActive: true,
+      },
+    });
+    idUsed(res.data);
+  };
+
+  const idUsed = (data) => {
+    let idsToExclude = [];
+    for (const item of storeData) {
+      idsToExclude.push(item.id);
+    }
+    idsToExclude.push(dishId);
+    const filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
+    if (filteredItems.length <= 3) {
+      setRecommendedDishes(filteredItems);
+    } else {
+      const first = Math.floor(Math.random() * (filteredItems.length - 3));
+      const second = first + 3;
+      let several = filteredItems.slice(first, second);
+      setRecommendedDishes(several);
+    }
+  };
 
   useEffect(() => {
-    const getDishById = async () => {
-      try {
-        setIsLoading(false);
-        const response = await axios.get(`http://localhost:3001/dishes/${params}`);
-        console.log(response.data);
-        setDish(response.data);
-        setTimeout(() => {
-          setIsLoading(true);
-        }, 2000);
-        return response.data;
-      } catch (err) {
-        console.error(err.toJSON());
-      }
-    };
-    getDishById();
-  }, [params]);
+    fetchDishesList();
+  }, [dishId, restId]);
+
+  useEffect(() => {
+    const isDishAlreadyAdded = storeData.filter((item) => item.id === dishId);
+    if (isDishAlreadyAdded.length > 0) {
+      setDishQuantity(isDishAlreadyAdded[0].quantity);
+    } else {
+      setDishQuantity(0);
+    }
+  }, [dishId, storeData]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  if (isLoading) {
+    return <div></div>;
+  }
+
+  if (error) {
+    return toast.error('Something went wrong... Please try again in few minutes');
+  }
+
+  const addItem = () => {
+    const { picture: src, name: title, price, _id: id } = dish;
+    dispatch(addProduct({ src, title, price, id }));
+  };
 
   const increaseItem = () => {
-    console.log('hey');
-    setDishQuantity(dishQuantity + 1);
+    const { picture: src, name: title, price, _id: id } = dish;
+    dispatch(increaseQuantity(id));
   };
 
   const decreaseItem = () => {
-    console.log('hey');
-    setDishQuantity(dishQuantity - 1);
+    const { picture: src, name: title, price, _id: id } = dish;
+    dispatch(decreaseQuantity(id));
   };
-
-  console.log(dishQuantity);
   return (
     <>
-      {isLoading == false ? (
-        <div className={classes.loader}>
-          <div className={classes.spinner}></div>
-        </div>
-      ) : (
-        <main className={classes.dish}>
-          <NavLink to="/customer/:restId/:tableId" className={classes.back}>
-            <IoReturnDownBackOutline></IoReturnDownBackOutline>
-            <span>Back to Menu</span>
-          </NavLink>
-          <div className={classes.fullDish}>
-            <div className={classes.dishInfoWarapper}>
-              <img className={classes.dishImage} src={dish.picture} />
-              <div className={classes.dishText}>
-                <Title mode="h2" classname={classes.dishTitle}>
-                  {dish.name}
-                </Title>
-                <div className={`${classes.price_wrapper} ${classes.box} `}>
-                  <div>
-                    <Text mode="p" classname={classes.subtitle}>
-                      Price
-                    </Text>
-                    <span>${dish.price}</span>
-                  </div>
-                  <div>
-                    <Text mode="p" classname={classes.subtitle}>
-                      Weight
-                    </Text>
-                    <span>{dish.portionWeight} g</span>
-                  </div>
-                  {dishQuantity < 1 ? (
-                    <div>
-                      <Button onClick={increaseItem} className={classes.addButton}>
-                        Add +
-                      </Button>
-                    </div>
-                  ) : (
-                    <QuantityButton
-                      classname={classes.quantity_buttons}
-                      addOne={increaseItem}
-                      quantity={dishQuantity}
-                      minusOne={decreaseItem}
-                    >
-                      {dishQuantity}
-                    </QuantityButton>
-                  )}
-                </div>
-                <div className={classes.box}>
+      <main className={classes.dish}>
+        <NavLink to={`/${restId}/:tableId`} className={classes.back}>
+          <IoReturnDownBackOutline></IoReturnDownBackOutline>
+          <span>Back to Menu</span>
+        </NavLink>
+        <div className={classes.fullDish}>
+          <div className={classes.dishInfoWarapper}>
+            <img className={classes.dishImage} src={dish.picture} />
+            <div className={classes.dishText}>
+              <Title mode="h2" classname={classes.dishTitle}>
+                {dish.name}
+              </Title>
+              <div className={`${classes.price_wrapper} ${classes.box} `}>
+                <div>
                   <Text mode="p" classname={classes.subtitle}>
-                    Ingredients
+                    Price
                   </Text>
-                  <ul className={classes.ingr_item}>
-                    {dish.ingredients?.map((item) => {
-                      return <li key={item._id}>{item.name}</li>;
-                    })}
+                  <span>${dish.price}</span>
+                </div>
+                <div>
+                  <Text mode="p" classname={classes.subtitle}>
+                    Weight
+                  </Text>
+                  <span>{dish.portionWeight} g</span>
+                </div>
+                {dishQuantity < 1 ? (
+                  <div>
+                    <Button onClick={addItem} className={classes.addButton}>
+                      Add +
+                    </Button>
+                  </div>
+                ) : (
+                  <QuantityButton
+                    classname={classes.quantity_buttons}
+                    addOne={increaseItem}
+                    quantity={dishQuantity}
+                    minusOne={decreaseItem}
+                  >
+                    {dishQuantity}
+                  </QuantityButton>
+                )}
+              </div>
+              <div className={classes.box}>
+                <Text mode="p" classname={classes.subtitle}>
+                  Ingredients
+                </Text>
+                <ul className={classes.ingr_item}>
+                  {dish.ingredients?.map((item) => {
+                    return <li key={item._id}>{item.name}</li>;
+                  })}
+                </ul>
+              </div>
+              <div className={`${classes.spicy_wrapper} ${classes.box} `}>
+                <div className={classes.spicy_item}>
+                  <Text mode="p" classname={classes.subtitle}>
+                    Vegeterian
+                  </Text>
+                  <ul>
+                    <li
+                      className={
+                        dish.vegetarian
+                          ? `${classes.tab} ${classes[`${true}`]} `
+                          : `${classes.tab} ${classes[`${false}`]} `
+                      }
+                    >
+                      Yes
+                    </li>
+                    <li
+                      className={
+                        dish.vegetarian
+                          ? `${classes.tab} ${classes[`${false}`]} `
+                          : `${classes.tab} ${classes[`${true}`]} `
+                      }
+                    >
+                      No
+                    </li>
                   </ul>
                 </div>
-                <div className={`${classes.spicy_wrapper} ${classes.box} `}>
-                  <div className={classes.spicy_item}>
-                    <Text mode="p" classname={classes.subtitle}>
-                      Vegeterian
-                    </Text>
-                    <ul>
-                      <li
-                        className={
-                          dish.vegetarian
-                            ? `${classes.tab} ${classes[`${true}`]} `
-                            : `${classes.tab} ${classes[`${false}`]} `
-                        }
-                      >
-                        Yes
-                      </li>
-                      <li
-                        className={
-                          dish.vegetarian
-                            ? `${classes.tab} ${classes[`${false}`]} `
-                            : `${classes.tab} ${classes[`${true}`]} `
-                        }
-                      >
-                        No
-                      </li>
-                    </ul>
-                  </div>
-                  <div className={classes.spicy_item}>
-                    <Text mode="p" classname={classes.subtitle}>
-                      Pescatarian
-                    </Text>
-                    <ul>
-                      <li
-                        className={
-                          dish.pescatarian
-                            ? `${classes.tab} ${classes[`${true}`]} `
-                            : `${classes.tab} ${classes[`${false}`]} `
-                        }
-                      >
-                        Yes
-                      </li>
-                      <li
-                        className={
-                          dish.pescatarian
-                            ? `${classes.tab} ${classes[`${false}`]} `
-                            : `${classes.tab} ${classes[`${true}`]} `
-                        }
-                      >
-                        No
-                      </li>
-                    </ul>
-                  </div>
-                  <div className={classes.spicy_item}>
-                    <Text mode="p" classname={classes.subtitle}>
-                      Spicy
-                    </Text>
-                    <ul>
-                      <li
-                        className={
-                          dish.spicy
-                            ? `${classes.tab} ${classes[`${true}`]} `
-                            : `${classes.tab} ${classes[`${false}`]} `
-                        }
-                      >
-                        Yes
-                      </li>
-                      <li
-                        className={
-                          dish.spicy
-                            ? `${classes.tab} ${classes[`${false}`]} `
-                            : `${classes.tab} ${classes[`${true}`]} `
-                        }
-                      >
-                        No
-                      </li>
-                    </ul>
-                  </div>
+                <div className={classes.spicy_item}>
+                  <Text mode="p" classname={classes.subtitle}>
+                    Pescatarian
+                  </Text>
+                  <ul>
+                    <li
+                      className={
+                        dish.pescatarian
+                          ? `${classes.tab} ${classes[`${true}`]} `
+                          : `${classes.tab} ${classes[`${false}`]} `
+                      }
+                    >
+                      Yes
+                    </li>
+                    <li
+                      className={
+                        dish.pescatarian
+                          ? `${classes.tab} ${classes[`${false}`]} `
+                          : `${classes.tab} ${classes[`${true}`]} `
+                      }
+                    >
+                      No
+                    </li>
+                  </ul>
+                </div>
+                <div className={classes.spicy_item}>
+                  <Text mode="p" classname={classes.subtitle}>
+                    Spicy
+                  </Text>
+                  <ul>
+                    <li
+                      className={
+                        dish.spicy
+                          ? `${classes.tab} ${classes[`${true}`]} `
+                          : `${classes.tab} ${classes[`${false}`]} `
+                      }
+                    >
+                      Yes
+                    </li>
+                    <li
+                      className={
+                        dish.spicy
+                          ? `${classes.tab} ${classes[`${false}`]} `
+                          : `${classes.tab} ${classes[`${true}`]} `
+                      }
+                    >
+                      No
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-          <div>
-            <Title mode="h3">Recommend to try</Title>
-            <div className={classes.recommend_wrapp}>
-              <div className={classes.card_wrapper}>
-                <DishCard src="https://templates.iqonic.design/aprycot/html/dashboard/dist/assets/images/layouts/dish-detail/01.png"></DishCard>
-              </div>
-              <div className={classes.card_wrapper}>
-                <DishCard src="https://templates.iqonic.design/aprycot/html/dashboard/dist/assets/images/layouts/dish-detail/01.png"></DishCard>
-              </div>
-              <div className={classes.card_wrapper}>
-                <DishCard src="https://templates.iqonic.design/aprycot/html/dashboard/dist/assets/images/layouts/dish-detail/01.png"></DishCard>
-              </div>
-            </div>
+        </div>
+        <Cart />
+        <div className={classes.recommended_block}>
+          <Title mode="h3">Recommend to try</Title>
+          <div className={classes.recommend_wrapp}>
+            {recommendedDishes?.map((item) => {
+              return (
+                <div className={classes.card_wrapper} key={item._id}>
+                  <NavLink to={`/${restId}/:tableId/${item._id}`}>
+                    <DishCard
+                      src={item.picture}
+                      key={item._id}
+                      id={item._id}
+                      title={item.name}
+                      ingredients={item.ingredients}
+                      weight={item.portionWeight}
+                      price={item.price}
+                    ></DishCard>
+                  </NavLink>
+                </div>
+              );
+            })}
           </div>
-        </main>
-      )}
+        </div>
+      </main>
     </>
   );
 };

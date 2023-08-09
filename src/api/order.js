@@ -1,4 +1,4 @@
-import { instance } from 'api';
+import instance from 'api';
 const { useQuery, useMutation, useQueryClient } = require('react-query');
 
 export const createOrder = async (data, restId) => {
@@ -6,12 +6,25 @@ export const createOrder = async (data, restId) => {
   return result;
 };
 
+export const getAllOrders = async (restId) => {
+  const request = await instance(`/orders/${restId}`);
+  const allOrders = request.data.data.orders;
+  const normalizedData = allOrders.reduce((acc, item) => {
+    const allDishes = item.orderItems.map((el) => ({ ...el, orderId: item._id }));
+    acc = [...acc, ...allDishes];
+    return acc;
+  }, []);
+  return normalizedData;
+};
+
 export const useGetOrdersByTableId = ({ restId, tableId }) => {
   const queryResp = useQuery(
     ['orders'],
     async () => await instance.get(`orders/${restId}/table/${tableId}`),
     {
-      refetchInterval: 10000,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
     }
   );
   return queryResp;

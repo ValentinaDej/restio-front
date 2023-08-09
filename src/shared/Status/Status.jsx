@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classes from './Status.module.scss';
 import Text from '../Text/Text';
 
-const Status = ({ statusCurrent, statusSize = 'sm' }) => {
+const Status = ({ statusCurrent, className, statusSize = 'sm' }) => {
   const [statusColor, setStatusColor] = useState('#50D1AA');
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Status = ({ statusCurrent, statusSize = 'sm' }) => {
       style={{
         background: `${statusColor}`,
       }}
-      className={`${classes.status} ${classes[`status_${statusSize}`]}`}
+      className={`${classes.status} ${className} ${classes[`status_${statusSize}`]}`}
     >
       <Text mode={'p'} fontSize={statusSize === 'sm' ? 10 : 13}>
         {statusCurrent}
@@ -70,6 +70,7 @@ Status.propTypes = {
     'Closed',
     'Canceled',
   ]),
+  className: PropTypes.string,
 };
 
 export default Status;
