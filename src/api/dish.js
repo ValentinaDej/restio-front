@@ -16,7 +16,7 @@ export const deleteDishById = async (dishId, restId) => {
 
 export const createDish = async (body, restId) => {
   try {
-    await instance.post(`/restaurant/${restId}`, body);
+    await instance.post(`/dishes/restaurant/${restId}`, body);
   } catch (error) {
     if (error.response) {
       const { status } = error.response;

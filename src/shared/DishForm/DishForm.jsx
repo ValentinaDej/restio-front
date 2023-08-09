@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,6 +11,7 @@ import Title from 'shared/Title/Title';
 import FormSelectaGroup from './FormSelectGroup/FormSelectGroup';
 import InputValid from 'shared/InputValid/InputValid';
 import FileUploader from 'shared/FileUploader/FileUploader';
+import { createDish } from 'api/dish';
 
 import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
@@ -45,6 +46,7 @@ const DishForm = () => {
 
   const restId = useParams();
   const navigate = useNavigate();
+  const fileUploaderRef = useRef();
 
   const cleareForm = () => {
     reset();
@@ -65,10 +67,21 @@ const DishForm = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log('Form Data:', data);
+    const picture = await fileUploaderRef.current.handleUpload();
+    //delete data.image;
+
+    // if (picture) {
+    //   onSubmit({ ...data, picture: picture.data.imageName });
+    // } else {
+    //   onSubmit({ ...data, picture: '' });
+    // }
+    // reset();
+
+    console.log('Form Data:', { ...data, picture: picture.data.imageName });
+    fileUploaderRef.current.clearFile();
     reset();
     setSelectedType('');
-    createDish(data, idRest);
+    createDish(data, restId);
     navigate(-1);
   };
 
@@ -92,10 +105,13 @@ const DishForm = () => {
             }}
             register={register}
           />
+          <div>
+            <Input type="checkbox" label="Active" name="isActive" register={register} size={'sm'} />
+          </div>
           <div className={classes.column__wrapper}>
             <div className={classes.column}>
               <div className={classes.img__wrapper}>
-                <FileUploader />
+                <FileUploader ref={fileUploaderRef} />
               </div>
             </div>
             <div className={classes.column}>
