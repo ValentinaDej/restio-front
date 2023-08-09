@@ -1,0 +1,21 @@
+.box {
+  height: 350px;
+  color: var(--color-white);
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--color-white);
+  width: 35%;
+}
+
+.list {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  & li {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
