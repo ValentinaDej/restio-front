@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import Button from 'shared/Button/Button';
 import Loader from 'shared/Loader/Loader';
 import Text from 'shared/Text/Text';
+import { BillDownload } from '../BillDownload/BillDownload';
 import PropTypes from 'prop-types';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import cls from './ListTopBox.module.scss';
@@ -51,6 +52,7 @@ export const ListTopBox = ({ orders, totalPrice, onChangeSelected, urlParams, is
         </Text>
       </div>
       <div className={cls.btnsBox}>
+        <BillDownload orders={orders || []} />
         <Button
           size={'sm'}
           onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}

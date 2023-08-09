@@ -8,8 +8,8 @@ import Title from 'shared/Title/Title';
 import Text from 'shared/Text/Text';
 import logoImg from 'img/RESTio.svg';
 
-import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
-import { formatDateTime } from 'helpers/formatDateTime';
+import { formatNumberWithTwoDecimalsForPrint } from 'helpers/formatNumberWithTwoDecimalsForPrint';
+import { getDate } from 'helpers/getDate';
 import { getRestaurant } from 'api/restaurant';
 import { downloadBillPdf } from 'helpers/billToPDF';
 
@@ -103,9 +103,11 @@ export const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
                     <tr key={index}>
                       <td className={classes.description}>{item.name}</td>
                       <td className={classes.qty}>{item.quantity}</td>
-                      <td className={classes.price}>{formatNumberWithTwoDecimals(item.price)}</td>
+                      <td className={classes.price}>
+                        {formatNumberWithTwoDecimalsForPrint(item.price)}
+                      </td>
                       <td className={classes.total}>
-                        {formatNumberWithTwoDecimals(item.quantity * item.price)}
+                        {formatNumberWithTwoDecimalsForPrint(item.quantity * item.price)}
                       </td>
                     </tr>
                   ))}
@@ -118,7 +120,7 @@ export const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
                     <td colSpan="2" className={classes.totalAmount}>
                       $
                       {' ' +
-                        formatNumberWithTwoDecimals(
+                        formatNumberWithTwoDecimalsForPrint(
                           dishData.reduce((total, item) => total + item.quantity * item.price, 0)
                         )}
                     </td>
@@ -128,7 +130,7 @@ export const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
             </div>
             <div className={classes.section__wrapper}>
               <Text textAlign={'right'} fontSize={10}>
-                {formatDateTime(new Date())}
+                {getDate(new Date())}
               </Text>
             </div>
 
