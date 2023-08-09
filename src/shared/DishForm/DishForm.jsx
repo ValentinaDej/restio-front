@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import PropTypes from 'prop-types';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Button from 'shared/Button/Button';
 import Input from 'shared/Input/Input';
@@ -42,6 +43,9 @@ const DishForm = () => {
     name: 'ingredients',
   });
 
+  const restId = useParams();
+  const navigate = useNavigate();
+
   const cleareForm = () => {
     reset();
   };
@@ -64,6 +68,8 @@ const DishForm = () => {
     console.log('Form Data:', data);
     reset();
     setSelectedType('');
+    createDish(data, idRest);
+    navigate(-1);
   };
 
   return (

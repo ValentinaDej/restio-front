@@ -1,5 +1,7 @@
+import DishForm from 'shared/DishForm/DishForm';
+
 const AddDishPage = () => {
-  return <p>AddDish Page</p>;
+  return <DishForm />;
 };
 
 export default AddDishPage;
