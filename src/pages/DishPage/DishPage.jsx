@@ -3,7 +3,7 @@ import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
 import classes from './DishPage.module.scss';
-import { instance } from 'api';
+import instance from 'api';
 import Title from 'shared/Title/Title';
 import Text from 'shared/Text/Text';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';

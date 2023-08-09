@@ -19,7 +19,7 @@ const initialState = {
 export const loginUser = createAsyncThunk('auth/loginUser', async (user, thunkAPI) => {
   try {
     const res = await loginPersonnel(user);
-    localStorage.setItem('userData', JSON.stringify(res));
+    storage.setItem('userData', res);
     toast.success('Login Successful');
     return res;
   } catch (error) {
@@ -31,7 +31,13 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (user, thunkAP
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      Object.assign(state, initialState);
+      storage.removeItem('userData');
+      window.location.replace('/login');
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.fulfilled, (state, action) => {
@@ -56,4 +62,5 @@ export const authSlice = createSlice({
   },
 });
 
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;

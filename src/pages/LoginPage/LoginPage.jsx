@@ -1,9 +1,13 @@
 import LoginForm from 'shared/LoginForm/LoginForm';
+import MainWrapper from 'shared/MainWrapper/MainWrapper';
+import classes from './LoginPage.module.scss';
 
 const LoginPage = () => {
   return (
     <main>
-      <LoginForm />
+      <MainWrapper classname={`${classes.bg}`}>
+        <LoginForm />
+      </MainWrapper>
     </main>
   );
 };

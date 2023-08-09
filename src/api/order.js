@@ -1,4 +1,4 @@
-import { instance } from 'api';
+import instance from 'api';
 const { useQuery, useMutation, useQueryClient } = require('react-query');
 
 export const createOrder = async (data, restId) => {
