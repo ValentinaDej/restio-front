@@ -23,8 +23,8 @@ const AdminPageContainer = ({
 }) => {
   const { restId } = useParams();
   const navigate = useNavigate();
-
   const [searchText, setSearchText] = useState('');
+
   const handleChange = (e) => {
     const { value } = e.target;
     const normalizedValue = value.trim();
@@ -35,7 +35,7 @@ const AdminPageContainer = ({
     navigate(`/admin/${restId}/${value[variant]}/edit/${id}`);
   };
 
-  const filterDishesList = data?.filter((item) =>
+  const filterList = data?.filter((item) =>
     item.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
@@ -47,25 +47,25 @@ const AdminPageContainer = ({
         <Loader size="sm" />
       ) : (
         <>
-          <div className={`${styles.input__container}`}>
+          <div className={`${styles.input__section}`}>
             <Input
               type="text"
               name="search"
               value={searchText}
               onChange={handleChange}
-              placeholder="Search dish..."
+              placeholder="Search..."
               size="md"
               className={`${styles.input}`}
             />
+            {children}
           </div>
-          {children}
           <ul className={`${styles.menu_wrapper}`}>
             <li key={`empty`} className={styles.card_wrapper}>
               <EmptyCard text={variant} mode={`outlined`} onClick={goToAdd}></EmptyCard>
             </li>
-            {filterDishesList &&
-              filterDishesList.length > 0 &&
-              filterDishesList.map((item) => {
+            {filterList &&
+              filterList.length > 0 &&
+              filterList.map((item) => {
                 return (
                   <li key={item._id} className={styles.card_wrapper}>
                     <EmployeeCard

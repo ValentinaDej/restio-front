@@ -4,17 +4,27 @@
   position: relative;
   &_header {
     cursor: pointer;
-    width: 90px;
-    height: 27px;
+    // width: 90px;
+    // height: 27px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: solid 2px #ccc;
+    // border: solid 2px #ccc;
     border-radius: 15px;
+  }
+  &_header_sm {
+    width: 90px;
+    height: 27px;
+    border: solid 2px #ccc;
+  }
+  &_header_lg {
+    width: 206px;
+    height: 37px;
+    border: solid 1px #ccc;
   }
   &_body {
     z-index: 10;
-    max-width: 90px;
+    // max-width: 90px;
     padding: 5px 0;
     background: white;
     position: absolute;
@@ -29,6 +39,12 @@
     :last-child {
       margin-bottom: 0;
     }
+  }
+  &_body_sm {
+    max-width: 90px;
+  }
+  &_body_lg {
+    width: 206px;
   }
   &_item {
     margin-bottom: 5px;

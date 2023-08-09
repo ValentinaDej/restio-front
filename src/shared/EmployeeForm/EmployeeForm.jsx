@@ -124,24 +124,47 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
           />
         </div>
         <div className={styles.field__wrapper}>
-          <Select
-            label="Gender"
-            size={size}
-            register={register}
-            error={errors.gender ? 'error' : ''}
-          >
-            <option>Male</option>
-            <option>Female</option>
-          </Select>
-          {errors.gender && <div className={styles.error}>{errors.gender}</div>}
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Select
+                  label="Gender"
+                  size={size}
+                  register={register}
+                  error={errors.gender ? 'error' : 'noError'}
+                  {...field} // Pass field to the Select component
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </Select>
+                {errors.gender && <div className={styles.error}>{errors.gender}</div>}
+              </>
+            )}
+          />
         </div>
         <div className={styles.field__wrapper}>
-          <Select label="Role" size={size} register={register} error={errors.role ? 'error' : ''}>
-            <option>waiter</option>
-            <option>admin</option>
-            <option>cook</option>
-          </Select>
-          {errors.role && <div className={styles.error}>{errors.role}</div>}
+          <Controller
+            name="role"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Select
+                  label="Role"
+                  size={size}
+                  register={register}
+                  error={errors.gender ? 'error' : 'noError'}
+                  {...field}
+                >
+                  <option value="waiter">Waiter</option>
+                  <option value="admin">Admin</option>
+                  <option value="cook">Cook</option>
+                </Select>
+                {errors.role && <div className={styles.error}>{errors.role}</div>}
+              </>
+            )}
+          />
         </div>
         <div className={`${styles.field__wrapper}`}>
           <Controller

@@ -17,7 +17,11 @@ export const OrdersList = ({
   urlParams,
 }) => {
   const { payment } = useSelector(getIsLoading);
-  const { isLoadingDishStatus, mutate: mutateDishStatus } = useUpdateDishStatusByWaiter();
+  const {
+    data,
+    isLoadingDishStatus,
+    mutateAsync: mutateDishStatus,
+  } = useUpdateDishStatusByWaiter();
 
   const selectOrder = useCallback(
     (id, totalPrice) => {
@@ -66,8 +70,13 @@ export const OrdersList = ({
   }, [orders]);
 
   const onClickChangeDishStatusAsWaiter = useCallback(
-    (status, dishId, orderId) => {
-      mutateDishStatus({ urlParams, status, dishId, orderId });
+    async (status, dishId, orderId) => {
+      try {
+        await mutateDishStatus({ urlParams, status, dishId, orderId });
+        return 'success';
+      } catch (err) {
+        console.log(err.response.data.message);
+      }
     },
     [mutateDishStatus, urlParams]
   );

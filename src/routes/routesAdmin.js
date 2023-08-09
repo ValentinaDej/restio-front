@@ -6,11 +6,10 @@ const AddPersonnelPage = lazy(() => import('pages/AddPersonnelPage/AddPersonnelP
 const AddDishPage = lazy(() => import('pages/AddDishPage/AddDishPage'));
 const TablesWaiterPage = lazy(() => import('pages/TablesWaiterPage/TablesWaiterPage'));
 const TableWaiterPage = lazy(() => import('pages/TableWaiterPage/TableWaiterPage'));
-const MenuPage = lazy(() => import('pages/MenuPage/MenuPage'));
 const DishesForCookPage = lazy(() => import('pages/DishesForCookPage/DishesForCookPage'));
 
 const routesAdmin = [
-  { path: 'admin/:restId', component: <EmployeePage /> },
+  { path: 'admin/:restId/personnel', component: <EmployeePage /> },
   { path: 'admin/:restId/dishes', component: <DishesAdminPage /> },
   { path: 'admin/:restId/personnel/edit/:personId', component: <AddPersonnelPage /> },
   { path: 'admin/:restId/personnel/new', component: <AddPersonnelPage /> },

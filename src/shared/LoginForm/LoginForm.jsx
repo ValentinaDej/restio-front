@@ -68,7 +68,7 @@ const LoginForm = () => {
       const res = await dispatch(loginUser(data));
       reset();
       if (res.payload.role === 'admin') {
-        navigate(`/admin/${res.payload.restaurantId}`);
+        navigate(`/admin/${res.payload.restaurantId}/personnel`);
       } else if (res.payload.role === 'waiter') {
         navigate(`/waiter/tables/${res.payload.restaurantId}`);
       } else if (res.payload.role === 'cook') {
