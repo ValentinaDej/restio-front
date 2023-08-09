@@ -34,7 +34,7 @@ const StatusSelector = ({
 
   const handleItemBody = async (item) => {
     setVisibleBody(false);
-    const isResolved = await changeStatusFunction(item);
+    const isResolved = await changeStatusFunction(item, itemId);
     if (isResolved === 'success') {
       setSelectCurrent(item);
     }

@@ -7,7 +7,7 @@ export const BASE_URL =
     ? 'http://localhost:3001'
     : 'https://restio-test.onrender.com';
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: BASE_URL,
 });
 
