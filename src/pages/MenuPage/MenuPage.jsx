@@ -20,7 +20,7 @@ const MenuPage = () => {
 
   const { isError, isLoading, data } = useQuery(
     ['dishes', category],
-    async () => await getDishes(restId, category),
+    async () => await getDishes(restId, category, true),
     {
       // staleTime: 0, // Data is immediately considered stale and will be refetched on the next request
       // cacheTime: 0, // Data is never considered stale, and automatic refetching is disabled

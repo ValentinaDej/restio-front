@@ -1,4 +1,3 @@
-// PrivateRoute.js
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 
@@ -8,7 +7,7 @@ export const PrivateRoute = ({ component: Element }) => {
 
   // Redirect users without a role from admin, cook, and waiter routes
   if (
-    !role &&
+    (!role || role === 'customer') &&
     (currentPath.includes('/admin') ||
       currentPath.includes('/cook') ||
       currentPath.includes('/waiter'))
@@ -27,7 +26,7 @@ export const PrivateRoute = ({ component: Element }) => {
     role !== 'admin' && !allowedRoutes[role]?.some((route) => currentPath.includes(`/${route}/`));
 
   if (isNotAllowed) {
-    return <Navigate to="/personnel" />;
+    return <Navigate to="/" />;
   }
 
   return Element;

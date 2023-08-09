@@ -1,0 +1,41 @@
+.section {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 40px;
+}
+.container {
+  display: flex;
+  justify-content: center;
+}
+.image {
+  width: 100%;
+  height: 100%;
+}
+.number {
+  width: 92px;
+  height: 101px;
+  object-fit: cover;
+  @media screen and (min-width: 479.98px) {
+    width: 120px;
+    height: 140px;
+  }
+  @media screen and (min-width: 767.98px) {
+    width: 172px;
+    height: 190px;
+  }
+  @media screen and (min-width: 991.98px) {
+    width: 232px;
+    height: 255px;
+  }
+  @media screen and (min-width: 1200px) {
+    width: 277px;
+    height: 305px;
+  }
+}
+.burger {
+  margin: 0 20px;
+}

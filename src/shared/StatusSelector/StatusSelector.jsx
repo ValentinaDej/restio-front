@@ -2,8 +2,16 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classes from './StatusSelector.module.scss';
 import Status from '../Status/Status';
+import { toast } from 'react-hot-toast';
 
-const StatusSelector = ({ mode, currentStatus, changeStatusFunction = () => {}, itemId }) => {
+const StatusSelector = ({
+  mode,
+  currentStatus,
+  size = 'sm',
+  statusSize,
+  changeStatusFunction = () => {},
+  itemId,
+}) => {
   const [selectedCurrent, setSelectCurrent] = useState(currentStatus);
   const [currentMode, setCurrentMode] = useState([]);
   const [visibleBody, setVisibleBody] = useState(false);
@@ -24,22 +32,27 @@ const StatusSelector = ({ mode, currentStatus, changeStatusFunction = () => {}, 
     }
   }, [mode]);
 
-  const handleItemBody = (item) => {
-    setSelectCurrent(item);
+  const handleItemBody = async (item) => {
     setVisibleBody(false);
-    changeStatusFunction(item, itemId); //function to handle status changing
+    const isResolved = await changeStatusFunction(item, itemId);
+    if (isResolved === 'success') {
+      setSelectCurrent(item);
+    }
   };
 
   return (
     <div>
       <div className={classes.select}>
-        <div onClick={() => setVisibleBody(!visibleBody)} className={classes.select_header}>
+        <div
+          onClick={() => setVisibleBody(!visibleBody)}
+          className={`${classes.select_header} ${classes[`select_header_${size}`]}`}
+        >
           <div className={classes.select_current}>
-            <Status statusCurrent={selectedCurrent} />
+            <Status statusCurrent={selectedCurrent} statusSize={statusSize} />
           </div>
         </div>
         {visibleBody ? (
-          <div className={classes.select_body}>
+          <div className={`${classes.select_body} ${classes[`select_body_${size}`]}`}>
             <div>
               {currentMode &&
                 currentMode.map((item, index) => {
@@ -49,7 +62,7 @@ const StatusSelector = ({ mode, currentStatus, changeStatusFunction = () => {}, 
                       key={item}
                       className={classes.select_item}
                     >
-                      <Status statusCurrent={item} />
+                      <Status statusCurrent={item} statusSize={statusSize} />
                     </div>
                   );
                 })}

@@ -26,6 +26,7 @@ const DishesForCookPage = () => {
     refetchInterval: false, // Disable automatic periodic refetching
   });
   const subscription = useSSESubscription(refetch);
+
   useEffect(() => {
     subscription();
   }, [subscription]);

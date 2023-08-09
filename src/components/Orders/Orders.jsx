@@ -32,6 +32,7 @@ const Orders = ({ isWaiter }) => {
     isRefetching,
     refetch,
   } = useGetOrdersByTableId(params);
+
   const subscription = useSSESubscription(refetch);
 
   useEffect(() => {

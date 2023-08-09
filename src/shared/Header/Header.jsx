@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { ImList2 } from 'react-icons/im';
@@ -13,13 +13,19 @@ import Title from 'shared/Title/Title';
 import Button from 'shared/Button/Button';
 import { callWaiter } from 'api/table';
 import { getRestaurantId } from 'store/auth/authSelector';
+import { logout } from 'store/auth/authSlice';
 
 const Header = ({ logo, restaurantName, role }) => {
+  const dispatch = useDispatch();
   const restaurantId = useSelector(getRestaurantId);
   const { pathname } = useLocation();
   const arrParams = pathname.split('/');
   const restId = arrParams[1];
   const tableId = arrParams[2];
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
+
   const onClickHandler = async () => {
     try {
       await callWaiter(tableId, { status: 'Waiting', restaurant_id: restId });
@@ -28,6 +34,7 @@ const Header = ({ logo, restaurantName, role }) => {
       return toast.error('Something went wrong... Please, try again in few minutes');
     }
   };
+
   return (
     <header className={classes.header}>
       <div className={classes.header__logo}>
@@ -45,7 +52,7 @@ const Header = ({ logo, restaurantName, role }) => {
           <NavLink className={classes.header__link} to={`admin/${restaurantId}/dishes`}>
             <MdRestaurantMenu className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}`}>
+          <NavLink className={classes.header__link} to={`admin/${restaurantId}/personnel`}>
             <IoPeopleSharp className={classes.header__icon} />
           </NavLink>
           <NavLink className={classes.header__link} to={`admin/${restaurantId}/tables`}>
@@ -58,7 +65,7 @@ const Header = ({ logo, restaurantName, role }) => {
       )}
       {role !== 'customer' && (
         <div className={classes.header__wrapper}>
-          <button className={classes.header__link}>
+          <button className={classes.header__link} onClick={logoutHandler}>
             <FiLogOut className={classes.header__icon} />
           </button>
         </div>
@@ -70,8 +77,8 @@ const Header = ({ logo, restaurantName, role }) => {
               Call waiter
             </Button>
           </div>
-          <NavLink to={`/${restId}/${tableId}/orders`} className={classes.header__link}>
-            <ImList2 className={classes.header__icon} />
+          <NavLink to={`/${restId}/${tableId}/orders`} className={classes['header__link-button']}>
+            Orders
           </NavLink>
         </div>
       )}
