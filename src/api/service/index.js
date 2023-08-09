@@ -15,10 +15,12 @@ export const useGetOrdersByTableId = (restId, tableId) => {
 export const useGetOrdersByRestaurantId = (restId) => {
   const queryResp = useQuery(
     ['ordersByRestaurantId'],
-    async () => await instance.get(`orders/${restId}`)
-    // {
-    //   refetchInterval: 30000,
-    // }
+    async () => await instance.get(`orders/${restId}`),
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
+    }
   );
   return queryResp;
 };
@@ -26,10 +28,12 @@ export const useGetOrdersByRestaurantId = (restId) => {
 export const useGetTablesByRestaurantId = (restId) => {
   const queryResp = useQuery(
     ['tablesByRestaurantId'],
-    async () => await instance.get(`tables/restaurant/${restId}`)
-    // {
-    //   refetchInterval: 30000,
-    // }
+    async () => await instance.get(`tables/restaurant/${restId}`),
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
+    }
   );
   return queryResp;
 };

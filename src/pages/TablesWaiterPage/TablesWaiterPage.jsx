@@ -6,6 +6,9 @@ import styles from './TablesWaiterPage.module.scss';
 import TableCard from 'components/TableCard/TableCard';
 import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import Message from 'components/Message/Message';
+import useSSESubscription from 'hooks/useSSESubscription';
 
 const dumbTables = [
   {
@@ -53,6 +56,12 @@ const dumbTables = [
 ];
 
 const TablesWaiterPage = () => {
+  const subscription = useSSESubscription();
+
+  useEffect(() => {
+    subscription();
+  }, [subscription]);
+
   const { restId } = useParams();
   const {
     data: tablesData,
@@ -70,9 +79,6 @@ const TablesWaiterPage = () => {
 
   const tables = tablesData?.data;
   const orders = ordersData?.data.data.orders;
-
-  // console.log(tables);
-  // console.log(orders);
 
   const isLoading = isLoadingTables || isLoadingOrders;
 
@@ -105,32 +111,9 @@ const TablesWaiterPage = () => {
           />
         ))}
       </div>
+      <Message />
     </div>
   );
 };
 
 export default TablesWaiterPage;
-
-// <div className="tables__container">
-
-// </div>
-
-// import { useEffect } from 'react';
-
-// import Message from 'components/Message/Message';
-// import useSSESubscription from 'hooks/useSSESubscription';
-
-// const TablesWaiterPage = () => {
-//   const subscription = useSSESubscription();
-
-//   useEffect(() => {
-//     subscription();
-//   }, [subscription]);
-
-//   return (
-//     <div>
-//       TablesWaiter Page
-//       <Message />
-//     </div>
-//   );
-// }

@@ -13,18 +13,6 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
   const [currentStatus, setCurrentStatus] = useState(status);
 
   const redAnimation = currentStatus === 'Waiting' ? styles.table_pulsating : '';
-  console.log(status);
-  // const isItemFree = (item) => item === 'Free';
-
-  // const areAllOrdersPaid = (orders) => orders.every((order) => order.status === 'Paid');
-
-  // const allowChangeStatus = (item) => {
-  //   if (isItemFree(item)) {
-  //     return areAllOrdersPaid(orders) ? true : false;
-  //   }
-  //   return true;
-  // };
-
   const changeStatus = async (item) => {
     try {
       await changeTableStatus.mutateAsync({ status: item, restaurant_id, table_id });
