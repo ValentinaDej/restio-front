@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
@@ -10,6 +10,8 @@ import QuantityButton from 'shared/QuantityButton/QuantityButton';
 import DishCard from 'shared/DishCard/DishCard';
 import Button from 'shared/Button/Button';
 import Cart from 'components/Cart/Cart';
+import Loader from 'shared/Loader/Loader';
+import Footer from 'shared/Footer/Footer';
 import { getDishById } from 'api/dish';
 import { addProduct, decreaseQuantity, increaseQuantity } from 'store/cart/cartSlice';
 import { getProductFromState } from '../../store/cart/cartSelectors';
@@ -34,36 +36,38 @@ const DishPage = () => {
     refetchOnReconnect: false, // Disable refetching when the network reconnects
     refetchInterval: false, // Disable automatic periodic refetching
   });
+  const idUsed = useCallback(
+    (data) => {
+      let idsToExclude = [];
+      for (const item of storeData) {
+        idsToExclude.push(item.id);
+      }
+      idsToExclude.push(dishId);
+      const filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
+      if (filteredItems.length <= 3) {
+        setRecommendedDishes(filteredItems);
+      } else {
+        const first = Math.floor(Math.random() * (filteredItems.length - 3));
+        const second = first + 3;
+        let several = filteredItems.slice(first, second);
+        setRecommendedDishes(several);
+      }
+    },
+    [storeData, dishId]
+  );
 
-  const fetchDishesList = async () => {
+  const fetchDishesList = useCallback(async () => {
     const res = await instance(`/dishes/restaurant/${restId}`, {
       params: {
         isActive: true,
       },
     });
     idUsed(res.data);
-  };
-
-  const idUsed = (data) => {
-    let idsToExclude = [];
-    for (const item of storeData) {
-      idsToExclude.push(item.id);
-    }
-    idsToExclude.push(dishId);
-    const filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
-    if (filteredItems.length <= 3) {
-      setRecommendedDishes(filteredItems);
-    } else {
-      const first = Math.floor(Math.random() * (filteredItems.length - 3));
-      const second = first + 3;
-      let several = filteredItems.slice(first, second);
-      setRecommendedDishes(several);
-    }
-  };
+  }, [restId, idUsed]);
 
   useEffect(() => {
     fetchDishesList();
-  }, [dishId, restId]);
+  }, [dishId, restId, fetchDishesList]);
 
   useEffect(() => {
     const isDishAlreadyAdded = storeData.filter((item) => item.id === dishId);
@@ -79,7 +83,12 @@ const DishPage = () => {
   }, [pathname]);
 
   if (isLoading) {
-    return <div></div>;
+    return (
+      // <div className={classes.loader}>
+      //   <div className={classes.spinner_dish}></div>
+      // </div>
+      <Loader size="lg"></Loader>
+    );
   }
 
   if (error) {
@@ -108,6 +117,7 @@ const DishPage = () => {
           <span>Back to Menu</span>
         </NavLink>
         <div className={classes.fullDish}>
+          <p className={classes.category}>{dish.type}</p>
           <div className={classes.dishInfoWarapper}>
             <img className={classes.dishImage} src={dish.picture} />
             <div className={classes.dishText}>
@@ -241,23 +251,23 @@ const DishPage = () => {
             {recommendedDishes?.map((item) => {
               return (
                 <div className={classes.card_wrapper} key={item._id}>
-                  <NavLink to={`/${restId}/:tableId/${item._id}`}>
-                    <DishCard
-                      src={item.picture}
-                      key={item._id}
-                      id={item._id}
-                      title={item.name}
-                      ingredients={item.ingredients}
-                      weight={item.portionWeight}
-                      price={item.price}
-                    ></DishCard>
-                  </NavLink>
+                  <DishCard
+                    src={item.picture}
+                    key={item._id}
+                    id={item._id}
+                    title={item.name}
+                    ingredients={item.ingredients}
+                    weight={item.portionWeight}
+                    price={item.price}
+                    link={`/${restId}/:tableId/${item._id}`}
+                  ></DishCard>
                 </div>
               );
             })}
           </div>
         </div>
       </main>
+      <Footer></Footer>
     </>
   );
 };
