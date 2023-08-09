@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classes from './Status.module.scss';
 import Text from '../Text/Text';
 
-const Status = ({ statusCurrent, className }) => {
+const Status = ({ statusCurrent, className, statusSize = 'sm' }) => {
   const [statusColor, setStatusColor] = useState('#50D1AA');
 
   useEffect(() => {
@@ -32,6 +32,7 @@ const Status = ({ statusCurrent, className }) => {
 
       case 'Ordered':
       case 'Open':
+      case 'Active':
         setStatusColor('#EB966A');
         break;
     }
@@ -42,9 +43,9 @@ const Status = ({ statusCurrent, className }) => {
       style={{
         background: `${statusColor}`,
       }}
-      className={`${classes.status} ${className}`}
+      className={`${classes.status} ${className} ${classes[`status_${statusSize}`]}`}
     >
-      <Text mode={'p'} fontSize={10}>
+      <Text mode={'p'} fontSize={statusSize === 'sm' ? 10 : 13}>
         {statusCurrent}
       </Text>
     </div>
@@ -56,7 +57,8 @@ Status.propTypes = {
     'Free',
     'Success',
     'Taken',
-    'Called waiter',
+    'Waiting',
+    'Requested',
     'Request bill',
     'Ordered',
     'In progress',
@@ -64,6 +66,7 @@ Status.propTypes = {
     'Served',
     'Open',
     'Paid',
+    'Active',
     'Closed',
     'Canceled',
   ]),
