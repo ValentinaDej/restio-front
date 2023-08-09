@@ -42,7 +42,7 @@ instance.interceptors.response.use(
         error.config.headers['Authorization'] = `Bearer ${token}`;
         return axios.request(error.config);
       } catch (refreshError) {
-        localStorage.removeItem('userData');
+        storage.removeItem('userData');
         window.location.replace('/login');
         return Promise.reject({ message: 'Please login again.' });
       }

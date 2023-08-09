@@ -7,7 +7,7 @@ export const PrivateRoute = ({ component: Element }) => {
 
   // Redirect users without a role from admin, cook, and waiter routes
   if (
-    !role &&
+    (!role || role === 'customer') &&
     (currentPath.includes('/admin') ||
       currentPath.includes('/cook') ||
       currentPath.includes('/waiter'))
