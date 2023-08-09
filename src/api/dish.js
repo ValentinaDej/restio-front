@@ -11,5 +11,5 @@ export const getDishById = async (dishId) => {
 };
 
 export const deleteDishById = async (dishId, restId) => {
-  await instance.patch(`/dishes/${dishId}/restaurant/${restId}`);
+  await instance.patch(`/dishes/${dishId}/restaurant/${restId}`, { isActive: false });
 };
