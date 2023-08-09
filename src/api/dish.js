@@ -1,15 +1,15 @@
-import { instance } from 'api';
+import instance from 'api';
 
-export const getDishes = async (restId, category) => {
-  const data = await instance(`/dishes/restaurant/${restId}?type=${category}`);
+export const getDishes = async (restId, category, type) => {
+  const data = await instance(`/dishes/restaurant/${restId}?type=${category}&isActive=${type}`);
   return data;
 };
 
-export const fetchDishesList = async (restId) => {
-  const response = await instance(`/dishes/restaurant/${restId}`);
+export const getDishById = async (dishId) => {
+  const response = await instance(`/dishes/${dishId}`);
   return response.data;
 };
 
 export const deleteDishById = async (dishId, restId) => {
-  await instance.delete(`/dishes/${dishId}/restaurant/${restId}`);
+  await instance.patch(`/dishes/${dishId}/restaurant/${restId}`);
 };
