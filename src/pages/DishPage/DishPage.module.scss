@@ -11,13 +11,13 @@
     left: 50%;
   }
 
-  .spinner {
+  .spinner_dish {
     width: 64px;
     height: 64px;
     border: 8px solid;
     border-color: #e7ac84 transparent #ea6a12 transparent;
     border-radius: 50%;
-    animation: spin-anim 3s linear infinite;
+    animation: spin-anim 10s linear infinite;
     opacity: 1;
     margin-top: 50px;
   }
@@ -39,12 +39,32 @@
     margin: 0 auto;
     padding: 2rem 1rem;
   }
+
   .fullDish {
+    position: relative;
     margin: 30px auto 100px;
     padding: 2rem 2rem;
     background-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0px 2px 25px -16px rgba(128, 128, 128, 1);
     border-radius: 25px;
+    transition: 0.5s;
+    &:hover {
+      transition: 0.7s;
+      box-shadow: 0px 2px 40px -16px rgb(102, 101, 101);
+    }
+  }
+
+  .category {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    right: 0;
+    top: 5px;
+    font-size: 1.3rem;
+    background-color: #f5dccc;
+    padding: 10px 15px;
+    border-radius: 25px 25px 0 0;
   }
 
   .back {
@@ -200,6 +220,20 @@
     text-align: left;
     font-size: 2rem;
   }
+
+  .category {
+    position: absolute;
+    width: 290px;
+    height: 50px;
+    text-align: center;
+    right: 0;
+    top: 0;
+    font-size: 1.3rem;
+    background-color: #f5dccc;
+    padding: 10px 15px;
+    border-radius: 0 25px 0 0;
+  }
+
   .back {
     display: flex;
     justify-content: space-between;
