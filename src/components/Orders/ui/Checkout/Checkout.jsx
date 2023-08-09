@@ -9,9 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
 import Loader from 'shared/Loader/Loader';
-import { toast } from 'react-hot-toast';
 import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
 import { getUserId } from 'store/auth/authSelector';
+import { errorMessage } from 'helpers/errorMessage';
 
 export const Checkout = ({
   isWaiter,
@@ -47,16 +47,7 @@ export const Checkout = ({
     }
 
     if (isError) {
-      toast.error(error?.response.data.message, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
+      errorMessage(error?.response.data.message);
     }
   }, [data, error, isError, signature]);
 
