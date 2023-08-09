@@ -44,7 +44,7 @@ const DishForm = () => {
     name: 'ingredients',
   });
 
-  const restId = useParams();
+  const { restId } = useParams();
   const navigate = useNavigate();
   const fileUploaderRef = useRef();
 
@@ -81,7 +81,7 @@ const DishForm = () => {
     fileUploaderRef.current.clearFile();
     reset();
     setSelectedType('');
-    createDish(data, restId);
+    createDish({ ...data, picture: picture.data.imageName }, restId);
     navigate(-1);
   };
 
