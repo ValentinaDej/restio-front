@@ -26,7 +26,7 @@ export const PrivateRoute = ({ component: Element }) => {
     role !== 'admin' && !allowedRoutes[role]?.some((route) => currentPath.includes(`/${route}/`));
 
   if (isNotAllowed) {
-    return <Navigate to="/personnel" />;
+    return <Navigate to="/" />;
   }
 
   return Element;
