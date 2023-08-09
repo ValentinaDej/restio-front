@@ -74,27 +74,29 @@ export const ListTopBox = ({
         <Button
           size={'sm'}
           onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
-          mode={(!totalPrice || isLoading || !paymentType) && 'disabled'}
+          mode={(!totalPrice || isLoading || (isWaiter && !paymentType)) && 'disabled'}
           className={cls.btn}
         >
           {isWaiter ? isLoading ? <Loader size={'xs'} /> : 'Mark as paid all orders' : 'Pay online'}
         </Button>
-        <div className={cls.checkboxes}>
-          <CheckBox
-            label="Cash"
-            onChange={onChangeTypeOfPay}
-            ariaLabel="cash"
-            disabled={paymentType === 'POS'}
-            size={22}
-          />
-          <CheckBox
-            label="Terminal"
-            onChange={onChangeTypeOfPay}
-            ariaLabel="POS"
-            disabled={paymentType === 'cash'}
-            size={22}
-          />
-        </div>
+        {isWaiter && (
+          <div className={cls.checkboxes}>
+            <CheckBox
+              label="Cash"
+              onChange={onChangeTypeOfPay}
+              ariaLabel="cash"
+              disabled={paymentType === 'POS'}
+              size={22}
+            />
+            <CheckBox
+              label="Terminal"
+              onChange={onChangeTypeOfPay}
+              ariaLabel="POS"
+              disabled={paymentType === 'cash'}
+              size={22}
+            />
+          </div>
+        )}
       </div>
       <Text classname={cls.text}>
         {isWaiter
