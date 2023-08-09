@@ -35,7 +35,7 @@ const AdminPageContainer = ({
     navigate(`/admin/${restId}/${value[variant]}/edit/${id}`);
   };
 
-  const filterDishesList = data?.filter((item) =>
+  const filterList = data?.filter((item) =>
     item.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
@@ -63,9 +63,9 @@ const AdminPageContainer = ({
             <li key={`empty`} className={styles.card_wrapper}>
               <EmptyCard text={variant} mode={`outlined`} onClick={goToAdd}></EmptyCard>
             </li>
-            {filterDishesList &&
-              filterDishesList.length > 0 &&
-              filterDishesList.map((item) => {
+            {filterList &&
+              filterList.length > 0 &&
+              filterList.map((item) => {
                 return (
                   <li key={item._id} className={styles.card_wrapper}>
                     <EmployeeCard

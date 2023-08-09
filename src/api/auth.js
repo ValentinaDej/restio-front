@@ -1,5 +1,4 @@
-import { PERSONNEL } from './personnel';
-import { instance } from 'api';
+import instance from 'api';
 
 export const getTokenConfig = () => {
   return {
@@ -19,21 +18,6 @@ export function getToken() {
   return token;
 }
 
-export const getNewToken = async () => {
-  const USER = `${PERSONNEL}/${getUserId()}`;
-  const USER_TOKEN = `${USER}/tokens`;
-  instance
-    .get(USER_TOKEN, getTokenConfig())
-    .then(({ data }) => {
-      localStorage.setItem('userData', data.token);
-      localStorage.setItem('userData', data.refreshToken);
-    })
-    .catch(() => {
-      localStorage.removeItem('userData');
-      location.reload();
-    });
-};
-
 export function getRefreshToken() {
   const storedToken = localStorage.getItem('userData');
   let token = '';
@@ -43,6 +27,38 @@ export function getRefreshToken() {
   }
   return token;
 }
+
+export const getNewToken = async () => {
+  const USER = `/tokens/${getUserId()}`;
+  try {
+    const response = await instance.get(USER, {
+      headers: {
+        Authorization: `Bearer ${getRefreshToken()}`,
+      },
+    });
+    const { token, refreshToken } = response.data;
+    const storedToken = localStorage.getItem('userData');
+    if (typeof storedToken === 'string') {
+      const userData = JSON.parse(storedToken);
+      userData.token = token;
+      userData.refreshToken = refreshToken;
+      localStorage.setItem('userData', JSON.stringify(userData));
+    }
+    return token;
+  } catch (error) {
+    if (error.response) {
+      const { status } = error.response;
+      if (status === 401) {
+        localStorage.removeItem('userData');
+        window.location.replace('/login');
+        return Promise.reject({ message: 'Please login again.' });
+      } else if (status === 500) {
+        return Promise.reject({ message: 'Server error. Please try again later.' });
+      }
+    }
+    return Promise.reject({ message: 'An error occurred. Please try again later.' });
+  }
+};
 
 export function getUserId() {
   const storedToken = localStorage.getItem('userData');
