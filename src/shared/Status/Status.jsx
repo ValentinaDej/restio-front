@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classes from './Status.module.scss';
 import Text from '../Text/Text';
 
-const Status = ({ statusCurrent }) => {
+const Status = ({ statusCurrent, statusSize = 'sm' }) => {
   const [statusColor, setStatusColor] = useState('#50D1AA');
 
   useEffect(() => {
@@ -43,9 +43,9 @@ const Status = ({ statusCurrent }) => {
       style={{
         background: `${statusColor}`,
       }}
-      className={classes.status}
+      className={`${classes.status} ${classes[`status_${statusSize}`]}`}
     >
-      <Text mode={'p'} fontSize={10}>
+      <Text mode={'p'} fontSize={statusSize === 'sm' ? 10 : 13}>
         {statusCurrent}
       </Text>
     </div>

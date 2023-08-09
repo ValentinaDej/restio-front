@@ -6,10 +6,14 @@ import Button from 'shared/Button/Button';
 import { NavLink } from 'react-router-dom';
 import { useChangeTableStatus } from 'api/service';
 import { toast } from 'react-hot-toast';
+import { useState } from 'react';
 
 const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) => {
   const changeTableStatus = useChangeTableStatus();
+  const [currentStatus, setCurrentStatus] = useState(status);
 
+  const redAnimation = currentStatus === 'Waiting' ? styles.table_pulsating : '';
+  console.log(status);
   // const isItemFree = (item) => item === 'Free';
 
   // const areAllOrdersPaid = (orders) => orders.every((order) => order.status === 'Paid');
@@ -24,6 +28,7 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
   const changeStatus = async (item) => {
     try {
       await changeTableStatus.mutateAsync({ status: item, restaurant_id, table_id });
+      setCurrentStatus(item);
       return 'success';
     } catch (mutationError) {
       console.error('Mutation Error:', mutationError);
@@ -32,12 +37,13 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
   };
 
   return (
-    <div className={styles.table}>
+    <div className={`${styles.table} ${redAnimation}`}>
       <div className={styles.table__status}>
         <StatusSelector
           mode="tables"
           currentStatus={status}
-          // allowChangeStatus={allowChangeStatus}
+          size="lg"
+          statusSize="lg"
           changeStatusFunction={changeStatus}
         />
       </div>
@@ -53,8 +59,8 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
       <ul className={styles.table__list}>
         {orders?.map((order, index) => (
           <li className={styles.table__item} key={order._id}>
-            <Text>Order # {index + 1}</Text>
-            <Status statusCurrent={order.status} />
+            <Text fontSize={14}>Order # {index + 1}</Text>
+            <Status statusCurrent={order.status} statusSize="sm" />
           </li>
         ))}
       </ul>
