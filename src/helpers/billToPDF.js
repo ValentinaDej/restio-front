@@ -1,8 +1,8 @@
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 
-import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
-import { formatDateTime } from 'helpers/formatDateTime';
+import { formatNumberWithTwoDecimalsForPrint } from 'helpers/formatNumberWithTwoDecimalsForPrint';
+import { getDate } from 'helpers/getDate';
 
 export const downloadBillPdf = async (restData, dishData) => {
   const doc = new jsPDF();
@@ -30,12 +30,12 @@ export const downloadBillPdf = async (restData, dishData) => {
   const tableData = dishData.map((item) => [
     item.name,
     item.quantity,
-    `${formatNumberWithTwoDecimals(item.price)}`,
-    `${formatNumberWithTwoDecimals(item.quantity * item.price)}`,
+    `${formatNumberWithTwoDecimalsForPrint(item.price)}`,
+    `${formatNumberWithTwoDecimalsForPrint(item.quantity * item.price)}`,
   ]);
 
   const subtotal = dishData.reduce((total, data) => total + data.amount, 0);
-  const subtotalRow = ['Total', '', '', `$${formatNumberWithTwoDecimals(subtotal)}`];
+  const subtotalRow = ['Total', '', '', `$${formatNumberWithTwoDecimalsForPrint(subtotal)}`];
   tableData.push(subtotalRow);
 
   const tableStyles = {
@@ -59,7 +59,7 @@ export const downloadBillPdf = async (restData, dishData) => {
   const tableHeight = 80 + (dishData.length + 2) * 15;
 
   doc.setFontSize(8);
-  const dateDoc = formatDateTime(new Date());
+  const dateDoc = getDate(new Date());
   const dateDocWidth = doc.getTextWidth(dateDoc);
   doc.text(dateDoc, 210 - dateDocWidth - 20, tableHeight);
 

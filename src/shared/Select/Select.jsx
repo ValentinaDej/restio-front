@@ -1,45 +1,52 @@
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from './Select.module.scss';
 
-const Select = ({
-  children,
-  onChange,
-  name,
-  id,
-  label,
-  size,
-  length,
-  register,
-  rules,
-  multiple,
-  value,
-  error,
-  ...props
-}) => {
-  return (
-    <div className={`${styles.select_wrapper}`}>
-      <label className={`${styles.label} ${styles[`label_${size}`]}`} htmlFor={id}>
-        {label}
-      </label>
-      <select
-        className={`${styles.select} ${styles[`select_${size}`]} ${
-          styles[`select_length-${length}`]
-        } ${styles[`select_${error}`]}  `}
-        id={id}
-        name={name}
-        //defaultValue={'default'}
-        multiple={multiple}
-        value={value}
-        onChange={onChange}
-        {...(register && register(name, rules))}
-        {...props}
-      >
-        <option disabled={true}>Select an option</option>
-        {children}
-      </select>
-    </div>
-  );
-};
+const Select = forwardRef(
+  (
+    {
+      children,
+      onChange,
+      name,
+      id,
+      label,
+      size,
+      length,
+      register,
+      rules,
+      multiple,
+      value,
+      error,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <div className={`${styles.select_wrapper}`}>
+        <label className={`${styles.label} ${styles[`label_${size}`]}`} htmlFor={id}>
+          {label}
+        </label>
+        <select
+          ref={ref} // Use the ref passed from Controller
+          className={`${styles.select} ${styles[`select_${size}`]} ${
+            styles[`select_length-${length}`]
+          } ${styles[`select_${error}`]}  `}
+          id={id}
+          name={name}
+          // defaultValue={'default'}
+          multiple={multiple}
+          value={value}
+          onChange={onChange}
+          {...(register && register(name, rules))}
+          {...props}
+        >
+          <option disabled={true}>Select an option</option>
+          {children}
+        </select>
+      </div>
+    );
+  }
+);
 
 Select.propTypes = {
   children: PropTypes.node,

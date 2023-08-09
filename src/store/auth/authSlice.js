@@ -10,7 +10,7 @@ const initialState = {
   token: userData?.token || '',
   refreshToken: userData?.refreshToken || '',
   restaurantId: userData?.restaurantId || '',
-  role: userData?.role || 'customer',
+  role: userData?.role || '',
   userId: userData?.userId || '',
   isLoading: false,
   isError: false,

@@ -1,38 +1,65 @@
 import instance from 'api';
+import toast from 'react-hot-toast';
 
 export const PERSONNEL = `/personnel`;
 
-export const getPersonnelById = (id) => {
-  return instance.get(`${PERSONNEL}/${id}`);
+const sendCorrectErrMsg = (error) => {
+  if (error.response) {
+    const { status } = error.response;
+    if (status === 400) {
+      toast.error('Bad request. Please provide valid credentials.');
+    } else if (status === 401) {
+      toast.error('Unauthorized. Please check your email and password.');
+    } else if (status === 403) {
+      toast.error('Forbidden. You do not have permission to access this resource.');
+    } else if (status === 404) {
+      toast.error('Resource not found. Please try again later.');
+    } else if (status === 500) {
+      toast.error('Internal server error. Please try again later.');
+    }
+  }
+
+  toast.error('An error occurred. Please try again later.');
 };
 
-export const createPersonnel = async (body) => {
+export const getPersonnel = async (restId) => {
   try {
-    await instance.post(`${PERSONNEL}`, body);
+    const response = await instance(`/personnel/restaurant/${restId}`);
+    return response.data;
   } catch (error) {
-    if (error.response) {
-      const { status } = error.response;
-      if (status === 400) {
-        throw new Error('Bad request. Please provide valid credentials.');
-      } else if (status === 401) {
-        throw new Error('Unauthorized. Please check your email and password.');
-      } else if (status === 403) {
-        throw new Error('Forbidden. You do not have permission to access this resource.');
-      } else if (status === 404) {
-        throw new Error('Resource not found. Please try again later.');
-      } else if (status === 500) {
-        throw new Error('Internal server error. Please try again later.');
-      }
-    }
-
-    throw new Error('An error occurred. Please try again later.');
+    sendCorrectErrMsg(error);
   }
 };
 
-export const updatePersonnel = (id, body) => {
-  return instance.put(`${PERSONNEL}/${id}`, body);
+export const getPersonnelById = async (personId) => {
+  try {
+    const response = await instance(`/personnel/${personId}`);
+    return response.data;
+  } catch (error) {
+    sendCorrectErrMsg(error);
+  }
 };
 
-export const deletePersonnel = (id) => {
-  return instance.delete(`${PERSONNEL}/${id}`);
+export const createPersonnel = async (formData, rest_id) => {
+  try {
+    const response = await instance.post(`/personnel`, {
+      ...formData,
+      rest_id: rest_id,
+    });
+    return response.data;
+  } catch (error) {
+    sendCorrectErrMsg(error);
+  }
+};
+
+export const updatePersonnel = async (personId, formData, rest_id) => {
+  try {
+    const response = await instance.patch(`/personnel/${personId}`, {
+      ...formData,
+      restaurant_id: rest_id,
+    });
+    return response.data;
+  } catch (error) {
+    sendCorrectErrMsg(error);
+  }
 };
