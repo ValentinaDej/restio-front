@@ -1,8 +1,8 @@
 .photoContainer {
   position: relative;
   display: inline-block;
-  width: 200px;
-  height: 200px;
+  max-width: 200px;
+  max-height: 200px;
   border: 1px solid var(--color-orange);
   background: var(--color-white);
   background-color: var(--color-orange-transparent);
