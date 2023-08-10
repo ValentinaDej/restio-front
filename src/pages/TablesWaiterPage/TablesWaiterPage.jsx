@@ -2,6 +2,7 @@ import { useGetTablesByRestaurantId, useGetOrdersByRestaurantId } from 'api/serv
 import Loader from 'shared/Loader/Loader';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import Title from 'shared/Title/Title';
+import Text from 'shared/Text/Text';
 import styles from './TablesWaiterPage.module.scss';
 import TableCard from 'components/TableCard/TableCard';
 import { toast } from 'react-hot-toast';
@@ -78,7 +79,7 @@ const TablesWaiterPage = () => {
   } = useGetOrdersByRestaurantId(restId);
 
   const tables = tablesData?.data;
-  const orders = ordersData?.data.data.orders;
+  const orders = ordersData?.data?.data?.orders;
 
   const isLoading = isLoadingTables || isLoadingOrders;
 
@@ -95,9 +96,38 @@ const TablesWaiterPage = () => {
   const filterOrdersByTableId = (orders, table_id) =>
     orders?.filter((order) => order.table_id === table_id);
 
+  console.log(tables);
+  console.log(orders);
+
+  const waitingTableNumbers = tables
+    .filter((table) => table.status === 'Waiting')
+    .map((table) => table.table_number)
+    .join(', ');
+
+  console.log(waitingTableNumbers);
+
+  const tablesWithReadyDishes = orders
+    .filter((order) => order.orderItems.some((item) => item.status === 'Ready'))
+    .map((order) => order.table_id);
+
+  const tableNumbers = tablesWithReadyDishes
+    .map((tableId) => {
+      const table = tables.find((table) => table._id === tableId);
+      return table ? table.table_number : null;
+    })
+    .filter((tableNumber) => tableNumber !== null);
+
+  const uniqueTableNumbers = [...new Set(tableNumbers)].join(', ');
+
+  console.log(uniqueTableNumbers);
+
   return (
     <div className={styles.tables}>
-      <Title>Tables Board</Title>
+      <Title>Tables board</Title>
+      <div className={styles.tables__info}>
+        <Text>Taibles waiting: {waitingTableNumbers}</Text>
+        <Text>Dishes ready for tables: {uniqueTableNumbers}</Text>
+      </div>
       <div className={styles.tables__container}>
         {tables?.map((table) => (
           <TableCard

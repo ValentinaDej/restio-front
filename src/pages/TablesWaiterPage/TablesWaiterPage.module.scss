@@ -7,15 +7,31 @@
   padding-top: 1rem;
   display: flex;
   flex-direction: column;
-}
 
-.tables__container {
-  // border: 1px solid red;
-  flex: 1 1 auto;
-  padding: 1rem;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
-  justify-items: center;
+  &__info {
+    display: flex;
+    background-color: var(--color-bg);
+    min-width: 400px;
+    align-self: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    margin-top: 0.5rem;
+    justify-content: space-evenly;
+    gap: 1rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      min-width: 240px;
+    }
+  }
+
+  &__container {
+    display: grid;
+    flex: 1 1 auto;
+    padding: 1rem;
+    width: 100%;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    justify-items: center;
+  }
 }
