@@ -10,16 +10,15 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import { memo } from 'react';
 
-export const TotalBlock = ({ monthlyStatistics }) => {
+export const TotalBlock = memo(({ monthlyStatistics }) => {
   const data = monthlyStatistics;
   const totaByYear = monthlyStatistics.reduce((acc, el) => el.amount + acc, 0);
   return (
     <div className={cls.box}>
-      <Title color="#303c6c" fontSize={22}>
-        Total earnings by year
-      </Title>
-      <Text color="#303c6c">${totaByYear}</Text>
+      <Title fontSize={22}>Total earnings by year</Title>
+      <Text>${totaByYear}</Text>
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart
           width={500}
@@ -42,4 +41,4 @@ export const TotalBlock = ({ monthlyStatistics }) => {
       </ResponsiveContainer>
     </div>
   );
-};
+});

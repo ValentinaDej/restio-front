@@ -22,5 +22,4 @@ const StatisticsPage = () => {
   );
 };
 
-//todo userID CHECK
 export default StatisticsPage;

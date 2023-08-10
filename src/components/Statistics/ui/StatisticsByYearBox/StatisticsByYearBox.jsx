@@ -9,7 +9,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-
 import cls from './StatisticsByYearBox.module.scss';
 import Title from 'shared/Title/Title';
 
@@ -17,10 +16,8 @@ export const StatisticsByYearBox = memo(({ monthlyStatistics }) => {
   const data = monthlyStatistics;
   return (
     <div className={cls.box}>
-      <Title color="#303c6c" fontSize={22}>
-        Transactions/Amonut per month for this year
-      </Title>
-      <ResponsiveContainer width="100%" height="100%">
+      <Title fontSize={22}>Transactions/Amonut per month for this year</Title>
+      <ResponsiveContainer width="100%" height="95%">
         <BarChart
           width={500}
           height={300}
