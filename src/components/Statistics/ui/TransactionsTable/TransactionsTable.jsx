@@ -120,7 +120,7 @@ export const TransactionsTable = () => {
         ],
       },
     ],
-    []
+    [pageSize]
   );
 
   const fetchDataOptions = {
@@ -240,7 +240,6 @@ export const TransactionsTable = () => {
             ]}
             onSelect={(e) => {
               table.setPageSize(e.value);
-              setPagination({ pageIndex: 0, pageSize });
             }}
           />
           <CheckBox
