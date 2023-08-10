@@ -11,6 +11,7 @@ import {
   YAxis,
 } from 'recharts';
 import { memo } from 'react';
+import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 
 export const TotalBlock = memo(({ monthlyStatistics }) => {
   const data = monthlyStatistics;
@@ -19,7 +20,7 @@ export const TotalBlock = memo(({ monthlyStatistics }) => {
     <div className={cls.box}>
       <Title fontSize={22}>Total earnings by year</Title>
       <Text fontWeight={600} classname={cls.text}>
-        ${totaByYear}
+        ${formatNumberWithTwoDecimals(totaByYear)}
       </Text>
       <ResponsiveContainer width="100%" height="85%">
         <AreaChart

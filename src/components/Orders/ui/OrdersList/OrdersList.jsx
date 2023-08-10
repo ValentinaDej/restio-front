@@ -47,26 +47,7 @@ export const OrdersList = ({
     const sortedOrders = [...orders].sort((orderA, orderB) => {
       return new Date(orderB.created_at) - new Date(orderA.created_at);
     });
-
-    const ordersWithNumbers = sortedOrders
-      .reverse()
-      .map((order, index) => ({
-        ...order,
-        orderNumber: index + 1,
-      }))
-      .reverse();
-
-    const sortedByPaidStatus = ordersWithNumbers.sort((orderA, orderB) => {
-      if (orderA.status === 'Paid' && orderB.status !== 'Paid') {
-        return 1;
-      } else if (orderA.status !== 'Paid' && orderB.status === 'Paid') {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-
-    return sortedByPaidStatus;
+    return sortedOrders;
   }, [orders]);
 
   const onClickChangeDishStatusAsWaiter = useCallback(

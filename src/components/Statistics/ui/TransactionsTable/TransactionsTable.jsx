@@ -62,6 +62,7 @@ export const TransactionsTable = () => {
                   ]}
                   onSelect={(e) => {
                     setTransactionTypeOptions(e.value);
+                    setPagination({ pageIndex: 0, pageSize });
                   }}
                   defaultValue="All"
                 />
@@ -99,6 +100,7 @@ export const TransactionsTable = () => {
                   ]}
                   onSelect={(e) => {
                     setCreatedByTypeOptions(e.value);
+                    setPagination({ pageIndex: 0, pageSize });
                   }}
                   defaultValue="All"
                 />
@@ -189,7 +191,9 @@ export const TransactionsTable = () => {
           <IconButton
             mode={'outlined'}
             size={25}
-            onClick={() => table.nextPage()}
+            onClick={() => {
+              table.nextPage();
+            }}
             disabled={!table.getCanNextPage()}
             Svg={TfiAngleRight}
           />
@@ -212,7 +216,7 @@ export const TransactionsTable = () => {
             type="number"
             defaultValue={
               isNaN(resp?.data?.tableTransactions.currentPageIndex)
-                ? '1'
+                ? 1
                 : resp?.data?.tableTransactions.currentPageIndex
             }
             onChange={(e) => {
@@ -236,11 +240,15 @@ export const TransactionsTable = () => {
             ]}
             onSelect={(e) => {
               table.setPageSize(e.value);
+              setPagination({ pageIndex: 0, pageSize });
             }}
           />
           <CheckBox
             label="Today transactions"
-            onChange={(e) => setIsTodayTransactions(e.target.checked)}
+            onChange={(e) => {
+              setIsTodayTransactions(e.target.checked);
+              setPagination({ pageIndex: 0, pageSize });
+            }}
           />
         </div>
       </div>
