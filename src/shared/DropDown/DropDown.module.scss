@@ -1,0 +1,33 @@
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  padding: 8px 12px;
+  border: var(--border-primary);
+  border-radius: 10px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.dropdown-list {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: var(--border-primary);
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-orange-transparent);
+  }
+}

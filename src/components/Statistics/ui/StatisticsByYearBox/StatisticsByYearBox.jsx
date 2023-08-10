@@ -16,8 +16,8 @@ export const StatisticsByYearBox = memo(({ monthlyStatistics }) => {
   const data = monthlyStatistics;
   return (
     <div className={cls.box}>
-      <Title fontSize={22}>Transactions/Amonut per month for this year</Title>
-      <ResponsiveContainer width="100%" height="95%">
+      <Title fontSize={22}>Transactions-amount per month for this year</Title>
+      <ResponsiveContainer width="100%" height="94%">
         <BarChart
           width={500}
           height={300}

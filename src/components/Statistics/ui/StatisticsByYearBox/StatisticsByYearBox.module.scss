@@ -4,5 +4,9 @@
   border-radius: 10px;
   background-color: var(--color-white);
   height: 550px;
-  width: 65%;
+  width: 100%;
+
+  @media screen and (min-width: 700px) {
+    width: 65%;
+  }
 }

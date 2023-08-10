@@ -21,7 +21,7 @@
 .th {
   font-size: 18px;
   border-bottom: var(--border-primary);
-
+  background: var(--color-orange-transparent);
   border-right: var(--border-primary);
   padding: 10px;
 }
@@ -58,9 +58,26 @@
   border-radius: 10px;
   padding: 5px;
   width: 50px;
-  outline: 1px solid var(--color-orange-hoverr);
+
+  &:focus {
+    outline: 1px solid var(--color-orange-hover);
+  }
 }
 
 .loader {
   width: 30px;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
 }

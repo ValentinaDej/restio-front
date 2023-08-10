@@ -18,8 +18,10 @@ export const TotalBlock = memo(({ monthlyStatistics }) => {
   return (
     <div className={cls.box}>
       <Title fontSize={22}>Total earnings by year</Title>
-      <Text>${totaByYear}</Text>
-      <ResponsiveContainer width="100%" height={200}>
+      <Text fontWeight={600} classname={cls.text}>
+        ${totaByYear}
+      </Text>
+      <ResponsiveContainer width="100%" height="85%">
         <AreaChart
           width={500}
           height={200}

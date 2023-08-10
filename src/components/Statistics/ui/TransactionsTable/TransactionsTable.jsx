@@ -13,9 +13,19 @@ import {
 } from 'react-icons/tfi';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
+import { DropDown } from 'shared/DropDown/DropDown';
+import Title from 'shared/Title/Title';
+import { CheckBox } from 'shared/CheckBox/CheckBox';
 
 export const TransactionsTable = () => {
   const { restId } = useParams();
+  const [{ pageIndex, pageSize }, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [isTodayTransactions, setIsTodayTransactions] = useState(false);
+  const [createdByTypeOptions, setCreatedByTypeOptions] = useState('all');
+  const [transactionTypeOptions, setTransactionTypeOptions] = useState('all');
 
   const columns = useMemo(
     () => [
@@ -33,14 +43,30 @@ export const TransactionsTable = () => {
             accessorFn: (row) => row.paymentAmount,
             id: 'paymnetAmount',
             cell: (info) => info.getValue(),
-            header: () => <span>Amount $</span>,
+            header: () => <span className={cls.span}>Amount $</span>,
             footer: (props) => props.column.id,
           },
           {
             accessorFn: (row) => row.type,
             id: 'typeTransaction',
             cell: (info) => info.getValue(),
-            header: () => <span>Type</span>,
+            header: () => (
+              <span className={cls.span}>
+                Type
+                <DropDown
+                  options={[
+                    { value: 'all', label: 'All' },
+                    { value: 'cash', label: 'Cash' },
+                    { value: 'POS', label: 'POS' },
+                    { value: 'online', label: 'online' },
+                  ]}
+                  onSelect={(e) => {
+                    setTransactionTypeOptions(e.value);
+                  }}
+                  defaultValue="All"
+                />
+              </span>
+            ),
             footer: (props) => props.column.id,
           },
           {
@@ -48,9 +74,9 @@ export const TransactionsTable = () => {
             id: 'createdAt',
             cell: (info) => {
               const date = info.getValue();
-              return <span>{getDate(date)}</span>;
+              return <span className={cls.span}>{getDate(date)}</span>;
             },
-            header: () => <span>Created at</span>,
+            header: () => <span className={cls.span}>Created at</span>,
             footer: (props) => props.column.id,
           },
         ],
@@ -61,7 +87,23 @@ export const TransactionsTable = () => {
         columns: [
           {
             accessorKey: 'createdByType',
-            header: () => <span>Type</span>,
+            header: () => (
+              <span className={cls.span}>
+                Type
+                <DropDown
+                  options={[
+                    { value: 'all', label: 'All' },
+                    { value: 'customer', label: 'Customer' },
+                    { value: 'waiter', label: 'Waiter' },
+                    { value: 'admin', label: 'Admin' },
+                  ]}
+                  onSelect={(e) => {
+                    setCreatedByTypeOptions(e.value);
+                  }}
+                  defaultValue="All"
+                />
+              </span>
+            ),
             footer: (props) => props.column.id,
           },
           {
@@ -69,7 +111,7 @@ export const TransactionsTable = () => {
             header: 'Name',
             cell: (info) => {
               const name = info.getValue();
-              return <span>{name ? name : '-'}</span>;
+              return <span className={cls.span}>{name ? name : '-'}</span>;
             },
             footer: (props) => props.column.id,
           },
@@ -79,14 +121,12 @@ export const TransactionsTable = () => {
     []
   );
 
-  const [{ pageIndex, pageSize }, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-
   const fetchDataOptions = {
     pageIndex,
     pageSize,
+    today: isTodayTransactions,
+    userType: createdByTypeOptions,
+    transactionType: transactionTypeOptions,
   };
 
   const { data: resp, refetch, isFetching } = useGetTransactions(restId, fetchDataOptions);
@@ -103,23 +143,33 @@ export const TransactionsTable = () => {
 
   useEffect(() => {
     refetch();
-  }, [pageIndex, pageSize, refetch]);
+  }, [
+    pageIndex,
+    pageSize,
+    isTodayTransactions,
+    createdByTypeOptions,
+    transactionTypeOptions,
+    refetch,
+  ]);
 
   const table = useReactTable({
     data: resp?.data?.tableTransactions.transactions ?? defaultData,
     columns,
     pageCount: resp?.data?.tableTransactions.pageCount ?? -1,
     state: {
-      pagination,
+      pagination: {
+        ...pagination,
+        pageIndex: Number(resp?.data?.tableTransactions.currentPageIndex) ?? Number(pageIndex),
+      },
     },
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
-    debugTable: true,
   });
 
   return (
     <div className={cls.box}>
+      <Title fontSize={22}>Transactions</Title>
       <div className={cls.btnsBox}>
         <div className={cls.paginationBox}>
           <IconButton
@@ -158,8 +208,13 @@ export const TransactionsTable = () => {
           </Text>
           <Text fontSize={20}>| Go to page:</Text>
           <input
+            min={1}
             type="number"
-            defaultValue={table.getState().pagination.pageIndex + 1}
+            defaultValue={
+              isNaN(resp?.data?.tableTransactions.currentPageIndex)
+                ? '1'
+                : resp?.data?.tableTransactions.currentPageIndex
+            }
             onChange={(e) => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
               table.setPageIndex(page);
@@ -169,18 +224,24 @@ export const TransactionsTable = () => {
           <div className={cls.loader}>{isFetching && <Loader size="xs" />}</div>
         </div>
         <div className={cls.select}>
-          <select
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
+          <Text fontSize={20}>Show</Text>
+          <DropDown
+            defaultValue="10"
+            options={[
+              { value: 10, label: '10' },
+              { value: 20, label: '20' },
+              { value: 30, label: '30' },
+              { value: 40, label: '40' },
+              { value: 50, label: '50' },
+            ]}
+            onSelect={(e) => {
+              table.setPageSize(e.value);
             }}
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </select>
+          />
+          <CheckBox
+            label="Today transactions"
+            onChange={(e) => setIsTodayTransactions(e.target.checked)}
+          />
         </div>
       </div>
       <table className={cls.table}>
