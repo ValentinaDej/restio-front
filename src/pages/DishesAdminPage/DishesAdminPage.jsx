@@ -62,7 +62,7 @@ const DishesAdminPage = () => {
     <AdminPageContainer
       title="Dishes list"
       variant="dish"
-      data={data?.data}
+      initData={data?.data}
       isLoading={isLoading}
       goToAdd={navigateToAddDish}
       handleDelete={handleDelete}
