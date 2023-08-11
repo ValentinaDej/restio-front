@@ -17,11 +17,11 @@ import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
 
 import classes from './DishForm.module.scss';
-import * as initialData from './InitialState';
 
-const DishForm = () => {
+const DishForm = ({ onSubmit, category, ingridients }) => {
   const [selectedType, setSelectedType] = useState('');
-  const [filteredIngredients, setFilteredIngredients] = useState(initialData.ingredientsList);
+  // const [filteredIngredients, setFilteredIngredients] = useState(initialData.ingredientsList);
+  const [filteredIngredients, setFilteredIngredients] = useState(ingridients);
 
   const {
     register,
@@ -55,41 +55,61 @@ const DishForm = () => {
   const handleTypeChange = (event) => {
     const newType = event.target.value;
     setSelectedType(newType);
-
     if (!newType) {
-      setFilteredIngredients(initialData.ingredientsList);
+      setFilteredIngredients(ingridients);
     } else {
-      const filtered = initialData.ingredientsList.filter(
-        (ingredient) => ingredient.type === newType
-      );
+      const filtered = ingridients?.filter((ingredient) => ingredient.type === newType);
       setFilteredIngredients(filtered);
     }
   };
 
-  const onSubmit = async (data) => {
+  // const onSubmit = async (data) => {
+  //   const picture = await fileUploaderRef.current.handleUpload();
+  //   //delete data.image;
+
+  //   // if (picture) {
+  //   //   onSubmit({ ...data, picture: picture.data.imageName });
+  //   // } else {
+  //   //   onSubmit({ ...data, picture: '' });
+  //   // }
+  //   // reset();
+
+  //   console.log('Form Data:', { ...data, picture: picture.data.imageName });
+  //   fileUploaderRef.current.clearFile();
+  //   reset();
+  //   setSelectedType('');
+  //   createDish({ ...data, picture: picture.data.imageName }, restId);
+  //   navigate(-1);
+  // };
+
+  const handleFormSubmit = async (data) => {
     const picture = await fileUploaderRef.current.handleUpload();
-    //delete data.image;
 
-    // if (picture) {
-    //   onSubmit({ ...data, picture: picture.data.imageName });
-    // } else {
-    //   onSubmit({ ...data, picture: '' });
-    // }
-    // reset();
-
-    console.log('Form Data:', { ...data, picture: picture.data.imageName });
-    fileUploaderRef.current.clearFile();
+    if (picture) {
+      onSubmit({ ...data, picture: picture.data.imageName });
+    } else {
+      onSubmit({ ...data, picture: '' });
+    }
     reset();
-    setSelectedType('');
-    createDish({ ...data, picture: picture.data.imageName }, restId);
-    navigate(-1);
+
+    fileUploaderRef.current.clearFile();
+  };
+
+  const handleFormKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
   };
 
   return (
     <div className={classes.wrapper}>
       <div className={classes.form}>
-        <Title mode="h3">Create dish</Title>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        {/* <Title mode="h3">Create dish</Title> */}
+        <form
+          // onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(handleFormSubmit)}
+          onKeyDown={handleFormKeyDown}
+        >
           <InputValid
             name="name"
             placeholder="Dish name"
@@ -128,7 +148,7 @@ const DishForm = () => {
                   <option value="" disabled hidden style={{ color: 'var(--color-danger)' }}>
                     Select dish type
                   </option>
-                  {initialData.typesOfDishes.map((option) => (
+                  {category.map((option) => (
                     <option key={option} value={option}>
                       {option}
                     </option>
@@ -223,7 +243,7 @@ const DishForm = () => {
             <FormSelectaGroup
               selectedType={selectedType}
               handleTypeChange={handleTypeChange}
-              filteredIngredients={filteredIngredients}
+              filteredIngredients={ingridients}
               control={control}
               fields={fields}
               append={append}

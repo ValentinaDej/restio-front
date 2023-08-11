@@ -8,6 +8,7 @@ const InputValid = ({
   placeholder,
   name,
   type,
+  value,
   autoComplete,
   icon: IconComponent,
   validationRules,
@@ -26,6 +27,7 @@ const InputValid = ({
           placeholder={placeholder}
           autoComplete={autoComplete}
           size={size}
+          value={value}
         />
         {IconComponent && (
           <div className={classes.icon__wrapper}>
