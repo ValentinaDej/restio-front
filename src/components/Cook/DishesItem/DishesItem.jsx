@@ -64,6 +64,8 @@ DishesItem.propTypes = {
   handleChangeStatus: PropTypes.func.isRequired,
   orderId: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
+  tableNumber: PropTypes.number.isRequired,
+  orderNumber: PropTypes.string.isRequired,
 };
 
 export default DishesItem;

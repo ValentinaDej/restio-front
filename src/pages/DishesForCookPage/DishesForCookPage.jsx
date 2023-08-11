@@ -43,11 +43,7 @@ const DishesForCookPage = () => {
 
   const filterDishes = useCallback(
     (status) => {
-      return data.reduce((acc, item) => {
-        const filterOrderItems = item.orderItems.filter((orderItem) => orderItem.status === status);
-        acc.push({ ...item, orderItems: filterOrderItems });
-        return acc;
-      }, []);
+      return data.filter((item) => item.status === status);
     },
     [data]
   );

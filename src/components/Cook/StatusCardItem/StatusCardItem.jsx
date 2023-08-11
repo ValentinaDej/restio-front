@@ -5,18 +5,7 @@ import PropTypes from 'prop-types';
 const StatusCardItem = ({ data, handleChangeStatus }) => {
   return (
     <div className={`${styles.status__card}`}>
-      {data?.length > 0 &&
-        data.map(
-          ({ table_id, orderItems }) =>
-            orderItems.length > 0 && (
-              <div key={table_id} className={`${styles.cardItem}`}>
-                <div className={`${styles.cardItem__top}`}>
-                  <p className={`${styles.cardItem__title}`}>Table # {table_id}</p>
-                </div>
-                <DishesList dishes={orderItems} handleChangeStatus={handleChangeStatus} />
-              </div>
-            )
-        )}
+      {data?.length > 0 && <DishesList dishes={data} handleChangeStatus={handleChangeStatus} />}
     </div>
   );
 };
@@ -24,8 +13,13 @@ const StatusCardItem = ({ data, handleChangeStatus }) => {
 StatusCardItem.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      table_id: PropTypes.string.isRequired,
-      orderItems: PropTypes.array,
+      dish: PropTypes.object.isRequired,
+      quantity: PropTypes.number.isRequired,
+      status: PropTypes.string.isRequired,
+      orderId: PropTypes.string.isRequired,
+      create: PropTypes.string.isRequired,
+      orderNumber: PropTypes.string.isRequired,
+      tableNumber: PropTypes.number.isRequired,
     })
   ).isRequired,
   handleChangeStatus: PropTypes.func.isRequired,

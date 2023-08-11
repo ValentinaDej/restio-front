@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 const DishesList = ({ dishes, handleChangeStatus }) => {
   return (
     <ul className={`${styles.list}`}>
-      {dishes.map(({ dish, quantity, orderId, status, create }) => (
+      {dishes.map(({ dish, quantity, orderId, status, create, tableNumber, orderNumber }) => (
         <DishesItem
           key={nanoid()}
           dish={dish}
@@ -15,6 +15,8 @@ const DishesList = ({ dishes, handleChangeStatus }) => {
           orderId={orderId}
           create={create}
           handleChangeStatus={handleChangeStatus}
+          tableNumber={tableNumber}
+          orderNumber={orderNumber}
         />
       ))}
     </ul>
@@ -28,7 +30,9 @@ DishesList.propTypes = {
       quantity: PropTypes.number.isRequired,
       status: PropTypes.string.isRequired,
       orderId: PropTypes.string.isRequired,
-      // create: PropTypes.string.isRequired,
+      create: PropTypes.string.isRequired,
+      tableNumber: PropTypes.number.isRequired,
+      orderNumber: PropTypes.string.isRequired,
     })
   ).isRequired,
   handleChangeStatus: PropTypes.func.isRequired,
