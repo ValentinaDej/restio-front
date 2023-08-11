@@ -1,13 +1,22 @@
-import Status from 'shared/Status/Status';
 import DishesList from '../DishesList/DishesList';
 import styles from './StatusCardItem.module.scss';
 import PropTypes from 'prop-types';
 
-const StatusCardItem = ({ data, handleChangeStatus, status }) => {
+const StatusCardItem = ({ data, handleChangeStatus }) => {
   return (
     <div className={`${styles.status__card}`}>
-      <Status statusCurrent={status} className={`${styles.status__title}`} />
-      {data?.length > 0 && <DishesList dishes={data} handleChangeStatus={handleChangeStatus} />}
+      {data?.length > 0 &&
+        data.map(
+          ({ table_id, orderItems }) =>
+            orderItems.length > 0 && (
+              <div key={table_id} className={`${styles.cardItem}`}>
+                <div className={`${styles.cardItem__top}`}>
+                  <p className={`${styles.cardItem__title}`}>Table # {table_id}</p>
+                </div>
+                <DishesList dishes={orderItems} handleChangeStatus={handleChangeStatus} />
+              </div>
+            )
+        )}
     </div>
   );
 };
@@ -15,14 +24,11 @@ const StatusCardItem = ({ data, handleChangeStatus, status }) => {
 StatusCardItem.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      dish: PropTypes.object.isRequired,
-      quantity: PropTypes.number.isRequired,
-      status: PropTypes.string.isRequired,
-      orderId: PropTypes.string.isRequired,
+      table_id: PropTypes.string.isRequired,
+      orderItems: PropTypes.array,
     })
   ).isRequired,
   handleChangeStatus: PropTypes.func.isRequired,
-  status: PropTypes.string.isRequired,
 };
 
 export default StatusCardItem;

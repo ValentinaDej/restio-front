@@ -6,18 +6,17 @@ import { nanoid } from 'nanoid';
 const DishesList = ({ dishes, handleChangeStatus }) => {
   return (
     <ul className={`${styles.list}`}>
-      {dishes.map(({ dish, quantity, status, orderId }) => {
-        return (
-          <DishesItem
-            key={nanoid()}
-            dish={dish}
-            status={status}
-            quantity={quantity}
-            orderId={orderId}
-            handleChangeStatus={handleChangeStatus}
-          />
-        );
-      })}
+      {dishes.map(({ dish, quantity, orderId, status, create }) => (
+        <DishesItem
+          key={nanoid()}
+          dish={dish}
+          status={status}
+          quantity={quantity}
+          orderId={orderId}
+          create={create}
+          handleChangeStatus={handleChangeStatus}
+        />
+      ))}
     </ul>
   );
 };
@@ -29,6 +28,7 @@ DishesList.propTypes = {
       quantity: PropTypes.number.isRequired,
       status: PropTypes.string.isRequired,
       orderId: PropTypes.string.isRequired,
+      // create: PropTypes.string.isRequired,
     })
   ).isRequired,
   handleChangeStatus: PropTypes.func.isRequired,

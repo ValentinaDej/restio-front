@@ -1,19 +1,28 @@
+.main__section {
+  width: 100%;
+}
+
 .section {
   padding: 20px 0;
 }
 
 .title {
-  margin-bottom: 30px;
+  text-align: left;
 }
-
-.status__section {
-  display: flex;
-  gap: 10px;
-  width: 100%;
+.divider {
+  border-top: 8px solid var(--color-orange);
+  border-radius: 5px;
+  margin-top: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
 }
 
 .button__section {
   display: flex;
   justify-content: space-around;
   margin-bottom: 30px;
+}
+
+.loader__section {
+  height: 100vh;
 }

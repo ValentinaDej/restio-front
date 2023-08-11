@@ -9,11 +9,29 @@ export const createOrder = async (data, restId) => {
 export const getAllOrders = async (restId) => {
   const request = await instance(`/orders/${restId}`);
   const allOrders = request.data.data.orders;
-  const normalizedData = allOrders.reduce((acc, item) => {
-    const allDishes = item.orderItems.map((el) => ({ ...el, orderId: item._id }));
-    acc = [...acc, ...allDishes];
-    return acc;
-  }, []);
+  console.log(allOrders);
+
+  const groupedByTableId = {};
+
+  for (const obj of allOrders) {
+    if (!groupedByTableId[obj.table_id]) {
+      groupedByTableId[obj.table_id] = {
+        table_id: obj.table_id,
+        orderItems: addOrderIdToOrderItems([...obj.orderItems], obj._id, obj.created_at),
+      };
+    } else {
+      groupedByTableId[obj.table_id].orderItems.push(
+        ...addOrderIdToOrderItems(obj.orderItems, obj._id)
+      );
+    }
+  }
+
+  function addOrderIdToOrderItems(orderItems, orderId, create) {
+    return orderItems.map((item) => ({ ...item, orderId, create }));
+  }
+  const normalizedData = Object.values(groupedByTableId);
+
+  console.log(normalizedData);
   return normalizedData;
 };
 
@@ -79,3 +97,15 @@ export const useUpdateDishStatusByWaiter = () => {
 
   return mutation;
 };
+
+//   const normalizedData = allOrders.reduce((acc, item) => {
+//     const allDishes = item.orderItems.map((el) => ({
+//       ...el,
+//       orderId: item._id,
+//       tableId: item.table_id,
+//       create: item.created_at,
+//     }));
+
+//     acc = [...acc, ...allDishes];
+//     return acc;
+//   }, []);
