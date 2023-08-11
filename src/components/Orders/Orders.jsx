@@ -55,11 +55,11 @@ const Orders = ({ isWaiter }) => {
 
   useEffect(() => {
     if (data) {
-      const allOrdersPaid = data?.data?.orders?.every((order) => {
+      const allOrdersPaid = data?.orders?.every((order) => {
         const allItemsServed = order?.orderItems?.every((item) => item.status === 'Served');
         return order.status === 'Paid' && allItemsServed;
       });
-      const newTotalPrice = data?.data?.orders?.reduce((acc, order) => {
+      const newTotalPrice = data?.orders?.reduce((acc, order) => {
         if (order.status !== 'Paid') {
           const orderPrice = order.orderItems.reduce(
             (acc, item) => acc + item.dish.price * item.quantity,
@@ -74,20 +74,20 @@ const Orders = ({ isWaiter }) => {
       setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
       setIsAllOrdersPaid(allOrdersPaid);
     }
-  }, [data, data?.data?.orders]);
+  }, [data, data?.orders]);
 
   return (
     <>
       <NavigateButtons params={params} isWaiter={isWaiter} />
       {isLoading ? (
         <OrderListSkeleton isWaiter={isWaiter} isSmall={!isWaiter} />
-      ) : !data?.data?.orders?.length ? (
+      ) : !data?.orders?.length ? (
         <EmptyListBox params={params} isWaiter={isWaiter} />
       ) : (
         <>
           <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
             <ListTopBox
-              orders={data?.data?.orders || []}
+              orders={data?.orders || []}
               totalPrice={totalPrice}
               onChangeSelected={onChangeSelected}
               onChangeTypeOfPay={onChangeTypeOfPay}
@@ -96,7 +96,7 @@ const Orders = ({ isWaiter }) => {
               paymentType={paymentType}
             />
             <OrdersList
-              orders={data?.data?.orders || []}
+              orders={data?.orders || []}
               onChangeSelected={onChangeSelected}
               selectedTotal={selectedTotal}
               selectedOrders={selectedOrders}

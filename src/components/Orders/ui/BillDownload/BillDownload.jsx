@@ -23,7 +23,7 @@ export const BillDownload = ({ orders }) => {
           restId={restId}
         />
       )}
-      <Button size={'sm'} onClick={onClickDownload} className={cls.btn}>
+      <Button size={'sm'} onClick={onClickDownload} className={cls.btn} mode="outlined">
         Download bill
       </Button>
     </>

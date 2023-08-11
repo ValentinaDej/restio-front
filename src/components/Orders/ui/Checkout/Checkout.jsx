@@ -88,6 +88,7 @@ export const Checkout = ({
             onClick={onClickMarkAsPaidSelectedAsWaiter}
             disabled={amount === 0 || isLoading || !paymentType}
             className={cls.btn}
+            mode="outlined"
           >
             {isLoading ? <Loader size={'xs'} /> : 'Mark as paid for selected'}
           </Button>

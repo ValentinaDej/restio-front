@@ -35,7 +35,9 @@ export const TransactionsTable = () => {
         columns: [
           {
             id: '№',
-            accessorFn: (row, rowIndex) => rowIndex + 1,
+            accessorFn: (row, rowIndex) => {
+              return pageIndex * pageSize + (rowIndex + 1);
+            },
             cell: (info) => info.getValue(),
             footer: (props) => props.column.totalCount,
           },
@@ -58,7 +60,7 @@ export const TransactionsTable = () => {
                     { value: 'all', label: 'All' },
                     { value: 'cash', label: 'Cash' },
                     { value: 'POS', label: 'POS' },
-                    { value: 'online', label: 'online' },
+                    { value: 'online', label: 'Online' },
                   ]}
                   onSelect={(e) => {
                     setTransactionTypeOptions(e.value);
@@ -68,6 +70,16 @@ export const TransactionsTable = () => {
                 />
               </span>
             ),
+            footer: (props) => props.column.id,
+          },
+          {
+            accessorFn: (row) => row.restaurantOrders_id,
+            id: 'restaurantOrders_id',
+            cell: (info) => {
+              const orders = info.getValue().length;
+              return <span className={cls.span}>{orders}</span>;
+            },
+            header: () => <span className={cls.span}>Orders paid</span>,
             footer: (props) => props.column.id,
           },
           {
@@ -120,7 +132,7 @@ export const TransactionsTable = () => {
         ],
       },
     ],
-    [pageSize]
+    [pageIndex, pageSize]
   );
 
   const fetchDataOptions = {
@@ -205,50 +217,55 @@ export const TransactionsTable = () => {
             Svg={TfiAngleDoubleRight}
           />
         </div>
-        <div className={cls.inputBox}>
-          <Text fontSize={20}>Page</Text>
-          <Text fontSize={20}>
-            {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-          </Text>
-          <Text fontSize={20}>| Go to page:</Text>
-          <input
-            min={1}
-            type="number"
-            defaultValue={
-              isNaN(resp?.data?.tableTransactions.currentPageIndex)
-                ? 1
-                : resp?.data?.tableTransactions.currentPageIndex
-            }
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              table.setPageIndex(page);
-            }}
-            className={cls.input}
-          />
-          <div className={cls.loader}>{isFetching && <Loader size="xs" />}</div>
-        </div>
-        <div className={cls.select}>
-          <Text fontSize={20}>Show</Text>
-          <DropDown
-            defaultValue="10"
-            options={[
-              { value: 10, label: '10' },
-              { value: 20, label: '20' },
-              { value: 30, label: '30' },
-              { value: 40, label: '40' },
-              { value: 50, label: '50' },
-            ]}
-            onSelect={(e) => {
-              table.setPageSize(e.value);
-            }}
-          />
-          <CheckBox
-            label="Today transactions"
-            onChange={(e) => {
-              setIsTodayTransactions(e.target.checked);
-              setPagination({ pageIndex: 0, pageSize });
-            }}
-          />
+        <div className={cls.inputSelectBox}>
+          <div className={cls.inputBox}>
+            <Text fontSize={20}>Page</Text>
+            <Text fontSize={20}>
+              {resp?.data?.tableTransactions.pageCount === 0
+                ? 0
+                : table.getState().pagination.pageIndex + 1}{' '}
+              of {table.getPageCount()}
+            </Text>
+            <Text fontSize={20}>| Go to page:</Text>
+            <input
+              min={1}
+              type="number"
+              defaultValue={
+                isNaN(resp?.data?.tableTransactions.currentPageIndex)
+                  ? 1
+                  : resp?.data?.tableTransactions.currentPageIndex
+              }
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                table.setPageIndex(page);
+              }}
+              className={cls.input}
+            />
+            <div className={cls.loader}>{isFetching && <Loader size="xs" />}</div>
+          </div>
+          <div className={cls.select}>
+            <Text fontSize={20}>Show</Text>
+            <DropDown
+              defaultValue="10"
+              options={[
+                { value: 10, label: '10' },
+                { value: 20, label: '20' },
+                { value: 30, label: '30' },
+                { value: 40, label: '40' },
+                { value: 50, label: '50' },
+              ]}
+              onSelect={(e) => {
+                table.setPageSize(e.value);
+              }}
+            />
+            <CheckBox
+              label="Today transactions"
+              onChange={(e) => {
+                setIsTodayTransactions(e.target.checked);
+                setPagination({ pageIndex: 0, pageSize });
+              }}
+            />
+          </div>
         </div>
       </div>
       <table className={cls.table}>

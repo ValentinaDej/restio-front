@@ -16,8 +16,8 @@ export const StatisticsByYearBox = memo(({ monthlyStatistics }) => {
   const data = monthlyStatistics;
   return (
     <div className={cls.box}>
-      <Title fontSize={22}>Transactions-amount per month for this year</Title>
-      <ResponsiveContainer width="100%" height="94%">
+      <Title fontSize={22}>Transactions per month for this year</Title>
+      <ResponsiveContainer width="100%" height={485}>
         <BarChart
           width={500}
           height={300}
@@ -34,8 +34,10 @@ export const StatisticsByYearBox = memo(({ monthlyStatistics }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="amount" fill="#ea6a12" />
-          <Bar dataKey="transactions" fill="#3bb77e" />
+          <Bar dataKey="cash" fill="#3bb77e" />
+          <Bar dataKey="pos" fill="#12cdea" />
+          <Bar dataKey="online" fill="#eab012" />
+          <Bar dataKey="transactions" fill="#ea6a12" />
         </BarChart>
       </ResponsiveContainer>
     </div>
