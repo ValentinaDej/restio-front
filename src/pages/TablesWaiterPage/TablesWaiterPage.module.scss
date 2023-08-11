@@ -19,7 +19,7 @@
     justify-content: space-evenly;
     gap: 1rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: 566px) {
       flex-direction: column;
       min-width: 240px;
     }

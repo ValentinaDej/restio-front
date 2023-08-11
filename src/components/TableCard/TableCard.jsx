@@ -70,36 +70,53 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
 
   const readyDishes = getReadyDishes(orders);
 
-  // console.log(readyDishes);
+  const getTotalReadyDishesCount = (orders) => {
+    const totalReadyCount = orders.reduce((count, order) => {
+      const readyItems = order.orderItems.filter((item) => item.status === 'Ready');
+      const readyItemCount = readyItems.reduce((sum, readyItem) => sum + readyItem.quantity, 0);
+      return count + readyItemCount;
+    }, 0);
+
+    return totalReadyCount;
+  };
+
+  console.log(getTotalReadyDishesCount(orders));
 
   return (
     <div className={`${styles.table} ${redAnimation}`}>
-      {status !== 'Waiting' ? (
-        <div className={styles.table__status}>
-          <StatusSelector
-            mode="tables"
-            currentStatus={status}
-            size="lg"
-            statusSize="lg"
-            changeStatusFunction={changeStatus}
-          />
+      <div className={styles.table__head}>
+        <div className={styles.table__number}>
+          <Text fontSize={18} color="white">
+            {table_number}
+          </Text>
         </div>
-      ) : (
-        <div className={styles.table__resolve_btn}>
-          <Button size="sm" style={{ width: '100%' }} onClick={() => changeStatus('Taken')}>
-            Resolve waiting
-          </Button>
-        </div>
-      )}
+        {status !== 'Waiting' ? (
+          <div className={styles.table__status}>
+            <StatusSelector
+              mode="tables"
+              currentStatus={status}
+              size="lg"
+              statusSize="lg"
+              changeStatusFunction={changeStatus}
+            />
+          </div>
+        ) : (
+          <div className={styles.table__resolve_btn}>
+            <Button size="sm" style={{ width: '161px' }} onClick={() => changeStatus('Taken')}>
+              Resolve waiting
+            </Button>
+          </div>
+        )}
+      </div>
 
-      <div className={styles.table__body}>
+      {/* <div className={styles.table__body}>
         <Text fontSize={20}>Table # {table_number}</Text>
         <NavLink to={table_id}>
           <Button size="sm" mode="outlined">
             Details
           </Button>
         </NavLink>
-      </div>
+      </div> */}
       <div className={styles.line}></div>
       {/* <ul className={styles.table__list}>
         {orders?.map((order, index) => (
@@ -109,44 +126,63 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
           </li>
         ))}
       </ul> */}
-      {orders.length > 0 && (
-        <div className={styles.table__orders}>
-          <div className={styles.table__orders_title}>
-            <Text>Orders</Text>
+      <div className={styles.table__mainBlock}>
+        {orders.length > 0 && (
+          <div className={styles.table__orders}>
+            <div className={styles.table__orders_title}>
+              <Text>Orders</Text>
+            </div>
+            <div className={styles.table__orders_list}>
+              {openOrders > 0 && (
+                <div className={styles.table__order}>
+                  <Status statusCurrent="Open" statusSize="sm" />
+                  <Text>{openOrders}</Text>
+                </div>
+              )}
+              {paidOrders > 0 && (
+                <div className={styles.table__order}>
+                  <Status statusCurrent="Paid" statusSize="sm" />
+                  <Text>{paidOrders}</Text>
+                </div>
+              )}
+            </div>
+            <div className={styles.line}></div>
           </div>
-          <div className={styles.table__orders_list}>
-            {openOrders > 0 && (
-              <div className={styles.table__order}>
-                <Status statusCurrent="Open" statusSize="sm" />
-                <Text>{openOrders}</Text>
-              </div>
-            )}
-            {paidOrders > 0 && (
-              <div className={styles.table__order}>
-                <Status statusCurrent="Paid" statusSize="sm" />
-                <Text>{paidOrders}</Text>
-              </div>
-            )}
+        )}
+        {readyDishes.length > 0 && (
+          <div className={styles.table__dishes}>
+            <div className={styles.table__dishes_title}>
+              <Text>Dishes</Text>
+            </div>
+            <ul className={styles.table__dishes_list}>
+              {readyDishes.map((readyDish, index) => (
+                <li key={index} className={styles.table__dishes_item}>
+                  <Status statusCurrent="Ready" />
+                  <Text fontSize={14}>{readyDish.name}</Text>
+                  <Text fontSize={14}>{readyDish.quantity}</Text>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className={styles.line}></div>
+        )}
+      </div>
+      <div className={styles.line}></div>
+      <div className={styles.table__buttons}>
+        {/* <Text fontSize={20}>Table # {table_number}</Text> */}
+
+        {readyDishes.length > 0 && (
+          <div>
+            <Button size="sm">Served</Button>
+          </div>
+        )}
+        <div className={styles.table__btn_details}>
+          <NavLink to={table_id}>
+            <Button size="sm" mode="outlined">
+              Details
+            </Button>
+          </NavLink>
         </div>
-      )}
-      {readyDishes.length > 0 && (
-        <div className={styles.table__dishes}>
-          <div className={styles.table__dishes_title}>
-            <Text>Dishes</Text>
-          </div>
-          <ul className={styles.table__dishes_list}>
-            {readyDishes.map((readyDish, index) => (
-              <li key={index} className={styles.table__dishes_item}>
-                <Status statusCurrent="Ready" />
-                <Text fontSize={14}>{readyDish.name}</Text>
-                <Text fontSize={14}>{readyDish.quantity}</Text>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
