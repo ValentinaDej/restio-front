@@ -16,34 +16,26 @@
   @media screen and (min-width: 768px) {
     gap: 20px;
   }
+
+  &__data {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
 }
 
 .button {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 130px;
+  height: 60px;
+
+  @media screen and (min-width: 767px) {
+    width: 180px;
+  }
+
   @media screen and (min-width: 1024px) and (max-width: 1124px) {
     font-size: 0.9rem;
-  }
-}
-
-.button__purple {
-  background-color: var(--color-purple);
-  border: none;
-  width: 130px;
-  height: 60px;
-
-  @media screen and (min-width: 767px) {
-    width: 180px;
-  }
-}
-
-.button__green {
-  background-color: var(--color-green);
-  border: none;
-  width: 130px;
-  height: 60px;
-  @media screen and (min-width: 767px) {
-    width: 180px;
   }
 }

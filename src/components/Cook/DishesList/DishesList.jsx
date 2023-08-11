@@ -4,9 +4,13 @@ import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 
 const DishesList = ({ dishes, handleChangeStatus }) => {
+  const sortedDishes = [...dishes].sort((dishA, dishB) => {
+    return new Date(dishB.created_at) - new Date(dishA.created_at);
+  });
+
   return (
     <ul className={`${styles.list}`}>
-      {dishes.map(({ dish, quantity, orderId, status, create, tableNumber, orderNumber }) => (
+      {sortedDishes.map(({ dish, quantity, orderId, status, create, tableNumber, orderNumber }) => (
         <DishesItem
           key={nanoid()}
           dish={dish}
