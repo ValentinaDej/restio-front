@@ -203,7 +203,7 @@
   .recommend_wrapp {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     gap: 5%;
     margin: 100px 50px 50px;
   }
@@ -212,7 +212,6 @@
     display: flex;
     flex-grow: 1;
     margin-bottom: 70px;
-    max-width: 250px;
   }
 }
 
