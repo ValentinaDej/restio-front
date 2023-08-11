@@ -52,7 +52,8 @@ const OrderCard = memo(
 
     const onChangeStatusByWaiter = useCallback(
       (status, dishId) => {
-        onChangeStatus(status, dishId, _id);
+        const isResolved = onChangeStatus(status, dishId, _id);
+        return isResolved;
       },
       [_id, onChangeStatus]
     );

@@ -36,16 +36,16 @@ body {
   }
   &::-webkit-scrollbar-track {
     border-radius: 10px;
-    background: var(--color-yellow);
+    background: var(--color-bg-dark);
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: var(--color-blue-dark);
+    background: var(--color-primary);
 
     transition: background 0.3s ease;
   }
   &::-webkit-scrollbar-thumb:hover {
-    background: var(--color-gray-dark);
+    background: var(--color-primary);
   }
 }
 
@@ -152,4 +152,9 @@ body.lock {
   margin: 0 auto;
   padding-left: 15px;
   padding-right: 15px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
 }

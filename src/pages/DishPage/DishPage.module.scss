@@ -41,6 +41,7 @@
   }
 
   .fullDish {
+    width: 100%;
     position: relative;
     margin: 30px auto 100px;
     padding: 2rem 2rem;
@@ -60,7 +61,7 @@
     height: 50px;
     text-align: center;
     right: 0;
-    top: 5px;
+    top: 0px;
     font-size: 1.3rem;
     background-color: #f5dccc;
     padding: 10px 15px;
@@ -202,7 +203,7 @@
   .recommend_wrapp {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     gap: 5%;
     margin: 100px 50px 50px;
   }
@@ -211,7 +212,6 @@
     display: flex;
     flex-grow: 1;
     margin-bottom: 70px;
-    max-width: 250px;
   }
 }
 

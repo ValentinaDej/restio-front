@@ -28,9 +28,9 @@ const variantPath = {
 const App = () => {
   const location = useLocation();
   const path = location.pathname.split('/');
+  const restId = path[1];
+  const { role } = useSelector((state) => state.auth);
 
-  const { role, restaurantId } = useSelector((state) => state.auth);
-  const restId = role ? restaurantId : path[1];
   const pathName = {
     login: '/login',
     main: '/',

@@ -14,6 +14,7 @@ const statuses = ['Ordered', 'In progress', 'Ready'];
 
 const DishesForCookPage = () => {
   const { restId } = useParams();
+
   const [currentStatus, setCurrentStatus] = useState('Ordered');
 
   const { data, isLoading } = useQuery(['orders'], async () => getAllOrders(restId), {

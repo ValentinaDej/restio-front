@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { ImList2 } from 'react-icons/im';
 import { MdRestaurantMenu, MdTableBar } from 'react-icons/md';
 import { IoPeopleSharp } from 'react-icons/io5';
 import { FiLogOut } from 'react-icons/fi';
@@ -18,6 +17,7 @@ import { logout } from 'store/auth/authSlice';
 const Header = ({ logo, restaurantName, role }) => {
   const dispatch = useDispatch();
   const restaurantId = useSelector(getRestaurantId);
+
   const { pathname } = useLocation();
   const arrParams = pathname.split('/');
   const restId = arrParams[1];
@@ -49,16 +49,16 @@ const Header = ({ logo, restaurantName, role }) => {
       )}
       {role === 'admin' && (
         <div className={classes.header__wrapper}>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}/dishes`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/admin/dishes`}>
             <MdRestaurantMenu className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}/personnel`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/admin/personnel`}>
             <IoPeopleSharp className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}/tables`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/admin/tables`}>
             <MdTableBar className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}/cook`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/admin/cook`}>
             <GiCook className={classes.header__icon} />
           </NavLink>
         </div>

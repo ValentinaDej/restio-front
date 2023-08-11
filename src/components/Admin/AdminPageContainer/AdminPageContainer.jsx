@@ -32,10 +32,10 @@ const AdminPageContainer = ({
   };
 
   const navigateToEdit = (id) => {
-    navigate(`/admin/${restId}/${value[variant]}/edit/${id}`);
+    navigate(`/${restId}/admin/${value[variant]}/edit/${id}`);
   };
 
-  const filterList = data?.filter((item) =>
+  const filterList = data?.personnel?.filter((item) =>
     item.name.toLowerCase().includes(searchText.toLowerCase())
   );
 

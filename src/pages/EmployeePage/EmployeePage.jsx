@@ -11,7 +11,7 @@ const EmployeePage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const navigateToAddEmpl = () => {
-    navigate(`/admin/${restId}/personnel/new`);
+    navigate(`/${restId}/admin/personnel/new`);
   };
 
   const deleteEmployeeMutation = useMutation((employeeId) =>
