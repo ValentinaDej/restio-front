@@ -4,6 +4,10 @@
 }
 
 .dropdown-toggle {
+  display: flex;
+  gap: 5px;
+  justify-content: space-around;
+  align-items: center;
   padding: 8px 12px;
   border: var(--border-primary);
   border-radius: 10px;
@@ -22,6 +26,10 @@
   border: var(--border-primary);
   border-radius: 10px;
   background-color: #fff;
+}
+
+.icon {
+  color: var(--color-orange);
 }
 
 .dropdown-item {

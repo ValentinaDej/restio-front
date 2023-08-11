@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { MdKeyboardArrowDown } from 'react-icons/md';
+
 import styles from './DropDown.module.scss';
 
 export const DropDown = ({ options, onSelect, defaultValue }) => {
@@ -34,6 +36,7 @@ export const DropDown = ({ options, onSelect, defaultValue }) => {
     <div ref={dropdownRef} className={styles['custom-dropdown']}>
       <button className={styles['dropdown-toggle']} onClick={toggleDropdown}>
         {selectedOption ? selectedOption.label : defaultValue}
+        <MdKeyboardArrowDown className={styles['icon']} />
       </button>
       {isOpen && (
         <ul className={styles['dropdown-list']}>

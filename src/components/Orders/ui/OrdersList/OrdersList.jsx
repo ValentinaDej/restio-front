@@ -93,11 +93,11 @@ export const OrdersList = ({
         <Text>Sort by</Text>
         <DropDown
           options={[
-            { value: 'None', label: 'No Sorting' },
+            { value: 'None', label: 'Latest' },
             { value: 'Open', label: 'Open' },
             { value: 'Paid', label: 'Paid' },
           ]}
-          defaultValue="No Sorting"
+          defaultValue="Latest"
           onSelect={(e) => setSortOrderBy(e.value)}
         />
       </div>

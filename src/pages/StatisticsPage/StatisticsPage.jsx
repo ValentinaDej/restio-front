@@ -10,14 +10,7 @@ const StatisticsPage = () => {
 
   return (
     <div className={cls.main}>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <Statisctics
-          totalAmount={data?.data.statistics.totalAmount}
-          monthlyStatistics={data?.data.statistics.monthlyStatistics}
-        />
-      )}
+      {isLoading ? <Loader /> : <Statisctics monthlyStatistics={data?.data.statistics} />}
     </div>
   );
 };
