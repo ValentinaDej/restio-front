@@ -11,7 +11,7 @@ import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
 import cls from './Order.module.scss';
-import useSSESubscription from 'hooks/useSSESubscription';
+import { useSSE } from 'react-hooks-sse';
 
 const Orders = ({ isWaiter }) => {
   const [selectedTotal, setSelectedTotal] = useState(0);
@@ -23,20 +23,11 @@ const Orders = ({ isWaiter }) => {
     setSelectedTotal(formatNumberWithTwoDecimals(price));
     setSelectedOrders(selectedOrders);
   };
-
-  const {
-    data: { data } = {},
-    isError,
-    isLoading,
-    isRefetching,
-    refetch,
-  } = useGetOrdersByTableId(params);
-
-  const subscription = useSSESubscription(refetch);
-
+  const updateDishStatusEvent = useSSE('dish status', {});
+  const { data: { data } = {}, isError, isLoading, refetch } = useGetOrdersByTableId(params);
   useEffect(() => {
-    subscription();
-  }, [subscription]);
+    if (updateDishStatusEvent) refetch();
+  }, [updateDishStatusEvent, refetch]);
 
   useEffect(() => {
     if (data) {

@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-
 import Message from 'components/Message/Message';
-import useSSESubscription from 'hooks/useSSESubscription';
+import { useSSE } from 'react-hooks-sse';
 
 const TablesWaiterPage = () => {
-  const subscription = useSSESubscription();
-
-  useEffect(() => {
-    subscription();
-  }, [subscription]);
-
+  const updateTableStatusEvent = useSSE('table status', {});
+  const dishReadyEvent = useSSE('dish is ready', {});
+  console.log('Call Waiter SSE Event:', updateTableStatusEvent);
+  console.log('Dish Event:', dishReadyEvent);
+  function Test() {
+    console.log('test');
+  }
+  Test();
   return (
     <div>
       TablesWaiter Page

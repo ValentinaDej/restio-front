@@ -5,7 +5,7 @@ import HomePage from 'pages/HomePage/HomePage';
 import LoginPage from 'pages/LoginPage/LoginPage';
 import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
 import logoImg from './img/RESTio.svg';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import routesAdmin from 'routes/routesAdmin';
 import routesCook from 'routes/routesCook';
@@ -17,6 +17,7 @@ import Header from 'shared/Header/Header';
 import Loader from 'shared/Loader/Loader';
 import { Suspense } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { SSEProvider } from 'react-hooks-sse';
 
 const variantPath = {
   admin: routesAdmin,
@@ -26,8 +27,10 @@ const variantPath = {
 
 const App = () => {
   const location = useLocation();
-  const { role } = useSelector((state) => state.auth);
+  const path = location.pathname.split('/');
 
+  const { role, restaurantId } = useSelector((state) => state.auth);
+  const restId = role ? restaurantId : path[1];
   const pathName = {
     login: '/login',
     main: '/',
@@ -38,7 +41,7 @@ const App = () => {
   //useEffect с запитом - повертає дані лого, назву ресторану
   //restId =`64c4fdea4055a7111092df32`
   return (
-    <>
+    <SSEProvider endpoint={`http://localhost:3001/sse/${restId}`}>
       {location.pathname === pathName.login || location.pathname === pathName.main ? (
         ''
       ) : (
@@ -65,7 +68,7 @@ const App = () => {
       {role && <Footer />}
       <Toaster />
       <ReactQueryDevtools initialIsOpen={false} />
-    </>
+    </SSEProvider>
   );
 };
 

@@ -8,8 +8,7 @@ import { getAllOrders, useUpdateDishStatusByWaiter } from 'api/order';
 import StatusCardItem from 'components/Cook/StatusCardItem/StatusCardItem';
 import { useMediaQuery } from 'react-responsive';
 import Button from 'shared/Button/Button';
-import { useCallback, useEffect, useState } from 'react';
-import useSSESubscription from 'hooks/useSSESubscription';
+import { useCallback, useState } from 'react';
 
 const statuses = ['Ordered', 'In progress', 'Ready'];
 
@@ -17,7 +16,7 @@ const DishesForCookPage = () => {
   const { restId } = useParams();
   const [currentStatus, setCurrentStatus] = useState('Ordered');
 
-  const { data, isLoading, refetch } = useQuery(['orders'], async () => getAllOrders(restId), {
+  const { data, isLoading } = useQuery(['orders'], async () => getAllOrders(restId), {
     onError: (error) => {
       toast.error(error.message);
     },
@@ -25,11 +24,6 @@ const DishesForCookPage = () => {
     refetchOnReconnect: false, // Disable refetching when the network reconnects
     refetchInterval: false, // Disable automatic periodic refetching
   });
-  const subscription = useSSESubscription(refetch);
-
-  useEffect(() => {
-    subscription();
-  }, [subscription]);
 
   const isDesktop = useMediaQuery({
     query: '(min-width: 1024px)',
