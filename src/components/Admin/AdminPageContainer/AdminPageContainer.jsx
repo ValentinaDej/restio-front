@@ -10,6 +10,7 @@ import { useInfiniteQuery, useQueryClient } from 'react-query';
 import { getPersonnel } from '../../../api/personnel';
 import Button from '../../../shared/Button/Button';
 import toast from 'react-hot-toast';
+import { getDishes } from '../../../api/dish';
 
 const value = {
   employee: 'personnel',
@@ -21,16 +22,22 @@ const AdminPageContainer = ({
   variant,
   handleDelete,
   goToAdd,
-  initData,
   children,
-  isLoading,
+  category,
+  type,
 }) => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState('');
   const queryClient = useQueryClient();
 
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery(
+  const {
+    data: dataEmpl,
+    isFetchingNextPage: isFetchingNextPageEmpl,
+    fetchNextPage: fetchNextPageEmpl,
+    hasNextPage: hasNextPageEmpl,
+    isLoading: isLoadingEmpl,
+  } = useInfiniteQuery(
     ['personnel', restId],
     ({ pageParam = 1 }) => getPersonnel({ restId, pageParam, searchText }),
     {
@@ -49,9 +56,47 @@ const AdminPageContainer = ({
     }
   );
 
-  if (isLoading) {
-    return <Loader size="sm" />;
-  }
+  const {
+    data: dataDish,
+    isFetchingNextPage: isFetchingNextPageDish,
+    fetchNextPage: fetchNextPageDish,
+    hasNextPage: hasNextPageDish,
+    isLoading: isLoadingDish,
+  } = useInfiniteQuery(
+    ['dishes', category, type],
+    ({ pageParam = 1 }) => getDishes(restId, category, type === 'active', pageParam, searchText),
+    {
+      onError: (error) => {
+        toast.error(error.message);
+      },
+      getNextPageParam: (lastPage, _pages) => {
+        if (lastPage.data.page < lastPage.data.totalPages) {
+          return lastPage.data.page + 1;
+        }
+        return undefined;
+      },
+      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
+      refetchOnReconnect: false, // Disable refetching when the network reconnects
+      refetchInterval: false, // Disable automatic periodic refetching
+    }
+  );
+
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isLoading } =
+    variant === 'employee'
+      ? {
+          data: dataEmpl,
+          isFetchingNextPage: isFetchingNextPageEmpl,
+          fetchNextPage: fetchNextPageEmpl,
+          hasNextPage: hasNextPageEmpl,
+          isLoading: isLoadingEmpl,
+        }
+      : {
+          data: dataDish,
+          isFetchingNextPage: isFetchingNextPageDish,
+          fetchNextPage: fetchNextPageDish,
+          hasNextPage: hasNextPageDish,
+          isLoading: isLoadingDish,
+        };
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -59,18 +104,21 @@ const AdminPageContainer = ({
     setSearchText(normalizedValue);
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   const navigateToEdit = (id) => {
     navigate(`/admin/${restId}/${value[variant]}/edit/${id}`);
   };
 
-  const filterList = initData?.filter((item) =>
-    item.name.toLowerCase().includes(searchText.toLowerCase())
-  );
-
   const handleSearch = () => {
-    queryClient.removeQueries(['personnel', restId]); // Invalidate the query cache
+    queryClient.removeQueries(['personnel', restId]); // Invalidate the employee query cache
+    queryClient.removeQueries(['dishes', category, type]); // Invalidate the dishes query cache
     fetchNextPage(1); // Trigger data refetch with the first page
   };
+
+  console.log('data', data);
 
   return (
     <div className={styles['personnel-container']}>
@@ -121,25 +169,25 @@ const AdminPageContainer = ({
             ))
           )}
         {variant === 'dish' &&
-          filterList &&
-          filterList.length > 0 &&
-          filterList.map((item) => (
-            <li key={item._id} className={styles.card_wrapper}>
-              <EmployeeCard
-                data={item}
-                mode={'outlined'}
-                alt={`Dish ${item.name}`}
-                src={item.picture}
-                handleEdit={() => navigateToEdit(item._id)}
-                handleDelete={() => handleDelete(item._id)}
-              >
-                <>
-                  <p className={styles.employee_name}>{item.name}</p>
-                  <p className={styles.employee_subinfo}>$ {item.price}</p>
-                </>
-              </EmployeeCard>
-            </li>
-          ))}
+          data?.pages?.map((page) =>
+            page.data.dishes.map((item) => (
+              <li key={item._id} className={styles.card_wrapper}>
+                <EmployeeCard
+                  data={item}
+                  mode={'outlined'}
+                  alt={`Dish ${item.name}`}
+                  src={item.picture}
+                  handleEdit={() => navigateToEdit(item._id)}
+                  handleDelete={() => handleDelete(item._id)}
+                >
+                  <>
+                    <p className={styles.employee_name}>{item.name}</p>
+                    <p className={styles.employee_subinfo}>$ {item.price}</p>
+                  </>
+                </EmployeeCard>
+              </li>
+            ))
+          )}
       </ul>
       {hasNextPage && (
         <div className={`${styles.addMore__section}`}>
