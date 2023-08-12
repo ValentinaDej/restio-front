@@ -12,12 +12,14 @@ const Status = ({ statusCurrent, className, statusSize = 'sm' }) => {
       case 'Served':
       case 'Paid':
       case 'Success':
-        setStatusColor('#50D1AA');
+        // setStatusColor('#50D1AA');
+        setStatusColor('#72daba');
         break;
 
       case 'In progress':
       case 'Taken':
-        setStatusColor('#9290FE');
+        // setStatusColor('#9290FE');
+        setStatusColor('#9c9afe');
         break;
 
       case 'Waiting':

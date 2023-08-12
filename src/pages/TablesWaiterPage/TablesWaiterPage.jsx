@@ -10,6 +10,8 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Message from 'components/Message/Message';
 import useSSESubscription from 'hooks/useSSESubscription';
+import { CheckBox } from 'shared/CheckBox/CheckBox';
+import { useState, useMemo } from 'react';
 
 const dumbTables = [
   {
@@ -57,6 +59,12 @@ const dumbTables = [
 ];
 
 const TablesWaiterPage = () => {
+  const [isFreeTables, setIsFreeTables] = useState(false);
+  const [isWaitingTables, setIsWaitinigTables] = useState(false);
+  const [isTakenTables, setIsTakenTables] = useState(false);
+  const [isTablesWithReadyDishes, setIsTablesWithReadyDishes] = useState(false);
+  const [isTablesWithAllPaidOrders, setIsTablesWithAllPaidOrders] = useState(false);
+
   const subscription = useSSESubscription();
 
   useEffect(() => {
@@ -79,6 +87,7 @@ const TablesWaiterPage = () => {
   } = useGetOrdersByRestaurantId(restId);
 
   const tables = tablesData?.data;
+
   const orders = ordersData?.data?.data?.orders;
 
   const isLoading = isLoadingTables || isLoadingOrders;
@@ -96,16 +105,6 @@ const TablesWaiterPage = () => {
   const filterOrdersByTableId = (orders, table_id) =>
     orders?.filter((order) => order.table_id === table_id);
 
-  console.log(tables);
-  console.log(orders);
-
-  const waitingTableNumbers = tables
-    .filter((table) => table.status === 'Waiting')
-    .map((table) => table.table_number)
-    .join(', ');
-
-  console.log(waitingTableNumbers);
-
   const tablesWithReadyDishes = orders
     .filter((order) => order.orderItems.some((item) => item.status === 'Ready'))
     .map((order) => order.table_id);
@@ -119,17 +118,88 @@ const TablesWaiterPage = () => {
 
   const uniqueTableNumbers = [...new Set(tableNumbers)].join(', ');
 
-  console.log(uniqueTableNumbers);
+  const filterTables = () => {
+    let tablesFiltered = tables.slice(); // Копіюємо масив tables
+
+    if (isFreeTables) {
+      tablesFiltered = tablesFiltered.filter((table) => table.status === 'Free');
+    }
+    if (isTakenTables) {
+      tablesFiltered = tablesFiltered.filter((table) => table.status === 'Taken');
+    }
+    if (isWaitingTables) {
+      tablesFiltered = tablesFiltered.filter((table) => table.status === 'Waiting');
+    }
+    if (isTablesWithReadyDishes) {
+      tablesFiltered = tablesFiltered.filter((table) => {
+        // Знаходимо замовлення для даного столу
+        const ordersForTable = orders.filter((order) => order.table_id === table._id);
+
+        // Перевіряємо, чи існує хоча б одне замовлення зі стравою в статусі "Ready"
+        const hasReadyDishes = ordersForTable.some((order) =>
+          order.orderItems.some((item) => item.status === 'Ready')
+        );
+
+        return hasReadyDishes;
+      });
+    }
+    if (isTablesWithAllPaidOrders) {
+      tablesFiltered = tablesFiltered.filter((table) => {
+        // Find orders for this table
+        const ordersForTable = orders.filter((order) => order.table_id === table._id);
+
+        // Check if all orders are in "Paid" status
+        const allOrdersPaid =
+          ordersForTable.length > 0 && ordersForTable.every((order) => order.status === 'Paid');
+
+        return allOrdersPaid;
+      });
+    }
+    return tablesFiltered;
+  };
+
+  const filteredTables = filterTables();
 
   return (
     <div className={styles.tables}>
-      <Title>Tables board</Title>
-      <div className={styles.tables__info}>
-        <Text>Taibles waiting: {waitingTableNumbers}</Text>
-        <Text>Dishes ready for tables: {uniqueTableNumbers}</Text>
+      <Title textAlign={'left'}>Tables board</Title>
+      <hr className={styles.tables__divider} />
+      <div className={styles.tables__checkbox_container}>
+        <div className={styles.tables__checkbox_container_body}>
+          <CheckBox
+            label={'Free tables'}
+            onChange={() => setIsFreeTables((prev) => !prev)}
+            checked={isFreeTables}
+            size={25}
+          />
+          <CheckBox
+            label={'Taken tables'}
+            onChange={() => setIsTakenTables((prev) => !prev)}
+            checked={isTakenTables}
+            size={25}
+          />
+          <CheckBox
+            label={'Waiting tables'}
+            onChange={() => setIsWaitinigTables((prev) => !prev)}
+            checked={isWaitingTables}
+            size={25}
+          />
+          <CheckBox
+            label={'Ready dishes'}
+            onChange={() => setIsTablesWithReadyDishes((prev) => !prev)}
+            checked={isTablesWithReadyDishes}
+            size={25}
+          />
+          <CheckBox
+            label={'All orders paid'}
+            onChange={() => setIsTablesWithAllPaidOrders((prev) => !prev)}
+            checked={isTablesWithAllPaidOrders}
+            size={25}
+          />
+        </div>
       </div>
       <div className={styles.tables__container}>
-        {tables?.map((table) => (
+        {filteredTables.map((table) => (
           <TableCard
             key={table.table_number}
             table_number={table.table_number}

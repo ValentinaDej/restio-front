@@ -2,16 +2,15 @@ import styles from './TableCard.module.scss';
 import StatusSelector from 'shared/StatusSelector/StatusSelector';
 import Status from 'shared/Status/Status';
 import Text from 'shared/Text/Text';
-import Title from 'shared/Title/Title';
 import Button from 'shared/Button/Button';
 import { NavLink } from 'react-router-dom';
 import { useChangeTableStatus } from 'api/service';
 import { toast } from 'react-hot-toast';
 import { useState } from 'react';
-import { useQueryClient } from 'react-query';
+import { GiWoodenChair } from 'react-icons/gi';
+import { MdTableBar } from 'react-icons/md';
 
-const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) => {
-  // const queryClient = useQueryClient();
+const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seats }) => {
   const changeTableStatus = useChangeTableStatus();
   const [currentStatus, setCurrentStatus] = useState(status);
 
@@ -19,8 +18,6 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
   const changeStatus = async (item) => {
     try {
       await changeTableStatus.mutateAsync({ status: item, restaurant_id, table_id });
-      // queryClient.invalidateQueries('tablesByRestaurantId');
-      // queryClient.invalidateQueries('ordersByRestaurantId');
       setCurrentStatus(item);
       return 'success';
     } catch (mutationError) {
@@ -29,24 +26,8 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
     }
   };
 
-  // console.log(orders);
   const paidOrders = orders.filter((order) => order.status === 'Paid').length;
   const openOrders = orders.filter((order) => order.status === 'Open').length;
-  // console.log(paidOrders);
-  // console.log(openOrders);
-
-  // const getReadyDishes = (orders) => {
-  //   const readyDishes = orders.flatMap((order) =>
-  //     order.orderItems
-  //       .filter((item) => item.status === 'Ready')
-  //       .map((item) => ({
-  //         name: item.dish.name,
-  //         quantity: item.quantity,
-  //       }))
-  //   );
-
-  //   return readyDishes;
-  // };
 
   const getReadyDishes = (orders) => {
     const readyItems = orders.flatMap((order) =>
@@ -80,15 +61,14 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
     return totalReadyCount;
   };
 
-  console.log(getTotalReadyDishesCount(orders));
+  const amountReadyDishes = getTotalReadyDishesCount(orders);
 
   return (
     <div className={`${styles.table} ${redAnimation}`}>
       <div className={styles.table__head}>
         <div className={styles.table__number}>
-          <Text fontSize={18} color="white">
-            {table_number}
-          </Text>
+          <MdTableBar size={21} />
+          <Text fontSize={20}>{table_number}</Text>
         </div>
         {status !== 'Waiting' ? (
           <div className={styles.table__status}>
@@ -102,35 +82,18 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
           </div>
         ) : (
           <div className={styles.table__resolve_btn}>
-            <Button size="sm" style={{ width: '161px' }} onClick={() => changeStatus('Taken')}>
-              Resolve waiting
+            <Button size="sm" style={{ width: '95px' }} onClick={() => changeStatus('Taken')}>
+              Resolve
             </Button>
           </div>
         )}
       </div>
-
-      {/* <div className={styles.table__body}>
-        <Text fontSize={20}>Table # {table_number}</Text>
-        <NavLink to={table_id}>
-          <Button size="sm" mode="outlined">
-            Details
-          </Button>
-        </NavLink>
-      </div> */}
-      <div className={styles.line}></div>
-      {/* <ul className={styles.table__list}>
-        {orders?.map((order, index) => (
-          <li className={styles.table__item} key={order._id}>
-            <Text fontSize={14}>Order # {index + 1}</Text>
-            <Status statusCurrent={order.status} statusSize="sm" />
-          </li>
-        ))}
-      </ul> */}
+      <div className={styles.line} />
       <div className={styles.table__mainBlock}>
         {orders.length > 0 && (
           <div className={styles.table__orders}>
             <div className={styles.table__orders_title}>
-              <Text>Orders</Text>
+              <Text fontSize={14}>Orders</Text>
             </div>
             <div className={styles.table__orders_list}>
               {openOrders > 0 && (
@@ -146,35 +109,28 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
                 </div>
               )}
             </div>
-            <div className={styles.line}></div>
+            <div className={styles.line} />
           </div>
         )}
         {readyDishes.length > 0 && (
           <div className={styles.table__dishes}>
             <div className={styles.table__dishes_title}>
-              <Text>Dishes</Text>
+              <Text fontSize={14}>Dishes</Text>
             </div>
-            <ul className={styles.table__dishes_list}>
-              {readyDishes.map((readyDish, index) => (
-                <li key={index} className={styles.table__dishes_item}>
-                  <Status statusCurrent="Ready" />
-                  <Text fontSize={14}>{readyDish.name}</Text>
-                  <Text fontSize={14}>{readyDish.quantity}</Text>
-                </li>
-              ))}
-            </ul>
+            <div className={styles.table__dishes_content}>
+              <Status statusCurrent="Ready" />
+              <Text>{amountReadyDishes}</Text>
+            </div>
           </div>
         )}
       </div>
       <div className={styles.line}></div>
-      <div className={styles.table__buttons}>
-        {/* <Text fontSize={20}>Table # {table_number}</Text> */}
+      <div className={styles.table__bottom}>
+        <div className={styles.table__seats}>
+          <GiWoodenChair size={21} />
+          <Text fontSize={20}>{seats}</Text>
+        </div>
 
-        {readyDishes.length > 0 && (
-          <div>
-            <Button size="sm">Served</Button>
-          </div>
-        )}
         <div className={styles.table__btn_details}>
           <NavLink to={table_id}>
             <Button size="sm" mode="outlined">
