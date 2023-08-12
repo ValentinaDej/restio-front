@@ -86,9 +86,12 @@ const TablesWaiterPage = () => {
     error: errorOrders,
   } = useGetOrdersByRestaurantId(restId);
 
+  // console.log(tablesData);
+  // console.log(ordersData);
+
   const tables = tablesData?.data;
 
-  const orders = ordersData?.data?.data?.orders;
+  const orders = ordersData?.data?.orders;
 
   const isLoading = isLoadingTables || isLoadingOrders;
 
@@ -103,11 +106,11 @@ const TablesWaiterPage = () => {
   }
 
   const filterOrdersByTableId = (orders, table_id) =>
-    orders?.filter((order) => order.table_id === table_id);
+    orders?.filter((order) => order.table_id._id === table_id);
 
   const tablesWithReadyDishes = orders
     .filter((order) => order.orderItems.some((item) => item.status === 'Ready'))
-    .map((order) => order.table_id);
+    .map((order) => order.table_id._id);
 
   const tableNumbers = tablesWithReadyDishes
     .map((tableId) => {
@@ -133,7 +136,7 @@ const TablesWaiterPage = () => {
     if (isTablesWithReadyDishes) {
       tablesFiltered = tablesFiltered.filter((table) => {
         // Знаходимо замовлення для даного столу
-        const ordersForTable = orders.filter((order) => order.table_id === table._id);
+        const ordersForTable = orders.filter((order) => order.table_id._id === table._id);
 
         // Перевіряємо, чи існує хоча б одне замовлення зі стравою в статусі "Ready"
         const hasReadyDishes = ordersForTable.some((order) =>
@@ -146,7 +149,7 @@ const TablesWaiterPage = () => {
     if (isTablesWithAllPaidOrders) {
       tablesFiltered = tablesFiltered.filter((table) => {
         // Find orders for this table
-        const ordersForTable = orders.filter((order) => order.table_id === table._id);
+        const ordersForTable = orders.filter((order) => order.table_id._id === table._id);
 
         // Check if all orders are in "Paid" status
         const allOrdersPaid =
