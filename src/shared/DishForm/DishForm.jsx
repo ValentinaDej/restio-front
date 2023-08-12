@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
-import { useNavigate, useParams } from 'react-router-dom';
 
 import Button from 'shared/Button/Button';
 import Input from 'shared/Input/Input';
@@ -11,7 +10,6 @@ import Title from 'shared/Title/Title';
 import FormSelectaGroup from './FormSelectGroup/FormSelectGroup';
 import InputValid from 'shared/InputValid/InputValid';
 import FileUploader from 'shared/FileUploader/FileUploader';
-import { createDish } from 'api/dish';
 
 import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
@@ -19,18 +17,14 @@ import { GiWeight } from 'react-icons/gi';
 import classes from './DishForm.module.scss';
 
 const DishForm = ({ onSubmit, category, ingridients }) => {
-  const [selectedType, setSelectedType] = useState('');
-  // const [filteredIngredients, setFilteredIngredients] = useState(initialData.ingredientsList);
-  const [filteredIngredients, setFilteredIngredients] = useState(ingridients);
+  const [selectedIngredients, setSelectedIngredients] = useState(new Map());
 
   const {
     register,
-    formState: { errors, isSubmitted, isSubmitSuccessful },
+    formState: { errors },
     handleSubmit,
     reset,
     control,
-    setError,
-    clearErrors,
   } = useForm({
     shouldUseNativeValidation: false,
     mode: 'onBlur',
@@ -39,54 +33,19 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'ingredients',
-  });
-
-  const { restId } = useParams();
-  const navigate = useNavigate();
   const fileUploaderRef = useRef();
 
   const cleareForm = () => {
     reset();
   };
 
-  const handleTypeChange = (event) => {
-    const newType = event.target.value;
-    setSelectedType(newType);
-    if (!newType) {
-      setFilteredIngredients(ingridients);
-    } else {
-      const filtered = ingridients?.filter((ingredient) => ingredient.type === newType);
-      setFilteredIngredients(filtered);
-    }
-  };
-
-  // const onSubmit = async (data) => {
-  //   const picture = await fileUploaderRef.current.handleUpload();
-  //   //delete data.image;
-
-  //   // if (picture) {
-  //   //   onSubmit({ ...data, picture: picture.data.imageName });
-  //   // } else {
-  //   //   onSubmit({ ...data, picture: '' });
-  //   // }
-  //   // reset();
-
-  //   console.log('Form Data:', { ...data, picture: picture.data.imageName });
-  //   fileUploaderRef.current.clearFile();
-  //   reset();
-  //   setSelectedType('');
-  //   createDish({ ...data, picture: picture.data.imageName }, restId);
-  //   navigate(-1);
-  // };
-
-  const handleFormSubmit = async (data) => {
+  const handleFormSubmit = async (data, event) => {
+    event.preventDefault();
+    const selectedIngredientIds = Array.from(selectedIngredients.keys());
     const picture = await fileUploaderRef.current.handleUpload();
 
     if (picture) {
-      onSubmit({ ...data, picture: picture.data.imageName });
+      onSubmit({ ...data, picture: picture.data.imageName, ingredients: selectedIngredientIds });
     } else {
       onSubmit({ ...data, picture: '' });
     }
@@ -95,21 +54,11 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
     fileUploaderRef.current.clearFile();
   };
 
-  const handleFormKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
-  };
-
   return (
     <div className={classes.wrapper}>
       <div className={classes.form}>
         {/* <Title mode="h3">Create dish</Title> */}
-        <form
-          // onSubmit={handleSubmit(onSubmit)}
-          onSubmit={handleSubmit(handleFormSubmit)}
-          onKeyDown={handleFormKeyDown}
-        >
+        <form onSubmit={handleSubmit(handleFormSubmit)}>
           <InputValid
             name="name"
             placeholder="Dish name"
@@ -241,18 +190,9 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
           </div>
           <div className={classes.column__wrapper}>
             <FormSelectaGroup
-              selectedType={selectedType}
-              handleTypeChange={handleTypeChange}
-              filteredIngredients={ingridients}
-              control={control}
-              fields={fields}
-              append={append}
-              remove={remove}
-              setError={setError}
-              error={errors}
-              clearErrors={clearErrors}
-              isSubmitted={isSubmitted}
-              isSubmitSuccessful={isSubmitSuccessful}
+              ingridients={ingridients}
+              selectedIngredients={selectedIngredients}
+              setSelectedIngredients={setSelectedIngredients}
             />
           </div>
 

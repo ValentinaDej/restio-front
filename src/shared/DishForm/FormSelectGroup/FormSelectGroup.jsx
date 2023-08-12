@@ -1,107 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import { Controller } from 'react-hook-form';
+import React, { useState, useRef } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { FaSearch } from 'react-icons/fa';
 import { BiSolidTrash } from 'react-icons/bi';
 import { FaCheck } from 'react-icons/fa';
 
+import DraggableIngredient from '../DraggableIngredient/DraggableIngredient';
+
 import Select from 'shared/Select/Select';
-import InputValid from 'shared/InputValid/InputValid';
 import Text from 'shared/Text/Text';
 
 import classes from './FormSelectGroup.module.scss';
 
-const FormSelectGroup = ({
-  selectedType,
-  handleTypeChange,
-  filteredIngredients,
-  control,
-  fields,
-  append,
-  remove,
-  setError,
-  clearErrors,
-  error,
-  isSubmitted,
-  isSubmitSuccessful,
-}) => {
+const FormSelectGroup = ({ ingridients, selectedIngredients, setSelectedIngredients }) => {
   const [inputValue, setInputValue] = useState('');
-  const [selectedIngredients, setSelectedIngredients] = useState(new Set());
+  const [selectedType, setSelectedType] = useState('');
+  const firstIngredientRef = useRef(null);
 
-  const uniqueTypes = Array.from(
-    new Set(filteredIngredients?.map((ingredient) => ingredient.type))
-  );
-
+  const uniqueTypes = Array.from(new Set(ingridients?.map((ingredient) => ingredient.type)));
   const ingridientsTypes = uniqueTypes
     .filter((type) => type !== undefined)
     .sort((a, b) => a.localeCompare(b));
 
-  useEffect(() => {
-    setInputValue(inputValue || ''); // Встановіть пустий рядок, якщо inputValue неконтрольований
-  }, [inputValue]);
+  const ingridientsToShow = ingridients?.filter((ingredient) => {
+    const nameMatchesInput = ingredient.name.toLowerCase().includes(inputValue.toLowerCase());
+    const isSelectedTypeAll = selectedType === '';
+    const isSelectedTypeMatching = ingredient.type === selectedType;
+    const isSelectedTypeSelected = selectedType === 'Selected';
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      clearErrors('ingredients');
-      return;
+    if (isSelectedTypeSelected) {
+      return selectedIngredients.has(ingredient._id);
     }
 
-    if (fields.length === 0 && isSubmitted) {
-      setError('ingredients', {
-        type: 'manual',
-        message: 'At least one ingredient is required',
-      });
-    } else {
-      clearErrors('ingredients');
-    }
-  }, [fields, isSubmitted, isSubmitSuccessful, setError, clearErrors]);
+    return (isSelectedTypeAll || isSelectedTypeMatching) && nameMatchesInput;
+  });
 
-  // const handleAddIngredient = (ingredientId) => {
-  //   console.log(fields);
-  //   const isAlreadyAdded = fields.some((field) => {
-  //     const valuesWithoutId = Object.values(field)
-  //       .filter((key) => key !== field.id)
-  //       .join('');
-  //     return valuesWithoutId.toString() === ingredientId.toString();
-  //   });
+  const handleTypeChange = (event) => {
+    const newType = event.target.value;
 
-  //   if (!isAlreadyAdded) {
-  //     append(ingredientId.toString());
-  //   }
-  // };
-
-  const handleInputKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-
-      const enteredIngredient = event.target.value;
-      const matchedIngredient = filteredIngredients.find(
-        (ingredient) => ingredient.name.toLowerCase() === enteredIngredient.toLowerCase()
-      );
-
-      if (matchedIngredient) {
-        const isAlreadyAdded = fields.some((field) => {
-          const valuesWithoutId = Object.values(field)
-            .filter((key) => key !== field.id)
-            .join('');
-          return valuesWithoutId.toString() === matchedIngredient._id.toString();
-        });
-        if (!isAlreadyAdded) {
-          append(matchedIngredient._id.toString());
-        }
-      }
-      setInputValue('');
-    }
+    setSelectedType(newType);
   };
 
-  const handleAddIngredient = (ingredientId) => {
-    setSelectedIngredients((prevIngredients) => new Set([...prevIngredients, ingredientId]));
-  };
-
-  const handleRemoveIngredient = (ingredientId) => {
+  const handleToggleIngredient = (ingredientId, ingredientName) => {
     setSelectedIngredients((prevIngredients) => {
-      const updatedIngredients = new Set(prevIngredients);
-      updatedIngredients.delete(ingredientId);
+      const updatedIngredients = new Map(prevIngredients);
+      if (updatedIngredients.has(ingredientId)) {
+        updatedIngredients.delete(ingredientId);
+      } else {
+        updatedIngredients.set(ingredientId, ingredientName);
+      }
       return updatedIngredients;
     });
   };
@@ -110,76 +58,41 @@ const FormSelectGroup = ({
     setInputValue(event.target.value);
   };
 
-  const handleToggleIngredient = (ingredientId) => {
-    setSelectedIngredients((prevIngredients) => {
-      const updatedIngredients = new Set(prevIngredients);
-      if (updatedIngredients.has(ingredientId)) {
-        updatedIngredients.delete(ingredientId);
-      } else {
-        updatedIngredients.add(ingredientId);
+  const handleInputKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (ingridientsToShow.length === 1) {
+        const matchedIngredient = ingridientsToShow[0];
+        handleToggleIngredient(matchedIngredient._id, matchedIngredient.name);
+        setInputValue('');
+      } else if (ingridientsToShow.length > 1) {
+        firstIngredientRef.current.focus();
       }
-      return updatedIngredients;
-    });
+    }
   };
 
-  const filteredIngredientsToShow = filteredIngredients?.filter((ingredient) => {
-    const nameMatchesInput = ingredient.name.toLowerCase().includes(inputValue.toLowerCase());
-    const isSelectedTypeAll = selectedType === '';
-    const isSelectedTypeMatching = ingredient.type === selectedType;
-    return (isSelectedTypeAll || isSelectedTypeMatching) && nameMatchesInput;
-  });
+  const moveIngredient = (fromIndex, toIndex) => {
+    const selectedIngredientsArray = Array.from(selectedIngredients.entries());
+    const [movedIngredient] = selectedIngredientsArray.splice(fromIndex, 1);
+    selectedIngredientsArray.splice(toIndex, 0, movedIngredient);
+    const newSelectedIngredients = new Map(selectedIngredientsArray);
+    setSelectedIngredients(newSelectedIngredients);
+  };
 
   return (
     <div className={classes.group__wrapper}>
       <div className={classes.column__wrapper}>
         <div className={classes.column}>
-          {/* <input
-            name="ingredient"
-            placeholder="Your ingredient"
-            autoComplete="off"
-            size="sm"
-            onChange={handleInputChange}
-            onKeyDown={handleInputKeyDown}
-            value={inputValue}
-            icon={FaSearch}
-            //error={error.ingredients}
-          /> */}
           <Select id="type" value={selectedType} onChange={handleTypeChange} size="sm">
             <option value="">All</option>
+            <option value="Selected">Selected</option>
             {ingridientsTypes.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
             ))}
           </Select>
-
           <div className={classes.section__select}>
-            {/* <ul>
-              <li>
-                <input
-                  name="ingredient"
-                  placeholder="Your ingredient"
-                  autoComplete="off"
-                  size="sm"
-                  onChange={handleInputChange}
-                  onKeyDown={handleInputKeyDown}
-                  value={inputValue}
-                />
-                <FaSearch className={classes.icon__search} />
-              </li>
-              {filteredIngredientsToShow?.map((ingredient) => {
-                return (
-                  <li
-                    key={ingredient._id}
-                    onClick={() => handleAddIngredient(ingredient._id)}
-                    className={classes.section__item_select}
-                  >
-                    {ingredient.name}
-                  </li>
-                );
-              })}
-            </ul>
-             */}
             <ul>
               <li className={classes.search__icon}>
                 <input
@@ -193,13 +106,15 @@ const FormSelectGroup = ({
                 />
                 <FaSearch className={classes.icon__search} />
               </li>
-              {filteredIngredientsToShow?.map((ingredient) => (
+              {ingridientsToShow?.map((ingredient, index) => (
                 <li
                   key={ingredient._id}
-                  onClick={() => handleToggleIngredient(ingredient._id)}
+                  onClick={() => handleToggleIngredient(ingredient._id, ingredient.name)}
                   className={`${classes.section__item_select} ${
                     selectedIngredients.has(ingredient._id) ? classes.selected : ''
                   }`}
+                  ref={index === 0 ? firstIngredientRef : null}
+                  tabIndex={0}
                 >
                   {ingredient.name}
                   <div className={classes.checkbox}>
@@ -211,33 +126,28 @@ const FormSelectGroup = ({
           </div>
         </div>
         <div className={classes.column}>
-          <div className={classes.section}>
-            <div className={classes.field__wrapper}>
-              <Text mode="p" textAlign="left" fontSize={16} fontWeight={600}>
-                Selected ingridients:
-              </Text>
-            </div>
-            {Array.from(selectedIngredients).map((field, index) => (
-              <div key={field}>
-                {console.log(field)}
-                {console.log(filteredIngredients)}
-                <Controller
-                  name={`ingredients[${index}]`}
-                  control={control}
-                  render={({ field }) => (
-                    <div className={classes.section__item}>
-                      <input {...field} type="hidden" />
-                      {filteredIngredients.find((ing) => ing._id.toString() === field.toString())
-                        ?.name || 'Unknown Ingredient'}
-                      {/* <div className={classes.icon__wrapper} onClick={() => remove(index)}>
-                        <BiSolidTrash />
-                      </div> */}
-                    </div>
-                  )}
-                />
+          <DndProvider backend={HTML5Backend}>
+            <div className={classes.section}>
+              <div className={classes.field__wrapper}>
+                <Text mode="p" textAlign="left" fontSize={16} fontWeight={600}>
+                  Selected ingridients:
+                </Text>
               </div>
-            ))}
-          </div>
+              {Array.from(selectedIngredients.entries()).map(
+                ([ingredientId, ingredientName], index) => (
+                  // <div key={ingredientId}>{ingredientName}</div>
+                  <DraggableIngredient
+                    showIcon={true}
+                    key={ingredientId}
+                    ingredientId={ingredientId}
+                    ingredientName={ingredientName}
+                    index={index}
+                    moveIngredient={moveIngredient}
+                  />
+                )
+              )}
+            </div>
+          </DndProvider>
         </div>
       </div>
     </div>

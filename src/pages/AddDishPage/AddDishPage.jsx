@@ -83,7 +83,6 @@ const AddDishPage = () => {
       </main>
     </div>
   );
-  // return <DishForm />;
 };
 
 export default AddDishPage;
