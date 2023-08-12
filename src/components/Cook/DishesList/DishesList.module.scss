@@ -1,17 +1,6 @@
 .list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 25px;
-  background-color: var(--color-white);
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
-  padding: 20px 10px;
-  border: 1px dashed rgb(212, 211, 211);
-  border-radius: 50px 50px 25px 25px;
-  border-radius: 20px;
-  width: 50%;
-
-  @media screen and (min-width: 768px) {
-    padding: 30px 20px;
-  }
+  width: 100%;
 }

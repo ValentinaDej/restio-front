@@ -28,9 +28,9 @@ const DishesItem = ({
     query: '(max-width: 767px)',
   });
 
-  const sizeButton = isMobile ? 'sm' : 'md';
+  const sizeButton = isMobile ? 'md' : 'lg';
   const dateInMilliseconds = new Date(create).getTime();
-  console.log(dateInMilliseconds);
+  const timeForWaiting = Math.round((Date.now() - dateInMilliseconds) / 60000);
 
   return (
     <li className={`${styles.item}`}>
@@ -40,6 +40,11 @@ const DishesItem = ({
           <IoIosClose size={24} />
           <Text fontSize={24}>{quantity}</Text>
         </div>
+        <p className={`${styles.information__timeSection}`}>
+          Waiting: <span className={`${styles.information__time}`}>{timeForWaiting} min</span>
+        </p>
+      </div>
+      <div className={`${styles.information}`}>
         <div className={`${styles.information__data}`}>
           <MdTableBar size={24} color={'#959895'} />
           <span>{tableNumber}</span>
@@ -47,9 +52,6 @@ const DishesItem = ({
         <div className={`${styles.information__data}`}>
           <BiDish size={24} color={'#959895'} />
           <span>{orderNumber}</span>
-        </div>
-        <div>
-          <p>Waiting time: </p>
         </div>
       </div>
 
@@ -60,7 +62,7 @@ const DishesItem = ({
           size={sizeButton}
           className={`${styles.button}`}
         >
-          Start cooking
+          {status === 'Ordered' ? 'Start cooking' : 'Return to сooking'}
         </Button>
       )}
       {status === 'In progress' && (
@@ -70,7 +72,7 @@ const DishesItem = ({
           size={sizeButton}
           className={`${styles.button}`}
         >
-          Done
+          Dish ready
         </Button>
       )}
     </li>
