@@ -24,7 +24,9 @@ export const useGetOrdersByTableId = ({ restId, tableId }) => {
     ['orders'],
     async () => await instance.get(`orders/${restId}/table/${tableId}`),
     {
-      refetchInterval: 10000,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
     }
   );
   return queryResp;

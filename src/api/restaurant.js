@@ -6,12 +6,14 @@ export const getRestaurant = async (restId) => {
   return data;
 };
 
-export const useGetStatistics = (restId) => {
+export const useGetStatistics = (restId, timestamp) => {
   const queryResp = useQuery(
     ['statistics'],
-    async () => await instance.get(`/restaurants/${restId}/statistics`),
+    async () => await instance.get(`/restaurants/${restId}/statistics?timestamp=${timestamp}`),
     {
-      refetchInterval: 30000,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
     }
   );
   return queryResp;

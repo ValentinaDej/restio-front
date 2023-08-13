@@ -3,14 +3,37 @@ import { useParams } from 'react-router-dom';
 import Loader from 'shared/Loader/Loader';
 import cls from './StatisticsPage.module.scss';
 import { Statisctics } from 'components/Statistics/Statisctics';
+import { DropDown } from 'shared/DropDown/DropDown';
+import { useEffect, useState } from 'react';
 
 const StatisticsPage = () => {
   const { restId } = useParams();
-  const { data: data, isLoading } = useGetStatistics(restId);
+  const [timestamp, setTimestamp] = useState('year');
+  const { data: data, isLoading, refetch } = useGetStatistics(restId, timestamp);
+
+  useEffect(() => {
+    if (timestamp) {
+      refetch();
+    }
+  }, [refetch, timestamp]);
 
   return (
     <div className={cls.main}>
-      {isLoading ? <Loader /> : <Statisctics monthlyStatistics={data?.data.statistics} />}
+      <span className={cls.span}>
+        Get statisctics by
+        <DropDown
+          options={[
+            { value: 'year', label: 'Year' },
+            { value: 'month', label: 'Month' },
+            { value: 'week', label: 'Week' },
+          ]}
+          onSelect={(e) => {
+            setTimestamp(e.value);
+          }}
+          defaultValue="Year"
+        />
+      </span>
+      {isLoading ? <Loader /> : <Statisctics statistics={data?.data?.statistics} />}
     </div>
   );
 };

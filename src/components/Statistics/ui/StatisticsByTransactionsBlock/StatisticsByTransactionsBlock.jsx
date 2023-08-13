@@ -9,14 +9,14 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import cls from './StatisticsByYearBox.module.scss';
+import cls from './StatisticsByTransactionsBlock.module.scss';
 import Title from 'shared/Title/Title';
 
-export const StatisticsByYearBox = memo(({ monthlyStatistics }) => {
+export const StatisticsByTransactionsBlock = memo(({ monthlyStatistics }) => {
   const data = monthlyStatistics;
   return (
     <div className={cls.box}>
-      <Title fontSize={22}>Transactions per month for this year</Title>
+      <Title fontSize={22}>Number of transactions</Title>
       <ResponsiveContainer width="100%" height={485}>
         <BarChart
           width={500}

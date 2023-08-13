@@ -15,10 +15,10 @@ import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals
 
 export const TotalBlock = memo(({ monthlyStatistics }) => {
   const data = monthlyStatistics;
-  const totaByYear = monthlyStatistics.reduce((acc, el) => el.amount + acc, 0);
+  const totaByYear = data?.reduce((acc, el) => el.amount + acc, 0);
   return (
     <div className={cls.box}>
-      <Title fontSize={22}>Total earnings by year ${formatNumberWithTwoDecimals(totaByYear)}</Title>
+      <Title fontSize={22}>Total earnings ${formatNumberWithTwoDecimals(totaByYear)}</Title>
       <ResponsiveContainer width="100%" height={462}>
         <AreaChart
           width={500}

@@ -1,13 +1,14 @@
-import { StatisticsByYearBox } from './ui/StatisticsByYearBox/StatisticsByYearBox';
 import { TotalBlock } from './ui/TotalBlock/TotalBlock';
 import cls from './Statisctics.module.scss';
 import { TransactionsTable } from './ui/TransactionsTable/TransactionsTable';
-export const Statisctics = ({ monthlyStatistics }) => {
+import { StatisticsByTransactionsBlock } from './ui/StatisticsByTransactionsBlock/StatisticsByTransactionsBlock';
+
+export const Statisctics = ({ statistics }) => {
   return (
     <div>
       <div className={cls.topCharts}>
-        <StatisticsByYearBox monthlyStatistics={monthlyStatistics} />
-        <TotalBlock monthlyStatistics={monthlyStatistics} />
+        <StatisticsByTransactionsBlock monthlyStatistics={statistics} />
+        <TotalBlock monthlyStatistics={statistics} />
       </div>
       <TransactionsTable />
     </div>
