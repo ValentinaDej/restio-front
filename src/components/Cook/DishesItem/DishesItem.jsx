@@ -40,11 +40,15 @@ const DishesItem = ({
           <IoIosClose size={24} />
           <Text fontSize={24}>{quantity}</Text>
         </div>
-        <p className={`${styles.information__timeSection}`}>
-          Waiting: <span className={`${styles.information__time}`}>{timeForWaiting} min</span>
-        </p>
+        <div className={`${styles.information__timeSection}`}>
+          <p>Waiting:</p>
+          <div className={`${styles.information__time}`}>
+            <p>{timeForWaiting}</p>
+            <p> min</p>
+          </div>
+        </div>
       </div>
-      <div className={`${styles.information}`}>
+      <div className={`${styles.information__order}`}>
         <div className={`${styles.information__data}`}>
           <MdTableBar size={24} color={'#959895'} />
           <span>{tableNumber}</span>
