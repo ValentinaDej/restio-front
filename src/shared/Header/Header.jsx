@@ -20,8 +20,8 @@ const Header = ({ logo, restaurantName, role }) => {
   const restaurantId = useSelector(getRestaurantId);
   const { pathname } = useLocation();
   const arrParams = pathname.split('/');
-  const restId = arrParams[1];
-  const tableId = arrParams[2];
+  const restId = arrParams[0];
+  const tableId = arrParams[1];
   const logoutHandler = () => {
     dispatch(logout());
   };

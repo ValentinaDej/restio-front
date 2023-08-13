@@ -63,6 +63,7 @@ const TablesWaiterPage = () => {
   }, [subscription]);
 
   const { restId } = useParams();
+
   const {
     data: tablesData,
     isLoading: isLoadingTables,
@@ -78,7 +79,7 @@ const TablesWaiterPage = () => {
   } = useGetOrdersByRestaurantId(restId);
 
   const tables = tablesData?.data;
-  const orders = ordersData?.data.data.orders;
+  const orders = ordersData?.data.orders;
 
   const isLoading = isLoadingTables || isLoadingOrders;
 

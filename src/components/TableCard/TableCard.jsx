@@ -37,7 +37,7 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) =>
       </div>
       <div className={styles.table__body}>
         <Text fontSize={20}>Table # {table_number}</Text>
-        <NavLink to={`waiter/tables/${table_id}`}>
+        <NavLink to={table_id}>
           <Button size="sm" mode="outlined">
             Details
           </Button>

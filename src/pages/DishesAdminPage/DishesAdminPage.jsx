@@ -19,7 +19,7 @@ const DishesAdminPage = () => {
   });
 
   const navigateToAddDish = () => {
-    navigate(`/admin/${restId}/dishes/new`);
+    navigate(`/${restId}/dishes/new`);
   };
 
   const handleDelete = async (id, restId) => {
