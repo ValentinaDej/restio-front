@@ -37,16 +37,6 @@
   align-items: center;
 }
 
-.checkbox__wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
 .button__wrapper {
   display: flex;
   justify-content: center;
@@ -57,5 +47,16 @@
     &:last-child {
       margin-right: 0;
     }
+  }
+}
+
+.row__wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.rowfield__wrapper {
+  &:not(:last-child) {
+    margin-right: 1rem;
   }
 }

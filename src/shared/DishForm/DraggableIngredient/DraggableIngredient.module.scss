@@ -1,10 +1,13 @@
 .draggableIngredient {
   display: inline-block;
-  margin-right: 15px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  padding: 0.5rem 1rem;
-  margin-bottom: 10px;
-  background-color: #fff;
+  border: 1px solid var(--color-orange);
+  border-radius: 30px;
+  padding: 0.2rem 1.5rem;
+  font-size: 0.8rem;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  background-color: var(--color-white);
+  font-weight: var(--font-semi-bold);
+  font-family: var(--font-family);
   cursor: move;
 }

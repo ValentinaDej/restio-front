@@ -4,9 +4,13 @@ import { AiOutlineCheck } from 'react-icons/ai';
 import cls from './CheckBox.module.scss';
 import { nanoid } from '@reduxjs/toolkit';
 import { classNames } from 'helpers/classNames';
+import { forwardRef } from 'react';
 
-export const CheckBox = memo(
-  ({ label, disabled, checked, onChange, className, size = 20, ...props }) => {
+export const CheckBox = forwardRef(
+  (
+    { label, disabled, checked, onChange, className, size = 20, register, rules, name, ...props },
+    ref
+  ) => {
     const inputClasses = `visually-hidden ${cls.checkBox}`;
     const [checkBoxId] = useState(nanoid());
 
@@ -18,12 +22,14 @@ export const CheckBox = memo(
       <div className={className}>
         <label htmlFor={checkBoxId} className={cls.label}>
           <input
+            ref={ref}
             type="checkbox"
             id={checkBoxId}
             checked={checked}
             onChange={onChange}
             disabled={disabled}
             className={inputClasses}
+            {...(register && register(name, rules))}
             {...props}
           />
           <AiOutlineCheck className={classNames(cls.checkIcon, mods, [])} size={size} />
