@@ -20,11 +20,7 @@ export const OrdersList = ({
 }) => {
   const [sortOrderBy, setSortOrderBy] = useState('None');
   const { payment } = useSelector(getIsLoading);
-  const {
-    data,
-    isLoadingDishStatus,
-    mutateAsync: mutateDishStatus,
-  } = useUpdateDishStatusByWaiter();
+  const { mutateAsync: mutateDishStatus } = useUpdateDishStatusByWaiter();
 
   const selectOrder = useCallback(
     (id, totalPrice) => {
@@ -93,11 +89,11 @@ export const OrdersList = ({
         <Text>Sort by</Text>
         <DropDown
           options={[
-            { value: 'None', label: 'Latest' },
+            { value: 'None', label: 'Newest' },
             { value: 'Open', label: 'Open' },
             { value: 'Paid', label: 'Paid' },
           ]}
-          defaultValue="Latest"
+          defaultValue="Newest"
           onSelect={(e) => setSortOrderBy(e.value)}
         />
       </div>
