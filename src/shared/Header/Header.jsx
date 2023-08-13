@@ -49,16 +49,16 @@ const Header = ({ logo, restaurantName, role }) => {
       )}
       {role === 'admin' && (
         <div className={classes.header__wrapper}>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}/dishes`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/dishes`}>
             <MdRestaurantMenu className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}/personnel`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/personnel`}>
             <IoPeopleSharp className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}/tables`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/waiter/tables`}>
             <MdTableBar className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}/cook`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/cook`}>
             <GiCook className={classes.header__icon} />
           </NavLink>
         </div>

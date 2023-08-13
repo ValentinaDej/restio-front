@@ -60,7 +60,7 @@ const AdminPageContainer = ({
   };
 
   const navigateToEdit = (id) => {
-    navigate(`/admin/${restId}/${value[variant]}/edit/${id}`);
+    navigate(`/${restId}/${value[variant]}/edit/${id}`);
   };
 
   const filterList = initData?.filter((item) =>
