@@ -84,8 +84,8 @@
 .section__select {
   @extend %base-style-section;
   display: inline-block;
-  height: 100px;
-  margin-top: 10px;
+  height: 150px;
+  margin-top: 0.5rem;
   cursor: pointer;
 }
 
@@ -131,4 +131,17 @@
   margin-right: 8px;
   background-color: #fff;
   color: var(--color-orange);
+}
+
+.icon__search {
+  height: 18px;
+  width: 18px;
+  color: var(--color-orange);
+  border-bottom: 1px dotted var(--color-orange-transparent);
+}
+
+.item__search {
+  width: 100%;
+  outline: none;
+  border-bottom: 1px dotted var(--color-orange-transparent);
 }

@@ -15,6 +15,7 @@ const InputValid = ({
   register,
   error,
   size,
+  label,
 }) => {
   const hasError = error !== undefined;
 
@@ -28,6 +29,7 @@ const InputValid = ({
           autoComplete={autoComplete}
           size={size}
           value={value}
+          label={label}
         />
         {IconComponent && (
           <div className={classes.icon__wrapper}>

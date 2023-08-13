@@ -29,11 +29,7 @@ const Input = forwardRef(
     const hasError = !!error;
 
     return (
-      <div
-        className={`${styles.input_wrapper} ${isCheckbox ? styles.checkbox_wrapper : ''} ${
-          isFullWidth ? styles.full_width : ''
-        }`}
-      >
+      <div className={styles.input_wrapper}>
         <label className={`${styles.label} ${styles[`label_${size}`]}`} htmlFor={id}>
           {label}
         </label>

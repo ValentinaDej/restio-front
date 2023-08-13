@@ -2,25 +2,28 @@ import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
+import { FaMoneyBillAlt } from 'react-icons/fa';
+import { GiWeight } from 'react-icons/gi';
+
 import Button from 'shared/Button/Button';
-import Input from 'shared/Input/Input';
 import Select from 'shared/Select/Select';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import Text from 'shared/Text/Text';
-import Title from 'shared/Title/Title';
 import InputValid from 'shared/InputValid/InputValid';
 import FileUploader from 'shared/FileUploader/FileUploader';
 import DishTypeOptions from './DishTypeOptions/DishTypeOptions';
 import SelectIngridientSection from './SelectIngridientSection/SelectIngridientSection';
 import SelectedIngridientsSection from './SelectedIngridientsSection/SelectedIngridientsSection';
 
-import { FaMoneyBillAlt } from 'react-icons/fa';
-import { GiWeight } from 'react-icons/gi';
-
 import classes from './DishForm.module.scss';
 
 const DishForm = ({ onSubmit, category, ingridients }) => {
   const [selectedIngredients, setSelectedIngredients] = useState(new Map());
+  const [inputValue, setInputValue] = useState('');
+  const [selectedType, setSelectedType] = useState('');
+
+  const firstIngredientRef = useRef(null);
+  const fileUploaderRef = useRef();
 
   const {
     register,
@@ -35,12 +38,6 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
       ingredients: [],
     },
   });
-
-  const fileUploaderRef = useRef();
-
-  const cleareForm = () => {
-    reset();
-  };
 
   const handleFormSubmit = async (data, event) => {
     event.preventDefault();
@@ -57,9 +54,10 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
     fileUploaderRef.current.clearFile();
   };
 
-  const [inputValue, setInputValue] = useState('');
-  const [selectedType, setSelectedType] = useState('');
-  const firstIngredientRef = useRef(null);
+  const cleareForm = () => {
+    reset();
+    setSelectedIngredients(new Map());
+  };
 
   const uniqueTypes = Array.from(new Set(ingridients?.map((ingredient) => ingredient.type)));
   const ingridientsTypes = uniqueTypes
@@ -125,8 +123,10 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.form}>
-        {/* <Title mode="h3">Create dish</Title> */}
         <form onSubmit={handleSubmit(handleFormSubmit)}>
+          <div className={classes.field__wrapper_right}>
+            <CheckBox label="active" name="isActive" register={register} />
+          </div>
           <InputValid
             name="name"
             placeholder="Dish name"
@@ -142,9 +142,7 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
             }}
             register={register}
           />
-          <div>
-            <CheckBox label="Active" name="isActive" register={register} />
-          </div>
+
           <div className={classes.column__wrapper}>
             <div className={classes.column}>
               <div className={classes.img__wrapper}>
@@ -239,15 +237,17 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
               />
             </div>
           </div>
-          <SelectedIngridientsSection
-            selectedIngredients={selectedIngredients}
-            moveIngredient={moveIngredient}
-          />
+          {selectedIngredients.size > 0 && (
+            <SelectedIngridientsSection
+              selectedIngredients={selectedIngredients}
+              moveIngredient={moveIngredient}
+            />
+          )}
           <div className={classes.button__wrapper}>
             <Button type="submit" size="sm">
               Create
             </Button>
-            <Button type="button" onClick={cleareForm} size="sm">
+            <Button type="button" mode={'outlined'} onClick={cleareForm} size="sm">
               Clear
             </Button>
           </div>

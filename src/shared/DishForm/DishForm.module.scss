@@ -13,6 +13,7 @@
 }
 
 .column__wrapper {
+  border: 1px solid red;
   display: flex;
   flex-direction: column;
   @media screen and (min-width: 768px) {
@@ -21,8 +22,12 @@
 }
 
 .column {
+  border: 1px solid red;
   flex: 1;
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   @media screen and (min-width: 768px) {
     &:not(:last-child) {
       margin-right: 1rem;
@@ -32,6 +37,7 @@
 }
 
 .img__wrapper {
+  border: 1px solid red;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,6 +46,7 @@
 .button__wrapper {
   display: flex;
   justify-content: center;
+  margin-top: 0.5rem;
 
   button {
     margin-right: 5px;
@@ -59,4 +66,10 @@
   &:not(:last-child) {
     margin-right: 1rem;
   }
+}
+
+.field__wrapper_right {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
 }

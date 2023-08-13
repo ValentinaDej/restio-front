@@ -18,7 +18,7 @@ const SelectIngridientSection = ({
   handleToggleIngredient,
 }) => {
   return (
-    <div>
+    <>
       <Select id="type" value={selectedType} onChange={handleTypeChange} size="sm">
         <option value="">All</option>
         <option value="Selected">Selected</option>
@@ -30,15 +30,16 @@ const SelectIngridientSection = ({
       </Select>
       <div className={classes.section__select}>
         <ul>
-          <li className={classes.search__icon}>
+          <li className={classes.section__item_select}>
             <input
               name="ingredient"
-              placeholder="Your ingredient"
+              placeholder="find ingredient"
               autoComplete="off"
               size="sm"
               onChange={handleInputChange}
               onKeyDown={handleInputKeyDown}
               value={inputValue}
+              className={classes.item__search}
             />
             <FaSearch className={classes.icon__search} />
           </li>
@@ -61,7 +62,7 @@ const SelectIngridientSection = ({
           ))}
         </ul>
       </div>
-    </div>
+    </>
   );
 };
 

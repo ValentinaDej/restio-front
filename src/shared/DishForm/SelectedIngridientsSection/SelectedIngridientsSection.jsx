@@ -10,7 +10,7 @@ const SelectedIngridientsSection = ({ selectedIngredients, moveIngredient }) => 
     <DndProvider backend={HTML5Backend}>
       <div className={classes.section}>
         <div className={classes.field__wrapper}>
-          <Text mode="p" textAlign="left" fontSize={16} fontWeight={600}>
+          <Text mode="p" textAlign="left" fontSize={14} fontWeight={600}>
             Selected ingridients:
           </Text>
         </div>
