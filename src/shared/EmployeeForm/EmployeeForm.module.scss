@@ -19,6 +19,7 @@
     flex-direction: column; /* Arrange items in a column */
     justify-content: flex-start; /* Align items at the top of the container */
     align-items: center;
+    max-width: 330px;
   }
 
   & .showPassword {
@@ -40,7 +41,20 @@
 
   & .fileUploader__wrapper {
     margin-top: 15px;
+    width: 100%;
+    max-width: 100%;
   }
+}
+
+.passwordInputWrapper {
+  display: flex;
+  flex-direction: row;
+  margin-right: 15px;
+}
+
+.showPassword {
+  margin-left: -30px;
+  z-index: 15;
 }
 
 .error {
