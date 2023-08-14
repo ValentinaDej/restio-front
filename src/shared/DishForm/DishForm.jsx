@@ -138,7 +138,7 @@ const DishForm = ({
   };
 
   return (
-    <div className={classes.wrapper}>
+    <div>
       <div className={classes.form}>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
           <div className={classes.field__wrapper_right}>
@@ -277,18 +277,27 @@ const DishForm = ({
 };
 
 DishForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  category: PropTypes.arrayOf(PropTypes.string).isRequired,
   initialState: PropTypes.shape({
     name: PropTypes.string,
     type: PropTypes.string,
     vegetarian: PropTypes.bool,
     spicy: PropTypes.bool,
     pescatarian: PropTypes.bool,
-    portionWeigh: PropTypes.number,
+    portionWeight: PropTypes.number,
     price: PropTypes.number,
     ingredients: PropTypes.arrayOf(PropTypes.string),
   }),
-  buttonText: PropTypes.string,
-  size: PropTypes.oneOf(['sm', 'md', 'lg']),
+  ingridients: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+    })
+  ),
+  selectedIngredientsMap: PropTypes.instanceOf(Map),
+  isEditing: PropTypes.bool,
 };
 
 DishForm.defaultProps = {
@@ -298,11 +307,13 @@ DishForm.defaultProps = {
     vegetarian: false,
     spicy: false,
     pescatarian: false,
-    portionWeigh: 0,
+    portionWeight: 0,
     price: 0,
     ingredients: [],
   },
-  size: 'sm',
+  ingridients: [],
+  selectedIngredientsMap: new Map(),
+  isEditing: false,
 };
 
 export default DishForm;

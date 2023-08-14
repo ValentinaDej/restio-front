@@ -30,7 +30,7 @@ const SelectIngridientSection = ({
       <div className={classes.section__select}>
         <table className={classes.ingredients__table}>
           <thead>
-            <tr className={classes.table__header}>
+            <tr>
               <th className={classes.header__cell}>
                 <select
                   id="type"
