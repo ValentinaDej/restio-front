@@ -46,7 +46,6 @@ export const ListTopBox = ({
       payOrders({
         rest_id: urlParams.restId,
         amount: totalPrice,
-        type: 'online',
         info: ordersIDs.join(','),
         frontLink,
       })

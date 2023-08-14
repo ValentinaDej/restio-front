@@ -60,7 +60,6 @@ export const Checkout = ({
       payOrders({
         rest_id: urlParams.restId,
         amount,
-        type: 'online',
         info: selectedOrders.join(','),
         frontLink,
       })
