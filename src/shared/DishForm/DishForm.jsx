@@ -211,7 +211,7 @@ const DishForm = ({
                         required: 'Dish weight is a required field',
                         pattern: {
                           value: /^[1-9]\d{0,3}$|^10000$/,
-                          message: 'Dish weight must be a number between 1 and 10000',
+                          message: 'Must be a number between 1 and 10000',
                         },
                       }}
                       register={register}
@@ -231,8 +231,7 @@ const DishForm = ({
                         required: 'Dish price is a required field',
                         pattern: {
                           value: /^[1-9]\d{0,3}$|^10000$/,
-                          message:
-                            'Dish price must be a positive number with up to 2 decimal places',
+                          message: 'Must be a positive number with up to 2 decimal places',
                         },
                       }}
                       register={register}
