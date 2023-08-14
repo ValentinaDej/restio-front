@@ -6,7 +6,7 @@ import Text from 'shared/Text/Text';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import SelectIngridients from './SelectIngridients/SelectIngridients';
 
-import classes from './SelectIngridientSection.module.scss';
+import classes from './Ingridients.module.scss';
 
 const SelectIngridientSection = ({
   inputValue,
@@ -57,7 +57,7 @@ const SelectIngridientSection = ({
                 <div className={classes.input__wrapper}>
                   <input
                     name="ingredient"
-                    placeholder="Find by name"
+                    placeholder="Find"
                     autoComplete="off"
                     size="sm"
                     onChange={handleInputChange}

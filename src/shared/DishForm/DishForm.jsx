@@ -12,7 +12,7 @@ import Text from 'shared/Text/Text';
 import InputValid from 'shared/InputValid/InputValid';
 import FileUploader from 'shared/FileUploader/FileUploader';
 import DishTypeOptions from './DishTypeOptions/DishTypeOptions';
-import SelectIngridientSection from './SelectIngridientSection/SelectIngridientSection';
+import Ingridients from './Ingridients/Ingridients';
 import SortIngridients from './SortIngridients/SortIngridients';
 
 import classes from './DishForm.module.scss';
@@ -83,12 +83,6 @@ const DishForm = ({
 
     return (isSelectedTypeAll || isSelectedTypeMatching) && nameMatchesInput;
   });
-
-  // const handleTypeChange = (event) => {
-  //   const newType = event.target.value;
-
-  //   setSelectedType(newType);
-  // };
 
   const handleTypeChange = (type) => {
     if (type === 'All') {
@@ -168,12 +162,6 @@ const DishForm = ({
 
           <div className={classes.column__wrapper}>
             <div className={classes.column}>
-              <div className={classes.img__wrapper}>
-                <FileUploader ref={fileUploaderRef} />
-              </div>
-              <DishTypeOptions register={register} />
-            </div>
-            <div className={classes.column}>
               <Select
                 name="type"
                 defaultValue=""
@@ -203,6 +191,12 @@ const DishForm = ({
                   {errors.type.message}
                 </Text>
               )}
+              <DishTypeOptions register={register} />
+              <div className={classes.img__wrapper}>
+                <FileUploader ref={fileUploaderRef} />
+              </div>
+            </div>
+            <div className={classes.column}>
               <div className={classes.row__wrapper}>
                 <div className={classes.rowfield__wrapper}>
                   <div className={classes.input__wrapper}>
@@ -246,7 +240,7 @@ const DishForm = ({
                   </div>
                 </div>
               </div>
-              <SelectIngridientSection
+              <Ingridients
                 selectedType={selectedType}
                 ingridientsTypes={ingridientsTypes}
                 handleTypeChange={handleTypeChange}
