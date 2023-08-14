@@ -7,8 +7,8 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  transition: 0.7s;
-  box-shadow: 10px 10px 30px -24px rgba(0, 0, 0, 0.52);
+  transition: 0.5s;
+  box-shadow: 10px 10px 25px -24px rgba(0, 0, 0, 0.52);
 
   &_pulsating {
     animation: pulse 2s infinite alternate;

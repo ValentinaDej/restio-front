@@ -1,17 +1,15 @@
 import { useGetTablesByRestaurantId, useGetOrdersByRestaurantId } from 'api/service';
 import Loader from 'shared/Loader/Loader';
-import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import Title from 'shared/Title/Title';
-import Text from 'shared/Text/Text';
 import styles from './TablesWaiterPage.module.scss';
 import TableCard from 'components/TableCard/TableCard';
 import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Message from 'components/Message/Message';
-import useSSESubscription from 'hooks/useSSESubscription';
+// import useSSESubscription from 'hooks/useSSESubscription';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 
 const dumbTables = [
   {
@@ -65,11 +63,11 @@ const TablesWaiterPage = () => {
   const [isTablesWithReadyDishes, setIsTablesWithReadyDishes] = useState(false);
   const [isTablesWithAllPaidOrders, setIsTablesWithAllPaidOrders] = useState(false);
 
-  const subscription = useSSESubscription();
+  // const subscription = useSSESubscription();
 
-  useEffect(() => {
-    subscription();
-  }, [subscription]);
+  // useEffect(() => {
+  //   subscription();
+  // }, [subscription]);
 
   const { restId } = useParams();
   const {
@@ -122,7 +120,7 @@ const TablesWaiterPage = () => {
   const uniqueTableNumbers = [...new Set(tableNumbers)].join(', ');
 
   const filterTables = () => {
-    let tablesFiltered = tables.slice(); // Копіюємо масив tables
+    let tablesFiltered = tables.slice();
 
     if (isFreeTables) {
       tablesFiltered = tablesFiltered.filter((table) => table.status === 'Free');
@@ -135,10 +133,8 @@ const TablesWaiterPage = () => {
     }
     if (isTablesWithReadyDishes) {
       tablesFiltered = tablesFiltered.filter((table) => {
-        // Знаходимо замовлення для даного столу
         const ordersForTable = orders.filter((order) => order.table_id._id === table._id);
 
-        // Перевіряємо, чи існує хоча б одне замовлення зі стравою в статусі "Ready"
         const hasReadyDishes = ordersForTable.some((order) =>
           order.orderItems.some((item) => item.status === 'Ready')
         );
