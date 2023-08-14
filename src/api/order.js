@@ -10,13 +10,19 @@ export const createOrder = async (data, restId) => {
 
 export const getAllOrders = async (restId) => {
   const request = await instance(`/orders/${restId}`);
-  const allOrders = await request.data.orders;
+  const allOrders = request.data.orders;
   const normalizedData = allOrders.reduce((acc, item) => {
-    const allDishes = item.orderItems.map((el) => ({ ...el, orderId: item._id }));
+    const allDishes = item.orderItems.map((el) => ({
+      ...el,
+      orderId: item._id,
+      orderNumber: item.number,
+      tableNumber: item.table_id.table_number,
+      create: item.created_at,
+    }));
+
     acc = [...acc, ...allDishes];
     return acc;
   }, []);
-
   return normalizedData;
 };
 

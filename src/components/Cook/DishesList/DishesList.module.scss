@@ -1,11 +1,6 @@
 .list {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-
-  @media screen and (min-width: 768px) and (max-width: 1023px) {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: space-between;
-  }
+  flex-wrap: wrap;
+  gap: 25px;
+  width: 100%;
 }
