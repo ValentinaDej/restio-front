@@ -21,7 +21,7 @@ export const TransactionsTable = () => {
   const { restId } = useParams();
   const [{ pageIndex, pageSize }, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 20,
   });
   const [isTodayTransactions, setIsTodayTransactions] = useState(false);
   const [createdByTypeOptions, setCreatedByTypeOptions] = useState('all');
@@ -122,7 +122,7 @@ export const TransactionsTable = () => {
           },
           {
             accessorKey: 'createdByName',
-            header: 'Name',
+            header: () => <span className={cls.span}>Name</span>,
             cell: (info) => {
               const name = info.getValue();
               return <span className={cls.span}>{name ? name : '-'}</span>;
@@ -246,9 +246,8 @@ export const TransactionsTable = () => {
           <div className={cls.select}>
             <Text fontSize={20}>Show</Text>
             <DropDown
-              defaultValue="10"
+              defaultValue="20"
               options={[
-                { value: 10, label: '10' },
                 { value: 20, label: '20' },
                 { value: 30, label: '30' },
                 { value: 40, label: '40' },

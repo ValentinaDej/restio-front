@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 
 const StatisticsPage = () => {
   const { restId } = useParams();
-  const [timestamp, setTimestamp] = useState('year');
+  const [timestamp, setTimestamp] = useState('month');
   const { data: data, isLoading, refetch } = useGetStatistics(restId, timestamp);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const StatisticsPage = () => {
           onSelect={(e) => {
             setTimestamp(e.value);
           }}
-          defaultValue="Year"
+          defaultValue="Month"
         />
       </span>
       {isLoading ? <Loader /> : <Statisctics statistics={data?.data?.statistics} />}
