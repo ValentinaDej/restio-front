@@ -1,18 +1,30 @@
-import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+
+import { DISH_CATEGORIES } from 'utils/constants';
+
+import { getDishById, createDish, updateDishById } from '../../api/dish';
+import { getIngridients } from '../../api/ingridient';
 
 import DishForm from 'shared/DishForm/DishForm';
 import Button from 'shared/Button/Button';
 import Title from 'shared/Title/Title';
 import Loader from 'shared/Loader/Loader';
 
-import { DISH_CATEGORIES } from 'utils/constants';
-
-import { getDishById, createDish, updateDishById } from '../../api/dish';
-import { getIngridients } from '../../api/ingridient';
 import styles from './AddDishPage.module.scss';
+import { classes } from 'istanbul-lib-coverage';
+
+const ERROR_MESSAGES = {
+  fetchDish: 'Error fetching dish data',
+  fetchIngredients: 'Error fetching ingredient data',
+  savingEditing: 'Error saving or editing dish',
+};
+
+const SUCCESS_MESSAGES = {
+  successfullyCreated: 'Added successfully',
+  successfullyUpdated: 'Updated successfully',
+};
 
 const AddDishPage = () => {
   const { restId, dishesId } = useParams();
@@ -24,7 +36,7 @@ const AddDishPage = () => {
     refetchInterval: false,
     enabled: !!dishesId,
     onError: () => {
-      toast.error('Error fetching dish data');
+      toast.error(ERROR_MESSAGES.fetchDish);
     },
   });
 
@@ -33,7 +45,7 @@ const AddDishPage = () => {
     refetchOnReconnect: false,
     refetchInterval: false,
     onError: () => {
-      toast.error('Error fetching ingridient data');
+      toast.error(ERROR_MESSAGES.fetchIngredients);
     },
   });
 
@@ -46,14 +58,14 @@ const AddDishPage = () => {
       console.log('Form data:', formData);
       if (dishesId) {
         await updateDishById(formData, dishesId);
-        toast.success('Dish updated successfully');
+        toast.success(SUCCESS_MESSAGES.successfullyUpdated);
       } else {
         await createDish(formData, restId);
-        toast.success('Dish added successfully');
+        toast.success(SUCCESS_MESSAGES.successfullyCreated);
       }
       handleBack();
     } catch (error) {
-      toast.error('Error saving or editing dish');
+      toast.error(ERROR_MESSAGES.savingEditing);
     } finally {
     }
   };
@@ -82,15 +94,20 @@ const AddDishPage = () => {
     type: dishQuery.data?.type || '',
   };
 
+  const isEditing = Boolean(dishesId);
+
   return (
     <div>
       <main className={styles.addDishContainer}>
         <div className={styles.formWrapper}>
           <div className={styles.header}>
-            <Button mode={'outlined'} onClick={handleBack}>
-              Back
-            </Button>
-            {dishesId ? <Title>Edit dish</Title> : <Title>Create dish</Title>}
+            <div className={styles.buttonWrapper}>
+              {' '}
+              <Button mode={'outlined'} onClick={handleBack} size="sm">
+                Back
+              </Button>
+            </div>
+            {isEditing ? <Title>Edit dish</Title> : <Title>Create dish</Title>}
           </div>
           <DishForm
             onSubmit={handleSubmit}
@@ -98,7 +115,7 @@ const AddDishPage = () => {
             ingridients={ingridientsQuery.data}
             selectedIngredientsMap={selectedIngredientsMap}
             initialState={initialData}
-            isEditing={Boolean(dishesId)}
+            isEditing={isEditing}
           />
         </div>
       </main>

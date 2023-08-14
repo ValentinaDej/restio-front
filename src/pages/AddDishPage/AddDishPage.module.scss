@@ -1,14 +1,14 @@
-.loading-wrapper {
-  // height: 100vh;
-}
-
 .addDishContainer {
-  margin: 0 3rem;
+  margin: 0;
   transition: 1s;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (min-width: 768px) {
+    margin: 0 3rem;
+  }
 }
 
 .formWrapper {
@@ -30,4 +30,8 @@
   & > :first-child {
     justify-self: start;
   }
+}
+
+.buttonWrapper {
+  margin-right: 1rem;
 }
