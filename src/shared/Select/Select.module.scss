@@ -3,12 +3,14 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto;
   transition: 1s;
+  width: 100%;
+  max-width: 325px;
 }
 
 .label {
   font-size: 1.2rem;
   font-weight: var(--font-semi-bold);
-  color: var(--color-dark);
+  color: var(--color-orange);
   margin-bottom: 0.5rem;
   transition: 1s;
 
@@ -27,7 +29,7 @@
 
 .select {
   display: inline-block;
-  border: 1px solid var(--color-orange-hover);
+  border: 1px solid var(--color-orange);
   background: var(--color-white);
   color: var(--color-dark);
   padding: 0.75rem 2.5rem;

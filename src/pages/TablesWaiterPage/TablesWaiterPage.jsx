@@ -70,6 +70,7 @@ const TablesWaiterPage = () => {
   // }, [subscription]);
 
   const { restId } = useParams();
+
   const {
     data: tablesData,
     isLoading: isLoadingTables,
@@ -88,8 +89,7 @@ const TablesWaiterPage = () => {
   // console.log(ordersData);
 
   const tables = tablesData?.data;
-
-  const orders = ordersData?.data?.orders;
+  const orders = ordersData?.data.orders;
 
   const isLoading = isLoadingTables || isLoadingOrders;
 

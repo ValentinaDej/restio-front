@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classes from './StatusSelector.module.scss';
 import Status from '../Status/Status';
-import { toast } from 'react-hot-toast';
 
 const StatusSelector = ({
   mode,
@@ -15,6 +14,12 @@ const StatusSelector = ({
   const [selectedCurrent, setSelectCurrent] = useState(currentStatus);
   const [currentMode, setCurrentMode] = useState([]);
   const [visibleBody, setVisibleBody] = useState(false);
+
+  useEffect(() => {
+    if (currentStatus) {
+      setSelectCurrent(currentStatus);
+    }
+  }, [currentStatus]);
 
   useEffect(() => {
     switch (mode) {
