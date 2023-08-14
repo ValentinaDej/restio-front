@@ -1,4 +1,5 @@
 import { CheckBox } from 'shared/CheckBox/CheckBox';
+
 import classes from './DishTypeOptions.module.scss';
 
 const DishTypeOptions = ({ register }) => {

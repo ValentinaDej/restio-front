@@ -2,10 +2,10 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Text from 'shared/Text/Text';
-import DraggableIngredient from '../DraggableIngredient/DraggableIngredient';
-import classes from './SelectedIngridientsSection.module.scss';
+import DraggableIngredient from './DraggableIngredient/DraggableIngredient';
+import classes from './SortIngridients.module.scss';
 
-const SelectedIngridientsSection = ({ selectedIngredients, moveIngredient }) => {
+const SortIngridients = ({ selectedIngredients, moveIngredient }) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={classes.field__wrapper}>
@@ -30,4 +30,4 @@ const SelectedIngridientsSection = ({ selectedIngredients, moveIngredient }) => 
   );
 };
 
-export default SelectedIngridientsSection;
+export default SortIngridients;

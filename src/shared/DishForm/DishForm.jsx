@@ -13,7 +13,7 @@ import InputValid from 'shared/InputValid/InputValid';
 import FileUploader from 'shared/FileUploader/FileUploader';
 import DishTypeOptions from './DishTypeOptions/DishTypeOptions';
 import SelectIngridientSection from './SelectIngridientSection/SelectIngridientSection';
-import SelectedIngridientsSection from './SelectedIngridientsSection/SelectedIngridientsSection';
+import SortIngridients from './SortIngridients/SortIngridients';
 
 import classes from './DishForm.module.scss';
 
@@ -84,10 +84,16 @@ const DishForm = ({
     return (isSelectedTypeAll || isSelectedTypeMatching) && nameMatchesInput;
   });
 
-  const handleTypeChange = (event) => {
-    const newType = event.target.value;
+  // const handleTypeChange = (event) => {
+  //   const newType = event.target.value;
 
-    setSelectedType(newType);
+  //   setSelectedType(newType);
+  // };
+
+  const handleTypeChange = (type) => {
+    if (type === 'All') {
+      setSelectedType('');
+    } else setSelectedType(type);
   };
 
   const handleCheckSelected = () => {
@@ -257,7 +263,7 @@ const DishForm = ({
             </div>
           </div>
           {selectedIngredients.size > 0 && (
-            <SelectedIngridientsSection
+            <SortIngridients
               selectedIngredients={selectedIngredients}
               moveIngredient={moveIngredient}
             />

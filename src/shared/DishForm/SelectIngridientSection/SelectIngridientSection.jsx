@@ -4,7 +4,8 @@ import { FaList } from 'react-icons/fa';
 
 import Text from 'shared/Text/Text';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
-import CustomSelect from '../CustomSelect/CustomSelect';
+import SelectIngridients from './SelectIngridients/SelectIngridients';
+
 import classes from './SelectIngridientSection.module.scss';
 
 const SelectIngridientSection = ({
@@ -46,8 +47,8 @@ const SelectIngridientSection = ({
                 </select> */}
               {/* </th> */}
               <th className={`${classes.header__cell}`}>
-                <CustomSelect
-                  types={ingridientsTypes}
+                <SelectIngridients
+                  types={['All', ...ingridientsTypes]}
                   value={selectedType}
                   onChange={handleTypeChange}
                 />

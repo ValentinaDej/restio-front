@@ -102,12 +102,11 @@ const AddDishPage = () => {
         <div className={styles.formWrapper}>
           <div className={styles.header}>
             <div className={styles.buttonWrapper}>
-              {' '}
               <Button mode={'outlined'} onClick={handleBack} size="sm">
                 Back
               </Button>
             </div>
-            {isEditing ? <Title>Edit dish</Title> : <Title>Create dish</Title>}
+            {isEditing ? <Title>Update dish</Title> : <Title>Create dish</Title>}
           </div>
           <DishForm
             onSubmit={handleSubmit}
