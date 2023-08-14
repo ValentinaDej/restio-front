@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
 import { useMutation } from 'react-query';
 import { toast } from 'react-hot-toast';
-import { deleteDishById } from 'api/dish';
 import Select from 'shared/Select/Select';
 import { DISH_CATEGORIES } from 'utils/constants';
 import styles from './DishesAdminPage.module.scss';
@@ -15,7 +14,7 @@ const DishesAdminPage = () => {
   const [type, setType] = useState('active');
 
   const { mutateAsync } = useMutation((dishId) => {
-    deleteDishById(dishId, restId);
+    //  deleteDishById(dishId, restId);
   });
 
   const navigateToAddDish = () => {

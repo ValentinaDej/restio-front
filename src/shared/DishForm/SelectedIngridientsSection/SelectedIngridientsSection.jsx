@@ -16,7 +16,6 @@ const SelectedIngridientsSection = ({ selectedIngredients, moveIngredient }) => 
 
       <div className={classes.section}>
         {Array.from(selectedIngredients.entries()).map(([ingredientId, ingredientName], index) => (
-          // <div key={ingredientId}>{ingredientName}</div>
           <DraggableIngredient
             showIcon={true}
             key={ingredientId}

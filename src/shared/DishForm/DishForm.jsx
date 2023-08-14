@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
@@ -17,8 +17,15 @@ import SelectedIngridientsSection from './SelectedIngridientsSection/SelectedIng
 
 import classes from './DishForm.module.scss';
 
-const DishForm = ({ onSubmit, category, ingridients }) => {
-  const [selectedIngredients, setSelectedIngredients] = useState(new Map());
+const DishForm = ({
+  onSubmit,
+  category,
+  initialState,
+  ingridients,
+  selectedIngredientsMap,
+  isEditing,
+}) => {
+  const [selectedIngredients, setSelectedIngredients] = useState(selectedIngredientsMap);
   const [inputValue, setInputValue] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [showSelectedIngredients, setShowSelectedIngredients] = useState(false);
@@ -33,22 +40,21 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
     reset,
     control,
   } = useForm({
+    defaultValues: initialState,
     shouldUseNativeValidation: false,
     mode: 'onBlur',
-    defaultValues: {
-      ingredients: [],
-    },
   });
 
   const handleFormSubmit = async (data, event) => {
     event.preventDefault();
+
     const selectedIngredientIds = Array.from(selectedIngredients.keys());
     const picture = await fileUploaderRef.current.handleUpload();
 
     if (picture) {
       onSubmit({ ...data, picture: picture.data.imageName, ingredients: selectedIngredientIds });
     } else {
-      onSubmit({ ...data, picture: '' });
+      onSubmit({ ...data, picture: 'default.png', ingredients: selectedIngredientIds });
     }
     reset();
 
@@ -258,7 +264,7 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
           )}
           <div className={classes.button__wrapper}>
             <Button type="submit" size="sm">
-              Create
+              {isEditing ? <span>Update</span> : <span>Create</span>}
             </Button>
             <Button type="button" mode={'outlined'} onClick={cleareForm} size="sm">
               Clear
