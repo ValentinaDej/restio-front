@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 
 const DishesList = ({ dishes, handleChangeStatus }) => {
   const sortedDishes = [...dishes].sort((dishA, dishB) => {
-    return new Date(dishB.created_at) - new Date(dishA.created_at);
+    return new Date(dishA.create) - new Date(dishB.create);
   });
 
   return (
