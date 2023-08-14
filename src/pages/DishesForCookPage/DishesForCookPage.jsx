@@ -35,15 +35,10 @@ const DishesForCookPage = () => {
     subscription();
   }, [subscription]);
 
-  const isDesktop = useMediaQuery({
-    query: '(min-width: 1024px)',
-  });
-  const isTablet = useMediaQuery({
-    query: '(max-width: 1023px)',
-  });
   const isMobile = useMediaQuery({
     query: '(max-width: 767px)',
   });
+
   const { mutate } = useUpdateDishStatusByWaiter();
 
   const handleChangeStatus = (restId, orderId, dishId, status) => {
@@ -58,51 +53,41 @@ const DishesForCookPage = () => {
   );
 
   return (
-    <div className="main__container">
+    <div className={`main__container  ${styles.main__section}`}>
       <div className={`${styles.section}`}>
         <Title classname={`${styles.title}`}>Cook Dashboard</Title>
+        <hr className={styles.divider} />
         {isLoading ? (
-          <Loader size="lg" />
+          <div className={`${styles.loader__section}`}>
+            <Loader size="lg" />
+          </div>
         ) : (
           <>
-            {isTablet && (
-              <div className={`${styles.button__section}`}>
-                {statuses.map((status) => (
-                  <Button
-                    key={`btn_${status}`}
-                    size={isMobile ? 'sm' : 'md'}
-                    mode={currentStatus === status ? 'primary' : 'outlined'}
-                    onClick={() => setCurrentStatus(status)}
-                  >
-                    {status}
-                  </Button>
-                ))}
-              </div>
-            )}
+            <div className={`${styles.button__section}`}>
+              {statuses.map((status) => (
+                <Button
+                  key={`btn_${status}`}
+                  size={isMobile ? 'sm' : 'md'}
+                  mode={currentStatus === status ? 'primary' : 'outlined'}
+                  onClick={() => setCurrentStatus(status)}
+                >
+                  {status}
+                </Button>
+              ))}
+            </div>
 
             <div className={`${styles.status__section}`}>
-              {statuses.map((status) => {
-                if (isTablet && currentStatus === status) {
-                  return (
+              {statuses.map(
+                (status) =>
+                  currentStatus === status && (
                     <StatusCardItem
                       key={status}
                       status={status}
                       data={filterDishes(status)}
                       handleChangeStatus={handleChangeStatus}
                     />
-                  );
-                }
-                if (isDesktop) {
-                  return (
-                    <StatusCardItem
-                      key={status}
-                      status={status}
-                      data={filterDishes(status)}
-                      handleChangeStatus={handleChangeStatus}
-                    />
-                  );
-                }
-              })}
+                  )
+              )}
             </div>
           </>
         )}
