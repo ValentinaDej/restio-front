@@ -72,14 +72,13 @@ const TablesWaiterPage = () => {
   const { restId } = useParams();
   const updateTableStatusEvent = useSSE('table status', {});
   const dishReadyEvent = useSSE('dish is ready', {});
-  console.log('Call Waiter SSE Event:', updateTableStatusEvent);
-  console.log('Dish Event:', dishReadyEvent);
+
   const {
     data: tablesData,
     isLoading: isLoadingTables,
     isError: isErrorTables,
     error: errorTables,
-    refetch,
+    refetch: refetchTables,
   } = useGetTablesByRestaurantId(restId);
 
   useEffect(() => {
@@ -93,11 +92,12 @@ const TablesWaiterPage = () => {
           })
         );
       }
-      refetch({ force: true });
+      refetchTables({ force: true });
     }
-  }, [dispatch, refetch, restId, updateTableStatusEvent]);
+  }, [dispatch, refetchTables, restId, updateTableStatusEvent]);
 
   const {
+    refetch: refetchOrders,
     data: ordersData,
     isLoading: isLoadingOrders,
     isError: isErrorOrders,
@@ -107,10 +107,10 @@ const TablesWaiterPage = () => {
   useEffect(() => {
     if (dishReadyEvent && dishReadyEvent.message) {
       dispatch(addMessage({ message: dishReadyEvent.message, id: Date.now(), type: 'ready' }));
-      console.log('dishReady event in useEffect');
-      // refetch({ force: true }).then(() => console.log('event after refetch'));
+
+      refetchOrders({ force: true });
     }
-  }, [dishReadyEvent, dispatch]);
+  }, [dishReadyEvent, dispatch, refetchOrders]);
 
   // console.log(tablesData);
   // console.log(ordersData);
