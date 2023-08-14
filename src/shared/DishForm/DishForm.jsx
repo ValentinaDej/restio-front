@@ -21,6 +21,7 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
   const [selectedIngredients, setSelectedIngredients] = useState(new Map());
   const [inputValue, setInputValue] = useState('');
   const [selectedType, setSelectedType] = useState('');
+  const [showSelectedIngredients, setShowSelectedIngredients] = useState(false);
 
   const firstIngredientRef = useRef(null);
   const fileUploaderRef = useRef();
@@ -81,6 +82,16 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
     const newType = event.target.value;
 
     setSelectedType(newType);
+  };
+
+  const handleCheckSelected = () => {
+    setShowSelectedIngredients(!showSelectedIngredients);
+    if (showSelectedIngredients) {
+      setSelectedType('');
+    } else {
+      setSelectedType('Selected');
+    }
+    setInputValue('');
   };
 
   const handleToggleIngredient = (ingredientId, ingredientName) => {
@@ -234,6 +245,8 @@ const DishForm = ({ onSubmit, category, ingridients }) => {
                 selectedIngredients={selectedIngredients}
                 firstIngredientRef={firstIngredientRef}
                 handleToggleIngredient={handleToggleIngredient}
+                handleCheckSelected={handleCheckSelected}
+                showSelectedIngredients={showSelectedIngredients}
               />
             </div>
           </div>

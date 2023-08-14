@@ -94,6 +94,10 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 0.5rem;
+  width: 100%;
+  outline: none;
+  border-bottom: 1px dotted var(--color-orange-transparent);
+  padding: 0.1rem 0;
 }
 
 .section__item {
@@ -133,15 +137,95 @@
   color: var(--color-orange);
 }
 
-.icon__search {
+.icon__selected {
   height: 18px;
   width: 18px;
   color: var(--color-orange);
-  border-bottom: 1px dotted var(--color-orange-transparent);
+  &:hover,
+  &:focus {
+    color: var(--color-orange-hover);
+  }
 }
 
 .item__search {
   width: 100%;
   outline: none;
-  border-bottom: 1px dotted var(--color-orange-transparent);
+}
+
+.fixedItem {
+  // position: sticky;
+  // top: 0;
+  // background-color: var(--color-white);
+  // z-index: 2;
+}
+
+.ingredient__type {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.ingredient__name {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.ingredient__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1; /* Розширити контейнер, щоб вирівняти всі інгредієнти */
+}
+
+.ingredients__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table__header {
+  //background-color: #f2f2f2;
+}
+
+.table__row:nth-child(even) {
+  background-color: var(--color-orange-transparent);
+}
+
+.table__row:hover {
+  // background-color: var(--color-orange-hover);
+}
+
+td {
+  padding: 8px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.icon__selected {
+  cursor: pointer;
+}
+
+.table__row > td:first-child {
+  white-space: nowrap;
+}
+
+.table__row > td:last-child {
+  text-align: right;
+}
+
+.select__type {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid var(--color-orange);
+  border-radius: 3px;
+  font-size: 0.8rem;
+  outline: none;
+  background-color: white;
+  padding: 0.3rem 1rem;
+  border-radius: 30px;
+}
+
+.header__cell {
+  padding: 8px;
+  vertical-align: middle;
+  background-color: var(--color-orange-transparent);
+  text-align: left;
 }

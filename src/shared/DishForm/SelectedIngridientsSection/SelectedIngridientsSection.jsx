@@ -8,12 +8,13 @@ import classes from './SelectedIngridientsSection.module.scss';
 const SelectedIngridientsSection = ({ selectedIngredients, moveIngredient }) => {
   return (
     <DndProvider backend={HTML5Backend}>
+      <div className={classes.field__wrapper}>
+        <Text mode="p" textAlign="left" fontSize={14} fontWeight={600}>
+          Sort ingridients:
+        </Text>
+      </div>
+
       <div className={classes.section}>
-        <div className={classes.field__wrapper}>
-          <Text mode="p" textAlign="left" fontSize={14} fontWeight={600}>
-            Selected ingridients:
-          </Text>
-        </div>
         {Array.from(selectedIngredients.entries()).map(([ingredientId, ingredientName], index) => (
           // <div key={ingredientId}>{ingredientName}</div>
           <DraggableIngredient

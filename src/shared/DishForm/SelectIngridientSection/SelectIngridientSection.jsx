@@ -1,7 +1,10 @@
-import Select from 'shared/Select/Select';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
 import { FaSearch } from 'react-icons/fa';
 import { FaCheck } from 'react-icons/fa';
+import { FaList } from 'react-icons/fa';
+
+import Text from 'shared/Text/Text';
+import { CheckBox } from 'shared/CheckBox/CheckBox';
+import CustomSelect from '../CustomSelect/CustomSelect';
 
 import classes from './SelectIngridientSection.module.scss';
 
@@ -16,21 +19,81 @@ const SelectIngridientSection = ({
   selectedIngredients,
   firstIngredientRef,
   handleToggleIngredient,
+  handleCheckSelected,
+  showSelectedIngredients,
 }) => {
   return (
     <>
-      <Select id="type" value={selectedType} onChange={handleTypeChange} size="sm">
-        <option value="">All</option>
-        <option value="Selected">Selected</option>
-        {ingridientsTypes.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </Select>
+      <Text mode="p" textAlign="left" fontSize={14} fontWeight={600}>
+        Select ingridients:
+      </Text>
       <div className={classes.section__select}>
+        <table className={classes.ingredients__table}>
+          <thead>
+            <tr className={classes.table__header}>
+              <th className={classes.header__cell}>
+                <select
+                  id="type"
+                  value={selectedType}
+                  onChange={handleTypeChange}
+                  className={classes.select__type}
+                >
+                  <option value="">All types</option>
+                  {ingridientsTypes.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </th>
+              <th className={classes.header__cell}>
+                <input
+                  name="ingredient"
+                  placeholder="Find by name"
+                  autoComplete="off"
+                  size="sm"
+                  onChange={handleInputChange}
+                  onKeyDown={handleInputKeyDown}
+                  value={inputValue}
+                  className={classes.select__type}
+                />
+              </th>
+              <th className={classes.header__cell}>
+                {showSelectedIngredients ? (
+                  <FaCheck className={classes.icon__selected} onClick={handleCheckSelected} />
+                ) : (
+                  <FaList className={classes.icon__selected} onClick={handleCheckSelected} />
+                )}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {ingridientsToShow?.map((ingredient, index) => (
+              <tr
+                key={ingredient._id}
+                onClick={() => handleToggleIngredient(ingredient._id, ingredient.name)}
+                className={`${classes.table__row} ${
+                  selectedIngredients.has(ingredient._id) ? classes.selected : ''
+                }`}
+                ref={index === 0 ? firstIngredientRef : null}
+                tabIndex={0}
+              >
+                <td>{ingredient.type}</td>
+                <td>{ingredient.name}</td>
+                <td>
+                  <CheckBox
+                    checked={selectedIngredients.has(ingredient._id)}
+                    onClick={() => handleToggleIngredient(ingredient._id, ingredient.name)}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {/* <div className={classes.section__select}>
         <ul>
-          <li className={classes.section__item_select}>
+          <li className={`${classes.section__item_select} ${classes.fixedItem}`}>
             <input
               name="ingredient"
               placeholder="find ingredient"
@@ -41,7 +104,11 @@ const SelectIngridientSection = ({
               value={inputValue}
               className={classes.item__search}
             />
-            <FaSearch className={classes.icon__search} />
+            {showSelectedIngredients ? (
+              <FaCheck className={classes.icon__selected} onClick={handleCheckSelected} />
+            ) : (
+              <FaList className={classes.icon__selected} onClick={handleCheckSelected} />
+            )}
           </li>
           {ingridientsToShow?.map((ingredient, index) => (
             <li
@@ -53,7 +120,10 @@ const SelectIngridientSection = ({
               ref={index === 0 ? firstIngredientRef : null}
               tabIndex={0}
             >
-              {ingredient.name}
+              <div className={classes.ingredient__container}>
+                <span className={classes.ingredient__type}>{ingredient.type}</span>
+                <span className={classes.ingredient__name}>{ingredient.name}</span>
+              </div>
               <CheckBox
                 checked={selectedIngredients.has(ingredient._id)}
                 onClick={() => handleToggleIngredient(ingredient._id, ingredient.name)}
@@ -61,7 +131,7 @@ const SelectIngridientSection = ({
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </>
   );
 };
