@@ -20,8 +20,8 @@ const Header = ({ logo, restaurantName, role }) => {
   const restaurantId = useSelector(getRestaurantId);
   const { pathname } = useLocation();
   const arrParams = pathname.split('/');
-  const restId = arrParams[0];
-  const tableId = arrParams[1];
+  const restId = arrParams[1];
+  const tableId = arrParams[2];
   const logoutHandler = () => {
     dispatch(logout());
   };
@@ -49,10 +49,10 @@ const Header = ({ logo, restaurantName, role }) => {
       )}
       {role === 'admin' && (
         <div className={classes.header__wrapper}>
-          <NavLink className={classes.header__link} to={`${restaurantId}/dishes`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/admin/dishes`}>
             <MdRestaurantMenu className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`${restaurantId}/personnel`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/admin/personnel`}>
             <IoPeopleSharp className={classes.header__icon} />
           </NavLink>
           <NavLink className={classes.header__link} to={`${restaurantId}/waiter/tables`}>

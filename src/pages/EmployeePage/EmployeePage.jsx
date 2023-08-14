@@ -9,7 +9,7 @@ const EmployeePage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const navigateToAddEmpl = () => {
-    navigate(`/${restId}/personnel/new`);
+    navigate(`/${restId}/admin/personnel/new`);
   };
 
   const deleteEmployeeMutation = useMutation((employeeId) =>

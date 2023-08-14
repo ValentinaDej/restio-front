@@ -109,7 +109,7 @@ const AdminPageContainer = ({
   }
 
   const navigateToEdit = (id) => {
-    navigate(`/${restId}/${value[variant]}/edit/${id}`);
+    navigate(`/${restId}/admin/${value[variant]}/edit/${id}`);
   };
 
   const handleSearch = () => {
