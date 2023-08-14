@@ -293,7 +293,6 @@ DishForm.propTypes = {
     PropTypes.shape({
       _id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
     })
   ),
   selectedIngredientsMap: PropTypes.instanceOf(Map),

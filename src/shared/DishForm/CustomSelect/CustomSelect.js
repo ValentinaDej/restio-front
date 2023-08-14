@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './CustomSelect.module.scss';
 
-const CustomSelect = ({ options, value, onChange, size }) => {
+const CustomSelect = ({ types, value, onChange, size }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelectChange = (event) => {
@@ -17,15 +17,15 @@ const CustomSelect = ({ options, value, onChange, size }) => {
       </div>
       {isOpen && (
         <ul className={styles.optionsList}>
-          {options.map((option) => (
+          {types.map((type) => (
             <li
-              key={option}
+              key={type}
               className={styles.option}
               onClick={() => {
-                handleSelectChange(option);
+                handleSelectChange(type);
               }}
             >
-              {option}
+              {type}
             </li>
           ))}
         </ul>

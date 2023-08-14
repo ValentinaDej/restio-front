@@ -56,8 +56,9 @@
 .header__cell {
   padding: 8px;
   vertical-align: middle;
-  background-color: var(--color-orange-transparent);
+  //background-color: var(--color-orange-transparent);
   text-align: left;
+  border-bottom: 1px dotted var(--color-orange-transparent);
 }
 
 .table__row:nth-child(even) {
@@ -84,14 +85,12 @@ td {
 
 .select__type {
   width: 100%;
-  padding: 5px;
-  border: 1px solid var(--color-orange);
-  border-radius: 3px;
+  border-bottom: 1px solid var(--color-orange);
   font-size: 0.8rem;
   outline: none;
   background-color: white;
-  padding: 0.3rem 1rem;
-  border-radius: 30px;
+  padding: 0.3rem 0rem;
+  //border-radius: 30px;
 }
 
 .icon__selected {
@@ -104,4 +103,32 @@ td {
   &:focus {
     color: var(--color-orange-hover);
   }
+}
+
+.input__wrapper {
+  position: relative;
+}
+
+.pencil__icon {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  color: var(--color-orange);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.pencil__icon:hover,
+.input__wrapper:hover .pencil__icon {
+  color: var(--color-orange-hover);
+}
+
+.input {
+  width: 100%;
+  border-bottom: 1px solid var(--color-orange);
+  font-size: 0.8rem;
+  outline: none;
+  background-color: white;
+  padding: 0.3rem 0rem;
 }
