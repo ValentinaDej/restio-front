@@ -10,15 +10,22 @@ import {
   TfiAngleDoubleRight,
   TfiAngleLeft,
   TfiAngleRight,
+  TfiCalendar,
 } from 'react-icons/tfi';
+import { RxCross2 } from 'react-icons/rx';
+import { TbMoodSearch } from 'react-icons/tb';
 import Text from 'shared/Text/Text';
 import Loader from 'shared/Loader/Loader';
 import { DropDown } from 'shared/DropDown/DropDown';
 import Title from 'shared/Title/Title';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
+import { Calendar } from 'shared/Calendar/Calendar';
+import Modal from 'shared/Modal/Modal';
 
 export const TransactionsTable = () => {
   const { restId } = useParams();
+  const [calendarIsOpen, setCalendarIsOpen] = useState(false);
+  const [date, setDate] = useState(undefined);
   const [{ pageIndex, pageSize }, setPagination] = useState({
     pageIndex: 0,
     pageSize: 20,
@@ -26,6 +33,14 @@ export const TransactionsTable = () => {
   const [isTodayTransactions, setIsTodayTransactions] = useState(false);
   const [createdByTypeOptions, setCreatedByTypeOptions] = useState('all');
   const [transactionTypeOptions, setTransactionTypeOptions] = useState('all');
+
+  const onClickCalendar = () => {
+    setCalendarIsOpen((prev) => !prev);
+  };
+
+  const onChangeDate = (newDate) => {
+    setDate(newDate);
+  };
 
   const columns = useMemo(
     () => [
@@ -89,7 +104,13 @@ export const TransactionsTable = () => {
               const date = info.getValue();
               return <span className={cls.span}>{getDate(date)}</span>;
             },
-            header: () => <span className={cls.span}>Created at</span>,
+            header: () => (
+              <span className={cls.span}>
+                Created at
+                <IconButton size={20} onClick={onClickCalendar} Svg={TfiCalendar} />
+                <IconButton size={20} onClick={() => setDate(undefined)} Svg={RxCross2} />
+              </span>
+            ),
             footer: (props) => props.column.id,
           },
         ],
@@ -141,6 +162,7 @@ export const TransactionsTable = () => {
     today: isTodayTransactions,
     userType: createdByTypeOptions,
     transactionType: transactionTypeOptions,
+    date,
   };
 
   const { data: resp, refetch, isFetching } = useGetTransactions(restId, fetchDataOptions);
@@ -163,6 +185,7 @@ export const TransactionsTable = () => {
     isTodayTransactions,
     createdByTypeOptions,
     transactionTypeOptions,
+    date,
     refetch,
   ]);
 
@@ -183,7 +206,10 @@ export const TransactionsTable = () => {
 
   return (
     <div className={cls.box}>
-      <Title fontSize={22}>Transactions</Title>
+      <Modal isModalOpen={calendarIsOpen} setIsModalOpen={onClickCalendar}>
+        <Calendar isOpen={onClickCalendar} onChange={onChangeDate} />
+      </Modal>
+      <Title fontSize={22}>Table</Title>
       <div className={cls.btnsBox}>
         <div className={cls.paginationBox}>
           <IconButton
@@ -299,6 +325,14 @@ export const TransactionsTable = () => {
           })}
         </tbody>
       </table>
+      {!resp?.data?.tableTransactions.transactions.length && (
+        <div className={cls.emptyBox}>
+          <TbMoodSearch size={200} className={cls.icon} />
+          <Title mode={'h3'} fontSize={20} classname={cls.text}>
+            There are no transactions by this query.
+          </Title>
+        </div>
+      )}
     </div>
   );
 };

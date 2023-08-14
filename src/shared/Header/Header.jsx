@@ -62,7 +62,7 @@ const Header = ({ logo, restaurantName, role }) => {
           <NavLink className={classes.header__link} to={`${restaurantId}/cook`}>
             <GiCook className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`admin/${restaurantId}/statistics`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/admin/statistics`}>
             <FaMoneyBillTrendUp className={classes.header__icon} />
           </NavLink>
         </div>

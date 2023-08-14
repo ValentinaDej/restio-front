@@ -17,7 +17,14 @@
   border-collapse: collapse;
 }
 
+.calendar {
+  position: absolute;
+  z-index: 10;
+  top: 40px;
+}
+
 .th {
+  position: relative;
   font-size: 18px;
   border-bottom: var(--border-primary);
   background: var(--color-orange-transparent);
@@ -94,4 +101,17 @@
 .inputSelectBox {
   display: flex;
   justify-content: space-around;
+}
+
+.emptyBox {
+  display: grid;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--color-orange);
 }
