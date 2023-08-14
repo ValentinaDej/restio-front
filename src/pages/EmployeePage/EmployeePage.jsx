@@ -9,7 +9,7 @@ const EmployeePage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const navigateToAddEmpl = () => {
-    navigate(`/admin/${restId}/personnel/new`);
+    navigate(`/${restId}/admin/personnel/new`);
   };
 
   const deleteEmployeeMutation = useMutation((employeeId) =>
@@ -26,7 +26,6 @@ const EmployeePage = () => {
         success: 'Employee deleted successfully',
         error: 'Error deleting employee',
       });
-      await refetch();
     } catch (error) {
       console.error('Error deleting employee:', error);
     }
