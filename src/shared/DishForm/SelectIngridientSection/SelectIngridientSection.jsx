@@ -48,7 +48,7 @@ const SelectIngridientSection = ({
               <th className={`${classes.header__cell}`}>
                 <CustomSelect
                   types={ingridientsTypes}
-                  value={selectedType} // Зміни цей рядок
+                  value={selectedType}
                   onChange={handleTypeChange}
                 />
               </th>
