@@ -29,7 +29,6 @@ const DishesAdminPage = () => {
         success: 'Dish removed from the menu',
         error: 'Error removing dish',
       });
-      await refetch();
     } catch (error) {
       console.error('Error removing dish:', error);
     }

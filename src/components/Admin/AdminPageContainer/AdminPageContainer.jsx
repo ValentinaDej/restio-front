@@ -37,6 +37,7 @@ const AdminPageContainer = ({
     fetchNextPage: fetchNextPageEmpl,
     hasNextPage: hasNextPageEmpl,
     isLoading: isLoadingEmpl,
+    refetch: refetchEmpl,
   } = useInfiniteQuery(
     ['personnel', restId],
     ({ pageParam = 1 }) => getPersonnel({ restId, pageParam, searchText }),
@@ -62,6 +63,7 @@ const AdminPageContainer = ({
     fetchNextPage: fetchNextPageDish,
     hasNextPage: hasNextPageDish,
     isLoading: isLoadingDish,
+    refetch: refetchDish,
   } = useInfiniteQuery(
     ['dishes', category, type],
     ({ pageParam = 1 }) => getDishes(restId, category, type === 'active', pageParam, searchText),
@@ -81,7 +83,7 @@ const AdminPageContainer = ({
     }
   );
 
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isLoading } =
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isLoading, refetch } =
     variant === 'employee'
       ? {
           data: dataEmpl,
@@ -89,6 +91,7 @@ const AdminPageContainer = ({
           fetchNextPage: fetchNextPageEmpl,
           hasNextPage: hasNextPageEmpl,
           isLoading: isLoadingEmpl,
+          refetch: refetchEmpl,
         }
       : {
           data: dataDish,
@@ -96,6 +99,7 @@ const AdminPageContainer = ({
           fetchNextPage: fetchNextPageDish,
           hasNextPage: hasNextPageDish,
           isLoading: isLoadingDish,
+          refetch: refetchDish,
         };
 
   const handleChange = (e) => {
@@ -118,7 +122,14 @@ const AdminPageContainer = ({
     fetchNextPage(1); // Trigger data refetch with the first page
   };
 
-  console.log('data', data);
+  const handleDeleteItem = async (id) => {
+    try {
+      await handleDelete(id, restId);
+      await refetch();
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
 
   return (
     <div className={styles['personnel-container']}>
@@ -157,7 +168,7 @@ const AdminPageContainer = ({
                   alt={`Employee ${item.name}`}
                   src={item.picture}
                   handleEdit={() => navigateToEdit(item._id)}
-                  handleDelete={() => handleDelete(item._id)}
+                  handleDelete={() => handleDeleteItem(item._id)}
                 >
                   <>
                     <p className={styles.employee_name}>{item.name}</p>
@@ -191,7 +202,7 @@ const AdminPageContainer = ({
       </ul>
       {hasNextPage && (
         <div className={`${styles.addMore__section}`}>
-          <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+          <Button mode={'outlined'} onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
             {isFetchingNextPage ? 'Loading...' : 'Load More'}
           </Button>
         </div>
