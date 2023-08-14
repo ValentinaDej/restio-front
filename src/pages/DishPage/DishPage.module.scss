@@ -41,7 +41,7 @@
   }
 
   .fullDish {
-    width:100%;
+    width: 100%;
     position: relative;
     margin: 30px auto 100px;
     padding: 2rem 2rem;
@@ -200,18 +200,20 @@
     padding: 10px 0;
   }
 
-  .recommend_wrapp {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 5%;
-    margin: 100px 50px 50px;
+  .arrowNext {
+    position: absolute;
+    right: 0;
+    top: 0px;
+    z-index: 2;
+    font-size: 40px;
   }
 
-  .card_wrapper {
-    display: flex;
-    flex-grow: 1;
-    margin-bottom: 70px;
+  .arrowBefore {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    z-index: 2;
+    font-size: 40px;
   }
 }
 
@@ -275,13 +277,35 @@
     margin: 0;
   }
 
-  .card_wrapper {
-    display: flex;
-    flex: 1;
+  .recomWrapper {
+    width: 100%;
+    position: relative;
   }
 
-  .recommended_block {
-    margin-top: 70px;
+  .sliderWrapper {
+    width: 75%;
+    margin: 0px auto;
+    position: relative;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .slider_box {
+    display: flex;
+
+    padding: 90px 0 10px;
+    // border: 1px solid;
+    gap: 20px;
+    position: relative;
+    right: 0;
+    // mask: linear-gradient(90deg,#0000,#000 2% 98%,#0000);
+    & > div {
+      flex-shrink: 0;
+      flex: 1;
+      flex-shrink: 0;
+      min-width: 280px;
+      margin-left: 5px;
+    }
   }
 }
 
