@@ -1,11 +1,9 @@
 import React from 'react';
-import axios from 'axios';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
-import { BASE_URL } from 'api';
+import { BASE_URL, instance } from 'api';
 import toast from 'react-hot-toast';
-import { getPersonnel } from '../../api/personnel';
 
 const EmployeePage = () => {
   const { restId } = useParams();
@@ -15,16 +13,10 @@ const EmployeePage = () => {
   };
 
   const deleteEmployeeMutation = useMutation((employeeId) =>
-    axios.delete(`${BASE_URL}/personnel/${employeeId}`, {
+    instance.delete(`${BASE_URL}/personnel/${employeeId}`, {
       data: { restaurant_id: restId },
     })
   );
-
-  const { data, isLoading, refetch } = useQuery('personnel', () => getPersonnel(restId), {
-    onError: () => {
-      toast.error('Error fetching personnel data');
-    },
-  });
 
   const handleDelete = async (employeeId) => {
     try {
@@ -46,8 +38,6 @@ const EmployeePage = () => {
       variant="employee"
       goToAdd={navigateToAddEmpl}
       handleDelete={handleDelete}
-      data={data}
-      isLoading={isLoading}
     />
   );
 };
