@@ -4,20 +4,25 @@ import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 
 const DishesList = ({ dishes, handleChangeStatus }) => {
+  const sortedDishes = [...dishes].sort((dishA, dishB) => {
+    return new Date(dishA.create) - new Date(dishB.create);
+  });
+
   return (
     <ul className={`${styles.list}`}>
-      {dishes.map(({ dish, quantity, status, orderId }) => {
-        return (
-          <DishesItem
-            key={nanoid()}
-            dish={dish}
-            status={status}
-            quantity={quantity}
-            orderId={orderId}
-            handleChangeStatus={handleChangeStatus}
-          />
-        );
-      })}
+      {sortedDishes.map(({ dish, quantity, orderId, status, create, tableNumber, orderNumber }) => (
+        <DishesItem
+          key={nanoid()}
+          dish={dish}
+          status={status}
+          quantity={quantity}
+          orderId={orderId}
+          create={create}
+          handleChangeStatus={handleChangeStatus}
+          tableNumber={tableNumber}
+          orderNumber={orderNumber}
+        />
+      ))}
     </ul>
   );
 };
@@ -29,6 +34,9 @@ DishesList.propTypes = {
       quantity: PropTypes.number.isRequired,
       status: PropTypes.string.isRequired,
       orderId: PropTypes.string.isRequired,
+      create: PropTypes.string.isRequired,
+      tableNumber: PropTypes.number.isRequired,
+      orderNumber: PropTypes.string.isRequired,
     })
   ).isRequired,
   handleChangeStatus: PropTypes.func.isRequired,
