@@ -19,21 +19,27 @@ const StatisticsPage = () => {
 
   return (
     <div className={cls.main}>
-      <span className={cls.span}>
-        Get statisctics by
-        <DropDown
-          options={[
-            { value: 'year', label: 'Year' },
-            { value: 'month', label: 'Month' },
-            { value: 'week', label: 'Week' },
-          ]}
-          onSelect={(e) => {
-            setTimestamp(e.value);
-          }}
-          defaultValue="Month"
-        />
-      </span>
-      {isLoading ? <Loader /> : <Statisctics statistics={data?.data?.statistics} />}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <span className={cls.span}>
+            Get statisctics by
+            <DropDown
+              options={[
+                { value: 'year', label: 'Year' },
+                { value: 'month', label: 'Month' },
+                { value: 'week', label: 'Week' },
+              ]}
+              onSelect={(e) => {
+                setTimestamp(e.value);
+              }}
+              defaultValue="Month"
+            />
+          </span>
+          <Statisctics statistics={data?.data?.statistics} />
+        </>
+      )}
     </div>
   );
 };

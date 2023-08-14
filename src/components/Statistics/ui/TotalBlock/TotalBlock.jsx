@@ -1,4 +1,3 @@
-import Text from 'shared/Text/Text';
 import Title from 'shared/Title/Title';
 import cls from './TotalBlock.module.scss';
 import {
