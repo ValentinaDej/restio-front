@@ -23,9 +23,6 @@ const Select = forwardRef(
   ) => {
     return (
       <div className={`${styles.select_wrapper}`}>
-        <label className={`${styles.label} ${styles[`label_${size}`]}`} htmlFor={id}>
-          {label}
-        </label>
         <select
           ref={ref} // Use the ref passed from Controller
           className={`${styles.select} ${styles[`select_${size}`]} ${
@@ -33,14 +30,16 @@ const Select = forwardRef(
           } ${styles[`select_${error}`]}  `}
           id={id}
           name={name}
-          // defaultValue={'default'}
+          defaultValue={'default'}
           multiple={multiple}
           value={value}
           onChange={onChange}
           {...(register && register(name, rules))}
           {...props}
         >
-          <option disabled={true}>Select an option</option>
+          <option value="" disabled>
+            Choose a {label}
+          </option>
           {children}
         </select>
       </div>

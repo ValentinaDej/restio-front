@@ -37,7 +37,11 @@ const MenuPage = () => {
         {role === 'admin' ||
           (role === 'waiter' && (
             <div className={css.wrapper}>
-              <Button onClick={() => navigate(-1)} size="sm" mode="outlined">
+              <Button
+                onClick={() => navigate(`/${restId}/waiter/tables`)}
+                size="sm"
+                mode="outlined"
+              >
                 Back to dashboard
               </Button>
             </div>

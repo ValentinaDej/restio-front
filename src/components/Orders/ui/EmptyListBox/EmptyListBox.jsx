@@ -12,7 +12,7 @@ export const EmptyListBox = ({ params, isWaiter }) => {
 
   const navigateBack = useCallback(() => {
     if (isWaiter) {
-      navigate(`/waiter/tables/${params.restId}`);
+      navigate(`/${params.restId}/waiter/tables`);
     } else {
       navigate(`/${params.restId}/${params.tableId}`);
     }

@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 import { LiaPlusSolid } from 'react-icons/lia';
 
-import defaultImage from '../../img/defaultUploadImg.png';
+import defaultImage from '../../assets/img/defaultUploadImg.png';
 import styles from './FileUploader.module.scss';
 
 const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg', 'gif'];

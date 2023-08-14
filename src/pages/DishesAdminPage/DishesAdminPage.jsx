@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { toast } from 'react-hot-toast';
-import { deleteDishById, getDishes } from 'api/dish';
+import { deleteDishById } from 'api/dish';
 import Select from 'shared/Select/Select';
 import { DISH_CATEGORIES } from 'utils/constants';
 import styles from './DishesAdminPage.module.scss';
@@ -14,25 +14,12 @@ const DishesAdminPage = () => {
   const [category, setCategory] = useState('');
   const [type, setType] = useState('active');
 
-  const { isLoading, data, refetch } = useQuery(
-    ['dishes', category, type],
-    async () => await getDishes(restId, category, type === 'active'),
-    {
-      onError: (error) => {
-        toast.error(error.message);
-      },
-      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
-      refetchOnReconnect: false, // Disable refetching when the network reconnects
-      refetchInterval: false, // Disable automatic periodic refetching
-    }
-  );
-
   const { mutateAsync } = useMutation((dishId) => {
     deleteDishById(dishId, restId);
   });
 
   const navigateToAddDish = () => {
-    navigate(`/admin/${restId}/dishes/new`);
+    navigate(`/${restId}/admin/dishes/new`);
   };
 
   const handleDelete = async (id, restId) => {
@@ -42,7 +29,6 @@ const DishesAdminPage = () => {
         success: 'Dish removed from the menu',
         error: 'Error removing dish',
       });
-      await refetch();
     } catch (error) {
       console.error('Error removing dish:', error);
     }
@@ -62,8 +48,8 @@ const DishesAdminPage = () => {
     <AdminPageContainer
       title="Dishes list"
       variant="dish"
-      initData={data?.data}
-      isLoading={isLoading}
+      category={category}
+      type={type}
       goToAdd={navigateToAddDish}
       handleDelete={handleDelete}
     >

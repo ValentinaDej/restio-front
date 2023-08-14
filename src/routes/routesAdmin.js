@@ -10,16 +10,16 @@ const DishesForCookPage = lazy(() => import('pages/DishesForCookPage/DishesForCo
 const StatisticsPage = lazy(() => import('pages/StatisticsPage/StatisticsPage'));
 
 const routesAdmin = [
-  { path: 'admin/:restId/personnel', component: <EmployeePage /> },
-  { path: 'admin/:restId/dishes', component: <DishesAdminPage /> },
-  { path: 'admin/:restId/personnel/edit/:personId', component: <AddPersonnelPage /> },
-  { path: 'admin/:restId/personnel/new', component: <AddPersonnelPage /> },
-  { path: 'admin/:restId/dishes/edit/:dishesId', component: <AddDishPage /> },
-  { path: 'admin/:restId/dishes/new/', component: <AddDishPage /> },
-  { path: 'admin/:restId/tables', component: <TablesWaiterPage /> },
-  { path: 'admin/:restId/tables/:tableId', component: <TableWaiterPage /> },
-  { path: 'admin/:restId/cook', component: <DishesForCookPage /> },
-  { path: 'admin/:restId/statistics', component: <StatisticsPage /> },
+  { path: ':restId/admin/personnel', component: <EmployeePage /> },
+  { path: ':restId/admin/dishes', component: <DishesAdminPage /> },
+  { path: ':restId/admin/personnel/edit/:personId', component: <AddPersonnelPage /> },
+  { path: ':restId/admin/personnel/new', component: <AddPersonnelPage /> },
+  { path: ':restId/admin/dishes/edit/:dishesId', component: <AddDishPage /> },
+  { path: ':restId/admin/dishes/new/', component: <AddDishPage /> },
+  { path: ':restId/admin/statistics', component: <StatisticsPage /> },
+  { path: ':restId/waiter/tables', component: <TablesWaiterPage /> },
+  { path: ':restId/waiter/tables/:tableId', component: <TableWaiterPage /> },
+  { path: ':restId/cook', component: <DishesForCookPage /> },
 ];
 
 export default routesAdmin;
