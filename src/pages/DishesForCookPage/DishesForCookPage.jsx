@@ -8,7 +8,8 @@ import { getAllOrders, useUpdateDishStatusByWaiter } from 'api/order';
 import StatusCardItem from 'components/Cook/StatusCardItem/StatusCardItem';
 import { useMediaQuery } from 'react-responsive';
 import Button from 'shared/Button/Button';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useSSE } from 'react-hooks-sse';
 
 const statuses = ['Ordered', 'In progress', 'Ready'];
 
@@ -16,7 +17,7 @@ const DishesForCookPage = () => {
   const { restId } = useParams();
 
   const [currentStatus, setCurrentStatus] = useState('Ordered');
-
+  const createNewOrderEvent = useSSE('new order', {});
   const { data, isLoading, refetch } = useQuery(
     ['orders'],
     async () => await getAllOrders(restId),
@@ -29,6 +30,11 @@ const DishesForCookPage = () => {
       refetchInterval: false, // Disable automatic periodic refetching
     }
   );
+  useEffect(() => {
+    if (createNewOrderEvent && createNewOrderEvent.message) {
+      refetch({ force: true });
+    }
+  }, [createNewOrderEvent, refetch]);
 
   const isMobile = useMediaQuery({
     query: '(max-width: 767px)',
