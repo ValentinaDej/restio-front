@@ -288,6 +288,7 @@ export const TransactionsTable = () => {
               onChange={(e) => {
                 setIsTodayTransactions(e.target.checked);
                 setPagination({ pageIndex: 0, pageSize });
+                setDate(undefined);
               }}
             />
           </div>
