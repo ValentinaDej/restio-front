@@ -1,5 +1,5 @@
 import { instance } from 'api';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 export const useGetOrdersByTableId = (restId, tableId) => {
   const queryResp = useQuery(
@@ -15,15 +15,11 @@ export const useGetOrdersByTableId = (restId, tableId) => {
 };
 
 export const useGetOrdersByRestaurantId = (restId) => {
-  const queryResp = useQuery(
-    ['ordersByRestaurantId'],
-    async () => await instance.get(`orders/${restId}`),
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchInterval: false,
-    }
-  );
+  const queryResp = useQuery(['orders'], async () => await instance.get(`orders/${restId}`), {
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchInterval: false,
+  });
   return queryResp;
 };
 
@@ -41,9 +37,17 @@ export const useGetTablesByRestaurantId = (restId) => {
 };
 
 export const useChangeTableStatus = () => {
+  const queryClient = useQueryClient();
+
   const mutationResp = useMutation(
     async ({ status, restaurant_id, table_id: id }) =>
-      await instance.patch(`tables/${id}`, { status, restaurant_id })
+      await instance.patch(`tables/${id}`, { status, restaurant_id }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('tablesByRestaurantId');
+        queryClient.invalidateQueries('orders');
+      },
+    }
   );
   return mutationResp;
 };
