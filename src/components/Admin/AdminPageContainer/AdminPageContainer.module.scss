@@ -53,10 +53,16 @@
 
 .input__section {
   padding: 30px 20px 10px 0;
+  margin-right: 10px;
   position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+}
+
+.search__section {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .input {
@@ -64,4 +70,10 @@
   padding: 10px;
   border-radius: 5px;
   border: 1px solid var(--color-gray);
+}
+
+.addMore__section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

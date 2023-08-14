@@ -19,7 +19,7 @@ export const getAllOrders = async (restId) => {
 
 export const useGetOrdersByTableId = ({ restId, tableId }) => {
   const queryResp = useQuery(
-    ['orders'],
+    ['orders', restId, tableId],
     async () => await instance.get(`orders/${restId}/table/${tableId}`),
     {
       refetchOnWindowFocus: false,

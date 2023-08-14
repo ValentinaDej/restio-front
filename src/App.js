@@ -5,7 +5,7 @@ import HomePage from 'pages/HomePage/HomePage';
 import LoginPage from 'pages/LoginPage/LoginPage';
 import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
 import logoImg from './img/RESTio.svg';
-import { Route, Routes, useLocation, useParams } from 'react-router-dom';
+import { Outlet, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import routesAdmin from 'routes/routesAdmin';
 import routesCook from 'routes/routesCook';
@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import Footer from 'shared/Footer/Footer';
 import Header from 'shared/Header/Header';
 import Loader from 'shared/Loader/Loader';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { SSEProvider } from 'react-hooks-sse';
 
@@ -29,11 +29,17 @@ const App = () => {
   const location = useLocation();
   const path = location.pathname.split('/');
   const restId = path[1];
-  const { role } = useSelector((state) => state.auth);
-
   const pathName = {
     login: '/login',
     main: '/',
+  };
+  const { role } = useSelector((state) => state.auth);
+  const RoutesProvider = () => {
+    return (
+      <SSEProvider endpoint={`http://localhost:3001/sse/${restId}`}>
+        <Outlet />
+      </SSEProvider>
+    );
   };
   //useState де сбережені лого, назва ресторану поки що болванка
   const logo = logoImg;
@@ -41,7 +47,7 @@ const App = () => {
   //useEffect с запитом - повертає дані лого, назву ресторану
   //restId =`64c4fdea4055a7111092df32`
   return (
-    <SSEProvider endpoint={`http://localhost:3001/sse/${restId}`}>
+    <>
       {location.pathname === pathName.login || location.pathname === pathName.main ? (
         ''
       ) : (
@@ -52,15 +58,16 @@ const App = () => {
           <Routes>
             <Route path="/" element={<PublicRoute component={<HomePage />} />} />
             <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
-            {routesCustomer.map(({ path, component }) => (
-              <Route key={path} path={path} element={<PublicRoute component={component} />} />
-            ))}
-
-            {(role === 'admin' || role === 'waiter' || role === 'cook') &&
-              variantPath[role].map(({ path, component }) => (
-                <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+            <Route element={<RoutesProvider />}>
+              {routesCustomer.map(({ path, component }) => (
+                <Route key={path} path={path} element={<PublicRoute component={component} />} />
               ))}
 
+              {(role === 'admin' || role === 'waiter' || role === 'cook') &&
+                variantPath[role].map(({ path, component }) => (
+                  <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+                ))}
+            </Route>
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>
@@ -68,7 +75,7 @@ const App = () => {
       {role && <Footer />}
       <Toaster />
       <ReactQueryDevtools initialIsOpen={false} />
-    </SSEProvider>
+    </>
   );
 };
 

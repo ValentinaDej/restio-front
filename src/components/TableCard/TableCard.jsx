@@ -11,7 +11,8 @@ import { useState } from 'react';
 const TableCard = ({ restaurant_id, table_number, table_id, status, orders }) => {
   const changeTableStatus = useChangeTableStatus();
   const [currentStatus, setCurrentStatus] = useState(status);
-
+  console.log(status);
+  console.log(currentStatus);
   const redAnimation = currentStatus === 'Waiting' ? styles.table_pulsating : '';
   const changeStatus = async (item) => {
     try {

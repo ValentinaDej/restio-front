@@ -19,23 +19,32 @@ const Orders = ({ isWaiter }) => {
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [isAllOrdersPaid, setIsAllOrdersPaid] = useState(false);
   const params = useParams();
+  const { tableId } = params;
+
   const onChangeSelected = (price, selectedOrders) => {
     setSelectedTotal(formatNumberWithTwoDecimals(price));
     setSelectedOrders(selectedOrders);
   };
   const updateDishStatusEvent = useSSE('dish status', {});
+
   const { data: { data } = {}, isError, isLoading, refetch } = useGetOrdersByTableId(params);
+
   useEffect(() => {
-    if (updateDishStatusEvent) refetch();
-  }, [updateDishStatusEvent, refetch]);
+    if (updateDishStatusEvent && updateDishStatusEvent.message) {
+      const table_id = updateDishStatusEvent.message.replace(/"/g, '');
+      if (table_id === tableId) {
+        refetch({ force: true });
+      }
+    }
+  }, [updateDishStatusEvent, refetch, tableId]);
 
   useEffect(() => {
     if (data) {
-      const allOrdersPaid = data?.data?.orders?.every((order) => {
+      const allOrdersPaid = data?.orders?.every((order) => {
         const allItemsServed = order?.orderItems?.every((item) => item.status === 'Served');
         return order.status === 'Paid' && allItemsServed;
       });
-      const newTotalPrice = data?.data?.orders?.reduce((acc, order) => {
+      const newTotalPrice = data?.orders?.reduce((acc, order) => {
         if (order.status !== 'Paid') {
           const orderPrice = order.orderItems.reduce(
             (acc, item) => acc + item.dish.price * item.quantity,
@@ -50,27 +59,27 @@ const Orders = ({ isWaiter }) => {
       setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
       setIsAllOrdersPaid(allOrdersPaid);
     }
-  }, [data, data?.data?.orders]);
+  }, [data, data?.orders]);
 
   return (
     <>
       <NavigateButtons params={params} isWaiter={isWaiter} />
       {isLoading ? (
         <OrderListSkeleton isWaiter={isWaiter} isSmall={!isWaiter} />
-      ) : !data?.data?.orders?.length ? (
+      ) : !data?.orders?.length ? (
         <EmptyListBox params={params} isWaiter={isWaiter} />
       ) : (
         <>
           <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
             <ListTopBox
-              orders={data?.data?.orders || []}
+              orders={data?.orders || []}
               totalPrice={totalPrice}
               onChangeSelected={onChangeSelected}
               urlParams={params}
               isWaiter={isWaiter}
             />
             <OrdersList
-              orders={data?.data?.orders || []}
+              orders={data?.orders || []}
               onChangeSelected={onChangeSelected}
               selectedTotal={selectedTotal}
               selectedOrders={selectedOrders}
