@@ -8,8 +8,8 @@ import * as Yup from 'yup';
 import Input from '../Input/Input';
 import FileUploader from '../FileUploader/FileUploader';
 import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA } from 'utils/constants';
-import { CheckBox } from '../CheckBox/CheckBox';
 import { useParams } from 'react-router-dom';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const validationSchema = Yup.object({
   firstName: Yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required field'),
@@ -81,8 +81,6 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
 
     delete data.image;
 
-    console.log(data);
-
     if (picture) {
       onSubmit({ ...data, picture: picture.data.imageName });
     } else {
@@ -94,158 +92,161 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
   };
 
   return (
-    <form
-      className={`${styles.employeeForm} ${styles[`fields_${size}`]}`}
-      onSubmit={handleSubmit(handleFormSubmit)}
-    >
-      <div className={`${styles.fields} ${styles[`fields_${size}`]}`}>
-        <div className={styles.field__wrapper}>
-          <Controller
-            name="firstName"
-            control={control}
-            render={({ field }) => (
-              <>
-                <Input {...field} placeholder="First Name" size={size} length={'lg'} />
-                {errors.firstName && <div className={styles.error}>{errors.firstName}</div>}
-              </>
-            )}
-          />
-        </div>
-        <div className={styles.field__wrapper}>
-          <Controller
-            name="lastName"
-            control={control}
-            render={({ field }) => (
-              <>
-                <Input {...field} placeholder="Last Name" size={size} length={'lg'} />
-                {errors.lastName && <div className={styles.error}>{errors.lastName}</div>}
-              </>
-            )}
-          />
-        </div>
-        <div className={styles.field__wrapper}>
-          <Controller
-            name="gender"
-            control={control}
-            render={({ field }) => (
-              <>
-                <Select
-                  label="Gender"
-                  size={size}
-                  register={register}
-                  error={errors.gender ? 'error' : 'noError'}
-                  {...field} // Pass field to the Select component
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </Select>
-                {errors.gender && <div className={styles.error}>{errors.gender}</div>}
-              </>
-            )}
-          />
-        </div>
-        <div className={styles.field__wrapper}>
-          <Controller
-            name="role"
-            control={control}
-            render={({ field }) => (
-              <>
-                <Select
-                  label="Role"
-                  size={size}
-                  register={register}
-                  error={errors.gender ? 'error' : 'noError'}
-                  {...field}
-                >
-                  <option value="waiter">Waiter</option>
-                  <option value="admin">Admin</option>
-                  <option value="cook">Cook</option>
-                </Select>
-                {errors.role && <div className={styles.error}>{errors.role}</div>}
-              </>
-            )}
-          />
-        </div>
-        <div className={`${styles.field__wrapper}`}>
-          <Controller
-            name="password"
-            control={control}
-            render={({ field }) => (
-              <>
-                <Input
-                  {...field}
-                  type={showPassword ? 'text' : 'password'} // Toggle the input type based on the showPassword state
-                  placeholder="Password"
-                  size={size}
-                  length={`lg`}
-                />
-                <span className={`${styles.showPassword}`}>
-                  <CheckBox
-                    type="checkbox"
-                    label={`Show Password`}
-                    onChange={() => setShowPassword((prevShowPassword) => !prevShowPassword)}
-                    checked={showPassword}
+    <>
+      <form
+        className={`${styles.employeeForm} ${styles[`fields_${size}`]}`}
+        onSubmit={handleSubmit(handleFormSubmit)}
+      >
+        <div className={`${styles.fields} ${styles[`fields_${size}`]}`}>
+          <div className={styles.field__wrapper}>
+            <Controller
+              name="firstName"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <Input {...field} placeholder="First Name" size={size} length={'lg'} />
+                  {errors.firstName && <div className={styles.error}>{errors.firstName}</div>}
+                </>
+              )}
+            />
+          </div>
+          <div className={styles.field__wrapper}>
+            <Controller
+              name="lastName"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <Input {...field} placeholder="Last Name" size={size} length={'lg'} />
+                  {errors.lastName && <div className={styles.error}>{errors.lastName}</div>}
+                </>
+              )}
+            />
+          </div>
+          <div className={`${styles.field__wrapper}`}>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <div className={styles.passwordFieldWrapper}>
+                  <div className={styles.passwordInputWrapper}>
+                    <Input
+                      {...field}
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Password"
+                      size={size}
+                      length={`lg`}
+                    />
+                    <span className={styles.showPassword}>
+                      {showPassword ? (
+                        <FiEyeOff onClick={() => setShowPassword(false)} />
+                      ) : (
+                        <FiEye onClick={() => setShowPassword(true)} />
+                      )}
+                    </span>
+                  </div>
+                  {errors.password && <div className={styles.error}>{errors.password}</div>}
+                </div>
+              )}
+            />
+          </div>
+          <div className={styles.field__wrapper}>
+            <Controller
+              name="phone"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <Input
+                    {...field}
+                    placeholder="Phone (ex. +380971234567)"
+                    size={size}
+                    length={`lg`}
                   />
-                </span>
-                {errors.password && <div className={styles.error}>{errors.password}</div>}
-              </>
-            )}
-          />
+                  {errors.phone && <div className={styles.error}>{errors.phone}</div>}
+                </>
+              )}
+            />
+          </div>
+          <div className={styles.field__wrapper}>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <Input {...field} type="email" placeholder="Email" size={size} length={`lg`} />
+                  {errors.email && <div className={styles.error}>{errors.email}</div>}
+                </>
+              )}
+            />
+          </div>
+          <div className={styles.field__wrapper}>
+            <Controller
+              name="address"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <Input {...field} placeholder="Address" size={size} length={`lg`} />
+                  {errors.address && <div className={styles.error}>{errors.address}</div>}
+                </>
+              )}
+            />
+          </div>
+          <div className={styles.field__wrapper}>
+            <Controller
+              name="gender"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <Select
+                    label="Gender"
+                    size={size}
+                    register={register}
+                    error={errors.gender ? 'error' : 'noError'}
+                    {...field} // Pass field to the Select component
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </Select>
+                  {errors.gender && <div className={styles.error}>{errors.gender}</div>}
+                </>
+              )}
+            />
+          </div>
+          <div className={styles.field__wrapper}>
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <Select
+                    label="Role"
+                    size={size}
+                    register={register}
+                    error={errors.gender ? 'error' : 'noError'}
+                    {...field}
+                  >
+                    <option value="waiter">Waiter</option>
+                    <option value="admin">Admin</option>
+                    <option value="cook">Cook</option>
+                  </Select>
+                  {errors.role && <div className={styles.error}>{errors.role}</div>}
+                </>
+              )}
+            />
+          </div>
         </div>
-        <div className={styles.field__wrapper}>
-          <Controller
-            name="phone"
-            control={control}
-            render={({ field }) => (
-              <>
-                <Input
-                  {...field}
-                  placeholder="Phone (ex. +380971234567)"
-                  size={size}
-                  length={`lg`}
-                />
-                {errors.phone && <div className={styles.error}>{errors.phone}</div>}
-              </>
-            )}
-          />
+        <div className={`${styles.field__wrapper} ${styles.fileUploader__wrapper}`}>
+          <FileUploader ref={fileUploaderRef} />
         </div>
-        <div className={styles.field__wrapper}>
-          <Controller
-            name="email"
-            control={control}
-            render={({ field }) => (
-              <>
-                <Input {...field} type="email" placeholder="Email" size={size} length={`lg`} />
-                {errors.email && <div className={styles.error}>{errors.email}</div>}
-              </>
-            )}
-          />
+        <div className={styles.btn_group}>
+          <Button type="submit" size={size} disabled={isSubmitting}>
+            {buttonText}
+          </Button>
+          <Button mode={'outlined'} type="button" onClick={() => reset()} size={size}>
+            Clear
+          </Button>
         </div>
-        <div className={styles.field__wrapper}>
-          <Controller
-            name="address"
-            control={control}
-            render={({ field }) => (
-              <>
-                <Input {...field} placeholder="Address" size={size} length={`lg`} />
-                {errors.address && <div className={styles.error}>{errors.address}</div>}
-              </>
-            )}
-          />
-        </div>
-      </div>
-      <div className={`${styles.field__wrapper} ${styles.fileUploader__wrapper}`}>
-        <FileUploader ref={fileUploaderRef} />
-      </div>
-      <div className={styles.btn_group}>
-        <Button type="submit" size={size} disabled={isSubmitting}>
-          {buttonText}
-        </Button>
-        <Button type="button" onClick={() => reset()} size={size}>
-          Clear
-        </Button>
-      </div>
-    </form>
+      </form>
+    </>
   );
 };
 

@@ -26,7 +26,6 @@ const EmployeePage = () => {
         success: 'Employee deleted successfully',
         error: 'Error deleting employee',
       });
-      await refetch();
     } catch (error) {
       console.error('Error deleting employee:', error);
     }

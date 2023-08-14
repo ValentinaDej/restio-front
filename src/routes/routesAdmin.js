@@ -15,9 +15,9 @@ const routesAdmin = [
   { path: ':restId/admin/personnel/new', component: <AddPersonnelPage /> },
   { path: ':restId/admin/dishes/edit/:dishesId', component: <AddDishPage /> },
   { path: ':restId/admin/dishes/new/', component: <AddDishPage /> },
-  { path: ':restId/admin/tables', component: <TablesWaiterPage /> },
-  { path: ':restId/admin/tables/:tableId', component: <TableWaiterPage /> },
-  { path: ':restId/admin/cook', component: <DishesForCookPage /> },
+  { path: ':restId/waiter/tables', component: <TablesWaiterPage /> },
+  { path: ':restId/waiter/tables/:tableId', component: <TableWaiterPage /> },
+  { path: ':restId/cook', component: <DishesForCookPage /> },
 ];
 
 export default routesAdmin;

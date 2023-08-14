@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSSE } from 'react-hooks-sse';
 import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
 import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
 import OrderListSkeleton from 'shared/Skeletons/OrderSkeleton/OrderSkeleton';
@@ -11,7 +12,6 @@ import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
 import cls from './Order.module.scss';
-import { useSSE } from 'react-hooks-sse';
 
 const Orders = ({ isWaiter }) => {
   const [selectedTotal, setSelectedTotal] = useState(0);
@@ -25,7 +25,7 @@ const Orders = ({ isWaiter }) => {
     setSelectedTotal(formatNumberWithTwoDecimals(price));
     setSelectedOrders(selectedOrders);
   };
-  const updateDishStatusEvent = useSSE('dish status', {});
+  const updateDishStatusEvent = useSSE('dish status');
 
   const { data: { data } = {}, isError, isLoading, refetch } = useGetOrdersByTableId(params);
 

@@ -1,8 +1,4 @@
-import {
-  useGetTablesByRestaurantId,
-  useGetOrdersByRestaurantId,
-  getTablesFromRest,
-} from 'api/service';
+import { useGetTablesByRestaurantId, useGetOrdersByRestaurantId } from 'api/service';
 import Loader from 'shared/Loader/Loader';
 import Title from 'shared/Title/Title';
 import styles from './TablesWaiterPage.module.scss';
@@ -14,7 +10,6 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import { useSSE } from 'react-hooks-sse';
 import { useDispatch } from 'react-redux';
 import { addMessage } from 'store/messages/messagesSlice';
-import { useQuery, useQueryClient } from 'react-query';
 
 const dumbTables = [
   {
@@ -62,32 +57,19 @@ const dumbTables = [
 ];
 
 const TablesWaiterPage = () => {
-  const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const { restId } = useParams();
   const updateTableStatusEvent = useSSE('table status', {});
   const dishReadyEvent = useSSE('dish is ready', {});
   console.log('Call Waiter SSE Event:', updateTableStatusEvent);
   console.log('Dish Event:', dishReadyEvent);
-  // const {
-  //   data: tablesData,
-  //   isLoading: isLoadingTables,
-  //   isError: isErrorTables,
-  //   error: errorTables,
-  // } = useGetTablesByRestaurantId(restId);
-
-  const { data: tablesData, refetch } = useQuery(
-    ['tables', restId],
-    async () => await getTablesFromRest(restId),
-
-    {
-      // staleTime: 0, // Data is immediately considered stale and will be refetched on the next request
-      // cacheTime: 0, // Data is never considered stale, and automatic refetching is disabled
-      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
-      refetchOnReconnect: false, // Disable refetching when the network reconnects
-      refetchInterval: false, // Disable automatic periodic refetching
-    }
-  );
+  const {
+    data: tablesData,
+    isLoading: isLoadingTables,
+    isError: isErrorTables,
+    error: errorTables,
+    refetch,
+  } = useGetTablesByRestaurantId(restId);
 
   useEffect(() => {
     if (updateTableStatusEvent && updateTableStatusEvent.message) {
@@ -100,13 +82,10 @@ const TablesWaiterPage = () => {
           })
         );
       }
-      refetch({ force: true }).then(() => {
-        console.log('refetch table status');
-        // Invalidate the specific query key to force a refetch
-        queryClient.invalidateQueries(['tables', restId]);
-      });
+      refetch({ force: true });
     }
-  }, [dispatch, queryClient, refetch, restId, updateTableStatusEvent]);
+  }, [dispatch, refetch, restId, updateTableStatusEvent]);
+
   const {
     data: ordersData,
     isLoading: isLoadingOrders,
@@ -125,17 +104,17 @@ const TablesWaiterPage = () => {
   const tables = tablesData?.data;
   const orders = ordersData?.data.orders;
 
-  // const isLoading = isLoadingTables || isLoadingOrders;
+  const isLoading = isLoadingTables || isLoadingOrders;
 
-  // if (isLoading) {
-  //   return <Loader size="lg" />;
-  // }
+  if (isLoading) {
+    return <Loader size="lg" />;
+  }
 
-  // const hasError = isErrorTables || isErrorOrders;
+  const hasError = isErrorTables || isErrorOrders;
 
-  // if (hasError) {
-  //   toast.error('Something went wrong!');
-  // }
+  if (hasError) {
+    toast.error('Something went wrong!');
+  }
 
   const filterOrdersByTableId = (orders, table_id) =>
     orders?.filter((order) => order.table_id === table_id);

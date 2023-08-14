@@ -55,10 +55,10 @@ const Header = ({ logo, restaurantName, role }) => {
           <NavLink className={classes.header__link} to={`${restaurantId}/admin/personnel`}>
             <IoPeopleSharp className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`${restaurantId}/admin/tables`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/waiter/tables`}>
             <MdTableBar className={classes.header__icon} />
           </NavLink>
-          <NavLink className={classes.header__link} to={`${restaurantId}/admin/cook`}>
+          <NavLink className={classes.header__link} to={`${restaurantId}/cook`}>
             <GiCook className={classes.header__icon} />
           </NavLink>
         </div>

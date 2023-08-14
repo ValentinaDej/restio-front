@@ -27,10 +27,6 @@ export const useGetOrdersByRestaurantId = (restId) => {
   return queryResp;
 };
 
-export const getTablesFromRest = async (restId) => {
-  const response = await instance.get(`tables/restaurant/${restId}`);
-  return response;
-};
 export const useGetTablesByRestaurantId = (restId) => {
   const queryResp = useQuery(
     ['tablesByRestaurantId'],

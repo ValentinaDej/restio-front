@@ -4,8 +4,8 @@ import HomePage from 'pages/HomePage/HomePage';
 
 import LoginPage from 'pages/LoginPage/LoginPage';
 import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
-import logoImg from './img/RESTio.svg';
-import { Outlet, Route, Routes, useLocation, useParams } from 'react-router-dom';
+import logoImg from './assets/img/RESTio.svg';
+import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import routesAdmin from 'routes/routesAdmin';
 import routesCook from 'routes/routesCook';
@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import Footer from 'shared/Footer/Footer';
 import Header from 'shared/Header/Header';
 import Loader from 'shared/Loader/Loader';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { SSEProvider } from 'react-hooks-sse';
 

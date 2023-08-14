@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 
-import burger from '../../assets/burger.png';
-import number from '../../assets/4.png';
+import burger from '../../assets/img/burger.png';
+import number from '../../assets/img/4.png';
 import css from './ErrorPage.module.scss';
 import Button from 'shared/Button/Button';
 import Title from 'shared/Title/Title';
