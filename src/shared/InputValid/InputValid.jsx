@@ -8,12 +8,16 @@ const InputValid = ({
   placeholder,
   name,
   type,
+  value,
   autoComplete,
   icon: IconComponent,
   validationRules,
   register,
   error,
   size,
+  label,
+  onKeyDown,
+  maxLength,
 }) => {
   const hasError = error !== undefined;
 
@@ -26,6 +30,10 @@ const InputValid = ({
           placeholder={placeholder}
           autoComplete={autoComplete}
           size={size}
+          value={value}
+          label={label}
+          onKeyDown={onKeyDown}
+          maxLength={maxLength}
         />
         {IconComponent && (
           <div className={classes.icon__wrapper}>

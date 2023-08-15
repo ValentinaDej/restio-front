@@ -1,4 +1,6 @@
-import instance from 'api';
+import { instance } from 'api';
+import { errorMessage } from 'helpers/errorMessage';
+
 const { useQuery, useMutation, useQueryClient } = require('react-query');
 
 export const createOrder = async (data, restId) => {
@@ -32,17 +34,39 @@ export const useGetOrdersByTableId = ({ restId, tableId }) => {
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       refetchInterval: false,
+      cacheTime: 0,
     }
   );
   return queryResp;
 };
 
-export const useUpdateOrderStatusByWaiter = ({ restId, tableId }, orders) => {
+export const useUpdateOrderStatusByWaiter = (
+  { restId, tableId },
+  orders,
+  amount,
+  userId,
+  paymentType
+) => {
   const queryClient = useQueryClient();
 
-  const updateOrderStatus = async () => {
-    const response = await instance.patch(`orders/${restId}/table/${tableId}`, { orders });
+  const createTransactionOffline = async () => {
+    const response = await instance.post(`transactions/manual`, {
+      info: orders,
+      amount,
+      createdById: userId,
+      type: paymentType,
+    });
     return response.data;
+  };
+
+  const updateOrderStatus = async () => {
+    try {
+      await createTransactionOffline();
+      const response = await instance.patch(`orders/${restId}/table/${tableId}`, { orders });
+      return response.data;
+    } catch (err) {
+      errorMessage(err.response.data.message);
+    }
   };
 
   const mutation = useMutation(updateOrderStatus, {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSSE } from 'react-hooks-sse';
 import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
@@ -11,9 +11,11 @@ import { NavigateButtons } from './ui/NavigateButtons/NavigateButtons';
 import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
+
 import cls from './Order.module.scss';
 
 const Orders = ({ isWaiter }) => {
+  const [paymentType, setPaymentType] = useState('');
   const [selectedTotal, setSelectedTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedOrders, setSelectedOrders] = useState([]);
@@ -37,6 +39,20 @@ const Orders = ({ isWaiter }) => {
       }
     }
   }, [updateDishStatusEvent, refetch, tableId]);
+
+  const onChangeTypeOfPay = useCallback((e) => {
+    const value = e.target.ariaLabel;
+    const checked = e.target.checked;
+    if (value === 'cash') {
+      setPaymentType('cash');
+    }
+    if (value === 'POS') {
+      setPaymentType('POS');
+    }
+    if (!checked) {
+      setPaymentType('');
+    }
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -75,8 +91,10 @@ const Orders = ({ isWaiter }) => {
               orders={data?.orders || []}
               totalPrice={totalPrice}
               onChangeSelected={onChangeSelected}
+              onChangeTypeOfPay={onChangeTypeOfPay}
               urlParams={params}
               isWaiter={isWaiter}
+              paymentType={paymentType}
             />
             <OrdersList
               orders={data?.orders || []}
@@ -94,6 +112,7 @@ const Orders = ({ isWaiter }) => {
             urlParams={params}
             isWaiter={isWaiter}
             isAllOrdersPaid={isAllOrdersPaid}
+            paymentType={paymentType}
           />
         </>
       )}

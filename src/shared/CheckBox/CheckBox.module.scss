@@ -1,14 +1,15 @@
 .label {
   display: flex;
   align-items: center;
+  font-size: 0.8rem;
+  font-weight: var(--font-semi-bold);
   gap: 0.5rem;
-  color: var(--color-blue-dark);
 }
 
 .checkIcon {
   display: inline-block;
   border: var(--border-primary);
-  border-radius: 2px;
+  border-radius: 4px;
   color: transparent;
   cursor: pointer;
 

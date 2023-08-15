@@ -15,7 +15,7 @@ export const useGetOrdersByTableId = (restId, tableId) => {
 };
 
 export const useGetOrdersByRestaurantId = (restId) => {
-  const queryResp = useQuery(['orders'], async () => await instance.get(`orders/${restId}`), {
+  const queryResp = useQuery(['tablesOrders'], async () => await instance.get(`orders/${restId}`), {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchInterval: false,

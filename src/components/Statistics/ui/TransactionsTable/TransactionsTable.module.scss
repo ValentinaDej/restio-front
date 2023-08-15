@@ -1,0 +1,118 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  color: var(--color-blue-dark);
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--color-white);
+  height: 100%;
+}
+
+.table {
+  border: var(--border-primary);
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.calendar {
+  position: absolute;
+  z-index: 10;
+  top: 40px;
+}
+
+.th {
+  position: relative;
+  font-size: 18px;
+  border-bottom: var(--border-primary);
+  background: var(--color-orange-transparent);
+  border-right: var(--border-primary);
+  padding: 10px;
+}
+
+.td {
+  font-size: 16px;
+  border-right: var(--border-primary);
+  padding: 10px;
+  border-bottom: var(--border-primary);
+}
+
+.tr {
+  border-bottom: none;
+}
+.btnsBox {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
+  @media screen and (min-width: 870px) {
+    flex-direction: row;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.paginationBox {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.inputBox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input {
+  border: var(--border-primary);
+  border-radius: 10px;
+  padding: 5px;
+  width: 50px;
+
+  &:focus {
+    outline: 1px solid var(--color-orange-hover);
+  }
+}
+
+.loader {
+  width: 30px;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.inputSelectBox {
+  display: flex;
+  justify-content: space-around;
+}
+
+.emptyBox {
+  display: grid;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--color-orange);
+}
