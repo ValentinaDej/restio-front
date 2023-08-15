@@ -207,6 +207,7 @@
     top: 10px;
     z-index: 2;
     font-size: 40px;
+    transition: 0.5s ease;
   }
 
   .arrowBefore {
@@ -216,12 +217,14 @@
     top: 10px;
     z-index: 2;
     font-size: 40px;
+    transition: 0.5s ease;
   }
 
   .recomWrapper {
     width: 100%;
     position: relative;
     margin-bottom: 50px;
+    transition: 1s ease;
   }
 
   .sliderWrapper {
@@ -311,6 +314,7 @@
   .recomWrapper {
     width: 100%;
     position: relative;
+    padding-bottom: 30px;
   }
 
   .sliderWrapper {
@@ -389,5 +393,18 @@
 
   .box {
     margin: 0.7rem 0;
+  }
+
+  .arrowBefore:hover {
+    cursor: pointer;
+    transition: 0.5s ease;
+    transform: scale(1.5);
+    color: #c55810;
+  }
+  .arrowNext:hover {
+    cursor: pointer;
+    transition: 0.5s ease;
+    transform: scale(1.5);
+    color: #c55810;
   }
 }
