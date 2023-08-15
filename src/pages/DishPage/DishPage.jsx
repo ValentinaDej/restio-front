@@ -23,6 +23,7 @@ const DishPage = () => {
   const [recommendedDishes, setRecommendedDishes] = useState([]);
   const dishId = useParams().dishId;
   const restId = useParams().restId;
+  const tableId = useParams().tableId;
   const dispatch = useDispatch();
   const storeData = useSelector(getProductFromState);
   const { pathname } = useLocation();
@@ -112,7 +113,7 @@ const DishPage = () => {
   return (
     <>
       <main className={classes.dish}>
-        <NavLink to={`/${restId}/:tableId`} className={classes.back}>
+        <NavLink to={`/${restId}/${tableId}`} className={classes.back}>
           <IoReturnDownBackOutline></IoReturnDownBackOutline>
           <span>Back to Menu</span>
         </NavLink>
@@ -145,7 +146,7 @@ const DishPage = () => {
                   </div>
                 ) : (
                   <QuantityButton
-                    classname={classes.quantity_buttons}
+                    mode="outlined"
                     addOne={increaseItem}
                     quantity={dishQuantity}
                     minusOne={decreaseItem}
@@ -259,7 +260,7 @@ const DishPage = () => {
                     ingredients={item.ingredients}
                     weight={item.portionWeight}
                     price={item.price}
-                    link={`/${restId}/:tableId/${item._id}`}
+                    link={`/${restId}/${tableId}/${item._id}`}
                   ></DishCard>
                 </div>
               );
