@@ -25,7 +25,7 @@ const sendCorrectErrMsg = (error) => {
 export const getPersonnel = async ({ restId, pageParam = 1, searchText = '' }) => {
   try {
     const response = await instance(
-      `/personnel/restaurant/${restId}?page=${pageParam}&limit=4&searchText=${searchText}`
+      `/personnel/restaurant/${restId}?page=${pageParam}&limit=11&searchText=${searchText}`
     );
     console.log(response.data);
     return response.data;
@@ -47,7 +47,7 @@ export const createPersonnel = async (formData, rest_id) => {
   try {
     const response = await instance.post(`/personnel`, {
       ...formData,
-      rest_id,
+      restaurant_id: rest_id,
     });
     return response.data;
   } catch (error) {
@@ -59,7 +59,7 @@ export const updatePersonnel = async (personId, formData, rest_id) => {
   try {
     const response = await instance.patch(`/personnel/${personId}`, {
       ...formData,
-      rest_id,
+      restaurant_id: rest_id,
     });
     return response.data;
   } catch (error) {

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styles from './AIAssistant.module.scss';
 import Button from '../../shared/Button/Button';
-import Input from '../../shared/Input/Input';
 import Title from '../../shared/Title/Title';
 import { FcApproval } from '@react-icons/all-files/fc/FcApproval';
 import { FcCancel } from '@react-icons/all-files/fc/FcCancel';
@@ -11,10 +10,12 @@ import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import { openai } from '../../api/openai';
 import Loader from '../../shared/Loader/Loader';
-import { FiDollarSign } from '@react-icons/all-files/fi/FiDollarSign';
+import css from '../MenuPage/MenuPage.module.scss';
+import DishCard from '../../shared/DishCard/DishCard';
+import Cart from '../../components/Cart/Cart';
 
 const AIAssistant = () => {
-  const { restId } = useParams();
+  const { restId, tableId } = useParams();
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState({
     isVegan: false,
@@ -26,6 +27,81 @@ const AIAssistant = () => {
   });
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
+  const [dishes, setDishes] = useState([
+    {
+      _id: '64d9ced6ec2a03efaaad15b0',
+      name: 'Pizza Chelentano',
+      ingredients: [
+        {
+          _id: '64c68ff222d062ab971d5617',
+          name: 'Sausages',
+          type: 'meat product',
+        },
+        {
+          _id: '64c68ff222d062ab971d5624',
+          name: 'Tomato Puree',
+          type: 'tomato',
+        },
+        {
+          _id: '64c68ff222d062ab971d5619',
+          name: 'Cheese',
+          type: 'milk product',
+        },
+        {
+          _id: '64c68ff222d062ab971d5613',
+          name: 'Mushrooms',
+          type: 'vegetables',
+        },
+        {
+          _id: '64c68ff222d062ab971d5618',
+          name: 'Salt',
+        },
+        {
+          _id: '64c68ff222d062ab971d5610',
+          name: 'Chicken',
+          type: 'fowl',
+        },
+      ],
+      picture: 'IMG_20200410_103000 (1).jpg',
+      type: 'Pizza',
+      spicy: false,
+      vegetarian: false,
+      pescatarian: false,
+      portionWeight: 500,
+      price: 15,
+      isActive: true,
+      createdAt: '2023-08-14T06:51:02.375Z',
+      updatedAt: '2023-08-15T13:53:48.074Z',
+      __v: 0,
+    },
+    {
+      _id: '64da0f174574e1e22e9c0a5d',
+      name: 'Olivier2',
+      ingredients: [
+        {
+          _id: '64c68ff222d062ab971d5614',
+          name: 'Olive Oil',
+          type: 'oil',
+        },
+        {
+          _id: '64c68ff222d062ab971d561c',
+          name: 'Sour Cream',
+          type: 'milk product',
+        },
+      ],
+      picture: 'Olivier.jpg',
+      type: 'Salads',
+      spicy: false,
+      vegetarian: false,
+      pescatarian: true,
+      portionWeight: 350,
+      price: 2,
+      isActive: true,
+      createdAt: '2023-08-14T11:25:11.883Z',
+      updatedAt: '2023-08-14T11:25:11.883Z',
+      __v: 0,
+    },
+  ]);
 
   const handleStepClick = (clickedStep) => {
     if (clickedStep <= step) {
@@ -37,6 +113,7 @@ const AIAssistant = () => {
     if (step === 2) {
       if (answers.budget > 5) {
         setLoading(true); // Show loader
+        setStep(step + 1);
         try {
           const response = await openai(
             restId,
@@ -48,9 +125,9 @@ const AIAssistant = () => {
             answers.budget
           );
           console.log('text', response);
-          setResponse(response.data.response.text);
+          setResponse(response.data.textBefore);
+          setDishes(response.data.dishes);
           setLoading(false); // Hide loader
-          setStep(step + 1);
         } catch (error) {
           setLoading(false); // Hide loader in case of error
           console.error('Error fetching response:', error);
@@ -62,6 +139,10 @@ const AIAssistant = () => {
     } else {
       setStep(step + 1);
     }
+  };
+
+  const handleBudgetChange = (value) => {
+    setAnswers({ ...answers, budget: value });
   };
 
   const renderStep = () => {
@@ -158,15 +239,18 @@ const AIAssistant = () => {
               What is your budget? <FcMoneyTransfer />
             </p>
             <div className={styles.budgetInput}>
-              <div className={styles.inputField}>
-                <Input
-                  type="number"
+              <div className={styles.sliderContainer}>
+                <input
+                  type="range"
+                  min={10}
+                  max={1000}
+                  step={1}
                   value={answers.budget}
-                  onChange={(e) => setAnswers({ ...answers, budget: e.target.value })}
+                  onChange={(e) => handleBudgetChange(e.target.value)}
                 />
               </div>
-              <div className={styles.dollarIcon}>
-                <FiDollarSign size={`20`} />
+              <div className={styles.budgetValue}>
+                <span>{answers.budget}$</span>
               </div>
             </div>
           </div>
@@ -178,10 +262,26 @@ const AIAssistant = () => {
               <FcAssistant size={`50`} />
             </div>
             {loading ? <Loader size={`md`} /> : <p className={styles.responseText}>{response}</p>}
+            <ul className={styles.list}>
+              {dishes?.map(({ _id, picture, price, portionWeight, ingredients, name }) => (
+                <li className={styles.list__item} key={_id}>
+                  <DishCard
+                    id={_id}
+                    src={picture}
+                    title={name}
+                    ingredients={ingredients}
+                    weight={portionWeight}
+                    price={price}
+                    link={`/${restId}/${tableId}/${_id}`}
+                  />
+                </li>
+              ))}
+            </ul>
+            <Cart />
           </div>
         );
       default:
-        return null;
+        return <Loader />;
     }
   };
 
