@@ -202,16 +202,18 @@
 
   .arrowNext {
     position: absolute;
-    right: 0;
-    top: 0px;
+    color: #ea6a12;
+    right: 30px;
+    top: 10px;
     z-index: 2;
     font-size: 40px;
   }
 
   .arrowBefore {
     position: relative;
-    left: 0px;
-    top: 0px;
+    color: #ea6a12;
+    left: 30px;
+    top: 10px;
     z-index: 2;
     font-size: 40px;
   }
@@ -286,14 +288,13 @@
     width: 75%;
     margin: 0px auto;
     position: relative;
-    z-index: -1;
+    z-index: 0;
     overflow: hidden;
   }
 
   .slider_box {
     display: flex;
-
-    padding: 90px 0 10px;
+    padding: 50px 0 10px;
     // border: 1px solid;
     gap: 20px;
     position: relative;
