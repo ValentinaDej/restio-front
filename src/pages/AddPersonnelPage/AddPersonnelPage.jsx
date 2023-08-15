@@ -18,7 +18,7 @@ const AddPersonnelPage = () => {
 
   const { data, isLoading } = useQuery(
     ['new_personnel', personId],
-    () => getPersonnelById(personId),
+    () => getPersonnelById(personId, restId),
     {
       enabled: !!personId,
       onError: () => {
