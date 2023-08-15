@@ -117,24 +117,63 @@ const DishPage = () => {
   const sliderNext = () => {
     const element = sliderRef.current;
     const elementWidth = element.getBoundingClientRect().width;
-    const sliderWidth = 1510;
-    const scrollAmount = elementWidth * (1 / 3);
-    let newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
-    const diff = sliderWidth - elementWidth - newRightValue;
-    if (diff < scrollAmount) {
-      element.style.right = newRightValue + diff + 'px';
-    } else {
-      element.style.right = newRightValue + 'px';
-      return;
+    console.log(elementWidth);
+    if (elementWidth > 445) {
+      const sliderWidth = 1510;
+      const scrollAmount = elementWidth * (1 / 3);
+      console.log(scrollAmount);
+      let newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
+      console.log(newRightValue);
+      const diff = sliderWidth - elementWidth - newRightValue;
+      console.log('disff:' + diff);
+      if (diff < scrollAmount) {
+        element.style.right = newRightValue + diff + 'px';
+      } else {
+        element.style.right = newRightValue + 'px';
+        return;
+      }
+    } else if (elementWidth < 445) {
+      const scrollAmount = elementWidth;
+      let newRightValue = parseFloat(getComputedStyle(element).right) + scrollAmount;
+      console.log(newRightValue);
+      if (newRightValue >= scrollAmount * 4) {
+        console.log('first');
+        return;
+      } else {
+        element.style.right = newRightValue + 'px';
+        console.log('second');
+      }
     }
+    // const scrollAmount = 260 + 25;
+    // const sliderWidth = 1500;
+    // console.log(sliderWidth);
+    // let newRightValue;
+    // if (elementWidth >= 900) {
+    //   element.style.right = sliderWidth - elementWidth + 'px';
+    //   return;
+    // }
+    // newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
+    // console.log(newRightValue);
+    // console.log('computed rest:' + (sliderWidth - elementWidth - newRightValue));
+    // if (sliderWidth - elementWidth - newRightValue <= 400) {
+    //   console.log('1 block');
+    //   element.style.right = newRightValue + (sliderWidth - elementWidth - newRightValue) + 'px';
+    // } else if (sliderWidth - elementWidth - newRightValue > 400) {
+    //   console.log('2 block');
+    //   element.style.right = newRightValue + 'px';
+    // }
   };
   const sliderBack = () => {
     const element = sliderRef.current;
+    console.log(element);
     const elementWidth = element.getBoundingClientRect().width;
+    console.log(elementWidth);
     const scrollAmount = 350;
     const newRightValue = parseInt(getComputedStyle(element).right) - scrollAmount;
+    console.log(newRightValue);
     if (newRightValue <= 0) {
       element.style.right = 0 + 'px';
+      element.style.transform = '1s ease';
     } else {
       element.style.right = newRightValue + 'px';
     }
@@ -284,7 +323,11 @@ const DishPage = () => {
             ></MdNavigateBefore>
             <MdNavigateNext className={classes.arrowNext} onClick={sliderNext}></MdNavigateNext>
             <div className={classes.sliderWrapper}>
-              <div className={classes.slider_box} ref={sliderRef}>
+              <div
+                className={classes.slider_box}
+                ref={sliderRef}
+                style={{ transition: '1s ease ' }}
+              >
                 {recommendedDishes?.map((item) => {
                   return (
                     <DishCard
