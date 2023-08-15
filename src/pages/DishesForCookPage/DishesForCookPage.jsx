@@ -30,6 +30,7 @@ const DishesForCookPage = () => {
       refetchInterval: false, // Disable automatic periodic refetching
     }
   );
+
   useEffect(() => {
     if (createNewOrderEvent && createNewOrderEvent.message) {
       refetch({ force: true });
@@ -48,7 +49,7 @@ const DishesForCookPage = () => {
 
   const filterDishes = useCallback(
     (status) => {
-      return data.filter((item) => item.status === status);
+      return data?.filter((item) => item.status === status);
     },
     [data]
   );

@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
+import { useSSE } from 'react-hooks-sse';
+import { useDispatch } from 'react-redux';
+
 import Orders from 'components/Orders/Orders';
 import cls from './TableWaiterPage.module.scss';
 import Sidebar from 'components/Sidebar/Sidebar';
-import { useSSE } from 'react-hooks-sse';
-import { useDispatch } from 'react-redux';
 import { addMessage } from 'store/messages/messagesSlice';
-import { useEffect } from 'react';
 
 const TableWaiterPage = () => {
   const dispatch = useDispatch();

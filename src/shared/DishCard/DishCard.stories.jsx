@@ -1,5 +1,5 @@
 import DishCard from './DishCard';
-import defaultSrc from '../../assets/img-template.jpg';
+import defaultSrc from '../../assets/img/img-template.jpg';
 const defaultValues = {
   src: defaultSrc,
   title: 'Pork Tenderloin',

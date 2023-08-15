@@ -15,51 +15,6 @@ import { addMessage } from 'store/messages/messagesSlice';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import { useState } from 'react';
 
-const dumbTables = [
-  {
-    table_number: '1',
-    restaurant_id: '64c4fdea4055a7111092df32',
-    seats: '3',
-    status: 'Called waiter',
-    _id: '64ce43064f5d2308d5e67258',
-  },
-  {
-    table_number: '2',
-    restaurant_id: '64c4fdea4055a7111092df32',
-    seats: '3',
-    status: 'Free',
-    _id: '64c4f7db4055a7111092df12',
-  },
-  {
-    table_number: '3',
-    restaurant_id: '64c4fdea4055a7111092df32',
-    seats: '3',
-    status: 'Taken',
-    _id: '64c4fe004055a7111092df34',
-  },
-  {
-    table_number: '4',
-    restaurant_id: '64c4fdea4055a7111092df32',
-    seats: '3',
-    status: 'Free',
-    _id: '64c4f7db4055a7111092df12',
-  },
-  {
-    table_number: '5',
-    restaurant_id: '64c4fdea4055a7111092df32',
-    seats: '3',
-    status: 'Taken',
-    _id: '64c4f7db4055a7111092df12',
-  },
-  {
-    table_number: '6',
-    restaurant_id: '64c4fdea4055a7111092df32',
-    seats: '3',
-    status: 'Free',
-    _id: '64c4f7db4055a7111092df12',
-  },
-];
-
 const TablesWaiterPage = () => {
   const dispatch = useDispatch();
 
@@ -72,6 +27,7 @@ const TablesWaiterPage = () => {
   const { restId } = useParams();
   const updateTableStatusEvent = useSSE('table status', {});
   const dishReadyEvent = useSSE('dish is ready', {});
+  const newOrderEvent = useSSE('new order', {});
 
   const {
     data: tablesData,
@@ -112,11 +68,18 @@ const TablesWaiterPage = () => {
     }
   }, [dishReadyEvent, dispatch, refetchOrders]);
 
+  useEffect(() => {
+    if (newOrderEvent) {
+      refetchTables({ force: true });
+      refetchOrders({ force: true });
+    }
+  }, [newOrderEvent, refetchOrders, refetchTables]);
+
   // console.log(tablesData);
   // console.log(ordersData);
 
   const tables = tablesData?.data;
-  const orders = ordersData?.data.orders;
+  const orders = ordersData?.data?.orders;
 
   const isLoading = isLoadingTables || isLoadingOrders;
 
