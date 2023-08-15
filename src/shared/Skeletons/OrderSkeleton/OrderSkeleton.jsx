@@ -37,24 +37,27 @@ const OrderListSkeleton = ({ isSmall, isWaiter }) => {
                 <Skeleton width={50} height={15} />
               </div>
               <Skeleton width={50} height={15} />
-              <div className="skeletonList">
-                <Skeleton
-                  width={280}
-                  height={70}
-                  borderRadius={40}
-                  containerClassName="firstDish"
-                />
-                <Skeleton width={280} height={70} borderRadius={40} containerClassName="text" />
-                <Skeleton width={280} height={70} borderRadius={40} containerClassName="text" />
-                <Skeleton width={100} height={15} containerClassName="text lastText" />
-                <Skeleton width={70} height={15} containerClassName="text" />
-              </div>
+              {!isSmall && (
+                <div className="skeletonList">
+                  <Skeleton
+                    width={280}
+                    height={70}
+                    borderRadius={40}
+                    containerClassName="firstDish"
+                  />
+                  <Skeleton width={280} height={70} borderRadius={40} containerClassName="text" />
+                  <Skeleton width={280} height={70} borderRadius={40} containerClassName="text" />
+                  <Skeleton width={100} height={15} containerClassName="text lastText" />
+                  <Skeleton width={70} height={15} containerClassName="text" />
+                </div>
+              )}
             </div>
           ))}
         </div>
       </div>
     );
   }
+
   return (
     <div className={classNames(ulCls.box, { [ulCls.isWaiter]: isWaiter }, [])}>
       {renderTopBlock()}

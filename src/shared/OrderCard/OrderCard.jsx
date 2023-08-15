@@ -24,6 +24,8 @@ const OrderCard = memo(
     small,
     isWaiter,
     onChangeStatus,
+    isPayCard,
+    isDishesPage,
   }) => {
     const cardRef = useRef(null);
     const [isChecked, setIsChecked] = useState(сhecked || false);
@@ -77,7 +79,12 @@ const OrderCard = memo(
             {getDate(created_at)}
           </Text>
         )}
-        <ul className={classNames(cls.list, { [cls.isSmall]: isSmall })}>
+        <ul
+          className={classNames(cls.list, {
+            [cls.isSmall]: isSmall,
+            [cls.isDishesPage]: isDishesPage,
+          })}
+        >
           {orderItems.map(({ dish: { _id, picture, name, price }, quantity, status }) => (
             <li key={_id}>
               <Card
@@ -94,35 +101,39 @@ const OrderCard = memo(
             </li>
           ))}
         </ul>
-        <div className={classNames(cls.bottomBlock, { [cls.isSmall]: isSmall })}>
-          <Text
-            fontWeight={700}
-            classname={classNames(
-              cls.total,
-              { [cls.isSmall]: isSmall, [cls.isPaid]: status === 'Paid' },
-              []
+        {!isDishesPage && (
+          <>
+            <div className={classNames(cls.bottomBlock, { [cls.isSmall]: isSmall })}>
+              <Text
+                fontWeight={700}
+                classname={classNames(
+                  cls.total,
+                  { [cls.isSmall]: isSmall, [cls.isPaid]: status === 'Paid' },
+                  []
+                )}
+              >
+                Order total: ${totalPrice}
+              </Text>
+              {status !== 'Paid' && (
+                <CheckBox
+                  label={'Select order'}
+                  className={classNames(cls.centered, { [cls.isSmall]: isSmall })}
+                  checked={isChecked}
+                  onChange={onChangeСheck}
+                  size={25}
+                />
+              )}
+            </div>
+            {small && !isPayCard && (
+              <IconButton
+                className={classNames(cls.btn, { [cls.isSmall]: isSmall })}
+                size={28}
+                onClick={onClickMoreBtn}
+                Svg={BiChevronDown}
+                mode={'filled'}
+              />
             )}
-          >
-            Order total: ${totalPrice}
-          </Text>
-          {status !== 'Paid' && (
-            <CheckBox
-              label={'Select order'}
-              className={classNames(cls.centered, { [cls.isSmall]: isSmall })}
-              checked={isChecked}
-              onChange={onChangeСheck}
-              size={25}
-            />
-          )}
-        </div>
-        {small && (
-          <IconButton
-            className={classNames(cls.btn, { [cls.isSmall]: isSmall })}
-            size={28}
-            onClick={onClickMoreBtn}
-            Svg={BiChevronDown}
-            mode={'filled'}
-          />
+          </>
         )}
       </div>
     );

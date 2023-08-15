@@ -13,7 +13,7 @@ import { classNames } from 'helpers/classNames';
 import useSSESubscription from 'hooks/useSSESubscription';
 import cls from './Order.module.scss';
 
-const Orders = ({ isWaiter }) => {
+const Orders = ({ isWaiter, isSmall, isDishesPage }) => {
   const [paymentType, setPaymentType] = useState('');
   const [selectedTotal, setSelectedTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -80,39 +80,46 @@ const Orders = ({ isWaiter }) => {
     <>
       <NavigateButtons params={params} isWaiter={isWaiter} />
       {isLoading ? (
-        <OrderListSkeleton isWaiter={isWaiter} isSmall={!isWaiter} />
+        <OrderListSkeleton isWaiter={isWaiter} isSmall={isSmall} />
       ) : !data?.orders?.length ? (
         <EmptyListBox params={params} isWaiter={isWaiter} />
       ) : (
         <>
           <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
-            <ListTopBox
-              orders={data?.orders || []}
-              totalPrice={totalPrice}
-              onChangeSelected={onChangeSelected}
-              onChangeTypeOfPay={onChangeTypeOfPay}
-              urlParams={params}
-              isWaiter={isWaiter}
-              paymentType={paymentType}
-            />
+            {!isDishesPage && (
+              <ListTopBox
+                orders={data?.orders || []}
+                totalPrice={totalPrice}
+                onChangeSelected={onChangeSelected}
+                onChangeTypeOfPay={onChangeTypeOfPay}
+                urlParams={params}
+                isWaiter={isWaiter}
+                paymentType={paymentType}
+              />
+            )}
+
             <OrdersList
               orders={data?.orders || []}
               onChangeSelected={onChangeSelected}
               selectedTotal={selectedTotal}
               selectedOrders={selectedOrders}
               urlParams={params}
+              isSmall={isSmall}
               isWaiter={isWaiter}
+              isDishesPage={isDishesPage}
             />
           </div>
-          <Checkout
-            amount={selectedTotal}
-            selectedOrders={selectedOrders}
-            onChangeSelected={onChangeSelected}
-            urlParams={params}
-            isWaiter={isWaiter}
-            isAllOrdersPaid={isAllOrdersPaid}
-            paymentType={paymentType}
-          />
+          {!isDishesPage && (
+            <Checkout
+              amount={selectedTotal}
+              selectedOrders={selectedOrders}
+              onChangeSelected={onChangeSelected}
+              urlParams={params}
+              isWaiter={isWaiter}
+              isAllOrdersPaid={isAllOrdersPaid}
+              paymentType={paymentType}
+            />
+          )}
         </>
       )}
     </>

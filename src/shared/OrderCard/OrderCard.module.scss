@@ -41,6 +41,11 @@
     overflow: hidden;
   }
 
+  &.isDishesPage {
+    height: 365px;
+    overflow: hidden;
+  }
+
   li {
     margin-top: 10px;
   }

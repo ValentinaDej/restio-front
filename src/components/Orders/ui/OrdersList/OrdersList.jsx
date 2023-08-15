@@ -9,6 +9,7 @@ import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals
 import { useUpdateDishStatusByWaiter } from 'api/order';
 import Text from 'shared/Text/Text';
 import { DropDown } from 'shared/DropDown/DropDown';
+import { useLocation } from 'react-router-dom';
 
 export const OrdersList = ({
   isWaiter,
@@ -17,10 +18,13 @@ export const OrdersList = ({
   selectedTotal,
   selectedOrders,
   urlParams,
+  isSmall,
+  isDishesPage,
 }) => {
   const [sortOrderBy, setSortOrderBy] = useState('None');
   const { payment } = useSelector(getIsLoading);
   const { mutateAsync: mutateDishStatus } = useUpdateDishStatusByWaiter();
+  const { pathname } = useLocation();
 
   const selectOrder = useCallback(
     (id, totalPrice) => {
@@ -77,9 +81,11 @@ export const OrdersList = ({
       key={order._id}
       {...order}
       onChange={selectOrder}
-      small={!isWaiter}
+      small={isSmall}
       isWaiter={isWaiter}
+      isPayCard={pathname.includes('pay')}
       onChangeStatus={onClickChangeDishStatusAsWaiter}
+      isDishesPage={isDishesPage}
     />
   );
 
