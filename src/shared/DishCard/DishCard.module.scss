@@ -67,5 +67,9 @@
     margin-left: auto;
     margin-top: 8px;
     color: var(--color-gray-600);
+    &:hover,
+    &:focus {
+      color: var(--color-orange-hover);
+    }
   }
 }

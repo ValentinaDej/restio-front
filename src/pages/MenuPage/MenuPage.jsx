@@ -34,18 +34,13 @@ const MenuPage = () => {
     <>
       {isError && toast.error('Something went wrong... Please try again in few minutes')}
       <main className={css.main}>
-        {role === 'admin' ||
-          (role === 'waiter' && (
-            <div className={css.wrapper}>
-              <Button
-                onClick={() => navigate(`/${restId}/waiter/tables`)}
-                size="sm"
-                mode="outlined"
-              >
-                Back to dashboard
-              </Button>
-            </div>
-          ))}
+        {role && (
+          <div className={css.wrapper}>
+            <Button onClick={() => navigate(-1)} size="sm" mode="outlined">
+              Back to dashboard
+            </Button>
+          </div>
+        )}
 
         <CategoryTabs mode="outlined" setActiveTab={setActiveTab} activeTab={category} />
         <ul className={css.list}>
