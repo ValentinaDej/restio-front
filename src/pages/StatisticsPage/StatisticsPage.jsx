@@ -5,6 +5,7 @@ import cls from './StatisticsPage.module.scss';
 import { Statisctics } from 'components/Statistics/Statisctics';
 import { DropDown } from 'shared/DropDown/DropDown';
 import { useEffect, useState } from 'react';
+import Title from 'shared/Title/Title';
 
 const StatisticsPage = () => {
   const { restId } = useParams();
@@ -19,6 +20,8 @@ const StatisticsPage = () => {
 
   return (
     <div className={cls.main}>
+      <Title textAlign={'left'}>Statisctics</Title>
+      <hr className={cls.divider} />
       {isLoading ? (
         <Loader />
       ) : (

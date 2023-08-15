@@ -21,6 +21,7 @@ import Title from 'shared/Title/Title';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import { Calendar } from 'shared/Calendar/Calendar';
 import Modal from 'shared/Modal/Modal';
+import Button from 'shared/Button/Button';
 
 export const TransactionsTable = () => {
   const { restId } = useParams();
@@ -33,6 +34,7 @@ export const TransactionsTable = () => {
   const [isTodayTransactions, setIsTodayTransactions] = useState(false);
   const [createdByTypeOptions, setCreatedByTypeOptions] = useState('all');
   const [transactionTypeOptions, setTransactionTypeOptions] = useState('all');
+  const [isClear, setIsClear] = useState(false);
 
   const onClickCalendar = () => {
     setCalendarIsOpen((prev) => !prev);
@@ -41,6 +43,21 @@ export const TransactionsTable = () => {
   const onChangeDate = (newDate) => {
     setDate(newDate);
   };
+
+  const onClickClearFilters = () => {
+    setIsClear(true);
+    setCreatedByTypeOptions('all');
+    setTransactionTypeOptions('all');
+    setDate(undefined);
+    setIsTodayTransactions(false);
+    setPagination({ pageIndex: 0, pageSize: 20 });
+  };
+
+  useEffect(() => {
+    if (isClear) {
+      setIsClear(false);
+    }
+  }, [isClear]);
 
   const columns = useMemo(
     () => [
@@ -82,6 +99,7 @@ export const TransactionsTable = () => {
                     setPagination({ pageIndex: 0, pageSize });
                   }}
                   defaultValue="All"
+                  clear={isClear}
                 />
               </span>
             ),
@@ -136,6 +154,7 @@ export const TransactionsTable = () => {
                     setPagination({ pageIndex: 0, pageSize });
                   }}
                   defaultValue="All"
+                  clear={isClear}
                 />
               </span>
             ),
@@ -153,7 +172,7 @@ export const TransactionsTable = () => {
         ],
       },
     ],
-    [pageIndex, pageSize]
+    [isClear, pageIndex, pageSize]
   );
 
   const fetchDataOptions = {
@@ -242,6 +261,9 @@ export const TransactionsTable = () => {
             mode={'filled'}
             Svg={TfiAngleDoubleRight}
           />
+          <Button size="sm" onClick={onClickClearFilters}>
+            Clear filters
+          </Button>
         </div>
         <div className={cls.inputSelectBox}>
           <div className={cls.inputBox}>
@@ -282,6 +304,7 @@ export const TransactionsTable = () => {
               onSelect={(e) => {
                 table.setPageSize(e.value);
               }}
+              clear={isClear}
             />
             <CheckBox
               label="Today transactions"
@@ -290,6 +313,7 @@ export const TransactionsTable = () => {
                 setPagination({ pageIndex: 0, pageSize });
                 setDate(undefined);
               }}
+              checked={isTodayTransactions}
             />
           </div>
         </div>

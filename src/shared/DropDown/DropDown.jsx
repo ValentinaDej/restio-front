@@ -3,7 +3,7 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import styles from './DropDown.module.scss';
 
-export const DropDown = ({ options, onSelect, defaultValue }) => {
+export const DropDown = ({ options, onSelect, defaultValue, clear }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const dropdownRef = useRef(null);
@@ -17,6 +17,12 @@ export const DropDown = ({ options, onSelect, defaultValue }) => {
     onSelect(option);
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (clear) {
+      setSelectedOption(null);
+    }
+  }, [clear]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

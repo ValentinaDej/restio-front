@@ -1,7 +1,22 @@
 import { useState } from 'react';
 import cls from './Calendar.module.scss';
 import { classNames } from 'helpers/classNames';
-import { IconButton } from 'shared/IconButton/IconButton';
+import { DropDown } from 'shared/DropDown/DropDown';
+
+const monthOptions = [
+  { value: 0, label: 'January' },
+  { value: 1, label: 'February' },
+  { value: 2, label: 'March' },
+  { value: 3, label: 'April' },
+  { value: 4, label: 'May' },
+  { value: 5, label: 'June' },
+  { value: 6, label: 'July' },
+  { value: 7, label: 'August' },
+  { value: 8, label: 'September' },
+  { value: 9, label: 'October' },
+  { value: 10, label: 'November' },
+  { value: 11, label: 'December' },
+];
 
 export const Calendar = ({ isOpen, onChange }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -22,12 +37,12 @@ export const Calendar = ({ isOpen, onChange }) => {
   };
 
   const handleMonthChange = (event) => {
-    setSelectedMonth(parseInt(event.target.value));
+    setSelectedMonth(parseInt(event.value));
     setSelectedDay(1);
   };
 
   const handleYearChange = (event) => {
-    setSelectedYear(parseInt(event.target.value));
+    setSelectedYear(parseInt(event.value));
     setSelectedDay(1);
   };
 
@@ -68,33 +83,21 @@ export const Calendar = ({ isOpen, onChange }) => {
     });
   };
 
+  const { label } = monthOptions.find((el) => el.value === selectedMonth);
+
   return (
     <>
       <div className={cls.calendar}>
         <div className={cls.calendarHeader}>
-          <select value={selectedMonth} onChange={handleMonthChange}>
-            <option value={0}>January</option>
-            <option value={1}>February</option>
-            <option value={2}>March</option>
-            <option value={3}>April</option>
-            <option value={4}>May</option>
-            <option value={5}>June</option>
-            <option value={6}>July</option>
-            <option value={7}>August</option>
-            <option value={8}>September</option>
-            <option value={9}>October</option>
-            <option value={10}>November</option>
-            <option value={11}>December</option>
-          </select>
-          <select value={selectedYear} onChange={handleYearChange}>
-            {Array.from({ length: new Date().getFullYear() - 2014 }, (_, i) => 2015 + i).map(
-              (year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              )
-            )}
-          </select>
+          <DropDown options={monthOptions} onSelect={handleMonthChange} defaultValue={label} />
+          <DropDown
+            options={Array.from(
+              { length: new Date().getFullYear() - 2014 },
+              (_, i) => 2015 + i
+            ).map((year) => ({ value: year, label: year.toString() }))}
+            onSelect={handleYearChange}
+            defaultValue={selectedYear}
+          />
         </div>
         <div className={cls.calendarGrid}>
           <div className={cls.dayLabel}>Sun</div>
