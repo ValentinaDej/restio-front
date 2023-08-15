@@ -31,7 +31,13 @@ const AddPersonnelPage = () => {
     // Display the toast notification only when personId is defined
     if (personId !== undefined) {
       const toastId = toast((t) => (
-        <div className={styles.note}>
+        <div
+          className={styles.note}
+          style={{
+            ...t.style,
+            display: t.visible ? 'flex' : 'none',
+          }}
+        >
           <p>
             Leave the <b>"Password"</b> field empty if you want to save the previous password
           </p>
