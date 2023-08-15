@@ -13,7 +13,6 @@ import Title from 'shared/Title/Title';
 import Loader from 'shared/Loader/Loader';
 
 import styles from './AddDishPage.module.scss';
-import { classes } from 'istanbul-lib-coverage';
 
 const ERROR_MESSAGES = {
   fetchDish: 'Error fetching dish data',
@@ -88,8 +87,8 @@ const AddDishPage = () => {
     vegetarian: dishQuery.data?.vegetarian || false,
     pescatarian: dishQuery.data?.pescatarian || false,
     isActive: dishQuery.data?.isActive || false,
-    portionWeight: dishQuery.data?.portionWeight || 0,
-    price: dishQuery.data?.price || 0,
+    portionWeight: dishQuery.data?.portionWeight || '',
+    price: dishQuery.data?.price || '',
     picture: dishQuery.data?.picture || '',
     type: dishQuery.data?.type || '',
   };
@@ -115,6 +114,7 @@ const AddDishPage = () => {
             selectedIngredientsMap={selectedIngredientsMap}
             initialState={initialData}
             isEditing={isEditing}
+            handleBack={handleBack}
           />
         </div>
       </main>

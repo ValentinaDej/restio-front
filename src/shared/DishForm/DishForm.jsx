@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
@@ -24,6 +24,7 @@ const DishForm = ({
   ingridients,
   selectedIngredientsMap,
   isEditing,
+  handleBack,
 }) => {
   const [selectedIngredients, setSelectedIngredients] = useState(selectedIngredientsMap);
   const [inputValue, setInputValue] = useState('');
@@ -153,11 +154,12 @@ const DishForm = ({
             validationRules={{
               required: 'Name is a required field',
               pattern: {
-                value: /^[a-zA-Zа-яА-Я0-9\s]{3,50}$/,
+                value: /^.{3,50}$/,
                 message: 'Invalid name',
               },
             }}
             register={register}
+            maxLength={100}
           />
 
           <div className={classes.column__wrapper}>
@@ -201,6 +203,7 @@ const DishForm = ({
                 <div className={classes.rowfield__wrapper}>
                   <div className={classes.input__wrapper}>
                     <InputValid
+                      type="text"
                       name="portionWeight"
                       placeholder="Weight"
                       autoComplete="Weight (gram)"
@@ -211,16 +214,42 @@ const DishForm = ({
                         required: 'Dish weight is a required field',
                         pattern: {
                           value: /^[1-9]\d{0,3}$|^10000$/,
-                          message: 'Must be a number between 1 and 10000',
+                          message: 'A number between 1 and 10000',
                         },
                       }}
                       register={register}
+                      onKeyDown={(event) => {
+                        const allowedKeys = [
+                          '0',
+                          '1',
+                          '2',
+                          '3',
+                          '4',
+                          '5',
+                          '6',
+                          '7',
+                          '8',
+                          '9',
+                          'Enter',
+                          'Backspace',
+                          'ArrowUp',
+                          'ArrowDown',
+                          'ArrowLeft',
+                          'ArrowRight',
+                          'Tab',
+                        ];
+                        if (!allowedKeys.includes(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      maxLength={5}
                     />
                   </div>
                 </div>
                 <div className={classes.rowfield__wrapper}>
                   <div className={classes.input__wrapper}>
                     <InputValid
+                      type="text"
                       name="price"
                       placeholder="Price"
                       autoComplete="Weight (gram)"
@@ -230,11 +259,37 @@ const DishForm = ({
                       validationRules={{
                         required: 'Dish price is a required field',
                         pattern: {
-                          value: /^[1-9]\d{0,3}$|^10000$/,
-                          message: 'Must be a positive number with up to 2 decimal places',
+                          value: /^[0-9]*(\.[0-9]{0,2})?$/,
+                          message: 'A positive number with up to 2 decimal places',
                         },
                       }}
                       register={register}
+                      onKeyDown={(event) => {
+                        const allowedKeys = [
+                          '0',
+                          '1',
+                          '2',
+                          '3',
+                          '4',
+                          '5',
+                          '6',
+                          '7',
+                          '8',
+                          '9',
+                          '.',
+                          'Enter',
+                          'Backspace',
+                          'ArrowUp',
+                          'ArrowDown',
+                          'ArrowLeft',
+                          'ArrowRight',
+                          'Tab',
+                        ];
+                        if (!allowedKeys.includes(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      maxLength={10}
                     />
                   </div>
                 </div>
@@ -262,12 +317,25 @@ const DishForm = ({
             />
           )}
           <div className={classes.button__wrapper}>
-            <Button type="submit" size="sm">
-              {isEditing ? <span>Update</span> : <span>Create</span>}
-            </Button>
-            <Button type="button" mode={'outlined'} onClick={cleareForm} size="sm">
-              Clear
-            </Button>
+            {isEditing ? (
+              <>
+                <Button type="submit" size="sm">
+                  Update
+                </Button>
+                <Button type="button" mode={'outlined'} onClick={handleBack} size="sm">
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button type="submit" size="sm">
+                  Create
+                </Button>
+                <Button type="button" mode={'outlined'} onClick={cleareForm} size="sm">
+                  Clear
+                </Button>
+              </>
+            )}
           </div>
         </form>
       </div>
@@ -305,8 +373,8 @@ DishForm.defaultProps = {
     vegetarian: false,
     spicy: false,
     pescatarian: false,
-    portionWeight: 0,
-    price: 0,
+    portionWeight: '',
+    price: '',
     ingredients: [],
   },
   ingridients: [],

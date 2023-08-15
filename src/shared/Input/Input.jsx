@@ -21,6 +21,8 @@ const Input = forwardRef(
       rules,
       isFullWidth,
       error,
+      onKeyDown,
+      maxLength,
       ...props
     },
     ref
@@ -47,6 +49,8 @@ const Input = forwardRef(
           } ${hasError ? styles.input_error : ''}`}
           onChange={onChange}
           disabled={mode === 'disabled'}
+          onKeyDown={onKeyDown}
+          maxLength={maxLength}
           {...props}
         />
       </div>

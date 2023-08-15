@@ -16,6 +16,8 @@ const InputValid = ({
   error,
   size,
   label,
+  onKeyDown,
+  maxLength,
 }) => {
   const hasError = error !== undefined;
 
@@ -30,6 +32,8 @@ const InputValid = ({
           size={size}
           value={value}
           label={label}
+          onKeyDown={onKeyDown}
+          maxLength={maxLength}
         />
         {IconComponent && (
           <div className={classes.icon__wrapper}>
