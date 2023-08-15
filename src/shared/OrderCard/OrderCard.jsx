@@ -15,6 +15,7 @@ import { getDate } from 'helpers/getDate';
 const OrderCard = memo(
   ({
     _id,
+    number,
     orderItems,
     created_at,
     status,
@@ -23,7 +24,6 @@ const OrderCard = memo(
     small,
     isWaiter,
     onChangeStatus,
-    idx,
   }) => {
     const cardRef = useRef(null);
     const [isChecked, setIsChecked] = useState(сhecked || false);
@@ -62,7 +62,7 @@ const OrderCard = memo(
       <div className={classNames(cls.item, { [cls.isSmall]: isSmall })} ref={cardRef}>
         <div className={cls.topBlock}>
           <Title mode={'h3'} fontSize={12} textAlign="left" classname={cls.text}>
-            Order #{idx}
+            Order #{number}
           </Title>
           <div className={cls.dishes}>
             <BiDish size={20} />

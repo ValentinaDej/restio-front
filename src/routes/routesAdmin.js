@@ -7,6 +7,7 @@ const AddDishPage = lazy(() => import('pages/AddDishPage/AddDishPage'));
 const TablesWaiterPage = lazy(() => import('pages/TablesWaiterPage/TablesWaiterPage'));
 const TableWaiterPage = lazy(() => import('pages/TableWaiterPage/TableWaiterPage'));
 const DishesForCookPage = lazy(() => import('pages/DishesForCookPage/DishesForCookPage'));
+const StatisticsPage = lazy(() => import('pages/StatisticsPage/StatisticsPage'));
 
 const routesAdmin = [
   { path: ':restId/admin/personnel', component: <EmployeePage /> },
@@ -15,6 +16,7 @@ const routesAdmin = [
   { path: ':restId/admin/personnel/new', component: <AddPersonnelPage /> },
   { path: ':restId/admin/dishes/edit/:dishesId', component: <AddDishPage /> },
   { path: ':restId/admin/dishes/new/', component: <AddDishPage /> },
+  { path: ':restId/admin/statistics', component: <StatisticsPage /> },
   { path: ':restId/waiter/tables', component: <TablesWaiterPage /> },
   { path: ':restId/waiter/tables/:tableId', component: <TableWaiterPage /> },
   { path: ':restId/cook', component: <DishesForCookPage /> },

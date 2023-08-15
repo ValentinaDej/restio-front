@@ -4,7 +4,9 @@ import HomePage from 'pages/HomePage/HomePage';
 import LoginPage from 'pages/LoginPage/LoginPage';
 import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
 import logoImg from './assets/img/RESTio.svg';
-import { Route, Routes, useLocation } from 'react-router-dom';
+
+import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
+
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import routesAdmin from 'routes/routesAdmin';
 import routesCook from 'routes/routesCook';
@@ -16,6 +18,7 @@ import Header from 'shared/Header/Header';
 import Loader from 'shared/Loader/Loader';
 import { Suspense } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { SSEProvider } from 'react-hooks-sse';
 
 const variantPath = {
   admin: routesAdmin,
@@ -25,11 +28,19 @@ const variantPath = {
 
 const App = () => {
   const location = useLocation();
-  const { role } = useSelector((state) => state.auth);
-
+  const path = location.pathname.split('/');
+  const restId = path[1];
   const pathName = {
     login: '/login',
     main: '/',
+  };
+  const { role } = useSelector((state) => state.auth);
+  const RoutesProvider = () => {
+    return (
+      <SSEProvider endpoint={`http://localhost:3001/sse/${restId}`}>
+        <Outlet />
+      </SSEProvider>
+    );
   };
   //useState де сбережені лого, назва ресторану поки що болванка
   const logo = logoImg;
@@ -48,15 +59,16 @@ const App = () => {
           <Routes>
             <Route path="/" element={<PublicRoute component={<HomePage />} />} />
             <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
-            {routesCustomer.map(({ path, component }) => (
-              <Route key={path} path={path} element={<PublicRoute component={component} />} />
-            ))}
-
-            {(role === 'admin' || role === 'waiter' || role === 'cook') &&
-              variantPath[role].map(({ path, component }) => (
-                <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+            <Route element={<RoutesProvider />}>
+              {routesCustomer.map(({ path, component }) => (
+                <Route key={path} path={path} element={<PublicRoute component={component} />} />
               ))}
 
+              {(role === 'admin' || role === 'waiter' || role === 'cook') &&
+                variantPath[role].map(({ path, component }) => (
+                  <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+                ))}
+            </Route>
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>

@@ -1,0 +1,29 @@
+.box {
+  height: 550px;
+  color: var(--color-blue-dark);
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--color-white);
+  width: 100%;
+
+  @media screen and (min-width: 1200px) {
+    width: 35%;
+  }
+}
+
+.list {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  & li {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.text {
+  margin-top: 8px;
+}

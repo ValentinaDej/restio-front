@@ -4,18 +4,16 @@
 
 .category__list {
   display: flex;
-  gap: 0.5rem;
-  padding-bottom: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 0.2rem;
+  padding: 0 0.5rem 1rem;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
   align-items: center;
 
-  @media (max-width: 767.98px) {
-    gap: 0.2rem;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    padding: 0 0.5rem 1rem;
+  @media (min-width: 767.98px) {
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 }
 

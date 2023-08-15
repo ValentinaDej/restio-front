@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import classes from './Title.module.scss';
-import { memo } from 'react';
 
 const Title = ({ mode, children, fontWeight, fontSize, color, textAlign, classname }) => {
   switch (mode) {
