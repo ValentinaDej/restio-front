@@ -7,7 +7,7 @@ import CategoryTabs from 'shared/CategoryTabs/CategoryTabs';
 import DishCard from 'shared/DishCard/DishCard';
 import Cart from 'components/Cart/Cart';
 import css from './MenuPage.module.scss';
-import { getDishes } from 'api/dish';
+import { getDishesForMenu } from 'api/dish';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Button from 'shared/Button/Button';
@@ -20,7 +20,7 @@ const MenuPage = () => {
 
   const { isError, isLoading, data } = useQuery(
     ['dishes', category],
-    async () => await getDishes(restId, category, true),
+    async () => await getDishesForMenu(restId, category, true),
     {
       // staleTime: 0, // Data is immediately considered stale and will be refetched on the next request
       // cacheTime: 0, // Data is never considered stale, and automatic refetching is disabled
@@ -37,7 +37,11 @@ const MenuPage = () => {
         {role === 'admin' ||
           (role === 'waiter' && (
             <div className={css.wrapper}>
-              <Button onClick={() => navigate(-1)} size="sm" mode="outlined">
+              <Button
+                onClick={() => navigate(`/${restId}/waiter/tables`)}
+                size="sm"
+                mode="outlined"
+              >
                 Back to dashboard
               </Button>
             </div>

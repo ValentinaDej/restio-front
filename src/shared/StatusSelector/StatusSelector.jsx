@@ -25,6 +25,7 @@ const StatusSelector = ({
     switch (mode) {
       case 'tables':
         setCurrentMode(['Free', 'Taken', 'Waiting']);
+        // setCurrentMode(['Free', 'Taken']);
         break;
       case 'dishes':
         setCurrentMode(['Ordered', 'In progress', 'Ready', 'Served']);

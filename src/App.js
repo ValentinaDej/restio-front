@@ -1,10 +1,9 @@
 import './styles.scss';
 import { Toaster } from 'react-hot-toast';
 import HomePage from 'pages/HomePage/HomePage';
-
 import LoginPage from 'pages/LoginPage/LoginPage';
 import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
-import logoImg from './img/RESTio.svg';
+import logoImg from './assets/img/RESTio.svg';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import routesAdmin from 'routes/routesAdmin';

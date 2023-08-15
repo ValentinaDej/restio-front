@@ -30,7 +30,6 @@ const Select = forwardRef(
           } ${styles[`select_${error}`]}  `}
           id={id}
           name={name}
-          defaultValue={'default'}
           multiple={multiple}
           value={value}
           onChange={onChange}

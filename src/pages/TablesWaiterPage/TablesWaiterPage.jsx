@@ -1,6 +1,5 @@
 import { useGetTablesByRestaurantId, useGetOrdersByRestaurantId } from 'api/service';
 import Loader from 'shared/Loader/Loader';
-import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import Title from 'shared/Title/Title';
 import styles from './TablesWaiterPage.module.scss';
 import TableCard from 'components/TableCard/TableCard';
@@ -8,7 +7,9 @@ import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Message from 'components/Message/Message';
-import useSSESubscription from 'hooks/useSSESubscription';
+// import useSSESubscription from 'hooks/useSSESubscription';
+import { CheckBox } from 'shared/CheckBox/CheckBox';
+import { useState } from 'react';
 
 const dumbTables = [
   {
@@ -56,13 +57,20 @@ const dumbTables = [
 ];
 
 const TablesWaiterPage = () => {
-  const subscription = useSSESubscription();
+  const [isFreeTables, setIsFreeTables] = useState(false);
+  const [isWaitingTables, setIsWaitinigTables] = useState(false);
+  const [isTakenTables, setIsTakenTables] = useState(false);
+  const [isTablesWithReadyDishes, setIsTablesWithReadyDishes] = useState(false);
+  const [isTablesWithAllPaidOrders, setIsTablesWithAllPaidOrders] = useState(false);
 
-  useEffect(() => {
-    subscription();
-  }, [subscription]);
+  // const subscription = useSSESubscription();
+
+  // useEffect(() => {
+  //   subscription();
+  // }, [subscription]);
 
   const { restId } = useParams();
+
   const {
     data: tablesData,
     isLoading: isLoadingTables,
@@ -77,8 +85,11 @@ const TablesWaiterPage = () => {
     error: errorOrders,
   } = useGetOrdersByRestaurantId(restId);
 
+  // console.log(tablesData);
+  // console.log(ordersData);
+
   const tables = tablesData?.data;
-  const orders = ordersData?.data.data.orders;
+  const orders = ordersData?.data.orders;
 
   const isLoading = isLoadingTables || isLoadingOrders;
 
@@ -93,13 +104,101 @@ const TablesWaiterPage = () => {
   }
 
   const filterOrdersByTableId = (orders, table_id) =>
-    orders?.filter((order) => order.table_id === table_id);
+    orders?.filter((order) => order.table_id._id === table_id);
+
+  const tablesWithReadyDishes = orders
+    .filter((order) => order.orderItems.some((item) => item.status === 'Ready'))
+    .map((order) => order.table_id._id);
+
+  const tableNumbers = tablesWithReadyDishes
+    .map((tableId) => {
+      const table = tables.find((table) => table._id === tableId);
+      return table ? table.table_number : null;
+    })
+    .filter((tableNumber) => tableNumber !== null);
+
+  const uniqueTableNumbers = [...new Set(tableNumbers)].join(', ');
+
+  const filterTables = () => {
+    let tablesFiltered = tables.slice();
+
+    if (isFreeTables) {
+      tablesFiltered = tablesFiltered.filter((table) => table.status === 'Free');
+    }
+    if (isTakenTables) {
+      tablesFiltered = tablesFiltered.filter((table) => table.status === 'Taken');
+    }
+    if (isWaitingTables) {
+      tablesFiltered = tablesFiltered.filter((table) => table.status === 'Waiting');
+    }
+    if (isTablesWithReadyDishes) {
+      tablesFiltered = tablesFiltered.filter((table) => {
+        const ordersForTable = orders.filter((order) => order.table_id._id === table._id);
+
+        const hasReadyDishes = ordersForTable.some((order) =>
+          order.orderItems.some((item) => item.status === 'Ready')
+        );
+
+        return hasReadyDishes;
+      });
+    }
+    if (isTablesWithAllPaidOrders) {
+      tablesFiltered = tablesFiltered.filter((table) => {
+        // Find orders for this table
+        const ordersForTable = orders.filter((order) => order.table_id._id === table._id);
+
+        // Check if all orders are in "Paid" status
+        const allOrdersPaid =
+          ordersForTable.length > 0 && ordersForTable.every((order) => order.status === 'Paid');
+
+        return allOrdersPaid;
+      });
+    }
+    return tablesFiltered;
+  };
+
+  const filteredTables = filterTables();
 
   return (
     <div className={styles.tables}>
-      <Title>Tables Board</Title>
+      <Title textAlign={'left'}>Tables board</Title>
+      <hr className={styles.tables__divider} />
+      <div className={styles.tables__checkbox_container}>
+        <div className={styles.tables__checkbox_container_body}>
+          <CheckBox
+            label={'Free tables'}
+            onChange={() => setIsFreeTables((prev) => !prev)}
+            checked={isFreeTables}
+            size={25}
+          />
+          <CheckBox
+            label={'Taken tables'}
+            onChange={() => setIsTakenTables((prev) => !prev)}
+            checked={isTakenTables}
+            size={25}
+          />
+          <CheckBox
+            label={'Waiting tables'}
+            onChange={() => setIsWaitinigTables((prev) => !prev)}
+            checked={isWaitingTables}
+            size={25}
+          />
+          <CheckBox
+            label={'Ready dishes'}
+            onChange={() => setIsTablesWithReadyDishes((prev) => !prev)}
+            checked={isTablesWithReadyDishes}
+            size={25}
+          />
+          <CheckBox
+            label={'All orders paid'}
+            onChange={() => setIsTablesWithAllPaidOrders((prev) => !prev)}
+            checked={isTablesWithAllPaidOrders}
+            size={25}
+          />
+        </div>
+      </div>
       <div className={styles.tables__container}>
-        {tables?.map((table) => (
+        {filteredTables.map((table) => (
           <TableCard
             key={table.table_number}
             table_number={table.table_number}

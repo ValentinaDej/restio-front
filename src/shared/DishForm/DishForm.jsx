@@ -1,76 +1,150 @@
-import React, { useState } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import React, { useState, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
-
-import Button from 'shared/Button/Button';
-import Input from 'shared/Input/Input';
-import Select from 'shared/Select/Select';
-import Text from 'shared/Text/Text';
-import Title from 'shared/Title/Title';
-import FormSelectaGroup from './FormSelectGroup/FormSelectGroup';
-import InputValid from 'shared/InputValid/InputValid';
-import FileUploader from 'shared/FileUploader/FileUploader';
 
 import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
 
-import classes from './DishForm.module.scss';
-import * as initialData from './InitialState';
+import Button from 'shared/Button/Button';
+import Select from 'shared/Select/Select';
+import { CheckBox } from 'shared/CheckBox/CheckBox';
+import Text from 'shared/Text/Text';
+import InputValid from 'shared/InputValid/InputValid';
+import FileUploader from 'shared/FileUploader/FileUploader';
+import DishTypeOptions from './DishTypeOptions/DishTypeOptions';
+import Ingredients from './Ingredients/Ingredients';
+import SortIngredients from './SortIngridients/SortIngredients';
 
-const DishForm = () => {
+import classes from './DishForm.module.scss';
+
+const DishForm = ({
+  onSubmit,
+  category,
+  initialState,
+  ingredientsList,
+  selectedIngredientsMap,
+  isEditing,
+  handleBack,
+}) => {
+  const [selectedIngredients, setSelectedIngredients] = useState(selectedIngredientsMap);
+  const [inputValue, setInputValue] = useState('');
   const [selectedType, setSelectedType] = useState('');
-  const [filteredIngredients, setFilteredIngredients] = useState(initialData.ingredientsList);
+  const [showSelectedIngredients, setShowSelectedIngredients] = useState(false);
+
+  const firstIngredientRef = useRef(null);
+  const fileUploaderRef = useRef();
 
   const {
     register,
-    formState: { errors, isSubmitted, isSubmitSuccessful },
+    formState: { errors },
     handleSubmit,
     reset,
     control,
-    setError,
-    clearErrors,
   } = useForm({
+    defaultValues: initialState,
     shouldUseNativeValidation: false,
     mode: 'onBlur',
-    defaultValues: {
-      ingredients: [],
-    },
   });
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'ingredients',
-  });
+  const handleFormSubmit = async (data, event) => {
+    event.preventDefault();
+
+    const selectedIngredientIds = Array.from(selectedIngredients.keys());
+    const picture = await fileUploaderRef.current.handleUpload();
+
+    if (picture) {
+      onSubmit({ ...data, picture: picture.data.imageName, ingredients: selectedIngredientIds });
+    } else {
+      onSubmit({ ...data, picture: 'default.png', ingredients: selectedIngredientIds });
+    }
+    reset();
+
+    fileUploaderRef.current.clearFile();
+  };
 
   const cleareForm = () => {
     reset();
+    setSelectedIngredients(new Map());
   };
 
-  const handleTypeChange = (event) => {
-    const newType = event.target.value;
-    setSelectedType(newType);
+  const uniqueTypes = Array.from(new Set(ingredientsList?.map((ingredient) => ingredient.type)));
+  const IngredientsTypes = uniqueTypes
+    .filter((type) => type !== undefined)
+    .sort((a, b) => a.localeCompare(b));
 
-    if (!newType) {
-      setFilteredIngredients(initialData.ingredientsList);
+  const IngredientsToShow = ingredientsList?.filter((ingredient) => {
+    const nameMatchesInput = ingredient.name.toLowerCase().includes(inputValue.toLowerCase());
+    const isSelectedTypeAll = selectedType === '';
+    const isSelectedTypeMatching = ingredient.type === selectedType;
+    const isSelectedTypeSelected = selectedType === 'Selected';
+
+    if (isSelectedTypeSelected) {
+      return selectedIngredients.has(ingredient._id);
+    }
+
+    return (isSelectedTypeAll || isSelectedTypeMatching) && nameMatchesInput;
+  });
+
+  const handleTypeChange = (type) => {
+    if (type === 'All') {
+      setSelectedType('');
+    } else setSelectedType(type);
+  };
+
+  const handleCheckSelected = () => {
+    setShowSelectedIngredients(!showSelectedIngredients);
+    if (showSelectedIngredients) {
+      setSelectedType('');
     } else {
-      const filtered = initialData.ingredientsList.filter(
-        (ingredient) => ingredient.type === newType
-      );
-      setFilteredIngredients(filtered);
+      setSelectedType('Selected');
+    }
+    setInputValue('');
+  };
+
+  const handleToggleIngredient = (ingredientId, ingredientName) => {
+    setSelectedIngredients((prevIngredients) => {
+      const updatedIngredients = new Map(prevIngredients);
+      if (updatedIngredients.has(ingredientId)) {
+        updatedIngredients.delete(ingredientId);
+      } else {
+        updatedIngredients.set(ingredientId, ingredientName);
+      }
+      return updatedIngredients;
+    });
+  };
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleInputKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (IngredientsToShow.length === 1) {
+        const matchedIngredient = IngredientsToShow[0];
+        handleToggleIngredient(matchedIngredient._id, matchedIngredient.name);
+        setInputValue('');
+      } else if (IngredientsToShow.length > 1) {
+        firstIngredientRef.current.focus();
+      }
     }
   };
 
-  const onSubmit = async (data) => {
-    console.log('Form Data:', data);
-    reset();
-    setSelectedType('');
+  const moveIngredient = (fromIndex, toIndex) => {
+    const selectedIngredientsArray = Array.from(selectedIngredients.entries());
+    const [movedIngredient] = selectedIngredientsArray.splice(fromIndex, 1);
+    selectedIngredientsArray.splice(toIndex, 0, movedIngredient);
+    const newSelectedIngredients = new Map(selectedIngredientsArray);
+    setSelectedIngredients(newSelectedIngredients);
   };
 
   return (
-    <div className={classes.wrapper}>
+    <div>
       <div className={classes.form}>
-        <Title mode="h3">Create dish</Title>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(handleFormSubmit)}>
+          <div className={classes.field__wrapper_right}>
+            <CheckBox label="active" name="isActive" register={register} />
+          </div>
           <InputValid
             name="name"
             placeholder="Dish name"
@@ -80,147 +154,188 @@ const DishForm = () => {
             validationRules={{
               required: 'Name is a required field',
               pattern: {
-                value: /^[a-zA-Zа-яА-Я0-9\s]{3,50}$/,
+                value: /^.{3,50}$/,
                 message: 'Invalid name',
               },
             }}
             register={register}
+            maxLength={100}
           />
+
           <div className={classes.column__wrapper}>
             <div className={classes.column}>
-              <div className={classes.img__wrapper}>
-                <FileUploader />
-              </div>
-            </div>
-            <div className={classes.column}>
-              <div className={classes.field__wrapper}>
-                <Select
-                  name="type"
-                  defaultValue=""
-                  register={register}
-                  size="sm"
-                  rules={{
-                    required: 'Dish type is required',
-                  }}
-                >
-                  <option value="" disabled hidden style={{ color: 'var(--color-danger)' }}>
-                    Select dish type
+              <Select
+                name="type"
+                defaultValue=""
+                register={register}
+                size="sm"
+                rules={{
+                  required: 'Dish type is required',
+                }}
+              >
+                <option value="" disabled hidden style={{ color: 'var(--color-danger)' }}>
+                  Select dish type
+                </option>
+                {category.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
                   </option>
-                  {initialData.typesOfDishes.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </Select>
-                {errors.type && (
-                  <Text
-                    mode="p"
-                    textAlign="left"
-                    fontSize={8}
-                    fontWeight={400}
-                    color="var(--color-gray)"
-                  >
-                    {errors.type.message}
-                  </Text>
-                )}
-              </div>
-              <div className={classes.checkbox__wrapper}>
-                <div>
-                  <Input
-                    type="checkbox"
-                    label="vegetarian"
-                    name="vegetarian"
-                    register={register}
-                    size={'sm'}
-                  />
-                </div>
-                <div>
-                  <Input
-                    type="checkbox"
-                    label="spicy"
-                    name="spicy"
-                    register={register}
-                    size={'sm'}
-                  />
-                </div>
-                <div>
-                  <Input
-                    type="checkbox"
-                    label="pescatarian"
-                    name="pescatarian"
-                    autoComplete="off"
-                    register={register}
-                    size={'sm'}
-                  />
-                </div>
-              </div>
-              <div className={classes.field__wrapper}>
-                <div className={classes.input__wrapper}>
-                  <InputValid
-                    name="portionWeight"
-                    placeholder="Dish weight"
-                    autoComplete="Weight (gram)"
-                    size="sm"
-                    icon={GiWeight}
-                    error={errors.portionWeight}
-                    validationRules={{
-                      required: 'Dish weight is a required field',
-                      pattern: {
-                        value: /^[1-9]\d{0,3}$|^10000$/,
-                        message: 'Dish weight must be a number between 1 and 10000',
-                      },
-                    }}
-                    register={register}
-                  />
-                </div>
-              </div>
-
-              <div className={classes.field__wrapper}>
-                <div className={classes.input__wrapper}>
-                  <InputValid
-                    name="price"
-                    placeholder="Price"
-                    autoComplete="Weight (gram)"
-                    size="sm"
-                    icon={FaMoneyBillAlt}
-                    error={errors.price}
-                    validationRules={{
-                      required: 'Dish price is a required field',
-                      pattern: {
-                        value: /^[1-9]\d{0,3}$|^10000$/,
-                        message: 'Dish price must be a positive number with up to 2 decimal places',
-                      },
-                    }}
-                    register={register}
-                  />
-                </div>
+                ))}
+              </Select>
+              {errors.type && (
+                <Text
+                  mode="p"
+                  textAlign="left"
+                  fontSize={8}
+                  fontWeight={400}
+                  color="var(--color-gray)"
+                >
+                  {errors.type.message}
+                </Text>
+              )}
+              <DishTypeOptions register={register} />
+              <div className={classes.img__wrapper}>
+                <FileUploader ref={fileUploaderRef} />
               </div>
             </div>
+            <div className={classes.column}>
+              <div className={classes.row__wrapper}>
+                <div className={classes.rowfield__wrapper}>
+                  <div className={classes.input__wrapper}>
+                    <InputValid
+                      type="text"
+                      name="portionWeight"
+                      placeholder="Weight"
+                      autoComplete="Weight (gram)"
+                      size="sm"
+                      icon={GiWeight}
+                      error={errors.portionWeight}
+                      validationRules={{
+                        required: 'Dish weight is a required field',
+                        pattern: {
+                          value: /^[1-9]\d{0,3}$|^10000$/,
+                          message: 'A number between 1 and 10000',
+                        },
+                      }}
+                      register={register}
+                      onKeyDown={(event) => {
+                        const allowedKeys = [
+                          '0',
+                          '1',
+                          '2',
+                          '3',
+                          '4',
+                          '5',
+                          '6',
+                          '7',
+                          '8',
+                          '9',
+                          'Enter',
+                          'Backspace',
+                          'ArrowUp',
+                          'ArrowDown',
+                          'ArrowLeft',
+                          'ArrowRight',
+                          'Tab',
+                        ];
+                        if (!allowedKeys.includes(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      maxLength={5}
+                    />
+                  </div>
+                </div>
+                <div className={classes.rowfield__wrapper}>
+                  <div className={classes.input__wrapper}>
+                    <InputValid
+                      type="text"
+                      name="price"
+                      placeholder="Price"
+                      autoComplete="Weight (gram)"
+                      size="sm"
+                      icon={FaMoneyBillAlt}
+                      error={errors.price}
+                      validationRules={{
+                        required: 'Dish price is a required field',
+                        pattern: {
+                          value: /^[0-9]*(\.[0-9]{0,2})?$/,
+                          message: 'A positive number with up to 2 decimal places',
+                        },
+                      }}
+                      register={register}
+                      onKeyDown={(event) => {
+                        const allowedKeys = [
+                          '0',
+                          '1',
+                          '2',
+                          '3',
+                          '4',
+                          '5',
+                          '6',
+                          '7',
+                          '8',
+                          '9',
+                          '.',
+                          'Enter',
+                          'Backspace',
+                          'ArrowUp',
+                          'ArrowDown',
+                          'ArrowLeft',
+                          'ArrowRight',
+                          'Tab',
+                        ];
+                        if (!allowedKeys.includes(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      maxLength={10}
+                    />
+                  </div>
+                </div>
+              </div>
+              <Ingredients
+                selectedType={selectedType}
+                IngredientsTypes={IngredientsTypes}
+                handleTypeChange={handleTypeChange}
+                handleInputChange={handleInputChange}
+                handleInputKeyDown={handleInputKeyDown}
+                inputValue={inputValue}
+                IngredientsToShow={IngredientsToShow}
+                selectedIngredients={selectedIngredients}
+                firstIngredientRef={firstIngredientRef}
+                handleToggleIngredient={handleToggleIngredient}
+                handleCheckSelected={handleCheckSelected}
+                showSelectedIngredients={showSelectedIngredients}
+              />
+            </div>
           </div>
-          <div className={classes.column__wrapper}>
-            <FormSelectaGroup
-              selectedType={selectedType}
-              handleTypeChange={handleTypeChange}
-              filteredIngredients={filteredIngredients}
-              control={control}
-              fields={fields}
-              append={append}
-              remove={remove}
-              setError={setError}
-              error={errors}
-              clearErrors={clearErrors}
-              isSubmitted={isSubmitted}
-              isSubmitSuccessful={isSubmitSuccessful}
+          {selectedIngredients.size > 0 && (
+            <SortIngredients
+              selectedIngredients={selectedIngredients}
+              moveIngredient={moveIngredient}
             />
-          </div>
-
+          )}
           <div className={classes.button__wrapper}>
-            <Button type="submit" size="sm">
-              Create
-            </Button>
-            <Button type="button" onClick={cleareForm} size="sm">
-              Clear
-            </Button>
+            {isEditing ? (
+              <>
+                <Button type="submit" size="sm">
+                  Update
+                </Button>
+                <Button type="button" mode={'outlined'} onClick={handleBack} size="sm">
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button type="submit" size="sm">
+                  Create
+                </Button>
+                <Button type="button" mode={'outlined'} onClick={cleareForm} size="sm">
+                  Clear
+                </Button>
+              </>
+            )}
           </div>
         </form>
       </div>
@@ -229,18 +344,26 @@ const DishForm = () => {
 };
 
 DishForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  category: PropTypes.arrayOf(PropTypes.string).isRequired,
   initialState: PropTypes.shape({
     name: PropTypes.string,
     type: PropTypes.string,
     vegetarian: PropTypes.bool,
     spicy: PropTypes.bool,
     pescatarian: PropTypes.bool,
-    portionWeigh: PropTypes.number,
+    portionWeight: PropTypes.number,
     price: PropTypes.number,
     ingredients: PropTypes.arrayOf(PropTypes.string),
   }),
-  buttonText: PropTypes.string,
-  size: PropTypes.oneOf(['sm', 'md', 'lg']),
+  Ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ),
+  selectedIngredientsMap: PropTypes.instanceOf(Map),
+  isEditing: PropTypes.bool,
 };
 
 DishForm.defaultProps = {
@@ -250,11 +373,13 @@ DishForm.defaultProps = {
     vegetarian: false,
     spicy: false,
     pescatarian: false,
-    portionWeigh: 0,
-    price: 0,
+    portionWeight: '',
+    price: '',
     ingredients: [],
   },
-  size: 'sm',
+  Ingredients: [],
+  selectedIngredientsMap: new Map(),
+  isEditing: false,
 };
 
 export default DishForm;
