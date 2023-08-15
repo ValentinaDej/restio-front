@@ -1,0 +1,15 @@
+.topCharts {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  @media screen and (min-width: 1200px) {
+    flex-direction: row;
+  }
+}
+
+.smallBox {
+  width: 35%;
+}

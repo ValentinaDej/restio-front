@@ -8,7 +8,19 @@ import { forwardRef } from 'react';
 
 export const CheckBox = forwardRef(
   (
-    { label, disabled, checked, onChange, className, size = 20, register, rules, name, ...props },
+    {
+      label,
+      disabled,
+      checked,
+      onChange,
+      className,
+      size = 20,
+      register,
+      rules,
+      name,
+      ariaLabel,
+      ...props
+    },
     ref
   ) => {
     const inputClasses = `visually-hidden ${cls.checkBox}`;
@@ -28,6 +40,7 @@ export const CheckBox = forwardRef(
             checked={checked}
             onChange={onChange}
             disabled={disabled}
+            aria-label={ariaLabel}
             className={inputClasses}
             {...(register && register(name, rules))}
             {...props}
@@ -42,6 +55,7 @@ export const CheckBox = forwardRef(
 
 CheckBox.propTypes = {
   label: PropTypes.string,
+  ariaLabel: PropTypes.string,
   size: PropTypes.number,
   disabled: PropTypes.bool,
   checked: PropTypes.bool,

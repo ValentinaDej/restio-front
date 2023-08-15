@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { useSelector } from 'react-redux';
 import { getIsLoading } from 'store/customer/orders/selectors';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import Loader from 'shared/Loader/Loader';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { useUpdateDishStatusByWaiter } from 'api/order';
+import Text from 'shared/Text/Text';
+import { DropDown } from 'shared/DropDown/DropDown';
 
 export const OrdersList = ({
   isWaiter,
@@ -16,12 +18,9 @@ export const OrdersList = ({
   selectedOrders,
   urlParams,
 }) => {
+  const [sortOrderBy, setSortOrderBy] = useState('None');
   const { payment } = useSelector(getIsLoading);
-  const {
-    data,
-    isLoadingDishStatus,
-    mutateAsync: mutateDishStatus,
-  } = useUpdateDishStatusByWaiter();
+  const { mutateAsync: mutateDishStatus } = useUpdateDishStatusByWaiter();
 
   const selectOrder = useCallback(
     (id, totalPrice) => {
@@ -44,30 +43,22 @@ export const OrdersList = ({
   );
 
   const sortedOrders = useCallback(() => {
-    const sortedOrders = [...orders].sort((orderA, orderB) => {
-      return new Date(orderB.created_at) - new Date(orderA.created_at);
-    });
+    let sortedOrders = [...orders];
 
-    const ordersWithNumbers = sortedOrders
-      .reverse()
-      .map((order, index) => ({
-        ...order,
-        orderNumber: index + 1,
-      }))
-      .reverse();
-
-    const sortedByPaidStatus = ordersWithNumbers.sort((orderA, orderB) => {
-      if (orderA.status === 'Paid' && orderB.status !== 'Paid') {
-        return 1;
-      } else if (orderA.status !== 'Paid' && orderB.status === 'Paid') {
-        return -1;
-      } else {
+    if (sortOrderBy !== 'None') {
+      return [...sortedOrders].sort((orderA, orderB) => {
+        if (orderA.status === sortOrderBy && orderB.status !== sortOrderBy) {
+          return -1;
+        }
+        if (orderA.status !== sortOrderBy && orderB.status === sortOrderBy) {
+          return 1;
+        }
         return 0;
-      }
-    });
-
-    return sortedByPaidStatus;
-  }, [orders]);
+      });
+    } else {
+      return [...sortedOrders].reverse();
+    }
+  }, [orders, sortOrderBy]);
 
   const onClickChangeDishStatusAsWaiter = useCallback(
     async (status, dishId, orderId) => {
@@ -89,12 +80,23 @@ export const OrdersList = ({
       small={!isWaiter}
       isWaiter={isWaiter}
       onChangeStatus={onClickChangeDishStatusAsWaiter}
-      idx={order.orderNumber}
     />
   );
 
   return (
     <>
+      <div className={cls.sort}>
+        <Text>Sort by</Text>
+        <DropDown
+          options={[
+            { value: 'None', label: 'Newest' },
+            { value: 'Open', label: 'Open' },
+            { value: 'Paid', label: 'Paid' },
+          ]}
+          defaultValue="Newest"
+          onSelect={(e) => setSortOrderBy(e.value)}
+        />
+      </div>
       <ul className={cls.list}>{sortedOrders().map(renderOrder)}</ul>
       {payment && (
         <div className={cls.layout}>

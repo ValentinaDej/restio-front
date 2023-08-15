@@ -4,6 +4,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { ImList2 } from 'react-icons/im';
 import { MdRestaurantMenu, MdTableBar } from 'react-icons/md';
+import { FaMoneyBillTrendUp } from 'react-icons/fa6';
 import { IoPeopleSharp } from 'react-icons/io5';
 import { FiLogOut } from 'react-icons/fi';
 import { GiCook } from 'react-icons/gi';
@@ -60,6 +61,9 @@ const Header = ({ logo, restaurantName, role }) => {
           </NavLink>
           <NavLink className={classes.header__link} to={`${restaurantId}/cook`}>
             <GiCook className={classes.header__icon} />
+          </NavLink>
+          <NavLink className={classes.header__link} to={`${restaurantId}/admin/statistics`}>
+            <FaMoneyBillTrendUp className={classes.header__icon} />
           </NavLink>
         </div>
       )}
