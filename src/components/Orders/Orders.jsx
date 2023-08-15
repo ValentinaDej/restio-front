@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
 import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
@@ -10,8 +10,8 @@ import { NavigateButtons } from './ui/NavigateButtons/NavigateButtons';
 import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
-import cls from './Order.module.scss';
 import useSSESubscription from 'hooks/useSSESubscription';
+import cls from './Order.module.scss';
 
 const Orders = ({ isWaiter }) => {
   const [paymentType, setPaymentType] = useState('');

@@ -1,7 +1,7 @@
 import { TotalBlock } from './ui/TotalBlock/TotalBlock';
-import cls from './Statisctics.module.scss';
 import { TransactionsTable } from './ui/TransactionsTable/TransactionsTable';
 import { StatisticsByTransactionsBlock } from './ui/StatisticsByTransactionsBlock/StatisticsByTransactionsBlock';
+import cls from './Statisctics.module.scss';
 
 export const Statisctics = ({ statistics }) => {
   return (
