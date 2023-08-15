@@ -18,7 +18,7 @@ const DishesAdminPage = () => {
   });
 
   const navigateToAddDish = () => {
-    navigate(`/admin/${restId}/dishes/new`);
+    navigate(`/${restId}/admin/dishes/new`);
   };
 
   const handleDelete = async (id, restId) => {
@@ -28,7 +28,6 @@ const DishesAdminPage = () => {
         success: 'Dish removed from the menu',
         error: 'Error removing dish',
       });
-      await refetch();
     } catch (error) {
       console.error('Error removing dish:', error);
     }

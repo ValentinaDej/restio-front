@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import EmployeeForm from '../../shared/EmployeeForm/EmployeeForm';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import Loader from '../../shared/Loader/Loader';
 import styles from './AddPersonnelPage.module.scss';
@@ -14,6 +14,7 @@ const AddPersonnelPage = () => {
   const { personId, restId } = useParams();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery(
     ['new_personnel', personId],
@@ -25,6 +26,25 @@ const AddPersonnelPage = () => {
       },
     }
   );
+
+  useEffect(() => {
+    // Display the toast notification only when personId is defined
+    if (personId !== undefined) {
+      const toastId = toast((t) => (
+        <div className={styles.note}>
+          <p>
+            Leave the <b>"Password"</b> field empty if you want to save the previous password
+          </p>
+          <Button size={`sm`} onClick={() => toast.dismiss(t.id)}>
+            I understand
+          </Button>
+        </div>
+      ));
+      return () => {
+        toast.dismiss(toastId);
+      };
+    }
+  }, [personId]);
 
   const handleBack = () => {
     navigate(-1);
@@ -41,6 +61,7 @@ const AddPersonnelPage = () => {
         await createPersonnel(formData, restId);
         toast.success('Personnel added successfully');
       }
+      await queryClient.invalidateQueries('personnel');
       handleBack();
     } catch (error) {
       toast.error('Error saving or editing personnel');
