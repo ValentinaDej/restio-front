@@ -4,16 +4,15 @@ import { FaList } from 'react-icons/fa';
 
 import Text from 'shared/Text/Text';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
-import SelectIngridients from './SelectIngridients/SelectIngridients';
+import SelectIngredients from './SelectIngridients/SelectIngredients';
+import classes from './Ingredients.module.scss';
 
-import classes from './Ingridients.module.scss';
-
-const SelectIngridientSection = ({
+const Ingredients = ({
   inputValue,
   selectedType,
-  ingridientsTypes,
+  IngredientsTypes,
   firstIngredientRef,
-  ingridientsToShow,
+  IngredientsToShow,
   selectedIngredients,
   showSelectedIngredients,
   handleTypeChange,
@@ -25,30 +24,15 @@ const SelectIngridientSection = ({
   return (
     <>
       <Text mode="p" textAlign="left" fontSize={14} fontWeight={600}>
-        Select ingridients:
+        Select Ingredients:
       </Text>
       <div className={classes.section__select}>
         <table className={classes.ingredients__table}>
           <thead className={classes.header__cell}>
             <tr>
-              {/* <th className={classes.header__cell}> */}
-              {/* <select
-                  id="type"
-                  value={selectedType}
-                  onChange={handleTypeChange}
-                  className={classes.select__type}
-                >
-                  <option value="">All types</option>
-                  {ingridientsTypes.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select> */}
-              {/* </th> */}
               <th className={`${classes.header__cell}`}>
-                <SelectIngridients
-                  types={['All', ...ingridientsTypes]}
+                <SelectIngredients
+                  types={['All', ...IngredientsTypes]}
                   value={selectedType}
                   onChange={handleTypeChange}
                 />
@@ -80,7 +64,7 @@ const SelectIngridientSection = ({
             </tr>
           </thead>
           <tbody>
-            {ingridientsToShow?.map((ingredient, index) => (
+            {IngredientsToShow?.map((ingredient, index) => (
               <tr
                 key={ingredient._id}
                 onClick={() => handleToggleIngredient(ingredient._id, ingredient.name)}
@@ -107,4 +91,4 @@ const SelectIngridientSection = ({
   );
 };
 
-export default SelectIngridientSection;
+export default Ingredients;

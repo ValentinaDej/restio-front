@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { DISH_CATEGORIES } from 'utils/constants';
 
 import { getDishById, createDish, updateDishById } from '../../api/dish';
-import { getIngridients } from '../../api/ingridient';
+import { getIngredients } from '../../api/ingredient';
 
 import DishForm from 'shared/DishForm/DishForm';
 import Button from 'shared/Button/Button';
@@ -39,7 +39,7 @@ const AddDishPage = () => {
     },
   });
 
-  const ingridientsQuery = useQuery('ingredients', getIngridients, {
+  const IngredientsQuery = useQuery('ingredients', getIngredients, {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchInterval: false,
@@ -69,7 +69,7 @@ const AddDishPage = () => {
     }
   };
 
-  if (dishQuery.isLoading || ingridientsQuery.isLoading) {
+  if (dishQuery.isLoading || IngredientsQuery.isLoading) {
     return (
       <main className={styles.loadingWrapper}>
         <Loader />
@@ -110,7 +110,7 @@ const AddDishPage = () => {
           <DishForm
             onSubmit={handleSubmit}
             category={DISH_CATEGORIES}
-            ingridients={ingridientsQuery.data}
+            ingredientsList={IngredientsQuery.data}
             selectedIngredientsMap={selectedIngredientsMap}
             initialState={initialData}
             isEditing={isEditing}

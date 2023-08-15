@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import { FaChevronDown } from 'react-icons/fa';
 
-import classes from './SelectIngridients.module.scss';
+import classes from './SelectIngredients.module.scss';
 
-const SelectIngridients = ({ types, value, onChange }) => {
+const SelectIngredients = ({ types, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
 
@@ -55,10 +55,10 @@ const SelectIngridients = ({ types, value, onChange }) => {
   );
 };
 
-SelectIngridients.propTypes = {
+SelectIngredients.propTypes = {
   types: PropTypes.arrayOf(PropTypes.string).isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-export default SelectIngridients;
+export default SelectIngredients;

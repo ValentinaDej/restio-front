@@ -12,8 +12,8 @@ import Text from 'shared/Text/Text';
 import InputValid from 'shared/InputValid/InputValid';
 import FileUploader from 'shared/FileUploader/FileUploader';
 import DishTypeOptions from './DishTypeOptions/DishTypeOptions';
-import Ingridients from './Ingridients/Ingridients';
-import SortIngridients from './SortIngridients/SortIngridients';
+import Ingredients from './Ingredients/Ingredients';
+import SortIngredients from './SortIngridients/SortIngredients';
 
 import classes from './DishForm.module.scss';
 
@@ -21,7 +21,7 @@ const DishForm = ({
   onSubmit,
   category,
   initialState,
-  ingridients,
+  ingredientsList,
   selectedIngredientsMap,
   isEditing,
   handleBack,
@@ -67,12 +67,12 @@ const DishForm = ({
     setSelectedIngredients(new Map());
   };
 
-  const uniqueTypes = Array.from(new Set(ingridients?.map((ingredient) => ingredient.type)));
-  const ingridientsTypes = uniqueTypes
+  const uniqueTypes = Array.from(new Set(ingredientsList?.map((ingredient) => ingredient.type)));
+  const IngredientsTypes = uniqueTypes
     .filter((type) => type !== undefined)
     .sort((a, b) => a.localeCompare(b));
 
-  const ingridientsToShow = ingridients?.filter((ingredient) => {
+  const IngredientsToShow = ingredientsList?.filter((ingredient) => {
     const nameMatchesInput = ingredient.name.toLowerCase().includes(inputValue.toLowerCase());
     const isSelectedTypeAll = selectedType === '';
     const isSelectedTypeMatching = ingredient.type === selectedType;
@@ -120,11 +120,11 @@ const DishForm = ({
   const handleInputKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      if (ingridientsToShow.length === 1) {
-        const matchedIngredient = ingridientsToShow[0];
+      if (IngredientsToShow.length === 1) {
+        const matchedIngredient = IngredientsToShow[0];
         handleToggleIngredient(matchedIngredient._id, matchedIngredient.name);
         setInputValue('');
-      } else if (ingridientsToShow.length > 1) {
+      } else if (IngredientsToShow.length > 1) {
         firstIngredientRef.current.focus();
       }
     }
@@ -294,14 +294,14 @@ const DishForm = ({
                   </div>
                 </div>
               </div>
-              <Ingridients
+              <Ingredients
                 selectedType={selectedType}
-                ingridientsTypes={ingridientsTypes}
+                IngredientsTypes={IngredientsTypes}
                 handleTypeChange={handleTypeChange}
                 handleInputChange={handleInputChange}
                 handleInputKeyDown={handleInputKeyDown}
                 inputValue={inputValue}
-                ingridientsToShow={ingridientsToShow}
+                IngredientsToShow={IngredientsToShow}
                 selectedIngredients={selectedIngredients}
                 firstIngredientRef={firstIngredientRef}
                 handleToggleIngredient={handleToggleIngredient}
@@ -311,7 +311,7 @@ const DishForm = ({
             </div>
           </div>
           {selectedIngredients.size > 0 && (
-            <SortIngridients
+            <SortIngredients
               selectedIngredients={selectedIngredients}
               moveIngredient={moveIngredient}
             />
@@ -356,7 +356,7 @@ DishForm.propTypes = {
     price: PropTypes.number,
     ingredients: PropTypes.arrayOf(PropTypes.string),
   }),
-  ingridients: PropTypes.arrayOf(
+  Ingredients: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
@@ -377,7 +377,7 @@ DishForm.defaultProps = {
     price: '',
     ingredients: [],
   },
-  ingridients: [],
+  Ingredients: [],
   selectedIngredientsMap: new Map(),
   isEditing: false,
 };

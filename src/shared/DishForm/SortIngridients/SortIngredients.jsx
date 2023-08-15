@@ -3,14 +3,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Text from 'shared/Text/Text';
 import DraggableIngredient from './DraggableIngredient/DraggableIngredient';
-import classes from './SortIngridients.module.scss';
+import classes from './SortIngredients.module.scss';
 
-const SortIngridients = ({ selectedIngredients, moveIngredient }) => {
+const SortIngredients = ({ selectedIngredients, moveIngredient }) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={classes.field__wrapper}>
         <Text mode="p" textAlign="left" fontSize={14} fontWeight={600}>
-          Sort ingridients:
+          Sort Ingredients:
         </Text>
       </div>
 
@@ -30,4 +30,4 @@ const SortIngridients = ({ selectedIngredients, moveIngredient }) => {
   );
 };
 
-export default SortIngridients;
+export default SortIngredients;
