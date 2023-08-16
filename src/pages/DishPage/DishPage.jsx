@@ -9,6 +9,7 @@ import Text from 'shared/Text/Text';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
 import DishCard from 'shared/DishCard/DishCard';
 import Button from 'shared/Button/Button';
+import { NavigateButtons } from '../../components/Orders/ui/NavigateButtons/NavigateButtons';
 import Cart from 'components/Cart/Cart';
 import Loader from 'shared/Loader/Loader';
 import Footer from 'shared/Footer/Footer';
@@ -177,8 +178,7 @@ const DishPage = () => {
     <>
       <main className={classes.dish}>
         <NavLink to={`/${restId}/${tableId}`} className={classes.back}>
-          <IoReturnDownBackOutline></IoReturnDownBackOutline>
-          <span>Back to Menu</span>
+          <NavigateButtons params={restId}>Back</NavigateButtons>
         </NavLink>
         <div className={classes.fullDish}>
           <p className={classes.category}>{dish.type}</p>
