@@ -11,6 +11,7 @@ import { getDishesForMenu } from 'api/dish';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Button from 'shared/Button/Button';
+import { FcAssistant } from '@react-icons/all-files/fc/FcAssistant';
 
 const MenuPage = () => {
   const navigate = useNavigate();
@@ -59,6 +60,16 @@ const MenuPage = () => {
           ))}
         </ul>
         <Cart />
+
+        <div className={css.aiaWrapper}>
+          <button
+            className={`${css['button-circle']}`}
+            onClick={() => navigate(`/${restId}/aia`)}
+            data-tip="Open Assistant"
+          >
+            <FcAssistant size={`30`} />
+          </button>
+        </div>
       </main>
     </>
   );
