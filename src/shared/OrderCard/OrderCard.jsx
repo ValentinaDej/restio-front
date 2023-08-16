@@ -11,6 +11,7 @@ import { classNames } from 'helpers/classNames';
 import { IconButton } from 'shared/IconButton/IconButton';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { getDate } from 'helpers/getDate';
+import Button from 'shared/Button/Button';
 
 const OrderCard = memo(
   ({
@@ -25,7 +26,7 @@ const OrderCard = memo(
     isWaiter,
     onChangeStatus,
     isPayCard,
-    isDishesPage,
+    isWaiterDishesPage,
   }) => {
     const cardRef = useRef(null);
     const [isChecked, setIsChecked] = useState(сhecked || false);
@@ -60,6 +61,8 @@ const OrderCard = memo(
       [_id, onChangeStatus]
     );
 
+    const isDishReady = orderItems.some(({ status }) => status === 'Ready');
+
     return (
       <div className={classNames(cls.item, { [cls.isSmall]: isSmall })} ref={cardRef}>
         <div className={cls.topBlock}>
@@ -82,7 +85,7 @@ const OrderCard = memo(
         <ul
           className={classNames(cls.list, {
             [cls.isSmall]: isSmall,
-            [cls.isDishesPage]: isDishesPage,
+            [cls.isWaiterDishesPage]: isWaiterDishesPage,
           })}
         >
           {orderItems.map(({ dish: { _id, picture, name, price }, quantity, status }) => (
@@ -101,7 +104,7 @@ const OrderCard = memo(
             </li>
           ))}
         </ul>
-        {!isDishesPage && (
+        {!isWaiterDishesPage && (
           <>
             <div className={classNames(cls.bottomBlock, { [cls.isSmall]: isSmall })}>
               <Text
@@ -134,6 +137,17 @@ const OrderCard = memo(
               />
             )}
           </>
+        )}
+        {isWaiterDishesPage && (
+          <div
+            className={classNames(cls.bottomBlock, {
+              [cls.isWaiterDishesPage]: isWaiterDishesPage,
+            })}
+          >
+            <Button size={'sm'} disabled={!isDishReady}>
+              Mark all ready dishes as served
+            </Button>
+          </div>
         )}
       </div>
     );

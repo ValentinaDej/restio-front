@@ -31,10 +31,10 @@ const TableDishesWaiterPage = () => {
   // }, [dishReadyEvent, dispatch]);
 
   return (
-    <div className={cls.main}>
+    <main className={cls.main}>
       {/* <Sidebar /> */}
-      <Orders isWaiter isDishesPage />
-    </div>
+      <Orders isWaiter isWaiterDishesPage />
+    </main>
   );
 };
 

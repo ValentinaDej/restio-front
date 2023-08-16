@@ -13,8 +13,9 @@ import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
 
 import cls from './Order.module.scss';
+import Title from 'shared/Title/Title';
 
-const Orders = ({ isWaiter, isSmall, isDishesPage }) => {
+const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   const [paymentType, setPaymentType] = useState('');
   const [selectedTotal, setSelectedTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -79,50 +80,58 @@ const Orders = ({ isWaiter, isSmall, isDishesPage }) => {
 
   return (
     <>
-      <NavigateButtons params={params} isWaiter={isWaiter} />
-      {isLoading ? (
-        <OrderListSkeleton isWaiter={isWaiter} isSmall={isSmall} />
-      ) : !data?.orders?.length ? (
-        <EmptyListBox params={params} isWaiter={isWaiter} />
-      ) : (
+      {isWaiter && (
         <>
-          <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
-            {!isDishesPage && (
-              <ListTopBox
+          <Title textAlign={'left'}>{isWaiterDishesPage ? 'Table dishes' : 'Table checkout'}</Title>
+          <hr className={cls.divider} />
+        </>
+      )}
+      <section className={cls.section}>
+        <NavigateButtons params={params} isWaiter={isWaiter} />
+        {isLoading ? (
+          <OrderListSkeleton isWaiter={isWaiter} isSmall={isSmall} />
+        ) : !data?.orders?.length ? (
+          <EmptyListBox params={params} isWaiter={isWaiter} />
+        ) : (
+          <>
+            <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
+              {!isWaiterDishesPage && (
+                <ListTopBox
+                  orders={data?.orders || []}
+                  totalPrice={totalPrice}
+                  onChangeSelected={onChangeSelected}
+                  onChangeTypeOfPay={onChangeTypeOfPay}
+                  urlParams={params}
+                  isWaiter={isWaiter}
+                  paymentType={paymentType}
+                />
+              )}
+
+              <OrdersList
                 orders={data?.orders || []}
-                totalPrice={totalPrice}
                 onChangeSelected={onChangeSelected}
-                onChangeTypeOfPay={onChangeTypeOfPay}
+                selectedTotal={selectedTotal}
+                selectedOrders={selectedOrders}
+                urlParams={params}
+                isSmall={isSmall}
+                isWaiter={isWaiter}
+                isWaiterDishesPage={isWaiterDishesPage}
+              />
+            </div>
+            {!isWaiterDishesPage && (
+              <Checkout
+                amount={selectedTotal}
+                selectedOrders={selectedOrders}
+                onChangeSelected={onChangeSelected}
                 urlParams={params}
                 isWaiter={isWaiter}
+                isAllOrdersPaid={isAllOrdersPaid}
                 paymentType={paymentType}
               />
             )}
-
-            <OrdersList
-              orders={data?.orders || []}
-              onChangeSelected={onChangeSelected}
-              selectedTotal={selectedTotal}
-              selectedOrders={selectedOrders}
-              urlParams={params}
-              isSmall={isSmall}
-              isWaiter={isWaiter}
-              isDishesPage={isDishesPage}
-            />
-          </div>
-          {!isDishesPage && (
-            <Checkout
-              amount={selectedTotal}
-              selectedOrders={selectedOrders}
-              onChangeSelected={onChangeSelected}
-              urlParams={params}
-              isWaiter={isWaiter}
-              isAllOrdersPaid={isAllOrdersPaid}
-              paymentType={paymentType}
-            />
-          )}
-        </>
-      )}
+          </>
+        )}
+      </section>
     </>
   );
 };

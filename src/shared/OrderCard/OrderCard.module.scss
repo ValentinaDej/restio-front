@@ -41,9 +41,8 @@
     overflow: hidden;
   }
 
-  &.isDishesPage {
-    height: 365px;
-    overflow: hidden;
+  &.isWaiterDishesPage {
+    height: 300px;
   }
 
   li {
@@ -78,6 +77,10 @@
   &.isSmall {
     margin-top: 8px;
     flex-direction: row;
+  }
+
+  &.isWaiterDishesPage {
+    margin-top: 20px;
   }
 }
 

@@ -19,7 +19,7 @@ export const OrdersList = ({
   selectedOrders,
   urlParams,
   isSmall,
-  isDishesPage,
+  isWaiterDishesPage,
 }) => {
   const [sortOrderBy, setSortOrderBy] = useState('None');
   const { payment } = useSelector(getIsLoading);
@@ -76,6 +76,18 @@ export const OrdersList = ({
     [mutateDishStatus, urlParams]
   );
 
+  // const onClickMarkAllReadyDishesAsServedAsWaiter = useCallback(
+  //   async (status, dishId, orderId) => {
+  //     try {
+  //       await mutateDishStatus({ urlParams, orderId });
+  //       return 'success';
+  //     } catch (err) {
+  //       console.log(err.response.data.message);
+  //     }
+  //   },
+  //   [mutateDishStatus, urlParams]
+  // );
+
   const renderOrder = (order) => (
     <OrderCard
       key={order._id}
@@ -85,7 +97,7 @@ export const OrdersList = ({
       isWaiter={isWaiter}
       isPayCard={pathname.includes('pay')}
       onChangeStatus={onClickChangeDishStatusAsWaiter}
-      isDishesPage={isDishesPage}
+      isWaiterDishesPage={isWaiterDishesPage}
     />
   );
 

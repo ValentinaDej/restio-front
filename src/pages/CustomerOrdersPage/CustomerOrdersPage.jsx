@@ -3,9 +3,9 @@ import cls from './CustomerOrdersPage.module.scss';
 
 const CustomerOrdersPage = () => {
   return (
-    <div className={cls.main}>
+    <main className={cls.main}>
       <Orders isSmall />
-    </div>
+    </main>
   );
 };
 
