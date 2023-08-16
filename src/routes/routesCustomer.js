@@ -6,8 +6,8 @@ const DishPage = lazy(() => import('pages/DishPage/DishPage'));
 
 const routesCustomer = [
   { path: ':restId/tables/:tableId', component: <MenuPage /> },
-  { path: ':restId/:tableId/orders', component: <CustomerOrdersPage /> },
-  { path: ':restId/:tableId/dishes/:dishId', component: <DishPage /> },
+  { path: ':restId/tables/:tableId/orders', component: <CustomerOrdersPage /> },
+  { path: ':restId/tables/:tableId/dishes/:dishId', component: <DishPage /> },
 ];
 
 export default routesCustomer;
