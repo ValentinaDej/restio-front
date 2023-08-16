@@ -23,6 +23,7 @@ const DishPage = () => {
   const [recommendedDishes, setRecommendedDishes] = useState([]);
   const dishId = useParams().dishId;
   const restId = useParams().restId;
+  const tableId = useParams().tableId;
   const dispatch = useDispatch();
   const storeData = useSelector(getProductFromState);
   const { pathname } = useLocation();
@@ -112,7 +113,7 @@ const DishPage = () => {
   return (
     <>
       <main className={classes.dish}>
-        <NavLink to={-1} className={classes.back}>
+        <NavLink to={`/${restId}/${tableId}`} className={classes.back}>
           <IoReturnDownBackOutline></IoReturnDownBackOutline>
           <span>Back to Menu</span>
         </NavLink>
