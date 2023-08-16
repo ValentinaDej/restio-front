@@ -58,7 +58,7 @@ const DishesForCookPage = () => {
     <div className={`main__container  ${styles.main__section}`}>
       <div className={`${styles.section}`}>
         <Title classname={`${styles.title}`}>Cook Dashboard</Title>
-        <hr className={styles.divider} />
+        <hr className={`${styles.divider}`} />
         {isLoading ? (
           <div className={`${styles.loader__section}`}>
             <Loader size="lg" />
@@ -78,18 +78,19 @@ const DishesForCookPage = () => {
               ))}
             </div>
 
-            <div className={`${styles.status__section}`}>
-              {statuses.map(
-                (status) =>
-                  currentStatus === status && (
-                    <StatusCardItem
-                      key={status}
-                      status={status}
-                      data={filterDishes(status)}
-                      handleChangeStatus={handleChangeStatus}
-                    />
-                  )
-              )}
+            <div>
+              {data?.length > 0 &&
+                statuses.map(
+                  (status) =>
+                    currentStatus === status && (
+                      <StatusCardItem
+                        key={status}
+                        status={status}
+                        data={filterDishes(status)}
+                        handleChangeStatus={handleChangeStatus}
+                      />
+                    )
+                )}
             </div>
           </>
         )}

@@ -10,28 +10,75 @@
   width: 100%;
 
   @media screen and (min-width: 768px) {
-    width: calc(50% - 12.5px);
+    width: calc(50% - 10px);
     padding: 20px;
   }
 
   @media screen and (min-width: 1024px) {
-    width: calc(100% / 3 - 17px);
+    width: calc((100% - 40px) / 3);
   }
 }
 
 .information {
   display: flex;
-  gap: 20px;
   align-items: center;
   justify-content: space-between;
 
+  @media screen and (min-width: 768px) {
+    gap: 10px;
+  }
+
+  &__text {
+    font-size: 20px;
+
+    @media screen and (min-width: 375px) {
+      font-size: 24px;
+    }
+  }
+
   &__quantity {
     display: flex;
+    align-items: center;
+  }
+
+  &__timeSection {
+    display: flex;
     gap: 5px;
+    align-items: center;
   }
-  @media screen and (min-width: 768px) {
-    gap: 20px;
+
+  &__time {
+    background-color: #dce8c6;
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    @media screen and (min-width: 768px) {
+      width: 60px;
+      height: 60px;
+    }
   }
+
+  &__time.active {
+    background-color: #ff000021;
+    animation-name: colorAnimation;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+  }
+
+  &__timeText {
+    font-size: 14px;
+
+    @media screen and (min-width: 375px) {
+      font-size: 16px;
+    }
+  }
+
   &__order {
     display: flex;
     align-items: center;
@@ -42,24 +89,6 @@
     display: flex;
     align-items: center;
     gap: 3px;
-  }
-
-  &__timeSection {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-  }
-
-  &__time {
-    background-color: var(--color-green-transparent);
-    width: 60px;
-    height: 60px;
-    padding: 5px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
   }
 }
 
@@ -72,5 +101,20 @@
 
   @media screen and (min-width: 768px) {
     font-size: 1.1rem;
+  }
+}
+
+@keyframes colorAnimation {
+  0% {
+    background-color: #ff000021;
+  }
+  25% {
+    background-color: #ff000033;
+  }
+  50% {
+    background-color: #ff000052;
+  }
+  100% {
+    background-color: #ff000068;
   }
 }

@@ -9,9 +9,9 @@ const sizeValues = {
   lg: '96',
 };
 
-const Loader = ({ size = 'sm' }) => {
+const Loader = ({ size = 'sm', color = '#ea6a12' }) => {
   return (
-    <div className={`${classes.loader}`}>
+    <div className={` ${classes.loader}`}>
       <RotatingLines
         strokeColor={'var(--color-orange)'}
         strokeWidth="5"

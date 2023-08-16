@@ -15,11 +15,12 @@
     text-align: center;
     &.primary {
       border-radius: 20px;
-      background-color: rgba(255, 255, 255, 0.6);
+      background-color: var(--color-white);
       box-shadow: 10px 10px 30px -24px rgba(0, 0, 0, 0.52);
     }
     &.outlined {
       border-radius: 20px;
+
       background-color: rgba(255, 255, 255, 0.4);
       border: 1px dashed var(--color-orange);
     }
@@ -27,6 +28,7 @@
 
   .icon {
     color: var(--color-orange);
+
     margin-bottom: 1rem;
   }
 }

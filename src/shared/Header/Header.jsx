@@ -24,7 +24,8 @@ const Header = ({ role }) => {
   const { pathname } = useLocation();
   const arrParams = pathname.split('/');
   const restId = arrParams[1];
-  const tableId = arrParams[2];
+
+  const tableId = arrParams[3];
   const { isError, isLoading, data } = useQuery(
     ['restaurant', restId],
     async () => await getRestaurant(restId),
@@ -93,7 +94,10 @@ const Header = ({ role }) => {
               Call waiter
             </Button>
           </div>
-          <NavLink to={`/${restId}/${tableId}/orders`} className={classes['header__link-button']}>
+          <NavLink
+            to={`/${restId}/tables/${tableId}/orders`}
+            className={classes['header__link-button']}
+          >
             Orders
           </NavLink>
         </div>
