@@ -38,7 +38,7 @@ const DishesItem = ({
         </div>
         <div className={`${styles.information__timeSection}`}>
           <p className={`${styles.information__timeText}`}>Waiting:</p>
-          <div className={`${styles.information__time}`}>
+          <div className={`${styles.information__time} ${timeForWaiting > 10 && styles.active}`}>
             <p className={`${styles.information__timeText}`}>{timeForWaiting}</p>
             <p className={`${styles.information__timeText}`}> min</p>
           </div>
