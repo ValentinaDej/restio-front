@@ -21,12 +21,12 @@
     &.outlined {
       border-radius: 20px;
       background-color: rgba(255, 255, 255, 0.4);
-      border: 1px dashed rgba($color: #ea6512, $alpha: 0.5);
+      border: 1px dashed var(--color-orange);
     }
   }
 
   .icon {
-    color: #ea6512;
+    color: var(--color-orange);
     margin-bottom: 1rem;
   }
 }

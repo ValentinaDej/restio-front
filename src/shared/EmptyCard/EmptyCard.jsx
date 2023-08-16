@@ -8,7 +8,7 @@ const EmptyCard = ({ text, onClick, mode = 'primary', ...props }) => {
     <>
       <div onClick={onClick} className={`${classes.emptyCard_wrapper} ${classes[`${mode}`]}`}>
         <AiOutlineAppstoreAdd size={'2rem'} className={classes.icon} />
-        <Text color="#ea6512">Add new {text}</Text>
+        <Text color={'var(--color-orange)'}>Add new {text}</Text>
       </div>
     </>
   );

@@ -63,7 +63,7 @@
     right: 0;
     top: 0px;
     font-size: 1.3rem;
-    background-color: #f5dccc;
+    background-color: var(--color-green-transparent);
     padding: 10px 15px;
     border-radius: 25px 25px 0 0;
   }
@@ -74,7 +74,7 @@
     width: 120px;
     justify-content: space-between;
     margin: 0 auto 1.5rem;
-    color: #ea6a12;
+    color: var(--color-orange);
     transition: 0.5s;
   }
 
@@ -112,7 +112,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
-      color: #ea6a12;
+      color: var(--color-dark-blue);
       padding-bottom: 1rem;
       & li {
         margin-bottom: -20px;
@@ -151,7 +151,7 @@
       width: 130px;
     }
     & span {
-      color: #ea6a12;
+      color: var(--color-gray);
       font-size: 1.3rem;
     }
   }
@@ -184,7 +184,7 @@
     border-radius: 25px;
     &.true {
       color: white;
-      background-color: #ea6a12;
+      background-color: var(--color-orange);
     }
     &.false {
       color: white;
