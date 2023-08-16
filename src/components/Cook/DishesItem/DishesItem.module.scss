@@ -10,38 +10,35 @@
   width: 100%;
 
   @media screen and (min-width: 768px) {
-    width: calc(50% - 12.5px);
+    width: calc(50% - 10px);
     padding: 20px;
   }
 
   @media screen and (min-width: 1024px) {
-    width: calc(100% / 3 - 17px);
+    width: calc((100% - 40px) / 3);
   }
 }
 
 .information {
   display: flex;
-  gap: 20px;
   align-items: center;
   justify-content: space-between;
 
-  &__quantity {
-    display: flex;
-    gap: 5px;
-  }
   @media screen and (min-width: 768px) {
-    gap: 20px;
-  }
-  &__order {
-    display: flex;
-    align-items: center;
     gap: 10px;
   }
 
-  &__data {
+  &__text {
+    font-size: 20px;
+
+    @media screen and (min-width: 375px) {
+      font-size: 24px;
+    }
+  }
+
+  &__quantity {
     display: flex;
     align-items: center;
-    gap: 3px;
   }
 
   &__timeSection {
@@ -52,14 +49,39 @@
 
   &__time {
     background-color: var(--color-orange-transparent);
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     padding: 5px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
+    @media screen and (min-width: 768px) {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  &__timeText {
+    font-size: 14px;
+
+    @media screen and (min-width: 375px) {
+      font-size: 16px;
+    }
+  }
+
+  &__order {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__data {
+    display: flex;
+    align-items: center;
+    gap: 3px;
   }
 }
 

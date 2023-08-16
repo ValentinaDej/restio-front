@@ -7,7 +7,6 @@ import { useMediaQuery } from 'react-responsive';
 import Text from 'shared/Text/Text';
 import { MdTableBar } from 'react-icons/md';
 import { BiDish } from 'react-icons/bi';
-import { useCallback } from 'react';
 
 const DishesItem = ({
   dish,
@@ -21,9 +20,6 @@ const DishesItem = ({
 }) => {
   const { restId } = useParams();
 
-  const isTablet = useMediaQuery({
-    query: '(max-width: 1200px)',
-  });
   const isMobile = useMediaQuery({
     query: '(max-width: 767px)',
   });
@@ -35,16 +31,16 @@ const DishesItem = ({
   return (
     <li className={`${styles.item}`}>
       <div className={`${styles.information}`}>
-        <Text fontSize={24}>{dish.name}</Text>
+        <Text classname={`${styles.information__text}`}>{dish.name}</Text>
         <div className={`${styles.information__quantity}`}>
           <IoIosClose size={24} />
-          <Text fontSize={24}>{quantity}</Text>
+          <Text classname={`${styles.information__text}`}>{quantity}</Text>
         </div>
         <div className={`${styles.information__timeSection}`}>
-          <p>Waiting:</p>
+          <p className={`${styles.information__timeText}`}>Waiting:</p>
           <div className={`${styles.information__time}`}>
-            <p>{timeForWaiting}</p>
-            <p> min</p>
+            <p className={`${styles.information__timeText}`}>{timeForWaiting}</p>
+            <p className={`${styles.information__timeText}`}> min</p>
           </div>
         </div>
       </div>
