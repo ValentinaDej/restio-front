@@ -9,6 +9,7 @@ import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals
 import { useUpdateDishStatusByWaiter } from 'api/order';
 import Text from 'shared/Text/Text';
 import { DropDown } from 'shared/DropDown/DropDown';
+import { useLocation } from 'react-router-dom';
 
 export const OrdersList = ({
   isWaiter,
@@ -17,10 +18,13 @@ export const OrdersList = ({
   selectedTotal,
   selectedOrders,
   urlParams,
+  isSmall,
+  isWaiterDishesPage,
 }) => {
   const [sortOrderBy, setSortOrderBy] = useState('None');
   const { payment } = useSelector(getIsLoading);
   const { mutateAsync: mutateDishStatus } = useUpdateDishStatusByWaiter();
+  const { pathname } = useLocation();
 
   const selectOrder = useCallback(
     (id, totalPrice) => {
@@ -72,14 +76,28 @@ export const OrdersList = ({
     [mutateDishStatus, urlParams]
   );
 
+  // const onClickMarkAllReadyDishesAsServedAsWaiter = useCallback(
+  //   async (status, dishId, orderId) => {
+  //     try {
+  //       await mutateDishStatus({ urlParams, orderId });
+  //       return 'success';
+  //     } catch (err) {
+  //       console.log(err.response.data.message);
+  //     }
+  //   },
+  //   [mutateDishStatus, urlParams]
+  // );
+
   const renderOrder = (order) => (
     <OrderCard
       key={order._id}
       {...order}
       onChange={selectOrder}
-      small={!isWaiter}
+      small={isSmall}
       isWaiter={isWaiter}
+      isPayCard={pathname.includes('pay')}
       onChangeStatus={onClickChangeDishStatusAsWaiter}
+      isWaiterDishesPage={isWaiterDishesPage}
     />
   );
 

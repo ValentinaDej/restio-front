@@ -11,6 +11,8 @@ import { payOrders } from 'store/customer/orders/asyncOperations';
 import cls from './ListTopBox.module.scss';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import { getUserId } from 'store/auth/authSelector';
+import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
+import { classNames } from 'helpers/classNames';
 
 export const ListTopBox = ({
   orders,
@@ -22,6 +24,8 @@ export const ListTopBox = ({
   paymentType,
 }) => {
   const dispatch = useDispatch();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
   const userId = useSelector(getUserId);
   const [ordersIDs, setOrdersIDs] = useState([]);
   const { isLoading, mutate } = useUpdateOrderStatusByWaiter(
@@ -53,9 +57,17 @@ export const ListTopBox = ({
   }, [dispatch, frontLink, ordersIDs, totalPrice, urlParams.restId]);
 
   const onClickMarkAsPaidAllAsWaiter = useCallback(() => {
-    mutate();
-    onChangeSelected(0, []);
-  }, [mutate, onChangeSelected]);
+    setModalIsOpen(true);
+  }, []);
+
+  useEffect(() => {
+    if (isConfirmed) {
+      mutate();
+      onChangeSelected(0, []);
+      setModalIsOpen(false);
+      setIsConfirmed(false);
+    }
+  }, [isConfirmed, mutate, onChangeSelected]);
 
   return (
     <>
@@ -68,7 +80,7 @@ export const ListTopBox = ({
             : `Total price $${totalPrice}`}
         </Text>
       </div>
-      <div className={cls.btnsBox}>
+      <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
         <BillDownload orders={orders || []} />
         <Button
           size={'sm'}
@@ -76,7 +88,21 @@ export const ListTopBox = ({
           mode={(!totalPrice || isLoading || (isWaiter && !paymentType)) && 'disabled'}
           className={cls.btn}
         >
-          {isWaiter ? isLoading ? <Loader size={'xs'} /> : 'Mark as paid all orders' : 'Pay online'}
+          {modalIsOpen ? (
+            <Loader size={'xs'} color={'#fff'} />
+          ) : (
+            <>
+              {isWaiter ? (
+                isLoading ? (
+                  <Loader size={'xs'} color={'#fff'} />
+                ) : (
+                  'Mark as paid all orders'
+                )
+              ) : (
+                'Pay online'
+              )}
+            </>
+          )}
         </Button>
         {isWaiter && (
           <div className={cls.checkboxes}>
@@ -102,6 +128,17 @@ export const ListTopBox = ({
           ? 'Or select those orders that the customer has paid by selecting the ones you need.'
           : 'Or you can pay for each order separately by selecting the ones you need.'}
       </Text>
+      {isWaiter && (
+        <ConfirmModal
+          isOpen={modalIsOpen}
+          message={`Confirm your action for ${ordersIDs.length} ${
+            ordersIDs?.length === 1 ? 'order' : 'orders'
+          } with total $${totalPrice}`}
+          onConfirm={() => setIsConfirmed(true)}
+          setIsOpen={onClickMarkAsPaidAllAsWaiter}
+          onCancel={() => setModalIsOpen(false)}
+        />
+      )}
     </>
   );
 };

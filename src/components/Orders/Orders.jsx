@@ -13,9 +13,11 @@ import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
 
 import cls from './Order.module.scss';
+import Title from 'shared/Title/Title';
 
-const Orders = ({ isWaiter }) => {
+const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   const [paymentType, setPaymentType] = useState('');
+  const [isMounted, setIsMounted] = useState(true);
   const [selectedTotal, setSelectedTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedOrders, setSelectedOrders] = useState([]);
@@ -74,48 +76,64 @@ const Orders = ({ isWaiter }) => {
       }, 0);
       setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
       setIsAllOrdersPaid(allOrdersPaid);
+      setIsMounted(false);
     }
-  }, [data, data?.orders]);
+  }, [data]);
 
   return (
     <>
-      <NavigateButtons params={params} isWaiter={isWaiter} />
-      {isLoading ? (
-        <OrderListSkeleton isWaiter={isWaiter} isSmall={!isWaiter} />
-      ) : !data?.orders?.length ? (
-        <EmptyListBox params={params} isWaiter={isWaiter} />
-      ) : (
+      {isWaiter && (
         <>
-          <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
-            <ListTopBox
-              orders={data?.orders || []}
-              totalPrice={totalPrice}
-              onChangeSelected={onChangeSelected}
-              onChangeTypeOfPay={onChangeTypeOfPay}
-              urlParams={params}
-              isWaiter={isWaiter}
-              paymentType={paymentType}
-            />
-            <OrdersList
-              orders={data?.orders || []}
-              onChangeSelected={onChangeSelected}
-              selectedTotal={selectedTotal}
-              selectedOrders={selectedOrders}
-              urlParams={params}
-              isWaiter={isWaiter}
-            />
-          </div>
-          <Checkout
-            amount={selectedTotal}
-            selectedOrders={selectedOrders}
-            onChangeSelected={onChangeSelected}
-            urlParams={params}
-            isWaiter={isWaiter}
-            isAllOrdersPaid={isAllOrdersPaid}
-            paymentType={paymentType}
-          />
+          <Title textAlign={'left'}>{isWaiterDishesPage ? 'Table dishes' : 'Table checkout'}</Title>
+          <hr className={cls.divider} />
         </>
       )}
+      <section className={cls.section}>
+        <NavigateButtons params={params} isWaiter={isWaiter} />
+        {isLoading || isMounted ? (
+          <OrderListSkeleton isWaiter={isWaiter} isSmall={isSmall} />
+        ) : !data?.orders?.length ? (
+          <EmptyListBox params={params} isWaiter={isWaiter} />
+        ) : (
+          <>
+            <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
+              {!isWaiterDishesPage && (
+                <ListTopBox
+                  orders={data?.orders || []}
+                  totalPrice={totalPrice}
+                  onChangeSelected={onChangeSelected}
+                  onChangeTypeOfPay={onChangeTypeOfPay}
+                  urlParams={params}
+                  isWaiter={isWaiter}
+                  paymentType={paymentType}
+                />
+              )}
+
+              <OrdersList
+                orders={data?.orders || []}
+                onChangeSelected={onChangeSelected}
+                selectedTotal={selectedTotal}
+                selectedOrders={selectedOrders}
+                urlParams={params}
+                isSmall={isSmall}
+                isWaiter={isWaiter}
+                isWaiterDishesPage={isWaiterDishesPage}
+              />
+            </div>
+            {!isWaiterDishesPage && (
+              <Checkout
+                amount={selectedTotal}
+                selectedOrders={selectedOrders}
+                onChangeSelected={onChangeSelected}
+                urlParams={params}
+                isWaiter={isWaiter}
+                isAllOrdersPaid={isAllOrdersPaid}
+                paymentType={paymentType}
+              />
+            )}
+          </>
+        )}
+      </section>
     </>
   );
 };

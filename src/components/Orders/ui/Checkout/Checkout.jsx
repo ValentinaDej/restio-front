@@ -12,6 +12,7 @@ import Loader from 'shared/Loader/Loader';
 import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
 import { getUserId } from 'store/auth/authSelector';
 import { errorMessage } from 'helpers/errorMessage';
+import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
 
 export const Checkout = ({
   isWaiter,
@@ -23,6 +24,8 @@ export const Checkout = ({
   paymentType,
 }) => {
   const dispatch = useDispatch();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
   const userId = useSelector(getUserId);
   const { data, signature } = useSelector(getPaymentInfo);
   const [isOpen, setIsOpen] = useState(false);
@@ -66,14 +69,22 @@ export const Checkout = ({
     );
   }, [amount, dispatch, frontLink, selectedOrders, urlParams.restId]);
 
-  const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
-    mutate();
-    onChangeSelected(0, []);
-  }, [mutate, onChangeSelected]);
-
   const onClickMarkAsFreeTable = useCallback(() => {
     mutateTableStatus();
   }, [mutateTableStatus]);
+
+  const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
+    setModalIsOpen(true);
+  }, []);
+
+  useEffect(() => {
+    if (isConfirmed) {
+      mutate();
+      onChangeSelected(0, []);
+      setModalIsOpen(false);
+      setIsConfirmed(false);
+    }
+  }, [isConfirmed, mutate, onChangeSelected]);
 
   if (isWaiter) {
     return (
@@ -89,7 +100,11 @@ export const Checkout = ({
             className={cls.btn}
             mode="outlined"
           >
-            {isLoading ? <Loader size={'xs'} /> : 'Mark as paid for selected'}
+            {modalIsOpen ? (
+              <Loader size={'xs'} color={'#ea6a12'} />
+            ) : (
+              <> {isLoading ? <Loader size={'xs'} /> : 'Mark as paid for selected'}</>
+            )}
           </Button>
           <Button
             size={'sm'}
@@ -100,6 +115,15 @@ export const Checkout = ({
             {isLoadingTableStatus ? <Loader size={'xs'} /> : 'Mark table as free'}
           </Button>
         </div>
+        <ConfirmModal
+          isOpen={modalIsOpen}
+          message={`Confirm your action for ${selectedOrders?.length} ${
+            selectedOrders?.length === 1 ? 'order' : 'orders'
+          } with total $${amount}`}
+          onConfirm={() => setIsConfirmed(true)}
+          setIsOpen={onClickMarkAsPaidSelectedAsWaiter}
+          onCancel={() => setModalIsOpen(false)}
+        />
       </div>
     );
   }
