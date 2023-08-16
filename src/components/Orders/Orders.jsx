@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSSE } from 'react-hooks-sse';
 import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
 import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
 import OrderListSkeleton from 'shared/Skeletons/OrderSkeleton/OrderSkeleton';
@@ -10,7 +11,7 @@ import { NavigateButtons } from './ui/NavigateButtons/NavigateButtons';
 import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
-import useSSESubscription from 'hooks/useSSESubscription';
+
 import cls from './Order.module.scss';
 
 const Orders = ({ isWaiter, isSmall, isDishesPage }) => {
@@ -20,24 +21,24 @@ const Orders = ({ isWaiter, isSmall, isDishesPage }) => {
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [isAllOrdersPaid, setIsAllOrdersPaid] = useState(false);
   const params = useParams();
+  const { tableId } = params;
+
   const onChangeSelected = (price, selectedOrders) => {
     setSelectedTotal(formatNumberWithTwoDecimals(price));
     setSelectedOrders(selectedOrders);
   };
+  const updateDishStatusEvent = useSSE('dish status');
 
-  const {
-    data: { data } = {},
-    isError,
-    isLoading,
-    isRefetching,
-    refetch,
-  } = useGetOrdersByTableId(params);
-
-  const subscription = useSSESubscription(refetch);
+  const { data: { data } = {}, isError, isLoading, refetch } = useGetOrdersByTableId(params);
 
   useEffect(() => {
-    subscription();
-  }, [subscription]);
+    if (updateDishStatusEvent && updateDishStatusEvent.message) {
+      const table_id = updateDishStatusEvent.message.replace(/"/g, '');
+      if (table_id === tableId) {
+        refetch({ force: true });
+      }
+    }
+  }, [updateDishStatusEvent, refetch, tableId]);
 
   const onChangeTypeOfPay = useCallback((e) => {
     const value = e.target.ariaLabel;

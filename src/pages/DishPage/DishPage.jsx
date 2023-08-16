@@ -112,7 +112,7 @@ const DishPage = () => {
   return (
     <>
       <main className={classes.dish}>
-        <NavLink to={`/${restId}/:tableId`} className={classes.back}>
+        <NavLink to={-1} className={classes.back}>
           <IoReturnDownBackOutline></IoReturnDownBackOutline>
           <span>Back to Menu</span>
         </NavLink>
@@ -145,7 +145,7 @@ const DishPage = () => {
                   </div>
                 ) : (
                   <QuantityButton
-                    classname={classes.quantity_buttons}
+                    mode="outlined"
                     addOne={increaseItem}
                     quantity={dishQuantity}
                     minusOne={decreaseItem}
