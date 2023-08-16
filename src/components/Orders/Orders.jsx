@@ -17,6 +17,7 @@ import Title from 'shared/Title/Title';
 
 const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   const [paymentType, setPaymentType] = useState('');
+  const [isMounted, setIsMounted] = useState(true);
   const [selectedTotal, setSelectedTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedOrders, setSelectedOrders] = useState([]);
@@ -75,8 +76,9 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       }, 0);
       setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
       setIsAllOrdersPaid(allOrdersPaid);
+      setIsMounted(false);
     }
-  }, [data, data?.orders]);
+  }, [data]);
 
   return (
     <>
@@ -88,7 +90,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       )}
       <section className={cls.section}>
         <NavigateButtons params={params} isWaiter={isWaiter} />
-        {isLoading ? (
+        {isLoading || isMounted ? (
           <OrderListSkeleton isWaiter={isWaiter} isSmall={isSmall} />
         ) : !data?.orders?.length ? (
           <EmptyListBox params={params} isWaiter={isWaiter} />

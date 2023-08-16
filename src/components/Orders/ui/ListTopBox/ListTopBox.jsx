@@ -12,6 +12,7 @@ import cls from './ListTopBox.module.scss';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import { getUserId } from 'store/auth/authSelector';
 import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
+import { classNames } from 'helpers/classNames';
 
 export const ListTopBox = ({
   orders,
@@ -79,7 +80,7 @@ export const ListTopBox = ({
             : `Total price $${totalPrice}`}
         </Text>
       </div>
-      <div className={cls.btnsBox}>
+      <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
         <BillDownload orders={orders || []} />
         <Button
           size={'sm'}

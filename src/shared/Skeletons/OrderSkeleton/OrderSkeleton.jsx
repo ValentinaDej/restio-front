@@ -19,7 +19,10 @@ const OrderListSkeleton = ({ isSmall, isWaiter }) => {
     return (
       <div className="topBox">
         <Skeleton width={200} height={25} containerClassName="text" />
-        <Skeleton width={100} height={35} containerClassName="text" />
+        <div className="topBoxBtns">
+          <Skeleton width={100} height={35} />
+          <Skeleton width={100} height={35} />
+        </div>
         <Skeleton width={300} height={15} containerClassName="text" />
       </div>
     );
