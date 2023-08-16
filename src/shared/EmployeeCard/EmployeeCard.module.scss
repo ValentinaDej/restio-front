@@ -10,7 +10,7 @@
 
     text-align: center;
     &.outlined {
-      border: dashed 1px rgb(212, 211, 211);
+      border: dashed 1px var(--color-light);
       border-radius: 50px 50px 25px 25px;
     }
     &.sm {
@@ -39,7 +39,7 @@
 
   .employee_text {
     padding: 3rem 2.3rem 1.2rem;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: var(--color-white);
     backdrop-filter: blur(42px);
     border-radius: 25px;
     border: 0 solid rgba(0, 0, 0, 0.125);
@@ -48,7 +48,7 @@
 
   .trash {
     position: absolute;
-    color: #ea6a12;
+    color: var(--color-primary);
     top: 20px;
     right: 15px;
     margin-right: 20px;
@@ -56,7 +56,7 @@
 
   .edit {
     position: absolute;
-    color: #ea6a12;
+    color: var(--color-primary);
     bottom: 120px;
     right: 10px;
     z-index: 1;
@@ -99,7 +99,7 @@
 
   .card:hover .employee_text {
     transition: 0.7s;
-    background-color: rgba(250, 248, 248, 0.8);
+    background-color: var(--color-light);
     box-shadow: 10px 12px 51px -24px rgba(0, 0, 0, 0.52);
   }
 
