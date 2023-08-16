@@ -3,7 +3,6 @@ import { Toaster } from 'react-hot-toast';
 import HomePage from 'pages/HomePage/HomePage';
 import LoginPage from 'pages/LoginPage/LoginPage';
 import { PrivateRoute, PublicRoute } from 'routes/RoutesComponents';
-import logoImg from './assets/img/RESTio.svg';
 
 import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
 
@@ -42,17 +41,13 @@ const App = () => {
       </SSEProvider>
     );
   };
-  //useState де сбережені лого, назва ресторану поки що болванка
-  const logo = logoImg;
-  const restaurantName = 'Restio';
-  //useEffect с запитом - повертає дані лого, назву ресторану
-  //restId =`64c4fdea4055a7111092df32`
+
   return (
     <>
       {location.pathname === pathName.login || location.pathname === pathName.main ? (
         ''
       ) : (
-        <Header logo={logo} restaurantName={restaurantName} role={role ? role : 'customer'} />
+        <Header role={role ? role : 'customer'} />
       )}
       <main>
         <Suspense fallback={<Loader size="lg" />}>

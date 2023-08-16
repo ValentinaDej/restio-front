@@ -13,7 +13,7 @@ const Loader = ({ size = 'sm', color = '#ea6a12' }) => {
   return (
     <div className={` ${classes.loader}`}>
       <RotatingLines
-        strokeColor={color}
+        strokeColor={'var(--color-orange)'}
         strokeWidth="5"
         width={sizeValues[size]}
         animationDuration="0.75"

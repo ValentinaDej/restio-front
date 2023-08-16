@@ -41,7 +41,7 @@
 
   &:hover,
   &:focus {
-    background: var(--color-orange-hover);
+    outline: none;
   }
 
   &:disabled {
@@ -53,12 +53,12 @@
 
   & option {
     color: var(--color-dark);
-    background: var(--color-orange);
     border-radius: 30px;
 
+    &:checked,
     &:hover,
     &:focus {
-      background: var(--color-orange-hover);
+      background: var(--color-gray);
     }
   }
 
@@ -69,7 +69,6 @@
 
     &:hover,
     &:focus {
-      background: var(--color-orange);
       color: white;
     }
   }

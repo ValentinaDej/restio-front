@@ -35,7 +35,12 @@ export const TotalBlock = memo(({ monthlyStatistics }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="amount" stroke="#ea6a12" fill="rgba(248, 156, 95, 0.2)" />
+          <Area
+            type="monotone"
+            dataKey="amount"
+            stroke={'var(--color-gray)'}
+            fill={'var(--color-bg-dark)'}
+          />
         </AreaChart>
       </ResponsiveContainer>
     </div>

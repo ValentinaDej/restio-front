@@ -3,7 +3,6 @@
   padding: 20px 10px;
   border: 2px solid var(--color-orange);
   border-radius: 20px;
-  background-color: #fcf7f4;
   text-align: center;
 }
 .cart-list {
@@ -28,12 +27,14 @@
   justify-content: center;
   align-items: center;
   position: fixed;
-  bottom: 50px;
-  right: 40px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: var(--color-orange);
+  bottom: 20px;
+  right: 50%;
+  transform: translate(50%);
+  border-radius: 12px;
+  padding: 0.8rem 1.5rem;
+  font-weight: var(--font-semi-bold);
+  color: var(--color-blue-dark);
+  background-color: var(--color-green-transparent);
 }
 
 .icon {

@@ -63,7 +63,9 @@
     right: 0;
     top: 0px;
     font-size: 1.3rem;
-    background-color: var(--color-bg-dark);
+
+    background-color: var(--color-green-transparent);
+
     padding: 10px 15px;
     border-radius: 25px 25px 0 0;
   }
@@ -74,7 +76,9 @@
     width: 120px;
     justify-content: space-between;
     margin: 0 auto 1.5rem;
-    color: var(--color-primary);
+
+    color: var(--color-orange);
+
     transition: 0.5s;
   }
 
@@ -112,7 +116,9 @@
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
-      color: var(--color-primary);
+
+      color: var(--color-dark-blue);
+
       padding-bottom: 1rem;
       & li {
         margin-bottom: -20px;
@@ -151,7 +157,8 @@
       width: 130px;
     }
     & span {
-      color: var(--color-primary);
+      color: var(--color-gray);
+
       font-size: 1.3rem;
     }
   }
@@ -183,8 +190,8 @@
     border: 0.5px solid rgba(128, 128, 128, 0.3);
     border-radius: 25px;
     &.true {
-      color: var(--color-white);
-      background-color: var(--color-primary);
+      color: white;
+      background-color: var(--color-orange);
     }
     &.false {
       color: var(--color-white);
