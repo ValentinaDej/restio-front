@@ -44,9 +44,9 @@ export const getDishById = async (dishId) => {
   }
 };
 
-export const updateDishById = async (body, dishesId) => {
+export const updateDishById = async (body, dishesId, restId) => {
   try {
-    await instance.patch(`/dishes/${dishesId}`, body);
+    await instance.patch(`dishes/${dishesId}/edit/restaurant/${restId}`, body);
   } catch (error) {
     handleErrorResponse(error);
   }

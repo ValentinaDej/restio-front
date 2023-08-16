@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
@@ -54,9 +54,8 @@ const DishForm = ({
 
     if (picture) {
       onSubmit({ ...data, picture: picture.data.imageName, ingredients: selectedIngredientIds });
-    } else {
-      onSubmit({ ...data, picture: 'default.png', ingredients: selectedIngredientIds });
     }
+
     reset();
 
     fileUploaderRef.current.clearFile();
@@ -154,12 +153,12 @@ const DishForm = ({
             validationRules={{
               required: 'Name is a required field',
               pattern: {
-                value: /^.{3,50}$/,
+                value: /^.{2,30}$/,
                 message: 'Invalid name',
               },
             }}
             register={register}
-            maxLength={100}
+            maxLength={30}
           />
 
           <div className={classes.column__wrapper}>
@@ -195,7 +194,7 @@ const DishForm = ({
               )}
               <DishTypeOptions register={register} />
               <div className={classes.img__wrapper}>
-                <FileUploader ref={fileUploaderRef} />
+                <FileUploader ref={fileUploaderRef} imageUrl={initialState.picture} />
               </div>
             </div>
             <div className={classes.column}>

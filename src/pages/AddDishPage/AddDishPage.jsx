@@ -56,7 +56,7 @@ const AddDishPage = () => {
     try {
       console.log('Form data:', formData);
       if (dishesId) {
-        await updateDishById(formData, dishesId);
+        await updateDishById(formData, dishesId, restId);
         toast.success(SUCCESS_MESSAGES.successfullyUpdated);
       } else {
         await createDish(formData, restId);
