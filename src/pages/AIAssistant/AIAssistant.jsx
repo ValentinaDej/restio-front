@@ -13,6 +13,9 @@ import Loader from '../../shared/Loader/Loader';
 import css from '../MenuPage/MenuPage.module.scss';
 import DishCard from '../../shared/DishCard/DishCard';
 import Cart from '../../components/Cart/Cart';
+import CategoryTabs from '../../shared/CategoryTabs/CategoryTabs';
+import { useQuery } from 'react-query';
+import { getDishesForMenu } from '../../api/dish';
 
 const AIAssistant = () => {
   const { restId, tableId } = useParams();
@@ -23,10 +26,11 @@ const AIAssistant = () => {
     isPasc: false,
     wantHealthy: false,
     wantDrink: false,
-    budget: 0,
+    budget: 10,
   });
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
+  const [category, setActiveTab] = useState('Salads');
   const [dishes, setDishes] = useState([
     {
       _id: '64d9ced6ec2a03efaaad15b0',
@@ -103,6 +107,16 @@ const AIAssistant = () => {
     },
   ]);
 
+  const { isLoading, data } = useQuery(
+    ['dishes', category],
+    async () => await getDishesForMenu(restId, category, true),
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
+    }
+  );
+
   const handleStepClick = (clickedStep) => {
     if (clickedStep <= step) {
       setStep(clickedStep);
@@ -110,7 +124,7 @@ const AIAssistant = () => {
   };
 
   const handleNext = async () => {
-    if (step === 2) {
+    if (step === 3) {
       if (answers.budget > 5) {
         setLoading(true); // Show loader
         setStep(step + 1);
@@ -234,6 +248,42 @@ const AIAssistant = () => {
         );
       case 2:
         return (
+          <main className={css.main}>
+            <div className={styles.stepContent}>
+              <Title className={styles.text}>
+                Choose the dishes you like. You can choose anything if you are not sure.
+              </Title>
+              <p className={styles.text}>
+                {' '}
+                It`s just a prototype to show the idea of the future development.
+              </p>
+            </div>
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <div>
+                <CategoryTabs mode="outlined" setActiveTab={setActiveTab} activeTab={category} />
+                <ul className={css.list}>
+                  {data?.data?.map(({ _id, picture, price, portionWeight, ingredients, name }) => (
+                    <li className={css.list__item} key={_id}>
+                      <DishCard
+                        id={_id}
+                        src={picture}
+                        title={name}
+                        ingredients={ingredients}
+                        weight={portionWeight}
+                        price={price}
+                        link={`/${restId}/${tableId}/${_id}`}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </main>
+        );
+      case 3:
+        return (
           <div className={styles.stepContent}>
             <p className={styles.text}>
               What is your budget? <FcMoneyTransfer />
@@ -255,7 +305,7 @@ const AIAssistant = () => {
             </div>
           </div>
         );
-      case 3:
+      case 4:
         return (
           <div className={styles.stepContent}>
             <div className={styles.assistantLogo}>
@@ -296,7 +346,7 @@ const AIAssistant = () => {
             1
           </div>
           <div
-            className={`${styles.stepBubble} ${step === 2 ? styles.activeStep : ''}`}
+            className={`${styles.prototypeBubble} ${step === 2 ? styles.activeStep : ''}`}
             onClick={() => handleStepClick(2)}
           >
             2
@@ -307,11 +357,17 @@ const AIAssistant = () => {
           >
             3
           </div>
+          <div
+            className={`${styles.stepBubble} ${step === 4 ? styles.activeStep : ''}`}
+            onClick={() => handleStepClick(4)}
+          >
+            4
+          </div>
         </div>
         <div className={styles.centerContent}>
           {renderStep()}
           <div className={styles.nextBtn}>
-            {step < 3 && (
+            {step < 4 && (
               <Button disabled={loading} onClick={handleNext}>
                 Next
               </Button>
