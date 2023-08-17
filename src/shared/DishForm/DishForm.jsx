@@ -30,6 +30,7 @@ const DishForm = ({
   const [inputValue, setInputValue] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [showSelectedIngredients, setShowSelectedIngredients] = useState(false);
+  const [imageUrl, setimageUrl] = useState(initialState.picture);
 
   const firstIngredientRef = useRef(null);
   const fileUploaderRef = useRef();
@@ -53,12 +54,13 @@ const DishForm = ({
     const picture = await fileUploaderRef.current.handleUpload();
 
     if (picture) {
-      onSubmit({ ...data, picture: picture.data.imageName, ingredients: selectedIngredientIds });
+      onSubmit({ ...data, picture: picture?.data?.imageName, ingredients: selectedIngredientIds });
+      fileUploaderRef.current.clearFile();
+    } else {
+      onSubmit({ ...data, picture: imageUrl, ingredients: selectedIngredientIds });
     }
 
-    reset();
-
-    fileUploaderRef.current.clearFile();
+    // reset();
   };
 
   const cleareForm = () => {
@@ -194,7 +196,7 @@ const DishForm = ({
               )}
               <DishTypeOptions register={register} />
               <div className={classes.img__wrapper}>
-                <FileUploader ref={fileUploaderRef} imageUrl={initialState.picture} />
+                <FileUploader ref={fileUploaderRef} imageUrl={imageUrl} />
               </div>
             </div>
             <div className={classes.column}>
@@ -351,8 +353,8 @@ DishForm.propTypes = {
     vegetarian: PropTypes.bool,
     spicy: PropTypes.bool,
     pescatarian: PropTypes.bool,
-    portionWeight: PropTypes.number,
-    price: PropTypes.number,
+    portionWeight: PropTypes.string,
+    price: PropTypes.string,
     ingredients: PropTypes.arrayOf(PropTypes.string),
   }),
   Ingredients: PropTypes.arrayOf(
