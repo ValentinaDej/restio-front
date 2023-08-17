@@ -14,16 +14,21 @@ const skeletonData = [
   { topBlockWidth: 180, bottomBlockWidth: 220 },
 ];
 
-const OrderListSkeleton = ({ isSmall, isWaiter }) => {
+const OrderListSkeleton = ({ isSmall, isWaiter, isWaiterDishesPage }) => {
   const renderTopBlock = () => {
     return (
       <div className="topBox">
-        <Skeleton width={200} height={25} containerClassName="text" />
-        <div className="topBoxBtns">
-          <Skeleton width={100} height={35} />
-          <Skeleton width={100} height={35} />
-        </div>
-        <Skeleton width={300} height={15} containerClassName="text" />
+        {isWaiterDishesPage ? null : (
+          <>
+            <Skeleton width={222} height={25} containerClassName="text" />
+            <div className="topBoxBtns">
+              <Skeleton width={150} height={40} borderRadius={10} />
+              <Skeleton width={150} height={40} borderRadius={10} />
+            </div>
+            <Skeleton width={300} height={15} containerClassName="text" />
+          </>
+        )}
+        <Skeleton width={100} height={30} containerClassName="text" />
       </div>
     );
   };

@@ -20,6 +20,9 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   const [isMounted, setIsMounted] = useState(true);
   const [selectedTotal, setSelectedTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [allOrderPrice, setAllOrderPrice] = useState(0);
+  const [notServedDishes, setNotServedDishes] = useState(0);
+  const [notPaidOrders, setNotPaidOrders] = useState(0);
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [isAllOrdersPaid, setIsAllOrdersPaid] = useState(false);
   const params = useParams();
@@ -58,24 +61,35 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
 
   useEffect(() => {
     if (data) {
-      const allOrdersPaid = data?.orders?.every((order) => {
-        const allItemsServed = order?.orderItems?.every((item) => item.status === 'Served');
-        return order.status === 'Paid' && allItemsServed;
-      });
-      const newTotalPrice = data?.orders?.reduce((acc, order) => {
-        if (order.status !== 'Paid') {
-          const orderPrice = order.orderItems.reduce(
-            (acc, item) => acc + item.dish.price * item.quantity,
-            0
-          );
+      let notServedDishes = 0;
+      let allOrderPrice = 0;
+      let newTotalPrice = 0;
+      let isAllOrdersPaid = true;
+      let notPaidOrders = 0;
 
-          return acc + orderPrice;
-        } else {
-          return acc;
-        }
-      }, 0);
+      data.orders.forEach((order) => {
+        order.orderItems.forEach((item) => {
+          if (item.status !== 'Served') {
+            notServedDishes += item.quantity;
+          }
+          const itemPrice = item.dish.price * item.quantity;
+          if (order.status !== 'Paid') {
+            newTotalPrice += itemPrice;
+            notPaidOrders += 1;
+          }
+          allOrderPrice += itemPrice;
+
+          if (!(order.status === 'Paid' && item.status === 'Served')) {
+            isAllOrdersPaid = false;
+          }
+        });
+      });
+
+      setNotServedDishes(notServedDishes);
+      setAllOrderPrice(allOrderPrice);
+      setNotPaidOrders(notPaidOrders);
       setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
-      setIsAllOrdersPaid(allOrdersPaid);
+      setIsAllOrdersPaid(isAllOrdersPaid);
       setIsMounted(false);
     }
   }, [data]);
@@ -89,9 +103,18 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
         </>
       )}
       <section className={cls.section}>
-        <NavigateButtons params={params} isWaiter={isWaiter} />
+        <NavigateButtons
+          params={params}
+          isWaiter={isWaiter}
+          notServedDishes={notServedDishes}
+          notPaidOrders={notPaidOrders}
+        />
         {isLoading || isMounted ? (
-          <OrderListSkeleton isWaiter={isWaiter} isSmall={isSmall} />
+          <OrderListSkeleton
+            isWaiter={isWaiter}
+            isSmall={isSmall}
+            isWaiterDishesPage={isWaiterDishesPage}
+          />
         ) : !data?.orders?.length ? (
           <EmptyListBox params={params} isWaiter={isWaiter} />
         ) : (
@@ -101,6 +124,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 <ListTopBox
                   orders={data?.orders || []}
                   totalPrice={totalPrice}
+                  allOrderPrice={allOrderPrice}
                   onChangeSelected={onChangeSelected}
                   onChangeTypeOfPay={onChangeTypeOfPay}
                   urlParams={params}
@@ -108,7 +132,6 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                   paymentType={paymentType}
                 />
               )}
-
               <OrdersList
                 orders={data?.orders || []}
                 onChangeSelected={onChangeSelected}

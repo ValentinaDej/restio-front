@@ -125,8 +125,18 @@ export const TransactionsTable = () => {
             header: () => (
               <span className={cls.span}>
                 Created at
-                <IconButton size={20} onClick={onClickCalendar} Svg={TfiCalendar} />
-                <IconButton size={20} onClick={() => setDate(undefined)} Svg={RxCross2} />
+                <IconButton
+                  size={20}
+                  onClick={onClickCalendar}
+                  Svg={TfiCalendar}
+                  className={cls.dateIcon}
+                />
+                <IconButton
+                  size={20}
+                  onClick={() => setDate(undefined)}
+                  Svg={RxCross2}
+                  className={cls.dateIcon}
+                />
               </span>
             ),
             footer: (props) => props.column.id,

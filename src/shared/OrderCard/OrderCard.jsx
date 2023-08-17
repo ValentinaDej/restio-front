@@ -25,14 +25,19 @@ const OrderCard = memo(
     small,
     isWaiter,
     onChangeStatus,
+    onChangeAllReadyDishes,
     isPayCard,
     isWaiterDishesPage,
   }) => {
     const cardRef = useRef(null);
     const [isChecked, setIsChecked] = useState(сhecked || false);
     const [isSmall, setIsSmall] = useState(small);
-    const totalPrice = orderItems.reduce((acc, { dish, quantity }) => {
+    let notServedDishes = 0;
+    const totalPrice = orderItems.reduce((acc, { dish, quantity, status }) => {
       const price = acc + dish.price * quantity;
+      if (status !== 'Served') {
+        notServedDishes++;
+      }
       return formatNumberWithTwoDecimals(price);
     }, 0);
 
@@ -117,6 +122,7 @@ const OrderCard = memo(
               >
                 Order total: ${totalPrice}
               </Text>
+
               {status !== 'Paid' && (
                 <CheckBox
                   label={'Select order'}
@@ -144,7 +150,7 @@ const OrderCard = memo(
               [cls.isWaiterDishesPage]: isWaiterDishesPage,
             })}
           >
-            <Button size={'sm'} disabled={!isDishReady}>
+            <Button size={'sm'} disabled={!isDishReady} onClick={() => onChangeAllReadyDishes(_id)}>
               Mark all ready dishes as served
             </Button>
           </div>
