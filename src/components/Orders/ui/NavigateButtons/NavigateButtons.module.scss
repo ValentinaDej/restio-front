@@ -45,11 +45,18 @@
 .iconBtnValue {
   color: var(--color-status);
   position: absolute;
-  top: -9px;
+  top: -12px;
   right: -2px;
 }
 
 .icon {
   width: 35px;
   height: 35px;
+}
+
+.sort {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 }

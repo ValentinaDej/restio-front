@@ -28,7 +28,6 @@ const OrderListSkeleton = ({ isSmall, isWaiter, isWaiterDishesPage }) => {
             <Skeleton width={300} height={15} containerClassName="text" />
           </>
         )}
-        <Skeleton width={100} height={30} containerClassName="text" />
       </div>
     );
   };

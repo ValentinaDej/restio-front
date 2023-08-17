@@ -67,11 +67,10 @@ const OrderCard = memo(
     );
 
     const isDishReady = orderItems.some(({ status }) => status === 'Ready');
-
     return (
       <div className={classNames(cls.item, { [cls.isSmall]: isSmall })} ref={cardRef}>
         <div className={cls.topBlock}>
-          <Title mode={'h3'} fontSize={12} textAlign="left" classname={cls.text}>
+          <Title mode={'h3'} textAlign="left" classname={cls.text}>
             Order #{number}
           </Title>
           <div className={cls.dishes}>
@@ -83,7 +82,7 @@ const OrderCard = memo(
           <Status statusCurrent={status} />
         </div>
         {isWaiter && (
-          <Text fontWeight={700} fontSize={12} textAlign="left" classname={cls.text}>
+          <Text fontWeight={700} textAlign="left" classname={cls.text}>
             {getDate(created_at)}
           </Text>
         )}

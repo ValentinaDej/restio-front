@@ -51,6 +51,7 @@
 }
 
 .text {
+  font-size: 13px;
   color: var(--color-blue-dark);
 
   &.isSmall {
@@ -62,7 +63,7 @@
   color: var(--color-blue-dark);
 
   &.isPaid {
-    margin-top: 20px;
+    margin-top: 8px;
   }
 }
 

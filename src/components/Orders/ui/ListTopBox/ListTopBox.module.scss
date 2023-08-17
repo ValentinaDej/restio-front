@@ -18,6 +18,12 @@
   }
 }
 
+.totalText {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .text {
   color: var(--color-blue-dark);
 }

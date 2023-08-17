@@ -73,13 +73,28 @@ export const ListTopBox = ({
   return (
     <>
       <div>
-        <Text fontWeight={700} fontSize={20} classname={cls.text}>
-          {totalPrice === 0
-            ? isWaiter
-              ? 'All orders paid, mark table as free when customer leave.'
-              : 'All orders are paid, thank you for visiting our restaurant.'
-            : `Bill Total: $${allOrderPrice}, Unpaid: $${totalPrice}`}
-        </Text>
+        <div className={cls.totalText}>
+          {totalPrice === 0 ? (
+            isWaiter ? (
+              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+                All orders paid, mark table as free when customer leave.
+              </Text>
+            ) : (
+              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+                All orders are paid, thank you for visiting our restaurant.
+              </Text>
+            )
+          ) : (
+            <>
+              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+                Bill Total: ${allOrderPrice}
+              </Text>
+              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+                Unpaid: ${totalPrice}
+              </Text>
+            </>
+          )}
+        </div>
       </div>
       <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
         <BillDownload orders={orders || []} />
