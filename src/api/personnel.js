@@ -27,7 +27,6 @@ export const getPersonnel = async ({ restId, pageParam = 1, searchText = '' }) =
     const response = await instance(
       `/personnel/restaurant/${restId}?page=${pageParam}&limit=11&searchText=${searchText}`
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     sendCorrectErrMsg(error);
