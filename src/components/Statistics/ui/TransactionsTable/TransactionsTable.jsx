@@ -23,6 +23,27 @@ import { Calendar } from 'shared/Calendar/Calendar';
 import Modal from 'shared/Modal/Modal';
 import Button from 'shared/Button/Button';
 
+const typeOfTransactionFilterOptions = [
+  { value: 'all', label: 'All' },
+  { value: 'cash', label: 'Cash' },
+  { value: 'POS', label: 'POS' },
+  { value: 'online', label: 'Online' },
+];
+
+const typeOfUserFilterOptions = [
+  { value: 'all', label: 'All' },
+  { value: 'customer', label: 'Customer' },
+  { value: 'waiter', label: 'Waiter' },
+  { value: 'admin', label: 'Admin' },
+];
+
+const numberOfTransactionsOptions = [
+  { value: 20, label: '20' },
+  { value: 30, label: '30' },
+  { value: 40, label: '40' },
+  { value: 50, label: '50' },
+];
+
 export const TransactionsTable = () => {
   const { restId } = useParams();
   const [calendarIsOpen, setCalendarIsOpen] = useState(false);
@@ -88,12 +109,7 @@ export const TransactionsTable = () => {
               <span className={cls.span}>
                 Type
                 <DropDown
-                  options={[
-                    { value: 'all', label: 'All' },
-                    { value: 'cash', label: 'Cash' },
-                    { value: 'POS', label: 'POS' },
-                    { value: 'online', label: 'Online' },
-                  ]}
+                  options={typeOfTransactionFilterOptions}
                   onSelect={(e) => {
                     setTransactionTypeOptions(e.value);
                     setPagination({ pageIndex: 0, pageSize });
@@ -125,12 +141,19 @@ export const TransactionsTable = () => {
             header: () => (
               <span className={cls.span}>
                 Created at
-                <IconButton
-                  size={20}
-                  onClick={onClickCalendar}
-                  Svg={TfiCalendar}
-                  className={cls.dateIcon}
-                />
+                <div className={cls.calendarBox}>
+                  <IconButton
+                    size={24}
+                    onClick={onClickCalendar}
+                    Svg={TfiCalendar}
+                    className={cls.dateIcon}
+                  />
+                  {date && (
+                    <Text classname={cls.calendarValue} fontSize={12}>
+                      {date?.getDate()}
+                    </Text>
+                  )}
+                </div>
                 <IconButton
                   size={20}
                   onClick={() => setDate(undefined)}
@@ -153,12 +176,7 @@ export const TransactionsTable = () => {
               <span className={cls.span}>
                 Type
                 <DropDown
-                  options={[
-                    { value: 'all', label: 'All' },
-                    { value: 'customer', label: 'Customer' },
-                    { value: 'waiter', label: 'Waiter' },
-                    { value: 'admin', label: 'Admin' },
-                  ]}
+                  options={typeOfUserFilterOptions}
                   onSelect={(e) => {
                     setCreatedByTypeOptions(e.value);
                     setPagination({ pageIndex: 0, pageSize });
@@ -182,7 +200,7 @@ export const TransactionsTable = () => {
         ],
       },
     ],
-    [isClear, pageIndex, pageSize]
+    [date, isClear, pageIndex, pageSize]
   );
 
   const fetchDataOptions = {
@@ -277,14 +295,14 @@ export const TransactionsTable = () => {
         </div>
         <div className={cls.inputSelectBox}>
           <div className={cls.inputBox}>
-            <Text fontSize={20}>Page</Text>
-            <Text fontSize={20}>
+            <Text classname={cls.text}>Page</Text>
+            <Text classname={cls.text}>
               {resp?.data?.tableTransactions.pageCount === 0
                 ? 0
                 : table.getState().pagination.pageIndex + 1}{' '}
               of {table.getPageCount()}
             </Text>
-            <Text fontSize={20}>| Go to page:</Text>
+            <Text classname={cls.text}> Go to page:</Text>
             <input
               min={1}
               type="number"
@@ -302,15 +320,10 @@ export const TransactionsTable = () => {
             <div className={cls.loader}>{isFetching && <Loader size="xs" />}</div>
           </div>
           <div className={cls.select}>
-            <Text fontSize={20}>Show</Text>
+            <Text classname={cls.text}>Show</Text>
             <DropDown
               defaultValue="20"
-              options={[
-                { value: 20, label: '20' },
-                { value: 30, label: '30' },
-                { value: 40, label: '40' },
-                { value: 50, label: '50' },
-              ]}
+              options={numberOfTransactionsOptions}
               onSelect={(e) => {
                 table.setPageSize(e.value);
               }}

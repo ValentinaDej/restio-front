@@ -9,6 +9,18 @@
   border-radius: 10px;
   background-color: var(--color-white);
   height: 100%;
+  overflow-x: scroll;
+
+  @media screen and (min-width: 850px) {
+    overflow-x: hidden;
+  }
+}
+
+.text {
+  font-size: 14px;
+  @media screen and (min-width: 850px) {
+    font-size: 18px;
+  }
 }
 
 .table {
@@ -25,17 +37,21 @@
 
 .th {
   position: relative;
-  font-size: 18px;
   border-bottom: var(--border-primary);
   background: var(--color-bg-gray);
   border-right: var(--border-primary);
   padding: 10px;
+  font-size: 10px;
+
+  @media screen and (min-width: 1191px) {
+    font-size: 14px;
+  }
 }
 
 .td {
   font-size: 16px;
   border-right: var(--border-primary);
-  padding: 10px;
+  padding: 5px;
   border-bottom: var(--border-primary);
 }
 
@@ -51,7 +67,7 @@
   align-items: center;
   gap: 10px;
 
-  @media screen and (min-width: 870px) {
+  @media screen and (min-width: 1191px) {
     flex-direction: row;
     margin-left: 0;
     margin-right: 0;
@@ -96,7 +112,10 @@
   justify-content: center;
   align-items: center;
   gap: 5px;
-  font-size: 14px;
+  font-size: 12px;
+  @media screen and (min-width: 1191px) {
+    font-size: 14px;
+  }
 }
 
 .inputSelectBox {
@@ -115,6 +134,18 @@
   margin-left: auto;
   margin-right: auto;
   color: var(--color-orange);
+}
+
+.calendarBox {
+  position: relative;
+}
+
+.calendarValue {
+  color: var(--color-orange);
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .dateIcon {
