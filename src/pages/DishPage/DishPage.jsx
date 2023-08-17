@@ -21,7 +21,6 @@ import { MdNavigateNext } from 'react-icons/md';
 import { MdNavigateBefore } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
 import { HfInference } from '@huggingface/inference';
-import axios from 'axios';
 
 const DishPage = () => {
   const [dishQuantity, setDishQuantity] = useState(0);
@@ -116,15 +115,11 @@ const DishPage = () => {
   const sliderNext = () => {
     const element = sliderRef.current;
     const elementWidth = element.getBoundingClientRect().width;
-    console.log(elementWidth);
     if (elementWidth > 445) {
       const sliderWidth = 1510;
       const scrollAmount = elementWidth * (1 / 3);
-      console.log(scrollAmount);
       let newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
-      console.log(newRightValue);
       const diff = sliderWidth - elementWidth - newRightValue;
-      console.log('disff:' + diff);
       if (diff < scrollAmount) {
         element.style.right = newRightValue + diff + 'px';
       } else {
@@ -134,24 +129,18 @@ const DishPage = () => {
     } else if (elementWidth < 445) {
       const scrollAmount = elementWidth;
       let newRightValue = parseFloat(getComputedStyle(element).right) + scrollAmount;
-      console.log(newRightValue);
       if (newRightValue >= scrollAmount * 4) {
-        console.log('first');
         return;
       } else {
         element.style.right = newRightValue + 'px';
-        console.log('second');
       }
     }
   };
   const sliderBack = () => {
     const element = sliderRef.current;
-    console.log(element);
     const elementWidth = element.getBoundingClientRect().width;
-    console.log(elementWidth);
     const scrollAmount = 350;
     const newRightValue = parseInt(getComputedStyle(element).right) - scrollAmount;
-    console.log(newRightValue);
     if (newRightValue <= 0) {
       element.style.right = 0 + 'px';
       element.style.transform = '1s ease';
@@ -161,15 +150,17 @@ const DishPage = () => {
   };
   // Generate text
   const generateText = async () => {
-    const hf = new HfInference('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');
+    const key = process.env.HUGGINGFACE_API_KEY;
+    const hf = new HfInference(key);
     const model = 'declare-lab/flan-alpaca-large';
     // const text = 'Provide interesting facts about ${dish.name} meal';
-    const text = `When does ${dish.name} dish was invented?`;
-    // const text = `Create exquisite desription of ${dish.name} dish. `;
+    // const text = `When does ${dish.name} dish was invented?`;
+    const text = `Create exquisite desription of ${dish.name} dish. `;
     const response = await hf.textGeneration({
       model: model,
       inputs: text,
-      parameters: { max_new_tokens: 200 },
+      length: 250,
+      parameters: { max_new_tokens: 250 },
     });
     console.log(response);
     setGeneratedText(response.generated_text);
