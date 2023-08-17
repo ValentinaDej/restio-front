@@ -15,11 +15,16 @@ export const useGetOrdersByTableId = (restId, tableId) => {
 };
 
 export const useGetOrdersByRestaurantId = (restId) => {
-  const queryResp = useQuery(['tablesOrders'], async () => await instance.get(`orders/${restId}`), {
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchInterval: false,
-  });
+  const queryResp = useQuery(
+    ['ordersByRestaurantId'],
+    async () => await instance.get(`orders/${restId}`),
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
+    }
+  );
+
   return queryResp;
 };
 
@@ -45,7 +50,7 @@ export const useChangeTableStatus = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries('tablesByRestaurantId');
-        queryClient.invalidateQueries('orders');
+        queryClient.invalidateQueries('ordersByRestaurantId');
       },
     }
   );
