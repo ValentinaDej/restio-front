@@ -49,18 +49,17 @@ const DishForm = ({
 
   const handleFormSubmit = async (data, event) => {
     event.preventDefault();
-
     const selectedIngredientIds = Array.from(selectedIngredients.keys());
     const picture = await fileUploaderRef.current.handleUpload();
-
+    console.log(picture.data.imageName);
     if (picture) {
-      onSubmit({ ...data, picture: picture?.data?.imageName, ingredients: selectedIngredientIds });
+      onSubmit({ ...data, picture: picture.data.imageName, ingredients: selectedIngredientIds });
       fileUploaderRef.current.clearFile();
-    } else {
-      onSubmit({ ...data, picture: imageUrl, ingredients: selectedIngredientIds });
+      return;
     }
-
-    // reset();
+    // else {
+    //   onSubmit({ ...data, ingredients: selectedIngredientIds });
+    // }
   };
 
   const cleareForm = () => {

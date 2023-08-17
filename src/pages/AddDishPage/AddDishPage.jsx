@@ -54,12 +54,6 @@ const AddDishPage = () => {
         shouldUpdate: true,
       },
     });
-
-    // navigate(-1, {
-    //   state: {
-    //     shouldUpdate: true,
-    //   },
-    // });
   };
 
   const handleSubmit = async (formData) => {

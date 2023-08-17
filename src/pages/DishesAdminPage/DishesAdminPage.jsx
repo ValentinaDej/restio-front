@@ -19,15 +19,14 @@ const DishesAdminPage = () => {
   const queryClient = useQueryClient();
 
   const location = useLocation();
-  const state = location.state; // Отримання стану з об'єкта location
+  const state = location.state;
 
-  if (state && state.shouldUpdate) {
-    queryClient.invalidateQueries(['dishes']);
-    console.log('shouldUpdate is true');
-  }
-  // useEffect(() => {
+  // if (state && state.shouldUpdate) {
   //   queryClient.invalidateQueries(['dishes', category, type]);
-  // }, [category, type, queryClient]);
+  // }
+  useEffect(() => {
+    queryClient.invalidateQueries(['dishes', category, type]);
+  }, [category, type, queryClient, state.shouldUpdate]);
 
   const { mutateAsync } = useMutation((dishId) => {
     deleteDishById(dishId, restId);
