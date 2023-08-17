@@ -1,0 +1,12 @@
+.box {
+  color: var(--color-blue-dark);
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--color-white);
+  height: 550px;
+  width: 100%;
+
+  @media screen and (min-width: 1200px) {
+    width: 65%;
+  }
+}

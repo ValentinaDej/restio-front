@@ -1,0 +1,25 @@
+.main {
+  border-radius: 0.75rem;
+  flex: 1 1 auto;
+  margin: 1rem;
+  padding: 1rem 6rem 0 6rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.span {
+  display: flex;
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.divider {
+  border-top: 8px solid var(--color-orange);
+  border-radius: 5px;
+  margin-top: 0.4rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

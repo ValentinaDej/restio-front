@@ -1,23 +1,4 @@
 .input_wrapper {
-  // display: flex;
-  // flex-direction: column;
-}
-
-.input_wrapper.full_width {
-  width: 100%;
-}
-
-.checkbox_wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 5px;
-}
-
-.checkbox_wrapper .label {
-  align-self: center;
-  order: 1;
-  margin-bottom: 0;
 }
 
 .label {
@@ -58,6 +39,13 @@
   -webkit-appearance: none;
   -moz-appearance: none;
 
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+
   &::placeholder {
     color: var(--color-dark);
   }
@@ -73,53 +61,6 @@
     border-color: var(--color-gray);
     color: var(--color-white);
     cursor: not-allowed;
-  }
-
-  &[type='checkbox'] {
-    position: relative;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    outline: none;
-    border: 1px solid var(--color-orange);
-    border-radius: 4px;
-    background-color: transparent;
-    padding: 0;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      background-color: var(--color-orange);
-      border-radius: 2px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    &:checked {
-      &::before {
-        opacity: 1;
-        border-color: var(--color-orange);
-      }
-    }
-
-    &:hover::before {
-      opacity: 0.8;
-      background-color: var(--color-orange-hover);
-    }
-
-    &:disabled {
-      border-color: var(--color-gray);
-      color: var(--color-white);
-      cursor: not-allowed;
-    }
-
-    &:disabled::before {
-      opacity: 0.8;
-      background-color: var(--color-gray);
-    }
   }
 
   &_lg {
@@ -142,42 +83,6 @@
 
   &_length-lg {
     max-width: 350px;
-  }
-
-  &_sm[type='checkbox'] {
-    width: 20px;
-    height: 20px;
-
-    &::before {
-      top: 3px;
-      left: 3px;
-      width: 12px;
-      height: 12px;
-    }
-  }
-
-  &_md[type='checkbox'] {
-    width: 24px;
-    height: 24px;
-
-    &::before {
-      top: 2px;
-      left: 2px;
-      width: 16px;
-      height: 16px;
-    }
-  }
-
-  &_lg[type='checkbox'] {
-    width: 36px;
-    height: 36px;
-
-    &::before {
-      top: 2px;
-      left: 2px;
-      width: 28px;
-      height: 28px;
-    }
   }
 }
 

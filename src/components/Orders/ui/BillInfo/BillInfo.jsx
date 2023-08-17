@@ -6,6 +6,7 @@ import Modal from 'shared/Modal/Modal';
 import Loader from 'shared/Loader/Loader';
 import Title from 'shared/Title/Title';
 import Text from 'shared/Text/Text';
+
 import logoImg from 'assets/img/RESTio.svg';
 
 import { formatNumberWithTwoDecimalsForPrint } from 'helpers/formatNumberWithTwoDecimalsForPrint';

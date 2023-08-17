@@ -31,76 +31,33 @@ const AdminPageContainer = ({
   const [searchText, setSearchText] = useState('');
   const queryClient = useQueryClient();
 
-  const {
-    data: dataEmpl,
-    isFetchingNextPage: isFetchingNextPageEmpl,
-    fetchNextPage: fetchNextPageEmpl,
-    hasNextPage: hasNextPageEmpl,
-    isLoading: isLoadingEmpl,
-    refetch: refetchEmpl,
-  } = useInfiniteQuery(
-    ['personnel', restId],
-    ({ pageParam = 1 }) => getPersonnel({ restId, pageParam, searchText }),
-    {
-      getNextPageParam: (lastPage, _pages) => {
-        if (lastPage.page < lastPage.totalPages) {
-          return lastPage.page + 1;
-        }
-        return undefined;
-      },
-      onError: (error) => {
-        console.error('Error fetching personnel:', error);
-        toast.error('Error fetching personnel');
-      },
-      cacheTime: 10 * 60 * 60,
-      staleTime: 15 * 60 * 60,
-    }
-  );
-
-  const {
-    data: dataDish,
-    isFetchingNextPage: isFetchingNextPageDish,
-    fetchNextPage: fetchNextPageDish,
-    hasNextPage: hasNextPageDish,
-    isLoading: isLoadingDish,
-    refetch: refetchDish,
-  } = useInfiniteQuery(
-    ['dishes', category, type],
-    ({ pageParam = 1 }) => getDishes(restId, category, type === 'active', pageParam, searchText),
-    {
-      onError: (error) => {
-        toast.error(error.message);
-      },
-      getNextPageParam: (lastPage, _pages) => {
-        if (lastPage.data.page < lastPage.data.totalPages) {
-          return lastPage.data.page + 1;
-        }
-        return undefined;
-      },
-      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
-      refetchOnReconnect: false, // Disable refetching when the network reconnects
-      refetchInterval: false, // Disable automatic periodic refetching
-    }
-  );
+  const queryKey = variant === 'employee' ? ['personnel', restId] : ['dishes', category, type];
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isLoading, refetch } =
-    variant === 'employee'
-      ? {
-          data: dataEmpl,
-          isFetchingNextPage: isFetchingNextPageEmpl,
-          fetchNextPage: fetchNextPageEmpl,
-          hasNextPage: hasNextPageEmpl,
-          isLoading: isLoadingEmpl,
-          refetch: refetchEmpl,
-        }
-      : {
-          data: dataDish,
-          isFetchingNextPage: isFetchingNextPageDish,
-          fetchNextPage: fetchNextPageDish,
-          hasNextPage: hasNextPageDish,
-          isLoading: isLoadingDish,
-          refetch: refetchDish,
-        };
+    useInfiniteQuery(
+      queryKey,
+      ({ pageParam = 1 }) =>
+        variant === 'employee'
+          ? getPersonnel({ restId, pageParam, searchText })
+          : getDishes(restId, category, type === 'active', pageParam, searchText),
+      {
+        getNextPageParam: (lastPage, _pages) => {
+          if (lastPage.page < lastPage.totalPages) {
+            return lastPage.page + 1;
+          }
+          return undefined;
+        },
+        onError: (error) => {
+          console.error(`Error fetching ${variant}:`, error);
+          toast.error(`Error fetching ${variant}`);
+        },
+        cacheTime: 10 * 60 * 60,
+        staleTime: 15 * 60 * 60,
+        refetchOnWindowFocus: false, // Disable refetching when the window gains focus
+        refetchOnReconnect: false, // Disable refetching when the network reconnects
+        refetchInterval: false, // Disable automatic periodic refetching
+      }
+    );
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -189,7 +146,7 @@ const AdminPageContainer = ({
                   alt={`Dish ${item.name}`}
                   src={item.picture}
                   handleEdit={() => navigateToEdit(item._id)}
-                  handleDelete={() => handleDelete(item._id)}
+                  handleDelete={() => handleDeleteItem(item._id)}
                 >
                   <>
                     <p className={styles.employee_name}>{item.name}</p>
