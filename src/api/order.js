@@ -87,7 +87,6 @@ export const useUpdateTableStatusByWaiter = ({ restId, tableId }, status) => {
   };
   const mutation = useMutation(updateTableStatus, {
     onSuccess: () => {
-      console.log(1);
       queryClient.setQueryData(['orders'], []);
     },
   });
