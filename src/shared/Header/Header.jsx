@@ -14,15 +14,28 @@ import Button from 'shared/Button/Button';
 import { callWaiter } from 'api/table';
 import { getRestaurantId } from 'store/auth/authSelector';
 import { logout } from 'store/auth/authSlice';
+import { useQuery } from 'react-query';
+import { getRestaurant } from 'api/restaurant';
 
-const Header = ({ logo, restaurantName, role }) => {
+const Header = ({ role }) => {
   const dispatch = useDispatch();
   const restaurantId = useSelector(getRestaurantId);
 
   const { pathname } = useLocation();
   const arrParams = pathname.split('/');
   const restId = arrParams[1];
-  const tableId = arrParams[2];
+
+  const tableId = arrParams[3];
+  const { isError, isLoading, data } = useQuery(
+    ['restaurant', restId],
+    async () => await getRestaurant(restId),
+    {
+      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
+      refetchOnReconnect: false, // Disable refetching when the network reconnects
+      refetchInterval: false, // Disable automatic periodic refetching
+    }
+  );
+
   const logoutHandler = () => {
     dispatch(logout());
   };
@@ -39,12 +52,12 @@ const Header = ({ logo, restaurantName, role }) => {
   return (
     <header className={classes.header}>
       <div className={classes.header__logo}>
-        <img src={logo} alt="logo" className={classes.header__img} />
+        <img src={data?.picture} alt="logo" className={classes.header__img} />
       </div>
       {role !== 'customer' && (
         <div className={classes.header__button}>
           <Title mode="h1" fontSize={26} fontWeight={700} color="var(--color-font)">
-            {restaurantName}
+            {data?.name}
           </Title>
         </div>
       )}
@@ -81,7 +94,10 @@ const Header = ({ logo, restaurantName, role }) => {
               Call waiter
             </Button>
           </div>
-          <NavLink to={`/${restId}/${tableId}/orders`} className={classes['header__link-button']}>
+          <NavLink
+            to={`/${restId}/tables/${tableId}/orders`}
+            className={classes['header__link-button']}
+          >
             Orders
           </NavLink>
         </div>

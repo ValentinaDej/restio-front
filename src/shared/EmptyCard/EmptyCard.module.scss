@@ -20,13 +20,15 @@
     }
     &.outlined {
       border-radius: 20px;
-      background-color: var(--color-white);
-      border: 1px dashed rgba($color: var(--color-primary), $alpha: 0.5);
+
+      background-color: rgba(255, 255, 255, 0.4);
+      border: 1px dashed var(--color-orange);
     }
   }
 
   .icon {
-    color: var(--color-primary);
+    color: var(--color-orange);
+
     margin-bottom: 1rem;
   }
 }

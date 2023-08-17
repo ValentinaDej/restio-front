@@ -54,7 +54,7 @@ const MenuPage = () => {
                 ingredients={ingredients}
                 weight={portionWeight}
                 price={price}
-                link={`/${restId}/${tableId}/${_id}`}
+                link={`/${restId}/tables/${tableId}/dishes/${_id}`}
               />
             </li>
           ))}

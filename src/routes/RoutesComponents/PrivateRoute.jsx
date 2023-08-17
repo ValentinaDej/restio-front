@@ -4,6 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 export const PrivateRoute = ({ component: Element }) => {
   const { role } = useSelector((state) => state.auth);
   const location = useLocation();
+  const currentPath = location.pathname;
 
   // Redirect users without a role from admin, cook, and waiter routes
   if (
@@ -21,7 +22,6 @@ export const PrivateRoute = ({ component: Element }) => {
     waiter: ['waiter'], // Waiter can access waiter routes
   };
 
-  const currentPath = location.pathname;
   const isNotAllowed =
     role !== 'admin' && !allowedRoutes[role]?.some((route) => currentPath.includes(`/${route}`));
 

@@ -47,9 +47,9 @@ const Cart = () => {
       {cart?.length > 0 && (
         <div className={css['cart-container']} id="cart">
           <a href="#cart" className={css['cart-button']}>
-            <BiDish className={css.icon} />
+            Move to order
           </a>
-          <Title mode="h3" color="#303c6c" fontSize={25}>
+          <Title mode="h3" color={'var(--color-blue-dark)'} fontSize={25}>
             Your order
           </Title>
           <ul className={css['cart-list']}>
@@ -70,10 +70,10 @@ const Cart = () => {
             ))}
           </ul>
           <div className={css['total-wrapper']}>
-            <Title mode="h3" color="#303c6c" fontSize={20}>
+            <Title mode="h3" color={'var(--color-blue-dark)'} fontSize={20}>
               Total:
             </Title>
-            <Text fontSize={20} color="#303c6c">
+            <Text fontSize={20} color={'var(--color-blue-dark)'}>
               ${total}
             </Text>
           </div>

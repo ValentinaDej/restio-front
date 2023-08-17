@@ -48,7 +48,9 @@
 
   .trash {
     position: absolute;
-    color: var(--color-primary);
+
+    color: var(--color-red);
+
     top: 20px;
     right: 15px;
     margin-right: 20px;
@@ -56,11 +58,16 @@
 
   .edit {
     position: absolute;
-    color: var(--color-primary);
+
+    color: var(--color-gray);
+
     bottom: 120px;
     right: 10px;
     z-index: 1;
     margin-right: 20px;
+    &:hover {
+      color: var(--color-orange);
+    }
   }
 }
 

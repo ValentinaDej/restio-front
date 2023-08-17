@@ -177,7 +177,7 @@ const DishPage = () => {
   return (
     <>
       <main className={classes.dish}>
-        <NavLink to={`/${restId}/${tableId}`} className={classes.back}>
+        <NavLink to={`/${restId}/tables/${tableId}`} className={classes.back}>
           <NavigateButtons params={restId}>Back</NavigateButtons>
         </NavLink>
         <div className={classes.fullDish}>
@@ -329,7 +329,7 @@ const DishPage = () => {
                       ingredients={item.ingredients}
                       weight={item.portionWeight}
                       price={item.price}
-                      link={`/${restId}/${tableId}/${item._id}`}
+                      link={`/${restId}/tables/${tableId}/dishes/${item._id}`}
                     ></DishCard>
                   );
                 })}
