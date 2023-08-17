@@ -85,7 +85,11 @@ const AddDishPage = () => {
     (dishQuery.data?.ingredients || []).map((ingredient) => [ingredient._id, ingredient.name])
   );
 
-  const initialData = {
+  console.log('AddDishPage', dishQuery.data?.picture);
+
+  let initialData = {};
+
+  initialData = {
     name: dishQuery.data?.name || '',
     spicy: dishQuery.data?.spicy || false,
     vegetarian: dishQuery.data?.vegetarian || false,
@@ -93,9 +97,16 @@ const AddDishPage = () => {
     isActive: dishQuery.data?.isActive || false,
     portionWeight: dishQuery.data?.portionWeight || '',
     price: dishQuery.data?.price || '',
-    picture: dishQuery.data?.picture || '',
+    //   picture: dishQuery.data.picture || '',
     type: dishQuery.data?.type || '',
   };
+
+  if (dishQuery.data?.picture) {
+    initialData.picture = dishQuery.data.picture;
+  }
+
+  console.log('dishQuery.data?.picture)', dishQuery.data?.picture);
+  console.log('initialData', initialData);
 
   const isEditing = Boolean(dishesId);
 

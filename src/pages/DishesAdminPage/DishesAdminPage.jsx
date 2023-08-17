@@ -24,9 +24,10 @@ const DishesAdminPage = () => {
   // if (state && state.shouldUpdate) {
   //   queryClient.invalidateQueries(['dishes', category, type]);
   // }
+
   useEffect(() => {
     queryClient.invalidateQueries(['dishes', category, type]);
-  }, [category, type, queryClient, state.shouldUpdate]);
+  }, [category, type, queryClient]);
 
   const { mutateAsync } = useMutation((dishId) => {
     deleteDishById(dishId, restId);

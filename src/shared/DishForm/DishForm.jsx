@@ -30,7 +30,6 @@ const DishForm = ({
   const [inputValue, setInputValue] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [showSelectedIngredients, setShowSelectedIngredients] = useState(false);
-  const [imageUrl, setimageUrl] = useState(initialState.picture);
 
   const firstIngredientRef = useRef(null);
   const fileUploaderRef = useRef();
@@ -51,15 +50,13 @@ const DishForm = ({
     event.preventDefault();
     const selectedIngredientIds = Array.from(selectedIngredients.keys());
     const picture = await fileUploaderRef.current.handleUpload();
-    console.log(picture.data.imageName);
     if (picture) {
       onSubmit({ ...data, picture: picture.data.imageName, ingredients: selectedIngredientIds });
       fileUploaderRef.current.clearFile();
-      return;
+    } else {
+      const { picture, ...dataWithoutPicture } = data;
+      onSubmit({ ...dataWithoutPicture, ingredients: selectedIngredientIds });
     }
-    // else {
-    //   onSubmit({ ...data, ingredients: selectedIngredientIds });
-    // }
   };
 
   const cleareForm = () => {
@@ -195,7 +192,7 @@ const DishForm = ({
               )}
               <DishTypeOptions register={register} />
               <div className={classes.img__wrapper}>
-                <FileUploader ref={fileUploaderRef} imageUrl={imageUrl} />
+                <FileUploader ref={fileUploaderRef} imageUrl={initialState.picture} />
               </div>
             </div>
             <div className={classes.column}>
