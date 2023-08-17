@@ -160,24 +160,6 @@ input[type='range']::-webkit-slider-thumb {
   margin-top: 1rem;
 }
 
-.list {
-  margin: 2rem auto;
-  padding: 40px 10px;
-  display: flex;
-  flex-wrap: wrap;
-  row-gap: 60px;
-  column-gap: 20px;
-  flex-grow: 2;
-
-  &__item {
-    flex-basis: 100%;
-    //flex-grow: 1;
-    /*@media screen and (min-width: 479.98px) {
-      flex-basis: calc((100% - 20px) / 2);
-    }
-
-    @media screen and (min-width: 991.98px) {
-      flex-basis: calc((100% - 40px) / 3);
-    }*/
-  }
+.backButton {
+  margin: 1rem;
 }

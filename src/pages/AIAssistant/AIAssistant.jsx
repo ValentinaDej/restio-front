@@ -7,7 +7,7 @@ import { FcCancel } from '@react-icons/all-files/fc/FcCancel';
 import { FcAssistant } from '@react-icons/all-files/fc/FcAssistant';
 import { FcMoneyTransfer } from '@react-icons/all-files/fc/FcMoneyTransfer';
 import toast from 'react-hot-toast';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { openai } from '../../api/openai';
 import Loader from '../../shared/Loader/Loader';
 import css from '../MenuPage/MenuPage.module.scss';
@@ -31,82 +31,8 @@ const AIAssistant = () => {
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
   const [category, setActiveTab] = useState('Salads');
-  const [dishes, setDishes] = useState([
-    {
-      _id: '64d9ced6ec2a03efaaad15b0',
-      name: 'Pizza Chelentano',
-      ingredients: [
-        {
-          _id: '64c68ff222d062ab971d5617',
-          name: 'Sausages',
-          type: 'meat product',
-        },
-        {
-          _id: '64c68ff222d062ab971d5624',
-          name: 'Tomato Puree',
-          type: 'tomato',
-        },
-        {
-          _id: '64c68ff222d062ab971d5619',
-          name: 'Cheese',
-          type: 'milk product',
-        },
-        {
-          _id: '64c68ff222d062ab971d5613',
-          name: 'Mushrooms',
-          type: 'vegetables',
-        },
-        {
-          _id: '64c68ff222d062ab971d5618',
-          name: 'Salt',
-        },
-        {
-          _id: '64c68ff222d062ab971d5610',
-          name: 'Chicken',
-          type: 'fowl',
-        },
-      ],
-      picture: 'IMG_20200410_103000 (1).jpg',
-      type: 'Pizza',
-      spicy: false,
-      vegetarian: false,
-      pescatarian: false,
-      portionWeight: 500,
-      price: 15,
-      isActive: true,
-      createdAt: '2023-08-14T06:51:02.375Z',
-      updatedAt: '2023-08-15T13:53:48.074Z',
-      __v: 0,
-    },
-    {
-      _id: '64da0f174574e1e22e9c0a5d',
-      name: 'Olivier2',
-      ingredients: [
-        {
-          _id: '64c68ff222d062ab971d5614',
-          name: 'Olive Oil',
-          type: 'oil',
-        },
-        {
-          _id: '64c68ff222d062ab971d561c',
-          name: 'Sour Cream',
-          type: 'milk product',
-        },
-      ],
-      picture: 'Olivier.jpg',
-      type: 'Salads',
-      spicy: false,
-      vegetarian: false,
-      pescatarian: true,
-      portionWeight: 350,
-      price: 2,
-      isActive: true,
-      createdAt: '2023-08-14T11:25:11.883Z',
-      updatedAt: '2023-08-14T11:25:11.883Z',
-      __v: 0,
-    },
-  ]);
-
+  const [dishes, setDishes] = useState([]);
+  const navigate = useNavigate();
   const { isLoading, data } = useQuery(
     ['dishes', category],
     async () => await getDishesForMenu(restId, category, true),
@@ -312,9 +238,9 @@ const AIAssistant = () => {
               <FcAssistant size={`50`} />
             </div>
             {loading ? <Loader size={`md`} /> : <p className={styles.responseText}>{response}</p>}
-            <ul className={styles.list}>
+            <ul className={css.list}>
               {dishes?.map(({ _id, picture, price, portionWeight, ingredients, name }) => (
-                <li className={styles.list__item} key={_id}>
+                <li className={css.list__item} key={_id}>
                   <DishCard
                     id={_id}
                     src={picture}
@@ -335,9 +261,16 @@ const AIAssistant = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.formStepper}>
+        <Button mode="outlined" className={styles.backButton} onClick={handleBack}>
+          Back To Menu
+        </Button>
         <div className={styles.stepIndicator}>
           <div
             className={`${styles.stepBubble} ${step === 1 ? styles.activeStep : ''}`}

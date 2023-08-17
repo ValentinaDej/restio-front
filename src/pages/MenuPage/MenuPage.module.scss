@@ -36,8 +36,8 @@
   z-index: 1000; /* Make sure it's above other content */
 
   @media (max-width: 768px) {
-    bottom: 50px;
-    right: 10px;
+    bottom: 60px;
+    right: 20px;
   }
 }
 
@@ -48,7 +48,7 @@
   align-items: center;
   width: 60px;
   height: 60px;
-  background-color: rgba(144, 238, 144, 0.8);
+  background-color: var(--color-green-transparent);
   color: white;
   border-radius: 50%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -56,7 +56,7 @@
   transition: 2s;
 
   &:hover {
-    background-color: var(--color-green);
+    background-color: var(--color-orange-hover);
   }
 
   @media (max-width: 768px) {
