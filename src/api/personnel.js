@@ -47,7 +47,7 @@ export const createPersonnel = async (formData, rest_id) => {
   try {
     const response = await instance.post(`/personnel`, {
       ...formData,
-      rest_id,
+      restaurant_id: rest_id,
     });
     return response.data;
   } catch (error) {
@@ -59,7 +59,7 @@ export const updatePersonnel = async (personId, formData, rest_id) => {
   try {
     const response = await instance.patch(`/personnel/${personId}`, {
       ...formData,
-      rest_id,
+      restaurant_id: rest_id,
     });
     return response.data;
   } catch (error) {

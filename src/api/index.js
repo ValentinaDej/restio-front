@@ -14,8 +14,8 @@ export const instance = axios.create({
 instance.interceptors.request.use(
   (request) => {
     if (
-      request.url.includes('admin') ||
-      request.url.includes('waiter') ||
+      request.url.includes('personnel') ||
+      request.url.includes('dishes') ||
       request.url.includes('cook')
     ) {
       const auth = storage.getItem('userData');
@@ -31,20 +31,33 @@ instance.interceptors.request.use(
   }
 );
 
+let tokenRefreshAttempts = 0;
+
 instance.interceptors.response.use(
   (response) => {
     return response;
   },
   async (error) => {
-    if (error.response.status === 401 || error.response.data.message === '401 Unauthorized') {
-      try {
-        const token = await getNewToken();
-        error.config.headers['Authorization'] = `Bearer ${token}`;
-        return axios.request(error.config);
-      } catch (refreshError) {
+    console.log(error);
+    if (
+      error.response.status === 401 ||
+      error.response.message === 'User authorization failed. Access denied.' ||
+      error.response.data.message === 'Request failed with status code 401'
+    ) {
+      if (tokenRefreshAttempts < 1) {
+        try {
+          tokenRefreshAttempts++;
+          const token = await getNewToken();
+          error.config.headers['Authorization'] = `Bearer ${token}`;
+          error.config.maxRedirects = 0;
+          return instance.request(error.config);
+        } catch {
+          storage.removeItem('userData');
+          window.location.replace('/login');
+        }
+      } else {
         storage.removeItem('userData');
         window.location.replace('/login');
-        return Promise.reject({ message: 'Please login again.' });
       }
     }
     return Promise.reject(error);
