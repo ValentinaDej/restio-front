@@ -9,9 +9,9 @@ import styles from './FileUploader.module.scss';
 
 const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg', 'gif'];
 
-const FileUploader = forwardRef(({ size }, ref) => {
+const FileUploader = forwardRef(({ size, imageUrl }, ref) => {
   const [uploadedFile, setUploadedFile] = useState();
-  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewUrl, setPreviewUrl] = useState(imageUrl || '');
   const fileInputRef = useRef();
 
   const getFileExtension = (fileName) => {
