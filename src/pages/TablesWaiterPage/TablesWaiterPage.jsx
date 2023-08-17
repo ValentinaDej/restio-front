@@ -204,7 +204,6 @@ const TablesWaiterPage = () => {
           ))}
         </motion.div>
       </AnimatePresence>
-      <Message />
     </div>
   );
 };
