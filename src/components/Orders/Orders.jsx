@@ -68,6 +68,9 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       let notPaidOrders = 0;
 
       data.orders.forEach((order) => {
+        if (order.status !== 'Paid') {
+          notPaidOrders += 1;
+        }
         order.orderItems.forEach((item) => {
           if (item.status !== 'Served') {
             notServedDishes += item.quantity;
@@ -75,8 +78,8 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
           const itemPrice = item.dish.price * item.quantity;
           if (order.status !== 'Paid') {
             newTotalPrice += itemPrice;
-            notPaidOrders += 1;
           }
+
           allOrderPrice += itemPrice;
 
           if (!(order.status === 'Paid' && item.status === 'Served')) {
@@ -85,6 +88,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
         });
       });
 
+      console.log(notPaidOrders);
       setNotServedDishes(notServedDishes);
       setAllOrderPrice(allOrderPrice);
       setNotPaidOrders(notPaidOrders);
