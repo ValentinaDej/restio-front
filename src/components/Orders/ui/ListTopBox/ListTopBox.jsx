@@ -22,6 +22,7 @@ export const ListTopBox = ({
   isWaiter,
   onChangeTypeOfPay,
   paymentType,
+  allOrderPrice,
 }) => {
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -77,7 +78,7 @@ export const ListTopBox = ({
             ? isWaiter
               ? 'All orders paid, mark table as free when customer leave.'
               : 'All orders are paid, thank you for visiting our restaurant.'
-            : `Total price $${totalPrice}`}
+            : `Bill Total: $${allOrderPrice}, Unpaid: $${totalPrice}`}
         </Text>
       </div>
       <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>

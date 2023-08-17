@@ -28,7 +28,7 @@ export const getAllOrders = async (restId) => {
 
 export const useGetOrdersByTableId = ({ restId, tableId }) => {
   const queryResp = useQuery(
-    ['orders', restId, tableId],
+    ['orders'],
     async () => await instance.get(`orders/${restId}/table/${tableId}`),
     {
       refetchOnWindowFocus: false,
@@ -107,6 +107,17 @@ export const useUpdateDishStatusByWaiter = () => {
       queryClient.refetchQueries(['orders']);
     },
   });
+
+  return mutation;
+};
+
+export const useUpdateReadyDishesStatusesByWaiter = () => {
+  const updateDishStatus = async ({ urlParams: { restId }, orderId }) => {
+    const response = await instance.patch(`orders/${restId}/dishes/${orderId}`);
+    return response.data;
+  };
+
+  const mutation = useMutation(updateDishStatus);
 
   return mutation;
 };
