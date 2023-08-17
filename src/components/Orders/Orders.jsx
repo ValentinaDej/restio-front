@@ -88,7 +88,6 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
         });
       });
 
-      console.log(notPaidOrders);
       setNotServedDishes(notServedDishes);
       setAllOrderPrice(allOrderPrice);
       setNotPaidOrders(notPaidOrders);
