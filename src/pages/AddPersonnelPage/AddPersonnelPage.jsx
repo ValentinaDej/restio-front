@@ -16,6 +16,8 @@ const AddPersonnelPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
 
+  void queryClient.invalidateQueries({ queryKey: ['new_personnel'] });
+
   const { data, isLoading } = useQuery(
     ['new_personnel', personId],
     () => getPersonnelById(personId, restId),
