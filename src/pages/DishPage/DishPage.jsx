@@ -20,6 +20,8 @@ import { IoReturnDownBackOutline } from 'react-icons/io5';
 import { MdNavigateNext } from 'react-icons/md';
 import { MdNavigateBefore } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
+import { HfInference } from '@huggingface/inference';
+import axios from 'axios';
 
 const DishPage = () => {
   const [dishQuantity, setDishQuantity] = useState(0);
@@ -31,7 +33,8 @@ const DishPage = () => {
   const storeData = useSelector(getProductFromState);
   const { pathname } = useLocation();
   const sliderRef = useRef(null);
-
+  const [generatedText, setGeneratedText] = useState('');
+  let inputText = 'Once upon a time';
   const {
     isLoading,
     data: dish,
@@ -140,24 +143,6 @@ const DishPage = () => {
         console.log('second');
       }
     }
-    // const scrollAmount = 260 + 25;
-    // const sliderWidth = 1500;
-    // console.log(sliderWidth);
-    // let newRightValue;
-    // if (elementWidth >= 900) {
-    //   element.style.right = sliderWidth - elementWidth + 'px';
-    //   return;
-    // }
-    // newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
-    // console.log(newRightValue);
-    // console.log('computed rest:' + (sliderWidth - elementWidth - newRightValue));
-    // if (sliderWidth - elementWidth - newRightValue <= 400) {
-    //   console.log('1 block');
-    //   element.style.right = newRightValue + (sliderWidth - elementWidth - newRightValue) + 'px';
-    // } else if (sliderWidth - elementWidth - newRightValue > 400) {
-    //   console.log('2 block');
-    //   element.style.right = newRightValue + 'px';
-    // }
   };
   const sliderBack = () => {
     const element = sliderRef.current;
@@ -173,6 +158,21 @@ const DishPage = () => {
     } else {
       element.style.right = newRightValue + 'px';
     }
+  };
+  // Generate text
+  const generateText = async () => {
+    const hf = new HfInference('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');
+    const model = 'declare-lab/flan-alpaca-large';
+    // const text = 'Provide interesting facts about ${dish.name} meal';
+    const text = `When does ${dish.name} dish was invented?`;
+    // const text = `Create exquisite desription of ${dish.name} dish. `;
+    const response = await hf.textGeneration({
+      model: model,
+      inputs: text,
+      parameters: { max_new_tokens: 200 },
+    });
+    console.log(response);
+    setGeneratedText(response.generated_text);
   };
   return (
     <>
@@ -307,6 +307,10 @@ const DishPage = () => {
               </div>
             </div>
           </div>
+          <Button onClick={generateText} className={classes.AIbutton}>
+            Generate AI dish description
+          </Button>
+          <p className={classes.AItext}>{generatedText}</p>
         </div>
         <Cart />
         <div className={classes.recommended_block}>
