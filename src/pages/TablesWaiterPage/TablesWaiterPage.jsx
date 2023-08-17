@@ -10,6 +10,7 @@ import Message from 'components/Message/Message';
 // import useSSESubscription from 'hooks/useSSESubscription';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const dumbTables = [
   {
@@ -89,7 +90,8 @@ const TablesWaiterPage = () => {
   // console.log(ordersData);
 
   const tables = tablesData?.data;
-  const orders = ordersData?.data.orders;
+  const orders = ordersData?.data?.orders;
+  // console.log(ordersData);
 
   const isLoading = isLoadingTables || isLoadingOrders;
 
@@ -106,18 +108,18 @@ const TablesWaiterPage = () => {
   const filterOrdersByTableId = (orders, table_id) =>
     orders?.filter((order) => order.table_id._id === table_id);
 
-  const tablesWithReadyDishes = orders
-    .filter((order) => order.orderItems.some((item) => item.status === 'Ready'))
-    .map((order) => order.table_id._id);
+  // const tablesWithReadyDishes = orders
+  //   .filter((order) => order.orderItems.some((item) => item.status === 'Ready'))
+  //   .map((order) => order.table_id._id);
 
-  const tableNumbers = tablesWithReadyDishes
-    .map((tableId) => {
-      const table = tables.find((table) => table._id === tableId);
-      return table ? table.table_number : null;
-    })
-    .filter((tableNumber) => tableNumber !== null);
+  // const tableNumbers = tablesWithReadyDishes
+  //   .map((tableId) => {
+  //     const table = tables.find((table) => table._id === tableId);
+  //     return table ? table.table_number : null;
+  //   })
+  //   .filter((tableNumber) => tableNumber !== null);
 
-  const uniqueTableNumbers = [...new Set(tableNumbers)].join(', ');
+  // const uniqueTableNumbers = [...new Set(tableNumbers)].join(', ');
 
   const filterTables = () => {
     let tablesFiltered = tables.slice();
@@ -197,19 +199,21 @@ const TablesWaiterPage = () => {
           />
         </div>
       </div>
-      <div className={styles.tables__container}>
-        {filteredTables.map((table) => (
-          <TableCard
-            key={table.table_number}
-            table_number={table.table_number}
-            restaurant_id={table.restaurant_id}
-            seats={table.seats}
-            status={table.status}
-            table_id={table._id}
-            orders={filterOrdersByTableId(orders, table._id)}
-          />
-        ))}
-      </div>
+      <AnimatePresence>
+        <motion.div layout className={styles.tables__container}>
+          {filteredTables.map((table) => (
+            <TableCard
+              key={table.table_number}
+              table_number={table.table_number}
+              restaurant_id={table.restaurant_id}
+              seats={table.seats}
+              status={table.status}
+              table_id={table._id}
+              orders={filterOrdersByTableId(orders, table._id)}
+            />
+          ))}
+        </motion.div>
+      </AnimatePresence>
       <Message />
     </div>
   );

@@ -1,4 +1,5 @@
 import styles from './TableCard.module.scss';
+import PropTypes from 'prop-types';
 import StatusSelector from 'shared/StatusSelector/StatusSelector';
 import Status from 'shared/Status/Status';
 import Text from 'shared/Text/Text';
@@ -6,15 +7,17 @@ import Button from 'shared/Button/Button';
 import { NavLink } from 'react-router-dom';
 import { useChangeTableStatus } from 'api/service';
 import { toast } from 'react-hot-toast';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GiWoodenChair } from 'react-icons/gi';
 import { MdTableBar } from 'react-icons/md';
+import { motion } from 'framer-motion';
 
 const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seats }) => {
   const changeTableStatus = useChangeTableStatus();
   const [currentStatus, setCurrentStatus] = useState(status);
 
   const redAnimation = currentStatus === 'Waiting' ? styles.table_pulsating : '';
+
   const changeStatus = async (item) => {
     try {
       await changeTableStatus.mutateAsync({ status: item, restaurant_id, table_id });
@@ -33,7 +36,6 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seat
     const readyItems = orders.flatMap((order) =>
       order.orderItems.filter((item) => item.status === 'Ready')
     );
-
     const readyDishes = readyItems.reduce((result, readyItem) => {
       const existingDish = result.find((dish) => dish.name === readyItem.dish.name);
 
@@ -64,7 +66,13 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seat
   const amountReadyDishes = getTotalReadyDishesCount(orders);
 
   return (
-    <div className={`${styles.table} ${redAnimation}`}>
+    <motion.div
+      layout
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      className={`${styles.table} ${redAnimation}`}
+    >
       <div className={styles.table__head}>
         <div className={styles.table__number}>
           <MdTableBar size={21} />
@@ -139,8 +147,17 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seat
           </NavLink>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
+};
+
+TableCard.propTypes = {
+  restaurant_id: PropTypes.string,
+  table_number: PropTypes.number,
+  table_id: PropTypes.string,
+  status: PropTypes.string,
+  orders: PropTypes.array,
+  seats: PropTypes.number,
 };
 
 export default TableCard;
