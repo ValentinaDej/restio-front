@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classes from './ConfirmModal.module.scss';
-import Button from '../Button/Button';
 import IconConfirm from '../../assets/icons/confirmModal/confirm.png';
+import Button from 'shared/Button/Button';
+import Modal from 'shared/Modal/Modal';
+import Text from 'shared/Text/Text';
 
 const ConfirmModal = ({
   confirmButtonText,
@@ -14,20 +16,20 @@ const ConfirmModal = ({
   setIsOpen,
 }) => {
   const handleConfirm = () => {
-    setIsOpen(false);
     onConfirm();
   };
 
   const handleDeny = () => {
-    setIsOpen(false);
     onCancel();
   };
 
   return (
-    isOpen && (
+    <Modal isModalOpen={isOpen} setIsModalOpen={setIsOpen}>
       <div className={`${classes.confirmModal}`}>
         <img className={`${classes.img} `} src={IconConfirm} alt="Icon confirm" />
-        <div className={`${classes.title} `}>{message}</div>
+        <Text className={`${classes.title} `} fontWeight={600} fontSize={18}>
+          {message}
+        </Text>
         <div className={`${classes.buttons}  `}>
           <Button onClick={handleDeny} mode={'outlined'}>
             {denyButtonText}
@@ -35,7 +37,7 @@ const ConfirmModal = ({
           <Button onClick={handleConfirm}>{confirmButtonText}</Button>
         </div>
       </div>
-    )
+    </Modal>
   );
 };
 

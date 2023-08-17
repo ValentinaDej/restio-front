@@ -9,14 +9,15 @@ import StatusCardItem from 'components/Cook/StatusCardItem/StatusCardItem';
 import { useMediaQuery } from 'react-responsive';
 import Button from 'shared/Button/Button';
 import { useCallback, useEffect, useState } from 'react';
-import useSSESubscription from 'hooks/useSSESubscription';
+import { useSSE } from 'react-hooks-sse';
 
 const statuses = ['Ordered', 'In progress', 'Ready'];
 
 const DishesForCookPage = () => {
   const { restId } = useParams();
-  const [currentStatus, setCurrentStatus] = useState('Ordered');
 
+  const [currentStatus, setCurrentStatus] = useState('Ordered');
+  const createNewOrderEvent = useSSE('new order', {});
   const { data, isLoading, refetch } = useQuery(
     ['orders'],
     async () => await getAllOrders(restId),
@@ -29,11 +30,12 @@ const DishesForCookPage = () => {
       refetchInterval: false, // Disable automatic periodic refetching
     }
   );
-  const subscription = useSSESubscription(refetch);
 
   useEffect(() => {
-    subscription();
-  }, [subscription]);
+    if (createNewOrderEvent && createNewOrderEvent.message) {
+      refetch({ force: true });
+    }
+  }, [createNewOrderEvent, refetch]);
 
   const isMobile = useMediaQuery({
     query: '(max-width: 767px)',
@@ -47,7 +49,7 @@ const DishesForCookPage = () => {
 
   const filterDishes = useCallback(
     (status) => {
-      return data.filter((item) => item.status === status);
+      return data?.filter((item) => item.status === status);
     },
     [data]
   );
@@ -56,7 +58,7 @@ const DishesForCookPage = () => {
     <div className={`main__container  ${styles.main__section}`}>
       <div className={`${styles.section}`}>
         <Title classname={`${styles.title}`}>Cook Dashboard</Title>
-        <hr className={styles.divider} />
+        <hr className={`${styles.divider}`} />
         {isLoading ? (
           <div className={`${styles.loader__section}`}>
             <Loader size="lg" />
@@ -76,18 +78,19 @@ const DishesForCookPage = () => {
               ))}
             </div>
 
-            <div className={`${styles.status__section}`}>
-              {statuses.map(
-                (status) =>
-                  currentStatus === status && (
-                    <StatusCardItem
-                      key={status}
-                      status={status}
-                      data={filterDishes(status)}
-                      handleChangeStatus={handleChangeStatus}
-                    />
-                  )
-              )}
+            <div>
+              {data?.length > 0 &&
+                statuses.map(
+                  (status) =>
+                    currentStatus === status && (
+                      <StatusCardItem
+                        key={status}
+                        status={status}
+                        data={filterDishes(status)}
+                        handleChangeStatus={handleChangeStatus}
+                      />
+                    )
+                )}
             </div>
           </>
         )}

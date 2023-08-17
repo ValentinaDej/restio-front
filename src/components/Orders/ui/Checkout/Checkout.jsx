@@ -9,8 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
 import Loader from 'shared/Loader/Loader';
-import { toast } from 'react-hot-toast';
 import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
+import { getUserId } from 'store/auth/authSelector';
+import { errorMessage } from 'helpers/errorMessage';
+import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
 
 export const Checkout = ({
   isWaiter,
@@ -19,17 +21,27 @@ export const Checkout = ({
   onChangeSelected,
   urlParams,
   isAllOrdersPaid,
+  paymentType,
 }) => {
   const dispatch = useDispatch();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const userId = useSelector(getUserId);
+  const { data, signature } = useSelector(getPaymentInfo);
   const [isOpen, setIsOpen] = useState(false);
-  const { isLoading, mutate } = useUpdateOrderStatusByWaiter(urlParams, selectedOrders);
+  const { isLoading, mutate } = useUpdateOrderStatusByWaiter(
+    urlParams,
+    selectedOrders,
+    amount,
+    userId,
+    paymentType
+  );
   const {
     isLoading: isLoadingTableStatus,
     mutate: mutateTableStatus,
     isError,
     error,
   } = useUpdateTableStatusByWaiter(urlParams, 'Free');
-  const { data, signature } = useSelector(getPaymentInfo);
   const frontLink = location.href;
 
   useEffect(() => {
@@ -38,16 +50,7 @@ export const Checkout = ({
     }
 
     if (isError) {
-      toast.error(error?.response.data.message, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
+      errorMessage(error?.response.data.message);
     }
   }, [data, error, isError, signature]);
 
@@ -58,22 +61,30 @@ export const Checkout = ({
   const onClickPaySelectedAsCustomer = useCallback(() => {
     dispatch(
       payOrders({
+        rest_id: urlParams.restId,
         amount,
-        type: 'online',
         info: selectedOrders.join(','),
         frontLink,
       })
     );
-  }, [amount, dispatch, frontLink, selectedOrders]);
-
-  const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
-    mutate();
-    onChangeSelected(0, []);
-  }, [mutate, onChangeSelected]);
+  }, [amount, dispatch, frontLink, selectedOrders, urlParams.restId]);
 
   const onClickMarkAsFreeTable = useCallback(() => {
     mutateTableStatus();
   }, [mutateTableStatus]);
+
+  const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
+    setModalIsOpen(true);
+  }, []);
+
+  useEffect(() => {
+    if (isConfirmed) {
+      mutate();
+      onChangeSelected(0, []);
+      setModalIsOpen(false);
+      setIsConfirmed(false);
+    }
+  }, [isConfirmed, mutate, onChangeSelected]);
 
   if (isWaiter) {
     return (
@@ -85,10 +96,15 @@ export const Checkout = ({
           <Button
             size={'sm'}
             onClick={onClickMarkAsPaidSelectedAsWaiter}
-            disabled={amount === 0 || isLoading}
+            disabled={amount === 0 || isLoading || !paymentType}
             className={cls.btn}
+            mode="outlined"
           >
-            {isLoading ? <Loader size={'xs'} /> : 'Mark as paid for selected'}
+            {modalIsOpen ? (
+              <Loader size={'xs'} color={'#ea6a12'} />
+            ) : (
+              <> {isLoading ? <Loader size={'xs'} /> : 'Mark as paid for selected'}</>
+            )}
           </Button>
           <Button
             size={'sm'}
@@ -99,6 +115,15 @@ export const Checkout = ({
             {isLoadingTableStatus ? <Loader size={'xs'} /> : 'Mark table as free'}
           </Button>
         </div>
+        <ConfirmModal
+          isOpen={modalIsOpen}
+          message={`Confirm your action for ${selectedOrders?.length} ${
+            selectedOrders?.length === 1 ? 'order' : 'orders'
+          } with total $${amount}`}
+          onConfirm={() => setIsConfirmed(true)}
+          setIsOpen={onClickMarkAsPaidSelectedAsWaiter}
+          onCancel={() => setModalIsOpen(false)}
+        />
       </div>
     );
   }

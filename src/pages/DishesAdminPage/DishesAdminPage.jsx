@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import Select from 'shared/Select/Select';
 import { DISH_CATEGORIES } from 'utils/constants';
 import styles from './DishesAdminPage.module.scss';
+import { deleteDishById } from '../../api/dish';
 
 const DishesAdminPage = () => {
   const { restId } = useParams();
@@ -14,7 +15,7 @@ const DishesAdminPage = () => {
   const [type, setType] = useState('active');
 
   const { mutateAsync } = useMutation((dishId) => {
-    //  deleteDishById(dishId, restId);
+    deleteDishById(dishId, restId);
   });
 
   const navigateToAddDish = () => {

@@ -14,7 +14,7 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seat
   const changeTableStatus = useChangeTableStatus();
   const [currentStatus, setCurrentStatus] = useState(status);
 
-  const redAnimation = currentStatus === 'Waiting' ? styles.table_pulsating : '';
+  const redAnimation = status === 'Waiting' ? styles.table_pulsating : '';
   const changeStatus = async (item) => {
     try {
       await changeTableStatus.mutateAsync({ status: item, restaurant_id, table_id });

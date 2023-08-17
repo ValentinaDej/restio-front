@@ -57,7 +57,7 @@ const Card = memo(
             )}
             {mode === variant.cart && (
               <div className={css['card__icon-wrapper']}>
-                <IconButton Svg={BiSolidTrash} size={16} onClick={onDelete} />
+                <IconButton Svg={BiSolidTrash} size={20} onClick={onDelete} />
               </div>
             )}
           </div>

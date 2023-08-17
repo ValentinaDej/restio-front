@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSSE } from 'react-hooks-sse';
 import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
 import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
 import OrderListSkeleton from 'shared/Skeletons/OrderSkeleton/OrderSkeleton';
@@ -10,41 +11,58 @@ import { NavigateButtons } from './ui/NavigateButtons/NavigateButtons';
 import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
-import cls from './Order.module.scss';
-import useSSESubscription from 'hooks/useSSESubscription';
 
-const Orders = ({ isWaiter }) => {
+import cls from './Order.module.scss';
+import Title from 'shared/Title/Title';
+
+const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
+  const [paymentType, setPaymentType] = useState('');
+  const [isMounted, setIsMounted] = useState(true);
   const [selectedTotal, setSelectedTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [isAllOrdersPaid, setIsAllOrdersPaid] = useState(false);
   const params = useParams();
+  const { tableId } = params;
+
   const onChangeSelected = (price, selectedOrders) => {
     setSelectedTotal(formatNumberWithTwoDecimals(price));
     setSelectedOrders(selectedOrders);
   };
+  const updateDishStatusEvent = useSSE('dish status');
 
-  const {
-    data: { data } = {},
-    isError,
-    isLoading,
-    isRefetching,
-    refetch,
-  } = useGetOrdersByTableId(params);
-
-  const subscription = useSSESubscription(refetch);
+  const { data: { data } = {}, isError, isLoading, refetch } = useGetOrdersByTableId(params);
 
   useEffect(() => {
-    subscription();
-  }, [subscription]);
+    if (updateDishStatusEvent && updateDishStatusEvent.message) {
+      const table_id = updateDishStatusEvent.message.replace(/"/g, '');
+      if (table_id === tableId) {
+        refetch({ force: true });
+      }
+    }
+  }, [updateDishStatusEvent, refetch, tableId]);
+
+  const onChangeTypeOfPay = useCallback((e) => {
+    const value = e.target.ariaLabel;
+    const checked = e.target.checked;
+    if (value === 'cash') {
+      setPaymentType('cash');
+    }
+    if (value === 'POS') {
+      setPaymentType('POS');
+    }
+    if (!checked) {
+      setPaymentType('');
+    }
+  }, []);
 
   useEffect(() => {
     if (data) {
-      const allOrdersPaid = data?.data?.orders?.every((order) => {
+      const allOrdersPaid = data?.orders?.every((order) => {
         const allItemsServed = order?.orderItems?.every((item) => item.status === 'Served');
         return order.status === 'Paid' && allItemsServed;
       });
-      const newTotalPrice = data?.data?.orders?.reduce((acc, order) => {
+      const newTotalPrice = data?.orders?.reduce((acc, order) => {
         if (order.status !== 'Paid') {
           const orderPrice = order.orderItems.reduce(
             (acc, item) => acc + item.dish.price * item.quantity,
@@ -58,45 +76,64 @@ const Orders = ({ isWaiter }) => {
       }, 0);
       setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
       setIsAllOrdersPaid(allOrdersPaid);
+      setIsMounted(false);
     }
-  }, [data, data?.data?.orders]);
+  }, [data]);
 
   return (
     <>
-      <NavigateButtons params={params} isWaiter={isWaiter} />
-      {isLoading ? (
-        <OrderListSkeleton isWaiter={isWaiter} isSmall={!isWaiter} />
-      ) : !data?.data?.orders?.length ? (
-        <EmptyListBox params={params} isWaiter={isWaiter} />
-      ) : (
+      {isWaiter && (
         <>
-          <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
-            <ListTopBox
-              orders={data?.data?.orders || []}
-              totalPrice={totalPrice}
-              onChangeSelected={onChangeSelected}
-              urlParams={params}
-              isWaiter={isWaiter}
-            />
-            <OrdersList
-              orders={data?.data?.orders || []}
-              onChangeSelected={onChangeSelected}
-              selectedTotal={selectedTotal}
-              selectedOrders={selectedOrders}
-              urlParams={params}
-              isWaiter={isWaiter}
-            />
-          </div>
-          <Checkout
-            amount={selectedTotal}
-            selectedOrders={selectedOrders}
-            onChangeSelected={onChangeSelected}
-            urlParams={params}
-            isWaiter={isWaiter}
-            isAllOrdersPaid={isAllOrdersPaid}
-          />
+          <Title textAlign={'left'}>{isWaiterDishesPage ? 'Table dishes' : 'Table checkout'}</Title>
+          <hr className={cls.divider} />
         </>
       )}
+      <section className={cls.section}>
+        <NavigateButtons params={params} isWaiter={isWaiter} />
+        {isLoading || isMounted ? (
+          <OrderListSkeleton isWaiter={isWaiter} isSmall={isSmall} />
+        ) : !data?.orders?.length ? (
+          <EmptyListBox params={params} isWaiter={isWaiter} />
+        ) : (
+          <>
+            <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
+              {!isWaiterDishesPage && (
+                <ListTopBox
+                  orders={data?.orders || []}
+                  totalPrice={totalPrice}
+                  onChangeSelected={onChangeSelected}
+                  onChangeTypeOfPay={onChangeTypeOfPay}
+                  urlParams={params}
+                  isWaiter={isWaiter}
+                  paymentType={paymentType}
+                />
+              )}
+
+              <OrdersList
+                orders={data?.orders || []}
+                onChangeSelected={onChangeSelected}
+                selectedTotal={selectedTotal}
+                selectedOrders={selectedOrders}
+                urlParams={params}
+                isSmall={isSmall}
+                isWaiter={isWaiter}
+                isWaiterDishesPage={isWaiterDishesPage}
+              />
+            </div>
+            {!isWaiterDishesPage && (
+              <Checkout
+                amount={selectedTotal}
+                selectedOrders={selectedOrders}
+                onChangeSelected={onChangeSelected}
+                urlParams={params}
+                isWaiter={isWaiter}
+                isAllOrdersPaid={isAllOrdersPaid}
+                paymentType={paymentType}
+              />
+            )}
+          </>
+        )}
+      </section>
     </>
   );
 };

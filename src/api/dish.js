@@ -21,9 +21,17 @@ const handleErrorResponse = (error) => {
 
 export const getDishes = async (restId, category, type, pageParam, searchText) => {
   try {
-    const data = await instance(
-      `/dishes/restaurant/${restId}?type=${category}&isActive=${type}&page=${pageParam}&limit=4&searchText=${searchText}`
-    );
+    let data = [];
+    if (category) {
+      data = await instance(
+        `/dishes/restaurant/${restId}?type=${category}&isActive=${type}&page=${pageParam}&limit=4&searchText=${searchText}`
+      );
+    } else {
+      data = await instance(
+        `/dishes/restaurant/${restId}?isActive=${type}&page=${pageParam}&limit=4&searchText=${searchText}`
+      );
+    }
+
     return data;
   } catch (error) {
     handleErrorResponse(error);
@@ -32,6 +40,7 @@ export const getDishes = async (restId, category, type, pageParam, searchText) =
 
 export const getDishesForMenu = async (restId, category, type) => {
   const data = await instance(`/dishes/restaurant/${restId}?type=${category}&isActive=${type}`);
+
   return data;
 };
 
@@ -58,4 +67,8 @@ export const createDish = async (body, restId) => {
   } catch (error) {
     handleErrorResponse(error);
   }
+};
+
+export const deleteDishById = async (dishId, restId) => {
+  await instance.patch(`/dishes/${dishId}/restaurant/${restId}`, { isActive: false });
 };

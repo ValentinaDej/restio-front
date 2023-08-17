@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
 import Button from 'shared/Button/Button';
 import { BillInfo } from '../BillInfo/BillInfo';
+import cls from './BillDownload.module.scss';
 
 export const BillDownload = ({ orders }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +23,7 @@ export const BillDownload = ({ orders }) => {
           restId={restId}
         />
       )}
-      <Button size={'sm'} onClick={onClickDownload}>
+      <Button size={'sm'} onClick={onClickDownload} className={cls.btn} mode="outlined">
         Download bill
       </Button>
     </>

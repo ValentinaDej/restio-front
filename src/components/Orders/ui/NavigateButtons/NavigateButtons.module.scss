@@ -1,5 +1,11 @@
 .navigateBtns {
   display: flex;
+  gap: 10px;
   justify-content: space-between;
   margin-bottom: 10px;
+}
+
+.waiterBtns {
+  display: flex;
+  gap: 5px;
 }

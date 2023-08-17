@@ -5,6 +5,13 @@
   flex-direction: column;
   margin-bottom: 20px;
 }
+
+.topBoxBtns {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
 .skeletonList {
   display: grid;
   gap: 10px;
