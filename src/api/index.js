@@ -1,6 +1,6 @@
 import axios from 'axios';
 import storage from 'utils/storage';
-import { getNewToken } from './auth';
+import { getNewToken, getToken } from './auth';
 
 export const BASE_URL =
   process.env.NODE_ENV === 'development'
@@ -11,16 +11,14 @@ export const instance = axios.create({
   baseURL: BASE_URL,
 });
 
+const authRoutes = ['personnel', 'dishes', 'orders', 'tables', 'transactions'];
+
 instance.interceptors.request.use(
   (request) => {
-    if (
-      request.url.includes('personnel') ||
-      request.url.includes('dishes') ||
-      request.url.includes('cook')
-    ) {
-      const auth = storage.getItem('userData');
-      if (auth?.token && request.headers) {
-        request.headers['Authorization'] = `Bearer ${auth.token}`;
+    if (authRoutes.some((route) => request.url.includes(route))) {
+      const token = getToken();
+      if (token && request.headers) {
+        request.headers['Authorization'] = `Bearer ${token}`;
       }
     }
 
