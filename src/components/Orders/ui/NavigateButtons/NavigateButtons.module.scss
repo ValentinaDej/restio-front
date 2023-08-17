@@ -1,11 +1,55 @@
+.backBtn {
+  width: 86px;
+}
+
 .navigateBtns {
   display: flex;
+  align-items: center;
+  flex-direction: column;
   gap: 10px;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+
+  @media screen and (min-width: 600px) {
+    flex-direction: row;
+  }
+}
+
+.info {
+  display: flex;
+  gap: 5px;
 }
 
 .waiterBtns {
   display: flex;
+  flex-direction: column;
   gap: 5px;
+
+  @media screen and (min-width: 600px) {
+    flex-direction: row;
+  }
+}
+
+.iconBtns {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 5px;
+}
+
+.iconBtn {
+  position: relative;
+}
+
+.iconBtnValue {
+  color: var(--color-status);
+  position: absolute;
+  top: -9px;
+  right: -2px;
+}
+
+.icon {
+  width: 35px;
+  height: 35px;
 }

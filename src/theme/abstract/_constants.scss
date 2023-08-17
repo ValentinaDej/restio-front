@@ -7,7 +7,7 @@
   --color-red: #dd5959;
   --color-green-transparent: #dce8c6;
   --color-orange: #789940;
-  --color-orange-transparent: #e5e6e4;
+  --color-orange-transparent: rgb(99, 183, 16, 0.2);
   --color-orange-hover: #688b2c;
   --color-orange-focus: #688b2c;
   // --color-orange-focus: #3f5821;
@@ -30,6 +30,7 @@
   --color-gray-900: #212529;
   --color-primary: #789940;
   --color-secondary: #959895;
+  --color-status: rgb(235, 150, 106);
   --color-success: #3bb77e;
   --color-success-light: rgba(107, 226, 190, 0.5);
   --color-info: #12cdea;

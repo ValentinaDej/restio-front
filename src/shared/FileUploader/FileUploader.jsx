@@ -7,7 +7,7 @@ import { LiaPlusSolid } from 'react-icons/lia';
 import defaultImage from '../../assets/img/defaultUploadImg.png';
 import styles from './FileUploader.module.scss';
 
-const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg', 'gif'];
+const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg'];
 
 const FileUploader = forwardRef(({ size, imageUrl }, ref) => {
   const [uploadedFile, setUploadedFile] = useState();
@@ -26,7 +26,7 @@ const FileUploader = forwardRef(({ size, imageUrl }, ref) => {
         setUploadedFile(file);
         setPreviewUrl(URL.createObjectURL(file));
       } else {
-        toast.error('Invalid file format. Allowed formats: png, jpeg, jpg, gif');
+        toast.error('Invalid file format. Allowed formats: png, jpeg, jpg');
       }
     }
   };
@@ -36,19 +36,22 @@ const FileUploader = forwardRef(({ size, imageUrl }, ref) => {
       if (!uploadedFile) {
         return '';
       }
-
-      const formData = new FormData();
-      formData.append('image', uploadedFile);
-
-      const response = await axios.post('http://localhost:3001/api/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-
+      const response = await axios.get(
+        `http://localhost:3001/api/upload?type=${uploadedFile.type}&size=${uploadedFile.size}`
+      );
+      await axios
+        .put(response.data.uploadURL, uploadedFile, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
       // Clear the selected file and preview after successful upload
       setUploadedFile(null);
       setPreviewUrl('');
-
-      return response;
+      return response.data.imageName;
     } catch (error) {
       toast.error('Some error occurred uploading an image!');
     }
@@ -78,7 +81,7 @@ const FileUploader = forwardRef(({ size, imageUrl }, ref) => {
           <LiaPlusSolid className={`${styles.icon} ${styles[`icon_${size}`]}`} />
           <input
             type="file"
-            accept="image/jpeg, image/png, image/gif, image/jpg"
+            accept="image/jpeg, image/png, image/jpg"
             onChange={onFileChange}
             ref={fileInputRef}
             className={styles.hiddenInput}
