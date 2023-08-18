@@ -88,7 +88,7 @@ const OrderListSkeleton = ({ isSmall, isWaiter, isWaiterDishesPage }) => {
   );
 };
 
-CardSkeleton.propTypes = {
+OrderListSkeleton.propTypes = {
   isSmall: PropTypes.bool,
   isWaiter: PropTypes.bool,
 };
