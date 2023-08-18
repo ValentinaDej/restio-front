@@ -63,6 +63,7 @@ const Modal = ({ children, isModalOpen, setIsModalOpen, classname, ...props }) =
 Modal.propTypes = {
   children: PropTypes.node,
   setIsModalOpen: PropTypes.func.isRequired,
+  isModalOpen: PropTypes.bool,
   classname: PropTypes.string,
 };
 
