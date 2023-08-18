@@ -50,13 +50,16 @@ const DishForm = ({
     event.preventDefault();
     const selectedIngredientIds = Array.from(selectedIngredients.keys());
     const picture = await fileUploaderRef.current.handleUpload();
+    delete data.image;
+
     if (picture) {
-      onSubmit({ ...data, picture: picture.data.imageName, ingredients: selectedIngredientIds });
+      onSubmit({ ...data, picture: picture, ingredients: selectedIngredientIds });
       fileUploaderRef.current.clearFile();
     } else {
       const { picture, ...dataWithoutPicture } = data;
       onSubmit({ ...dataWithoutPicture, ingredients: selectedIngredientIds });
     }
+    reset();
   };
 
   const cleareForm = () => {
@@ -370,7 +373,7 @@ DishForm.defaultProps = {
     vegetarian: false,
     spicy: false,
     pescatarian: false,
-    portionWeight: '',
+    //portionWeight: '',
     price: '',
     ingredients: [],
   },

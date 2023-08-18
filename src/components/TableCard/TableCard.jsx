@@ -10,18 +10,22 @@ import { toast } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { GiWoodenChair } from 'react-icons/gi';
 import { MdTableBar } from 'react-icons/md';
+import { AiTwotoneStar } from 'react-icons/ai';
 import { motion } from 'framer-motion';
 
 const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seats }) => {
   const changeTableStatus = useChangeTableStatus();
-  const [currentStatus, setCurrentStatus] = useState(status);
+  // const [currentStatus, setCurrentStatus] = useState(status);
 
-  const redAnimation = currentStatus === 'Waiting' ? styles.table_pulsating : '';
+  // const redAnimation = currentStatus === 'Waiting' ? styles.table_pulsating : '';
+  // console.log(status);
+  // console.log(currentStatus);
+  // console.log(styles.table);
 
   const changeStatus = async (item) => {
     try {
       await changeTableStatus.mutateAsync({ status: item, restaurant_id, table_id });
-      setCurrentStatus(item);
+      // setCurrentStatus(item);
       return 'success';
     } catch (mutationError) {
       console.error('Mutation Error:', mutationError);
@@ -71,9 +75,14 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seat
       animate={{ opacity: 1 }}
       initial={{ opacity: 0 }}
       exit={{ opacity: 0 }}
-      className={`${styles.table} ${redAnimation}`}
+      // className={`${styles.table} ${redAnimation}`}
+      // ${classes[`button_${buttonSize}`]}
+      className={`${styles.table} ${styles[`table_${status}`]}`}
     >
       <div className={styles.table__head}>
+        <div className={styles.table__favorites}>
+          <AiTwotoneStar size={22} color="var(--color-gray-300)" />
+        </div>
         <div className={styles.table__number}>
           <MdTableBar size={21} />
           <Text fontSize={20}>{table_number}</Text>
@@ -89,8 +98,12 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seat
             />
           </div>
         ) : (
-          <div className={styles.table__resolve_btn}>
-            <Button size="sm" style={{ width: '95px' }} onClick={() => changeStatus('Taken')}>
+          <div className={styles.table__resolve_btn_div}>
+            <Button
+              size="sm"
+              style={{ background: '#f74545', border: '2px solid #f74545' }}
+              onClick={() => changeStatus('Taken')}
+            >
               Resolve
             </Button>
           </div>
@@ -100,20 +113,19 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seat
       <div className={styles.table__mainBlock}>
         {orders.length > 0 && (
           <div className={styles.table__orders}>
-            <div className={styles.table__orders_title}>
-              <Text fontSize={14}>Orders</Text>
-            </div>
             <div className={styles.table__orders_list}>
               {openOrders > 0 && (
-                <div className={styles.table__order}>
-                  <Status statusCurrent="Open" statusSize="sm" />
-                  <Text>{openOrders}</Text>
+                <div className={styles.table__order_open}>
+                  <Text fontSize={15}>
+                    <span className={styles.unpaid}>Unpaid</span> orders: {openOrders}
+                  </Text>
                 </div>
               )}
               {paidOrders > 0 && (
-                <div className={styles.table__order}>
-                  <Status statusCurrent="Paid" statusSize="sm" />
-                  <Text>{paidOrders}</Text>
+                <div className={styles.table__order_paid}>
+                  <Text fontSize={15}>
+                    <span className={styles.paid}>Paid</span> orders: {paidOrders}
+                  </Text>
                 </div>
               )}
             </div>
@@ -122,29 +134,35 @@ const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seat
         )}
         {readyDishes.length > 0 && (
           <div className={styles.table__dishes}>
-            <div className={styles.table__dishes_title}>
-              <Text fontSize={14}>Dishes</Text>
-            </div>
-            <div className={styles.table__dishes_content}>
-              <Status statusCurrent="Ready" />
-              <Text>{amountReadyDishes}</Text>
+            <div className={styles.table__dishes_text}>
+              <Text fontSize={15}>
+                <span className={styles.ready}>Ready</span> dishes to serve: {amountReadyDishes}
+              </Text>
             </div>
           </div>
         )}
       </div>
       <div className={styles.line}></div>
       <div className={styles.table__bottom}>
-        <div className={styles.table__seats}>
-          <GiWoodenChair size={21} />
-          <Text fontSize={20}>{seats}</Text>
-        </div>
-
-        <div className={styles.table__btn_details}>
-          <NavLink to={table_id}>
-            <Button size="sm" mode="outlined">
-              Details
+        <div className={styles.table__btn_view_div}>
+          <NavLink to={`${table_id}/dishes`}>
+            <Button size="sm" mode="outlined" className={styles.table__btn_view}>
+              View Orders & Status
             </Button>
           </NavLink>
+        </div>
+        <div className={styles.table__bot}>
+          <div className={styles.table__seats}>
+            <GiWoodenChair size={21} />
+            <Text fontSize={20}>{seats}</Text>
+          </div>
+          <div className={styles.table__btn_details}>
+            <NavLink to={`${table_id}/pay`}>
+              <Button size="sm" mode="outlined">
+                To payments
+              </Button>
+            </NavLink>
+          </div>
         </div>
       </div>
     </motion.div>

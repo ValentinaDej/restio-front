@@ -21,9 +21,9 @@ const DishesAdminPage = () => {
   const location = useLocation();
   const state = location.state;
 
-  // if (state && state.shouldUpdate) {
-  //   queryClient.invalidateQueries(['dishes', category, type]);
-  // }
+  if (state && state.shouldUpdate) {
+    queryClient.invalidateQueries(['dishes', category, type]);
+  }
 
   useEffect(() => {
     queryClient.invalidateQueries(['dishes', category, type]);

@@ -1,4 +1,5 @@
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient, useQueries } from 'react-query';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -29,24 +30,47 @@ const AddDishPage = () => {
   const { restId, dishesId } = useParams();
   const navigate = useNavigate();
 
-  const dishQuery = useQuery(['new_dish', dishesId], () => getDishById(dishesId), {
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchInterval: false,
-    enabled: !!dishesId,
-    onError: () => {
-      toast.error(ERROR_MESSAGES.fetchDish);
-    },
-  });
+  const queryClient = useQueryClient();
 
-  const IngredientsQuery = useQuery('ingredients', getIngredients, {
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchInterval: false,
-    onError: () => {
-      toast.error(ERROR_MESSAGES.fetchIngredients);
+  const queries = useQueries([
+    {
+      queryKey: ['new_dish', dishesId],
+      queryFn: () => getDishById(dishesId),
+      onError: () => {
+        toast.error(ERROR_MESSAGES.fetchDish);
+      },
     },
-  });
+    {
+      queryKey: 'ingredients',
+      queryFn: getIngredients,
+      onError: () => {
+        toast.error(ERROR_MESSAGES.fetchIngredients);
+      },
+    },
+  ]);
+
+  const dishQuery = queries[0];
+  const IngredientsQuery = queries[1];
+
+  console.log(dishQuery.data);
+  // const dishQuery = useQuery(['new_dish', dishesId], () => getDishById(dishesId), {
+  //   refetchOnWindowFocus: false,
+  //   refetchOnReconnect: false,
+  //   refetchInterval: false,
+  //   // enabled: !!dishesId,
+  //   onError: () => {
+  //     toast.error(ERROR_MESSAGES.fetchDish);
+  //   },
+  // });
+
+  // const IngredientsQuery = useQuery('ingredients', getIngredients, {
+  //   refetchOnWindowFocus: false,
+  //   refetchOnReconnect: false,
+  //   refetchInterval: false,
+  //   onError: () => {
+  //     toast.error(ERROR_MESSAGES.fetchIngredients);
+  //   },
+  // });
 
   const handleBack = () => {
     navigate(`/${restId}/admin/dishes/`, {
@@ -73,19 +97,33 @@ const AddDishPage = () => {
     }
   };
 
-  if (dishQuery.isLoading || IngredientsQuery.isLoading) {
+  // if (dishQuery.isLoading || IngredientsQuery.isLoading) {
+  //   return (
+  //     <main className={styles.loadingWrapper}>
+  //       <Loader />
+  //     </main>
+  //   );
+  // }
+
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!dishQuery.isLoading && !IngredientsQuery.isLoading) {
+      setDataLoaded(true);
+    }
+  }, [dishQuery.isLoading, IngredientsQuery.isLoading]);
+
+  // Рендеримо тільки після завантаження всіх даних
+  if (!dataLoaded) {
     return (
       <main className={styles.loadingWrapper}>
         <Loader />
       </main>
     );
   }
-
   const selectedIngredientsMap = new Map(
     (dishQuery.data?.ingredients || []).map((ingredient) => [ingredient._id, ingredient.name])
   );
-
-  console.log('AddDishPage', dishQuery.data?.picture);
 
   let initialData = {};
 
@@ -97,16 +135,12 @@ const AddDishPage = () => {
     isActive: dishQuery.data?.isActive || false,
     portionWeight: dishQuery.data?.portionWeight || '',
     price: dishQuery.data?.price || '',
-    //   picture: dishQuery.data.picture || '',
     type: dishQuery.data?.type || '',
   };
 
   if (dishQuery.data?.picture) {
     initialData.picture = dishQuery.data.picture;
   }
-
-  console.log('dishQuery.data?.picture)', dishQuery.data?.picture);
-  console.log('initialData', initialData);
 
   const isEditing = Boolean(dishesId);
 

@@ -16,6 +16,12 @@ const cartSlice = createSlice({
         state.cart.push({ ...payload, quantity: 1 });
       }
     },
+    addCommentForChef(state, { payload }) {
+      const item = state.cart.find((item) => item.id === payload.id);
+      if (item) {
+        item.comment = payload.comment;
+      }
+    },
     increaseQuantity(state, { payload }) {
       const item = state.cart.find((item) => item.id === payload);
       if (item) item.quantity += 1;
@@ -33,7 +39,13 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addProduct, deleteProduct, increaseQuantity, decreaseQuantity, clearCart } =
-  cartSlice.actions;
+export const {
+  addProduct,
+  deleteProduct,
+  increaseQuantity,
+  decreaseQuantity,
+  clearCart,
+  addCommentForChef,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
