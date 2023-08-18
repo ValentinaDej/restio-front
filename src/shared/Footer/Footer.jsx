@@ -58,8 +58,6 @@ const Footer = (role) => {
     refetchOnReconnect: false, // Disable refetching when the network reconnects
     refetchInterval: false, // Disable automatic periodic refetching
   });
-  console.log(restId);
-  console.log(data);
 
   return (
     <footer className={classes.footer}>
@@ -108,7 +106,7 @@ const Footer = (role) => {
             </div>
           </div>
         </div>
-        {role ? (
+        {role === '' ? (
           <div className={classes.formWrapper}>
             <Title>{data?.name}</Title>
             <div className={classes.header__logo}>
