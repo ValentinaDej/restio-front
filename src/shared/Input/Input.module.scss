@@ -87,5 +87,6 @@
 }
 
 .input_error {
-  background-color: var(--color-orange-transparent);
+  border: 1px solid var(--color-red-transparent);
+  //background-color: var(--color-orange-transparent);
 }
