@@ -101,9 +101,15 @@ export const Checkout = ({
             mode="outlined"
           >
             {modalIsOpen ? (
-              <Loader size={'xs'} color={'#ea6a12'} />
+              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
             ) : (
-              <> {isLoading ? <Loader size={'xs'} /> : 'Mark as paid for selected'}</>
+              <>
+                {isLoading ? (
+                  <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
+                ) : (
+                  'Mark as paid for selected'
+                )}
+              </>
             )}
           </Button>
           <Button
@@ -112,7 +118,11 @@ export const Checkout = ({
             disabled={!isAllOrdersPaid}
             className={cls.btn}
           >
-            {isLoadingTableStatus ? <Loader size={'xs'} /> : 'Mark table as free'}
+            {isLoadingTableStatus ? (
+              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
+            ) : (
+              'Mark table as free'
+            )}
           </Button>
         </div>
         <ConfirmModal
@@ -166,4 +176,5 @@ Checkout.propTypes = {
   onChangeSelected: PropTypes.func,
   urlParams: PropTypes.object,
   isAllOrdersPaid: PropTypes.bool,
+  paymentType: PropTypes.string,
 };

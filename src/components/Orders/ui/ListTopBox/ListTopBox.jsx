@@ -106,12 +106,12 @@ export const ListTopBox = ({
             className={cls.btn}
           >
             {modalIsOpen ? (
-              <Loader size={'xs'} color={'#fff'} />
+              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
             ) : (
               <>
                 {isWaiter ? (
                   isLoading ? (
-                    <Loader size={'xs'} color={'#fff'} />
+                    <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
                   ) : (
                     'Mark as paid all orders'
                   )

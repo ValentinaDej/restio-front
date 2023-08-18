@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'shared/Card/Card';
-import Title from 'shared/Title/Title';
 import cls from './OrderCard.module.scss';
 import Status from 'shared/Status/Status';
 import Text from 'shared/Text/Text';
@@ -13,8 +12,6 @@ import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals
 import { getDate } from 'helpers/getDate';
 import Button from 'shared/Button/Button';
 import { motion, AnimatePresence } from 'framer-motion';
-
-// const transition = { type: 'spring', stiffness: 500, damping: 50, mass: 1 };
 
 const OrderCard = memo(
   ({
@@ -78,9 +75,9 @@ const OrderCard = memo(
           ref={cardRef}
         >
           <div className={cls.topBlock}>
-            <Title mode={'h3'} textAlign="left" classname={cls.text}>
+            <Text fontWeight={700} classname={cls.text}>
               Order #{number}
-            </Title>
+            </Text>
             <div className={cls.dishes}>
               <BiDish size={20} />
               <Text fontWeight={700} classname={cls.text}>
@@ -178,7 +175,10 @@ OrderCard.propTypes = {
   status: PropTypes.string,
   isChecked: PropTypes.bool,
   onChange: PropTypes.func,
+  onChangeAllReadyDishes: PropTypes.func,
   small: PropTypes.bool,
+  isWaiterDishesPage: PropTypes.bool,
+  isPayCard: PropTypes.bool,
 };
 
 export default OrderCard;

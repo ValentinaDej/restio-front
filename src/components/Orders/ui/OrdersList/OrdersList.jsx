@@ -8,7 +8,6 @@ import Loader from 'shared/Loader/Loader';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { useUpdateDishStatusByWaiter, useUpdateReadyDishesStatusesByWaiter } from 'api/order';
 import { useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export const OrdersList = ({
   isWaiter,
@@ -111,9 +110,11 @@ export const OrdersList = ({
 
 OrdersList.propTypes = {
   isWaiter: PropTypes.bool,
+  isWaiterDishesPage: PropTypes.bool,
   orders: PropTypes.array,
   onChangeSelected: PropTypes.func,
   selectedTotal: PropTypes.number,
   selectedOrders: PropTypes.array,
   urlParams: PropTypes.object,
+  sortOrderBy: PropTypes.string,
 };
