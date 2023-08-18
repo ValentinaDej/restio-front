@@ -1,3 +1,13 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  @media screen and (min-width: 700px) {
+    gap: 20px;
+  }
+}
+
 .btn {
   height: 50px;
   width: 180px;

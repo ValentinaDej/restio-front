@@ -50,7 +50,7 @@ export const useUpdateOrderStatusByWaiter = (
   const queryClient = useQueryClient();
 
   const createTransactionOffline = async () => {
-    const response = await instance.post(`transactions/manual`, {
+    const response = await instance.post(`transactions/manual/${restId}`, {
       info: orders,
       amount,
       createdById: userId,

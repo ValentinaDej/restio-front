@@ -71,7 +71,7 @@ export const ListTopBox = ({
   }, [isConfirmed, mutate, onChangeSelected]);
 
   return (
-    <>
+    <div className={cls.box}>
       <div>
         <div className={cls.totalText}>
           {totalPrice === 0 ? (
@@ -157,7 +157,7 @@ export const ListTopBox = ({
           onCancel={() => setModalIsOpen(false)}
         />
       )}
-    </>
+    </div>
   );
 };
 

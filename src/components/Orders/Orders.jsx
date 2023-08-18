@@ -91,7 +91,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       });
 
       setNotServedDishes(notServedDishes);
-      setAllOrderPrice(allOrderPrice);
+      setAllOrderPrice(formatNumberWithTwoDecimals(allOrderPrice));
       setNotPaidOrders(notPaidOrders);
       setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
       setIsAllOrdersPaid(isAllOrdersPaid);
@@ -143,6 +143,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                   urlParams={params}
                   isWaiter={isWaiter}
                   paymentType={paymentType}
+                  key={'topList'}
                 />
               )}
               <OrdersList
@@ -155,6 +156,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 isWaiter={isWaiter}
                 isWaiterDishesPage={isWaiterDishesPage}
                 sortOrderBy={sortOrderBy}
+                key={'list'}
               />
             </motion.div>
             {!isWaiterDishesPage && (
@@ -166,6 +168,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 isWaiter={isWaiter}
                 isAllOrdersPaid={isAllOrdersPaid}
                 paymentType={paymentType}
+                key={'checkout'}
               />
             )}
           </AnimatePresence>
