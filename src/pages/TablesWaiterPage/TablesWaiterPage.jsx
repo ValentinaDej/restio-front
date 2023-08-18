@@ -34,7 +34,6 @@ const TablesWaiterPage = () => {
     data: tablesData,
     isLoading: isLoadingTables,
     isError: isErrorTables,
-    error: errorTables,
     refetch: refetchTables,
   } = useGetTablesByRestaurantId(restId);
 
@@ -58,7 +57,6 @@ const TablesWaiterPage = () => {
     data: ordersData,
     isLoading: isLoadingOrders,
     isError: isErrorOrders,
-    error: errorOrders,
   } = useGetOrdersByRestaurantId(restId);
 
   useEffect(() => {
