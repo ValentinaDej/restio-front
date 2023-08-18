@@ -1,10 +1,10 @@
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { IoMdClose } from 'react-icons/io';
 
-import Button from 'shared/Button/Button';
 import css from './Dialog.module.scss';
+import Button from 'shared/Button/Button';
 import { addCommentForChef } from 'store/cart/cartSlice';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
 
 const Dialog = ({ id, setIsOpen }) => {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const Dialog = ({ id, setIsOpen }) => {
       <dialog open className={css.wrapper}>
         <IoMdClose className={css.close} onClick={onCloseDialog} />
         <p className={css.title}>Leave a comment for chef</p>
-        <textarea className={css.textarea} onChange={onChangeHandler} />
+        <textarea maxLength="60" className={css.textarea} onChange={onChangeHandler} />
         <Button size="sm" onClick={addCommentHandler}>
           Add
         </Button>

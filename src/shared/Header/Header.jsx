@@ -1,26 +1,26 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { useQuery } from 'react-query';
 import { MdRestaurantMenu, MdTableBar } from 'react-icons/md';
 import { FaMoneyBillTrendUp } from 'react-icons/fa6';
 import { IoPeopleSharp } from 'react-icons/io5';
 import { FiLogOut } from 'react-icons/fi';
 import { GiCook } from 'react-icons/gi';
 
+import { ReactComponent as Bell } from '../../assets/icons/desk-bell.svg';
 import classes from './Header.module.scss';
 import Title from 'shared/Title/Title';
-import Button from 'shared/Button/Button';
+import OrdersButton from 'components/OrdersButton/OrdersButton';
 import { callWaiter } from 'api/table';
+import { getRestaurant } from 'api/restaurant';
 import { getRestaurantId } from 'store/auth/authSelector';
 import { logout } from 'store/auth/authSlice';
-import { useQuery } from 'react-query';
-import { getRestaurant } from 'api/restaurant';
-import { useGetOrdersByTableId } from 'api/order';
 
 const Header = ({ role }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const restaurantId = useSelector(getRestaurantId);
 
   const { pathname } = useLocation();
@@ -29,16 +29,13 @@ const Header = ({ role }) => {
   const restId = arrParams[1];
   const tableId = arrParams[3];
 
-  // const { data: orders } = useGetOrdersByTableId({ restId, tableId });
-  // const totalOrders = orders?.data?.orders.length;
-
   const { isError, isLoading, data } = useQuery(
     ['restaurant', restId],
     async () => await getRestaurant(restId),
     {
-      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
-      refetchOnReconnect: false, // Disable refetching when the network reconnects
-      refetchInterval: false, // Disable automatic periodic refetching
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
     }
   );
 
@@ -96,19 +93,9 @@ const Header = ({ role }) => {
       {role === 'customer' && (
         <div className={classes.header__wrapper}>
           <div className={classes.header__button}>
-            <Button onClick={onClickHandler} size="sm">
-              Call waiter
-            </Button>
+            <Bell className={classes.header__call} onClick={onClickHandler} />
           </div>
-          {/* {totalOrders > 0 && (
-            <Button
-              size="sm"
-              mode="outlined"
-              onClick={() => navigate(`/${restId}/tables/${tableId}/orders`)}
-            >
-              Orders: {totalOrders}
-            </Button>
-          )} */}
+          <OrdersButton restId={restId} tableId={tableId} />
         </div>
       )}
     </header>

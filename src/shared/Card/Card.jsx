@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { memo, useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
-import { BiSolidTrash, BiCommentAdd } from 'react-icons/bi';
+import { BiSolidTrash, BiSolidCommentAdd, BiSolidCommentCheck } from 'react-icons/bi';
 
 import css from './Card.module.scss';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
@@ -9,6 +9,8 @@ import { IconButton } from 'shared/IconButton/IconButton';
 import Status from 'shared/Status/Status';
 import StatusSelector from 'shared/StatusSelector/StatusSelector';
 import Dialog from 'components/Dialog/Dialog';
+import { useSelector } from 'react-redux';
+import { getProductFromState } from 'store/cart/cartSelectors';
 
 const variant = {
   order: 'order',
@@ -32,6 +34,9 @@ const Card = memo(
     changeStatusFunction,
     dishId,
   }) => {
+    const cart = useSelector(getProductFromState);
+    const exist = cart.some(({ id, comment }) => id === dishId && comment);
+
     const sum = (price * quantity).toFixed(2);
     const [isOpen, setIsOpen] = useState(false);
     return (
@@ -45,28 +50,25 @@ const Card = memo(
             <div className={css['card__flex-container']}>
               <h3 className={css['card__title']}>{title}</h3>
               {mode === variant.cart && (
-                <BiCommentAdd className={css['card__comment']} onClick={() => setIsOpen(true)} />
+                <>
+                  {exist ? (
+                    <BiSolidCommentCheck
+                      className={css['card__comment']}
+                      onClick={() => setIsOpen(true)}
+                    />
+                  ) : (
+                    <BiSolidCommentAdd
+                      className={css['card__comment']}
+                      onClick={() => setIsOpen(true)}
+                    />
+                  )}
+                </>
               )}
-
               {mode === variant.order && (
-                <div className={css['card__icon-wrapper']}>
-                  <Status statusCurrent={statusCurrent} />
-                </div>
-              )}
-              {mode === variant.waiter && (
-                <div className={css['card__status']}>
-                  <StatusSelector
-                    mode="dishes"
-                    itemId={dishId}
-                    currentStatus={currentSelectStatus}
-                    changeStatusFunction={changeStatusFunction}
-                  />
-                </div>
-              )}
-              {mode === variant.cart && (
-                <div className={css['card__icon-wrapper']}>
-                  <IconButton Svg={BiSolidTrash} size={20} onClick={onDelete} />
-                </div>
+                <>
+                  <IoIosClose className={css['card__icon']} />
+                  <p className={css['card__quantity']}>{quantity}</p>
+                </>
               )}
             </div>
 
@@ -80,22 +82,40 @@ const Card = memo(
                   <p className={css['card__quantity']}>{quantity}</p>
                 </>
               )}
-              {mode === variant.cook && (
+              {/* {mode === variant.cook && (
                 <>
                   <IoIosClose className={css['card__icon']} />
                   <p className={css['card__quantity']}>{quantity}</p>
                 </>
-              )}
+              )} */}
+
               {mode === variant.order && (
-                <>
-                  <IoIosClose className={css['card__icon']} />
-                  <p className={css['card__quantity']}>{quantity}</p>
-                </>
+                <div>
+                  <Status statusCurrent={statusCurrent} />
+                </div>
               )}
-
-              {mode === variant.cart && <p className={css['card__sum']}>${sum}</p>}
-
               {mode === variant.order && <p className={css['card__sum']}>${sum}</p>}
+              {mode === variant.waiter && (
+                <div className={css['card__status']}>
+                  <StatusSelector
+                    mode="dishes"
+                    itemId={dishId}
+                    currentStatus={currentSelectStatus}
+                    changeStatusFunction={changeStatusFunction}
+                  />
+                </div>
+              )}
+              {mode === variant.cart && (
+                <div className={css['card__icon-wrapper']}>
+                  <IconButton
+                    Svg={BiSolidTrash}
+                    size={20}
+                    onClick={onDelete}
+                    color={'var(--color-red)'}
+                  />
+                </div>
+              )}
+              {/* {mode === variant.cart && <p className={css['card__sum']}>${sum}</p>} */}
             </div>
           </div>
         </div>
