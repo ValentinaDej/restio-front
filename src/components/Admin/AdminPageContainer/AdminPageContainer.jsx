@@ -138,7 +138,7 @@ const AdminPageContainer = ({
           )}
         {variant === 'dish' &&
           data?.pages?.map((page) =>
-            page.data.dishes.map((item) => (
+            page.dishes.map((item) => (
               <li key={item._id} className={styles.card_wrapper}>
                 <EmployeeCard
                   data={item}
