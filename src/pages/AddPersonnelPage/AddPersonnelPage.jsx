@@ -60,18 +60,18 @@ const AddPersonnelPage = () => {
   const handleSubmit = async (formData) => {
     try {
       setIsSubmitting(true);
+      let response;
       if (personId) {
-        await updatePersonnel(personId, formData, restId);
-        toast.success('Personnel updated successfully');
+        response = await updatePersonnel(personId, formData, restId);
       } else {
-        await createPersonnel(formData, restId);
-        toast.success('Personnel added successfully');
+        response = await createPersonnel(formData, restId);
       }
       await queryClient.invalidateQueries('personnel');
-      handleBack();
+      if (response.status === 200) {
+        handleBack();
+      }
     } catch (error) {
       toast.error('Error saving or editing personnel');
-      console.error('Error saving personnel:', error);
     } finally {
       setIsSubmitting(false);
     }
