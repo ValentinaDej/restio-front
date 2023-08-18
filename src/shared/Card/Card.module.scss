@@ -64,4 +64,11 @@
   &__status {
     margin-left: auto;
   }
+  &__comment {
+    margin-left: 12px;
+    width: 24px;
+    height: 24px;
+    color: var(--color-orange);
+    cursor: pointer;
+  }
 }
