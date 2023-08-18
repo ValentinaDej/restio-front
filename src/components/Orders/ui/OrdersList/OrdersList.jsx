@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { useSelector } from 'react-redux';
 import { getIsLoading } from 'store/customer/orders/selectors';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import Loader from 'shared/Loader/Loader';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { useUpdateDishStatusByWaiter, useUpdateReadyDishesStatusesByWaiter } from 'api/order';
 import { useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const OrdersList = ({
   isWaiter,

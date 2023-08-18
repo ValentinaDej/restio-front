@@ -9,6 +9,7 @@ export const useGetOrdersByTableId = (restId, tableId) => {
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       refetchInterval: false,
+      cacheTime: 0,
     }
   );
   return queryResp;

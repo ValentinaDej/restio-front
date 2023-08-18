@@ -11,6 +11,7 @@ import { NavigateButtons } from './ui/NavigateButtons/NavigateButtons';
 import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import cls from './Order.module.scss';
 import Title from 'shared/Title/Title';
@@ -125,8 +126,13 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
         ) : !data?.orders?.length ? (
           <EmptyListBox params={params} isWaiter={isWaiter} />
         ) : (
-          <>
-            <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
+          <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}
+            >
               {!isWaiterDishesPage && (
                 <ListTopBox
                   orders={data?.orders || []}
@@ -150,7 +156,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 isWaiterDishesPage={isWaiterDishesPage}
                 sortOrderBy={sortOrderBy}
               />
-            </div>
+            </motion.div>
             {!isWaiterDishesPage && (
               <Checkout
                 amount={selectedTotal}
@@ -162,7 +168,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 paymentType={paymentType}
               />
             )}
-          </>
+          </AnimatePresence>
         )}
       </section>
     </>
