@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useQueryClient } from 'react-query';
 import Card from 'shared/Card/Card';
 import Title from 'shared/Title/Title';
 import Button from 'shared/Button/Button';
@@ -15,6 +15,7 @@ import { useState } from 'react';
 import Loader from 'shared/Loader/Loader';
 
 const Cart = () => {
+  const queryClient = useQueryClient();
   const { restId, tableId } = useParams();
   const dispatch = useDispatch();
   const cart = useSelector(getProductFromState);
@@ -30,6 +31,8 @@ const Cart = () => {
       };
       await createOrder(data, restId);
       dispatch(clearCart());
+      queryClient.invalidateQueries('orders');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       return toast.error('Something went wrong... Please call the waiter');
     } finally {
