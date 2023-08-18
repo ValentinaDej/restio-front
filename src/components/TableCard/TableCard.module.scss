@@ -1,6 +1,6 @@
 .table {
   width: 240px;
-  height: 265px;
+  height: 285px;
   background-color: #fdfcfc;
   border: dashed 1px rgb(212, 211, 211);
   border-radius: 30px;
@@ -10,7 +10,7 @@
   transition: 0.5s;
   box-shadow: 10px 10px 25px -24px rgba(0, 0, 0, 0.52);
 
-  &_pulsating {
+  &_Waiting {
     animation: pulse 2s infinite alternate;
   }
 
@@ -19,6 +19,11 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+  }
+
+  &__favorites {
+    display: flex;
+    align-items: center;
   }
 
   &__number {
@@ -43,43 +48,39 @@
 
   &__orders {
     // background-color: var(--color-gray-200);
-    border-radius: 10px;
-    padding: 0.5rem 0.5rem;
+    // border-radius: 10px;
+    // padding: 0.5rem 0.5rem;
   }
 
-  &__orders_title {
-    margin-bottom: 0.4rem;
-  }
-
-  &__order {
+  &__order_open {
     display: flex;
     flex-direction: row;
-    gap: 0.6rem;
+    padding: 0.5rem 0;
+  }
+
+  &__order_paid {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 0.5rem;
+    &:first-child {
+      padding-top: 0.5rem;
+    }
   }
 
   &__orders_list {
     display: flex;
-    flex-direction: row;
-    gap: 1rem;
+    flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-
-  &__item {
-    display: flex;
-    justify-content: space-around;
-    gap: 0.4rem;
+    height: 60px;
+    // gap: 1rem;
+    // margin-bottom: 1rem;
   }
 
   &__dishes {
     // margin-top: 1rem;
     // background-color: var(--color-gray-200);
     border-radius: 10px;
-    padding: 0 0.5rem;
-  }
-
-  &__dishes_title {
-    margin-bottom: 0.4rem;
+    // padding: 0 0.5rem;
   }
 
   &__dishes_list {
@@ -94,16 +95,43 @@
     margin-bottom: 0.3rem;
   }
 
-  &__dishes_content {
+  &__dishes_text {
     display: flex;
     flex-direction: row;
-    gap: 0.6rem;
+    padding: 0.5rem 0;
+    // gap: 0.6rem;
   }
 
   &__bottom {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    // justify-content: space-between;
     margin-top: 1rem;
+  }
+
+  &__btn_view_div {
+    // justify-self: flex-end;
+    // align-self: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  &__btn_view {
+    display: block;
+    width: 100%;
+    // font: inherit;
+    // cursor: pointer;
+    // border-radius: 30px;
+    // font-weight: var(--font-semi-bold);
+    // transition: all 0.3s ease 0s;
+    // color: var(--color-orange);
+    // background: none;
+    // &:hover,
+    // &:active {
+    //   background: 'red';
+    //   color: white;
+    // }
+    // font-size: 0.8rem;
+    // padding: 0.5rem 1.5rem;
   }
 
   &__seats {
@@ -114,6 +142,11 @@
     // background-color: var(--color-bg-dark);
     border-radius: 5px;
     gap: 0.3rem;
+  }
+
+  &__bot {
+    display: flex;
+    justify-content: space-between;
   }
 
   .line {
@@ -144,4 +177,30 @@
   100% {
     background-color: rgb(252, 177, 177);
   }
+}
+
+%status {
+  display: inline-block;
+  padding: 2px 5px;
+  font-size: 11px;
+  text-align: center;
+  font-weight: 500;
+  color: white;
+  border-radius: 30px;
+  min-width: 70px;
+}
+
+.unpaid {
+  background-color: #eb966a;
+  @extend %status;
+}
+
+.paid {
+  background-color: #72daba;
+  @extend %status;
+}
+
+.ready {
+  background-color: orange;
+  @extend %status;
 }
