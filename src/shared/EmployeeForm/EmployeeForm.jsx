@@ -81,11 +81,8 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
 
     delete data.image;
 
-    if (picture) {
-      onSubmit({ ...data, picture: picture.data.imageName });
-    } else {
-      onSubmit({ ...data, picture: '' });
-    }
+    onSubmit({ ...data, picture: picture });
+
     reset();
 
     fileUploaderRef.current.clearFile();

@@ -16,8 +16,6 @@ const AddPersonnelPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
 
-  void queryClient.invalidateQueries({ queryKey: ['new_personnel'] });
-
   const { data, isLoading } = useQuery(
     ['new_personnel', personId],
     () => getPersonnelById(personId, restId),
@@ -55,13 +53,13 @@ const AddPersonnelPage = () => {
   }, [personId]);
 
   const handleBack = () => {
+    void queryClient.invalidateQueries({ queryKey: ['new_personnel'] });
     navigate(-1);
   };
 
   const handleSubmit = async (formData) => {
     try {
       setIsSubmitting(true);
-      console.log('Form data:', formData);
       if (personId) {
         await updatePersonnel(personId, formData, restId);
         toast.success('Personnel updated successfully');
