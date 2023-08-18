@@ -41,10 +41,15 @@ const DishForm = ({
     reset,
     control,
   } = useForm({
-    defaultValues: initialState,
     shouldUseNativeValidation: false,
     mode: 'onBlur',
   });
+
+  useEffect(() => {
+    if (isEditing) {
+      reset(initialState);
+    }
+  }, [initialState, reset, isEditing]);
 
   const handleFormSubmit = async (data, event) => {
     event.preventDefault();
@@ -59,7 +64,6 @@ const DishForm = ({
       const { picture, ...dataWithoutPicture } = data;
       onSubmit({ ...dataWithoutPicture, ingredients: selectedIngredientIds });
     }
-    reset();
   };
 
   const cleareForm = () => {
@@ -373,7 +377,7 @@ DishForm.defaultProps = {
     vegetarian: false,
     spicy: false,
     pescatarian: false,
-    //portionWeight: '',
+    portionWeight: '',
     price: '',
     ingredients: [],
   },
