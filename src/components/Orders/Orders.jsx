@@ -16,6 +16,7 @@ import cls from './Order.module.scss';
 import Title from 'shared/Title/Title';
 
 const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
+  const [sortOrderBy, setSortOrderBy] = useState('None');
   const [paymentType, setPaymentType] = useState('');
   const [isMounted, setIsMounted] = useState(true);
   const [selectedTotal, setSelectedTotal] = useState(0);
@@ -101,7 +102,9 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
     <>
       {isWaiter && (
         <>
-          <Title textAlign={'left'}>{isWaiterDishesPage ? 'Table dishes' : 'Table checkout'}</Title>
+          <Title textAlign={'left'}>
+            {isWaiterDishesPage ? 'Orders dishes' : 'Orders payments'}
+          </Title>
           <hr className={cls.divider} />
         </>
       )}
@@ -111,6 +114,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
           isWaiter={isWaiter}
           notServedDishes={notServedDishes}
           notPaidOrders={notPaidOrders}
+          setSortOrderBy={setSortOrderBy}
         />
         {isLoading || isMounted ? (
           <OrderListSkeleton
@@ -144,6 +148,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 isSmall={isSmall}
                 isWaiter={isWaiter}
                 isWaiterDishesPage={isWaiterDishesPage}
+                sortOrderBy={sortOrderBy}
               />
             </div>
             {!isWaiterDishesPage && (

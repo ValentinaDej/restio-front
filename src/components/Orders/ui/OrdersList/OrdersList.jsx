@@ -7,15 +7,7 @@ import { useCallback, useState } from 'react';
 import Loader from 'shared/Loader/Loader';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { useUpdateDishStatusByWaiter, useUpdateReadyDishesStatusesByWaiter } from 'api/order';
-import Text from 'shared/Text/Text';
-import { DropDown } from 'shared/DropDown/DropDown';
 import { useLocation } from 'react-router-dom';
-
-const sortOptions = [
-  { value: 'None', label: 'Newest' },
-  { value: 'Open', label: 'Open' },
-  { value: 'Paid', label: 'Paid' },
-];
 
 export const OrdersList = ({
   isWaiter,
@@ -26,8 +18,8 @@ export const OrdersList = ({
   urlParams,
   isSmall,
   isWaiterDishesPage,
+  sortOrderBy,
 }) => {
-  const [sortOrderBy, setSortOrderBy] = useState('None');
   const { payment } = useSelector(getIsLoading);
   const { mutateAsync: mutateDishStatus } = useUpdateDishStatusByWaiter();
   const { mutate: mutateReadyDishesStatus } = useUpdateReadyDishesStatusesByWaiter();
@@ -106,14 +98,6 @@ export const OrdersList = ({
 
   return (
     <>
-      <div className={cls.sort}>
-        <Text>Sort by</Text>
-        <DropDown
-          options={sortOptions}
-          defaultValue="Newest"
-          onSelect={(e) => setSortOrderBy(e.value)}
-        />
-      </div>
       <ul className={cls.list}>{sortedOrders().map(renderOrder)}</ul>
       {payment && (
         <div className={cls.layout}>

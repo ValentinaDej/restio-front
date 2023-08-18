@@ -97,29 +97,31 @@ export const ListTopBox = ({
         </div>
       </div>
       <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
-        <BillDownload orders={orders || []} />
-        <Button
-          size={'sm'}
-          onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
-          mode={(!totalPrice || isLoading || (isWaiter && !paymentType)) && 'disabled'}
-          className={cls.btn}
-        >
-          {modalIsOpen ? (
-            <Loader size={'xs'} color={'#fff'} />
-          ) : (
-            <>
-              {isWaiter ? (
-                isLoading ? (
-                  <Loader size={'xs'} color={'#fff'} />
+        <div className={cls.btns}>
+          <BillDownload orders={orders || []} />
+          <Button
+            size={'sm'}
+            onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
+            mode={(!totalPrice || isLoading || (isWaiter && !paymentType)) && 'disabled'}
+            className={cls.btn}
+          >
+            {modalIsOpen ? (
+              <Loader size={'xs'} color={'#fff'} />
+            ) : (
+              <>
+                {isWaiter ? (
+                  isLoading ? (
+                    <Loader size={'xs'} color={'#fff'} />
+                  ) : (
+                    'Mark as paid all orders'
+                  )
                 ) : (
-                  'Mark as paid all orders'
-                )
-              ) : (
-                'Pay online'
-              )}
-            </>
-          )}
-        </Button>
+                  'Pay online'
+                )}
+              </>
+            )}
+          </Button>
+        </div>
         {isWaiter && (
           <div className={cls.checkboxes}>
             <CheckBox

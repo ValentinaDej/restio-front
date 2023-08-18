@@ -15,15 +15,17 @@
   }
 }
 
-.info {
+.leftBtns {
+  width: 100%;
   display: flex;
-  gap: 5px;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .waiterBtns {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 
   @media screen and (min-width: 600px) {
     flex-direction: row;
@@ -35,7 +37,7 @@
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  gap: 5px;
+  gap: 10px;
 }
 
 .iconBtn {
@@ -45,7 +47,7 @@
 .iconBtnValue {
   color: var(--color-status);
   position: absolute;
-  top: -12px;
+  top: -14px;
   right: -2px;
 }
 

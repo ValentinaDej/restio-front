@@ -1,4 +1,3 @@
-import { useGetStatistics } from 'api/restaurant';
 import { useParams } from 'react-router-dom';
 import Loader from 'shared/Loader/Loader';
 import cls from './StatisticsPage.module.scss';
@@ -6,11 +5,12 @@ import { Statisctics } from 'components/Statistics/Statisctics';
 import { DropDown } from 'shared/DropDown/DropDown';
 import { useEffect, useState } from 'react';
 import Title from 'shared/Title/Title';
+import { useGetTransactionsStatistics } from 'api/transactions';
 
 const StatisticsPage = () => {
   const { restId } = useParams();
   const [timestamp, setTimestamp] = useState('month');
-  const { data: data, isLoading, refetch } = useGetStatistics(restId, timestamp);
+  const { data: data, isLoading, refetch } = useGetTransactionsStatistics(restId, timestamp);
 
   useEffect(() => {
     if (timestamp) {
