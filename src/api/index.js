@@ -51,6 +51,7 @@ instance.interceptors.response.use(
       window.location.replace('/login');
     } else if (error.response.data.status === 401 || error.response.data.status === 500) {
       storage.removeItem('userData');
+      window.location.replace('/login');
     }
     return Promise.reject(error);
   }
