@@ -6,7 +6,7 @@
 .box {
   display: grid;
   justify-content: center;
-  gap: 15px;
+  gap: 25px;
 
   &.isWaiter {
     padding-bottom: 30px;
@@ -18,4 +18,13 @@
   border-radius: 5px;
   margin-top: 0.4rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.layout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-orange-transparent);
 }

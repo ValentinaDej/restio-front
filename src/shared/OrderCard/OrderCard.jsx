@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'shared/Card/Card';
-import Title from 'shared/Title/Title';
 import cls from './OrderCard.module.scss';
 import Status from 'shared/Status/Status';
 import Text from 'shared/Text/Text';
@@ -12,6 +11,7 @@ import { IconButton } from 'shared/IconButton/IconButton';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { getDate } from 'helpers/getDate';
 import Button from 'shared/Button/Button';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const OrderCard = memo(
   ({
@@ -67,95 +67,104 @@ const OrderCard = memo(
     );
 
     const isDishReady = orderItems.some(({ status }) => status === 'Ready');
-
     return (
-      <div className={classNames(cls.item, { [cls.isSmall]: isSmall })} ref={cardRef}>
-        <div className={cls.topBlock}>
-          <Title mode={'h3'} fontSize={12} textAlign="left" classname={cls.text}>
-            Order #{number}
-          </Title>
-          <div className={cls.dishes}>
-            <BiDish size={20} />
-            <Text fontWeight={700} classname={cls.text}>
-              {orderItems.reduce((acc, item) => acc + item.quantity, 0)}
-            </Text>
-          </div>
-          <Status statusCurrent={status} />
-        </div>
-        {isWaiter && (
-          <Text fontWeight={700} fontSize={12} textAlign="left" classname={cls.text}>
-            {getDate(created_at)}
-          </Text>
-        )}
-        <ul
-          className={classNames(cls.list, {
-            [cls.isSmall]: isSmall,
-            [cls.isWaiterDishesPage]: isWaiterDishesPage,
-          })}
+      <AnimatePresence>
+        <motion.div
+          layout
+          className={classNames(cls.item, { [cls.isSmall]: isSmall })}
+          ref={cardRef}
         >
-          {orderItems.map(({ dish: { _id, picture, name, price }, quantity, status }) => (
-            <li key={_id}>
-              <Card
-                src={picture}
-                title={name}
-                quantity={quantity}
-                price={price}
-                statusCurrent={status}
-                currentSelectStatus={status}
-                dishId={_id}
-                changeStatusFunction={onChangeStatusByWaiter}
-                mode={isWaiter && 'waiter'}
-              />
-            </li>
-          ))}
-        </ul>
-        {!isWaiterDishesPage && (
-          <>
-            <div className={classNames(cls.bottomBlock, { [cls.isSmall]: isSmall })}>
-              <Text
-                fontWeight={700}
-                classname={classNames(
-                  cls.total,
-                  { [cls.isSmall]: isSmall, [cls.isPaid]: status === 'Paid' },
-                  []
-                )}
-              >
-                Order total: ${totalPrice}
+          <div className={cls.topBlock}>
+            <Text fontWeight={700} classname={cls.text}>
+              Order #{number}
+            </Text>
+            <div className={cls.dishes}>
+              <BiDish size={20} />
+              <Text fontWeight={700} classname={cls.text}>
+                {orderItems.reduce((acc, item) => acc + item.quantity, 0)}
               </Text>
-
-              {status !== 'Paid' && (
-                <CheckBox
-                  label={'Select order'}
-                  className={classNames(cls.centered, { [cls.isSmall]: isSmall })}
-                  checked={isChecked}
-                  onChange={onChangeСheck}
-                  size={25}
-                />
-              )}
             </div>
-            {small && !isPayCard && (
-              <IconButton
-                className={classNames(cls.btn, { [cls.isSmall]: isSmall })}
-                size={28}
-                onClick={onClickMoreBtn}
-                Svg={BiChevronDown}
-                mode={'filled'}
-              />
-            )}
-          </>
-        )}
-        {isWaiterDishesPage && (
-          <div
-            className={classNames(cls.bottomBlock, {
+            <Status statusCurrent={status} />
+          </div>
+          {isWaiter && (
+            <Text fontWeight={700} textAlign="left" classname={cls.text}>
+              {getDate(created_at)}
+            </Text>
+          )}
+          <ul
+            className={classNames(cls.list, {
+              [cls.isSmall]: isSmall,
               [cls.isWaiterDishesPage]: isWaiterDishesPage,
             })}
           >
-            <Button size={'sm'} disabled={!isDishReady} onClick={() => onChangeAllReadyDishes(_id)}>
-              Mark all ready dishes as served
-            </Button>
-          </div>
-        )}
-      </div>
+            {orderItems.map(({ dish: { _id, picture, name, price }, quantity, status }) => (
+              <li key={_id}>
+                <Card
+                  src={picture}
+                  title={name}
+                  quantity={quantity}
+                  price={price}
+                  statusCurrent={status}
+                  currentSelectStatus={status}
+                  dishId={_id}
+                  changeStatusFunction={onChangeStatusByWaiter}
+                  mode={isWaiter && 'waiter'}
+                />
+              </li>
+            ))}
+          </ul>
+          {!isWaiterDishesPage && (
+            <>
+              <div className={classNames(cls.bottomBlock, { [cls.isSmall]: isSmall })}>
+                <Text
+                  fontWeight={700}
+                  classname={classNames(
+                    cls.total,
+                    { [cls.isSmall]: isSmall, [cls.isPaid]: status === 'Paid' },
+                    []
+                  )}
+                >
+                  Order total: ${totalPrice}
+                </Text>
+
+                {status !== 'Paid' && (
+                  <CheckBox
+                    label={'Select order'}
+                    className={classNames(cls.centered, { [cls.isSmall]: isSmall })}
+                    checked={isChecked}
+                    onChange={onChangeСheck}
+                    size={25}
+                  />
+                )}
+              </div>
+              {small && !isPayCard && (
+                <IconButton
+                  className={classNames(cls.btn, { [cls.isSmall]: isSmall })}
+                  size={28}
+                  onClick={onClickMoreBtn}
+                  Svg={BiChevronDown}
+                  mode={'filled'}
+                />
+              )}
+            </>
+          )}
+          {isWaiterDishesPage && (
+            <div
+              className={classNames(cls.bottomBlock, {
+                [cls.isWaiterDishesPage]: isWaiterDishesPage,
+              })}
+            >
+              <Button
+                size={'sm'}
+                disabled={!isDishReady}
+                onClick={() => onChangeAllReadyDishes(_id)}
+              >
+                Mark all ready dishes as served
+              </Button>
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
     );
   }
 );
@@ -166,7 +175,10 @@ OrderCard.propTypes = {
   status: PropTypes.string,
   isChecked: PropTypes.bool,
   onChange: PropTypes.func,
+  onChangeAllReadyDishes: PropTypes.func,
   small: PropTypes.bool,
+  isWaiterDishesPage: PropTypes.bool,
+  isPayCard: PropTypes.bool,
 };
 
 export default OrderCard;

@@ -1,21 +1,11 @@
+import { useLocation } from 'react-router-dom';
+import { useCallback } from 'react';
 import OrderCard from 'shared/OrderCard/OrderCard';
 import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
-import { useSelector } from 'react-redux';
-import { getIsLoading } from 'store/customer/orders/selectors';
-import { useCallback, useState } from 'react';
-import Loader from 'shared/Loader/Loader';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { useUpdateDishStatusByWaiter, useUpdateReadyDishesStatusesByWaiter } from 'api/order';
-import Text from 'shared/Text/Text';
-import { DropDown } from 'shared/DropDown/DropDown';
-import { useLocation } from 'react-router-dom';
-
-const sortOptions = [
-  { value: 'None', label: 'Newest' },
-  { value: 'Open', label: 'Open' },
-  { value: 'Paid', label: 'Paid' },
-];
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const OrdersList = ({
   isWaiter,
@@ -26,9 +16,8 @@ export const OrdersList = ({
   urlParams,
   isSmall,
   isWaiterDishesPage,
+  sortOrderBy,
 }) => {
-  const [sortOrderBy, setSortOrderBy] = useState('None');
-  const { payment } = useSelector(getIsLoading);
   const { mutateAsync: mutateDishStatus } = useUpdateDishStatusByWaiter();
   const { mutate: mutateReadyDishesStatus } = useUpdateReadyDishesStatusesByWaiter();
   const { pathname } = useLocation();
@@ -106,29 +95,22 @@ export const OrdersList = ({
 
   return (
     <>
-      <div className={cls.sort}>
-        <Text>Sort by</Text>
-        <DropDown
-          options={sortOptions}
-          defaultValue="Newest"
-          onSelect={(e) => setSortOrderBy(e.value)}
-        />
-      </div>
-      <ul className={cls.list}>{sortedOrders().map(renderOrder)}</ul>
-      {payment && (
-        <div className={cls.layout}>
-          <Loader />
-        </div>
-      )}
+      <AnimatePresence>
+        <motion.ul exit={{ opacity: 0, y: 20 }} className={cls.list}>
+          {sortedOrders().map(renderOrder)}
+        </motion.ul>
+      </AnimatePresence>
     </>
   );
 };
 
 OrdersList.propTypes = {
   isWaiter: PropTypes.bool,
+  isWaiterDishesPage: PropTypes.bool,
   orders: PropTypes.array,
   onChangeSelected: PropTypes.func,
   selectedTotal: PropTypes.number,
   selectedOrders: PropTypes.array,
   urlParams: PropTypes.object,
+  sortOrderBy: PropTypes.string,
 };

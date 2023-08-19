@@ -1,7 +1,6 @@
 .box {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 10px;
   margin-top: 20px;
   color: var(--color-blue-dark);
@@ -9,11 +8,9 @@
   border-radius: 10px;
   background-color: var(--color-white);
   height: 100%;
-  overflow-x: scroll;
-
-  @media screen and (min-width: 850px) {
-    overflow-x: hidden;
-  }
+  min-height: 350px;
+  overflow-y: hidden;
+  overflow-x: auto;
 }
 
 .text {
@@ -36,6 +33,8 @@
 }
 
 .th {
+  width: 150px;
+  max-width: 200px;
   position: relative;
   border-bottom: var(--border-primary);
   background: var(--color-bg-gray);
@@ -120,6 +119,7 @@
 
 .inputSelectBox {
   display: flex;
+  height: 30px;
   justify-content: space-around;
 }
 
@@ -146,8 +146,10 @@
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .dateIcon {
+  // background: transparent;
   color: var(--color-orange);
 }

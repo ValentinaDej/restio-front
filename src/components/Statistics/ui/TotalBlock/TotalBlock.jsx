@@ -1,5 +1,3 @@
-import Title from 'shared/Title/Title';
-import cls from './TotalBlock.module.scss';
 import {
   Area,
   AreaChart,
@@ -9,8 +7,10 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { memo } from 'react';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
+import { memo } from 'react';
+import Title from 'shared/Title/Title';
+import cls from './TotalBlock.module.scss';
 
 export const TotalBlock = memo(({ monthlyStatistics }) => {
   const data = monthlyStatistics;
