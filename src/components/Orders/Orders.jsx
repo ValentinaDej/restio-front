@@ -192,6 +192,8 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
 
 Orders.propTypes = {
   isWaiter: PropTypes.bool,
+  isSmall: PropTypes.bool,
+  isWaiterDishesPage: PropTypes.bool,
 };
 
 export default Orders;
