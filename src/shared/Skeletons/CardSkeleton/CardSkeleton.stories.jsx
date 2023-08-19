@@ -10,7 +10,7 @@ const meta = {
       type: 'string',
       defaultValue: 'order',
       description: 'Roles of app users',
-      options: ['order', 'cart', 'waiter', 'cook'],
+      options: ['order', 'cart', 'waiter'],
       control: {
         type: 'radio',
       },
@@ -33,11 +33,5 @@ export const Cart = {
 export const Waiter = {
   args: {
     mode: 'waiter',
-  },
-};
-
-export const Cook = {
-  args: {
-    mode: 'cook',
   },
 };

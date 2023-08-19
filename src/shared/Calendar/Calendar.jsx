@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import cls from './Calendar.module.scss';
 import { classNames } from 'helpers/classNames';
 import { DropDown } from 'shared/DropDown/DropDown';
+import cls from './Calendar.module.scss';
 
 const monthOptions = [
   { value: 0, label: 'January' },

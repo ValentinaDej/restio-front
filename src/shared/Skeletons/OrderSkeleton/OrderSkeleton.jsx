@@ -1,9 +1,10 @@
 import { classNames } from 'helpers/classNames';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import './OrderListSkeleton.scss';
+import './OrderSkeleton.scss';
 import cls from '../../OrderCard/OrderCard.module.scss';
 import ulCls from '../../../components/Orders/ui/OrdersList/OrderList.module.scss';
+import PropTypes from 'prop-types';
 
 const skeletonData = [
   { topBlockWidth: 180, bottomBlockWidth: 200 },
@@ -14,7 +15,7 @@ const skeletonData = [
   { topBlockWidth: 180, bottomBlockWidth: 220 },
 ];
 
-const OrderListSkeleton = ({ isSmall, isWaiter, isWaiterDishesPage }) => {
+const OrderSkeleton = ({ isSmall, isWaiter, isWaiterDishesPage }) => {
   const renderTopBlock = () => {
     return (
       <div className="topBox">
@@ -28,7 +29,6 @@ const OrderListSkeleton = ({ isSmall, isWaiter, isWaiterDishesPage }) => {
             <Skeleton width={300} height={15} containerClassName="text" />
           </>
         )}
-        <Skeleton width={100} height={30} containerClassName="text" />
       </div>
     );
   };
@@ -88,4 +88,9 @@ const OrderListSkeleton = ({ isSmall, isWaiter, isWaiterDishesPage }) => {
   );
 };
 
-export default OrderListSkeleton;
+OrderSkeleton.propTypes = {
+  isSmall: PropTypes.bool,
+  isWaiter: PropTypes.bool,
+};
+
+export default OrderSkeleton;

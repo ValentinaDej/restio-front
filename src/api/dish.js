@@ -24,15 +24,14 @@ export const getDishes = async (restId, category, type, pageParam, searchText) =
     let data = [];
     if (category) {
       data = await instance(
-        `/dishes/restaurant/${restId}?type=${category}&isActive=${type}&page=${pageParam}&limit=4&searchText=${searchText}`
+        `/dishes/restaurant/${restId}?type=${category}&isActive=${type}&page=${pageParam}&limit=11&searchText=${searchText}`
       );
     } else {
       data = await instance(
-        `/dishes/restaurant/${restId}?isActive=${type}&page=${pageParam}&limit=4&searchText=${searchText}`
+        `/dishes/restaurant/${restId}?isActive=${type}&page=${pageParam}&limit=11&searchText=${searchText}`
       );
     }
-
-    return data;
+    return data.data;
   } catch (error) {
     handleErrorResponse(error);
   }

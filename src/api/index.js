@@ -29,34 +29,29 @@ instance.interceptors.request.use(
   }
 );
 
-let tokenRefreshAttempts = 0;
-
 instance.interceptors.response.use(
   (response) => {
     return response;
   },
   async (error) => {
-    console.log(error);
-    if (
-      error.response.status === 401 ||
-      error.response.message === 'User authorization failed. Access denied.' ||
-      error.response.data.message === 'Request failed with status code 401'
-    ) {
-      if (tokenRefreshAttempts < 1) {
-        try {
-          tokenRefreshAttempts++;
-          const token = await getNewToken();
-          error.config.headers['Authorization'] = `Bearer ${token}`;
-          error.config.maxRedirects = 0;
-          return instance.request(error.config);
-        } catch {
-          storage.removeItem('userData');
-          window.location.replace('/login');
-        }
-      } else {
+    if (error.response.data.status === 401 && error.response.data.message === 'Token expired.') {
+      try {
+        const token = await getNewToken();
+        error.config.headers['Authorization'] = `Bearer ${token}`;
+        return instance.request(error.config);
+      } catch {
         storage.removeItem('userData');
         window.location.replace('/login');
       }
+    } else if (
+      error.response.data.status === 401 &&
+      error.response.data.message === 'User authorization failed. Access denied.'
+    ) {
+      storage.removeItem('userData');
+      window.location.replace('/login');
+    } else if (error.response.data.status === 401 || error.response.data.status === 500) {
+      storage.removeItem('userData');
+      window.location.replace('/login');
     }
     return Promise.reject(error);
   }

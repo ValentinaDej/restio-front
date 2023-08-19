@@ -16,6 +16,7 @@ import Cart from '../../components/Cart/Cart';
 import CategoryTabs from '../../shared/CategoryTabs/CategoryTabs';
 import { useQuery } from 'react-query';
 import { getDishesForMenu } from '../../api/dish';
+import Input from '../../shared/Input/Input';
 
 const AIAssistant = () => {
   const { restId, tableId } = useParams();
@@ -99,11 +100,15 @@ const AIAssistant = () => {
               <p className={styles.text}>
                 Are you a vegetarian? {answers.isVegan ? <FcApproval /> : <FcCancel />}
               </p>
-              <Button size={`sm`} onClick={() => setAnswers({ ...answers, isVegan: true })}>
+              <Button
+                mode={answers.isVegan ? `` : `outlined`}
+                size={`sm`}
+                onClick={() => setAnswers({ ...answers, isVegan: true })}
+              >
                 Yes
               </Button>
               <Button
-                mode={`outlined`}
+                mode={answers.isVegan ? `outlined` : ``}
                 size={`sm`}
                 onClick={() => setAnswers({ ...answers, isVegan: false })}
               >
@@ -114,11 +119,15 @@ const AIAssistant = () => {
               <p className={styles.text}>
                 Are you a pescatarian? {answers.isPasc ? <FcApproval /> : <FcCancel />}
               </p>
-              <Button size={`sm`} onClick={() => setAnswers({ ...answers, isPasc: true })}>
+              <Button
+                mode={answers.isPasc ? `` : `outlined`}
+                size={`sm`}
+                onClick={() => setAnswers({ ...answers, isPasc: true })}
+              >
                 Yes
               </Button>
               <Button
-                mode={`outlined`}
+                mode={answers.isPasc ? `outlined` : ``}
                 size={`sm`}
                 onClick={() => setAnswers({ ...answers, isPasc: false })}
               >
@@ -129,11 +138,15 @@ const AIAssistant = () => {
               <p className={styles.text}>
                 Do you like spicy food? {answers.likeSpicy ? <FcApproval /> : <FcCancel />}
               </p>
-              <Button size={`sm`} onClick={() => setAnswers({ ...answers, likeSpicy: true })}>
+              <Button
+                mode={answers.likeSpicy ? `` : `outlined`}
+                size={`sm`}
+                onClick={() => setAnswers({ ...answers, likeSpicy: true })}
+              >
                 Yes
               </Button>
               <Button
-                mode={`outlined`}
+                mode={answers.likeSpicy ? `outlined` : ``}
                 size={`sm`}
                 onClick={() => setAnswers({ ...answers, likeSpicy: false })}
               >
@@ -144,11 +157,15 @@ const AIAssistant = () => {
               <p className={styles.text}>
                 Do you want a healthy meal? {answers.wantHealthy ? <FcApproval /> : <FcCancel />}
               </p>
-              <Button size={`sm`} onClick={() => setAnswers({ ...answers, wantHealthy: true })}>
+              <Button
+                mode={answers.wantHealthy ? `` : `outlined`}
+                size={`sm`}
+                onClick={() => setAnswers({ ...answers, wantHealthy: true })}
+              >
                 Yes
               </Button>
               <Button
-                mode={`outlined`}
+                mode={answers.wantHealthy ? `outlined` : ``}
                 size={`sm`}
                 onClick={() => setAnswers({ ...answers, wantHealthy: false })}
               >
@@ -159,11 +176,15 @@ const AIAssistant = () => {
               <p className={styles.text}>
                 Would you like a drink? {answers.wantDrink ? <FcApproval /> : <FcCancel />}
               </p>
-              <Button size={`sm`} onClick={() => setAnswers({ ...answers, wantDrink: true })}>
+              <Button
+                mode={answers.wantDrink ? `` : `outlined`}
+                size={`sm`}
+                onClick={() => setAnswers({ ...answers, wantDrink: true })}
+              >
                 Yes
               </Button>
               <Button
-                mode={`outlined`}
+                mode={answers.wantDrink ? `outlined` : ``}
                 size={`sm`}
                 onClick={() => setAnswers({ ...answers, wantDrink: false })}
               >
@@ -174,16 +195,14 @@ const AIAssistant = () => {
         );
       case 2:
         return (
-          <main className={css.main}>
-            <div className={styles.stepContent}>
-              <Title className={styles.text}>
-                Choose the dishes you like. You can choose anything if you are not sure.
-              </Title>
-              <p className={styles.text}>
-                {' '}
-                It`s just a prototype to show the idea of the future development.
-              </p>
-            </div>
+          <div className={styles.stepContent}>
+            <Title className={styles.text}>
+              Choose the dishes you like. You can choose anything if you are not sure.
+            </Title>
+            <p className={styles.text}>
+              It`s just a prototype to show the idea of the future development.
+            </p>
+
             {isLoading ? (
               <Loader />
             ) : (
@@ -206,7 +225,7 @@ const AIAssistant = () => {
                 </ul>
               </div>
             )}
-          </main>
+          </div>
         );
       case 3:
         return (
@@ -214,6 +233,14 @@ const AIAssistant = () => {
             <p className={styles.text}>
               What is your budget? <FcMoneyTransfer />
             </p>
+            <Input
+              type="number"
+              min={10}
+              max={1000}
+              step={1}
+              value={answers.budget}
+              onChange={(e) => handleBudgetChange(e.target.value)}
+            />
             <div className={styles.budgetInput}>
               <div className={styles.sliderContainer}>
                 <input

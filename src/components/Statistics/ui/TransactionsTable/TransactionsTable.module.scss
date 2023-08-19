@@ -9,11 +9,9 @@
   border-radius: 10px;
   background-color: var(--color-white);
   height: 100%;
-  overflow-x: scroll;
-
-  @media screen and (min-width: 850px) {
-    overflow-x: hidden;
-  }
+  min-height: 400px;
+  overflow-y: hidden;
+  overflow-x: auto;
 }
 
 .text {
@@ -120,6 +118,7 @@
 
 .inputSelectBox {
   display: flex;
+  height: 30px;
   justify-content: space-around;
 }
 
@@ -146,8 +145,10 @@
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .dateIcon {
+  // background: transparent;
   color: var(--color-orange);
 }

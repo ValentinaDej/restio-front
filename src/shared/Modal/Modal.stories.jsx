@@ -10,6 +10,7 @@ const meta = {
       action: 'clicked',
       type: 'function',
       description: 'Function changes the modal state',
+      defaultValue: true,
     },
     children: {
       type: 'React.ReactNode',
@@ -23,11 +24,16 @@ const meta = {
       type: 'string',
       description: 'Always you write value - fixed',
     },
+    isModalOpen: {
+      type: 'boolean',
+      description: 'State of modal: open or not',
+      defaultValue: false,
+    },
   },
 };
 export default meta;
 
-const mockSetIsModalOpen = () => {
+const mockSetIsModalClose = () => {
   console.log('Modal is closed');
 };
 
@@ -40,15 +46,18 @@ const ModalContent = () => {
   );
 };
 
-const Template = (args) => (
-  <div style={{ width: '100%', height: '300px', position: 'relative' }}>
-    <Modal {...args} />
-  </div>
-);
+const Template = (args) => {
+  return (
+    <div style={{ width: '100%', height: '300px', position: 'relative' }}>
+      <Modal {...args} />
+    </div>
+  );
+};
 
 export const Default = Template.bind({});
 Default.args = {
-  setIsModalOpen: mockSetIsModalOpen,
+  setIsModalOpen: mockSetIsModalClose,
   children: <ModalContent />,
   position: 'relative',
+  isModalOpen: true,
 };

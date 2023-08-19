@@ -3,10 +3,17 @@ import cls from './NavigateButtons.module.scss';
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IconButton } from 'shared/IconButton/IconButton';
-import { BiDish, BiMoney } from 'react-icons/bi';
+import { BiDish, BiMoney, BiSolidPlusCircle } from 'react-icons/bi';
 import Text from 'shared/Text/Text';
+import { Filters } from '../Filters/Filters';
 
-export const NavigateButtons = ({ params, isWaiter, notServedDishes, notPaidOrders }) => {
+export const NavigateButtons = ({
+  params,
+  isWaiter,
+  notServedDishes,
+  notPaidOrders,
+  setSortOrderBy,
+}) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -27,9 +34,12 @@ export const NavigateButtons = ({ params, isWaiter, notServedDishes, notPaidOrde
 
   return (
     <div className={cls.navigateBtns}>
-      <Button size={'sm'} mode={'outlined'} onClick={navigateBack} className={cls.backBtn}>
-        Back
-      </Button>
+      <div className={cls.leftBtns}>
+        <Button size={'sm'} mode={'outlined'} onClick={navigateBack} className={cls.backBtn}>
+          Back
+        </Button>
+        <Filters setSortOrderBy={setSortOrderBy} />
+      </div>
       {isWaiter && (
         <div className={cls.waiterBtns}>
           <div className={cls.iconBtns}>
@@ -69,10 +79,13 @@ export const NavigateButtons = ({ params, isWaiter, notServedDishes, notPaidOrde
                 </Text>
               )}
             </div>
+            <IconButton
+              className={cls.icon}
+              Svg={BiSolidPlusCircle}
+              onClick={navigateToTableMenu}
+              mode={'outlined'}
+            />
           </div>
-          <Button size={'sm'} mode={'outlined'} onClick={navigateToTableMenu}>
-            Create order for table
-          </Button>
         </div>
       )}
     </div>

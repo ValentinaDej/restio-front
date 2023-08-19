@@ -2,8 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import styles from './DropDown.module.scss';
+import { classNames } from 'helpers/classNames';
 
-export const DropDown = ({ options, onSelect, defaultValue, clear }) => {
+export const DropDown = ({ options, onSelect, defaultValue, clear, className }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const dropdownRef = useRef(null);
@@ -39,8 +40,11 @@ export const DropDown = ({ options, onSelect, defaultValue, clear }) => {
   }, []);
 
   return (
-    <div ref={dropdownRef} className={styles['custom-dropdown']}>
-      <button className={styles['dropdown-toggle']} onClick={toggleDropdown}>
+    <div ref={dropdownRef} className={classNames(styles['custom-dropdown'], {}, [])}>
+      <button
+        className={classNames(styles['dropdown-toggle'], {}, [className])}
+        onClick={toggleDropdown}
+      >
         {selectedOption ? selectedOption.label : defaultValue}
         <MdKeyboardArrowDown className={styles['icon']} />
       </button>

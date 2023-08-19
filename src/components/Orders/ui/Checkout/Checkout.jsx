@@ -1,9 +1,8 @@
+import { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Text from 'shared/Text/Text';
-import cls from './Checkout.module.scss';
 import Button from 'shared/Button/Button';
 import { AiOutlineClose } from 'react-icons/ai';
-import { useState, useCallback, useEffect } from 'react';
 import { classNames } from 'helpers/classNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
@@ -13,6 +12,7 @@ import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/
 import { getUserId } from 'store/auth/authSelector';
 import { errorMessage } from 'helpers/errorMessage';
 import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
+import cls from './Checkout.module.scss';
 
 export const Checkout = ({
   isWaiter,
@@ -48,7 +48,6 @@ export const Checkout = ({
     if (data && signature) {
       location.href = `${process.env.REACT_APP_LIQPAY_BASE_URL}/checkout?data=${data}&signature=${signature}`;
     }
-
     if (isError) {
       errorMessage(error?.response.data.message);
     }
@@ -101,9 +100,15 @@ export const Checkout = ({
             mode="outlined"
           >
             {modalIsOpen ? (
-              <Loader size={'xs'} color={'#ea6a12'} />
+              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
             ) : (
-              <> {isLoading ? <Loader size={'xs'} /> : 'Mark as paid for selected'}</>
+              <>
+                {isLoading ? (
+                  <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
+                ) : (
+                  'Mark as paid for selected'
+                )}
+              </>
             )}
           </Button>
           <Button
@@ -112,7 +117,11 @@ export const Checkout = ({
             disabled={!isAllOrdersPaid}
             className={cls.btn}
           >
-            {isLoadingTableStatus ? <Loader size={'xs'} /> : 'Mark table as free'}
+            {isLoadingTableStatus ? (
+              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
+            ) : (
+              'Mark table as free'
+            )}
           </Button>
         </div>
         <ConfirmModal
@@ -166,4 +175,5 @@ Checkout.propTypes = {
   onChangeSelected: PropTypes.func,
   urlParams: PropTypes.object,
   isAllOrdersPaid: PropTypes.bool,
+  paymentType: PropTypes.string,
 };
