@@ -6,6 +6,7 @@ import { IconButton } from 'shared/IconButton/IconButton';
 import { BiDish, BiMoney, BiSolidPlusCircle } from 'react-icons/bi';
 import Text from 'shared/Text/Text';
 import { Filters } from '../Filters/Filters';
+import { Tooltip } from 'shared/Tooltip/Tooltip';
 
 export const NavigateButtons = ({
   params,
@@ -44,12 +45,16 @@ export const NavigateButtons = ({
         <div className={cls.waiterBtns}>
           <div className={cls.iconBtns}>
             <div className={cls.iconBtn}>
-              <IconButton
-                className={cls.icon}
-                Svg={BiDish}
-                mode={isWaiterDishesPage ? 'filled' : 'outlined'}
-                onClick={() => navigate(`/${params.restId}/waiter/tables/${params.tableId}/dishes`)}
-              />
+              <Tooltip content="Orders dishes">
+                <IconButton
+                  className={cls.icon}
+                  Svg={BiDish}
+                  mode={isWaiterDishesPage ? 'filled' : 'outlined'}
+                  onClick={() =>
+                    navigate(`/${params.restId}/waiter/tables/${params.tableId}/dishes`)
+                  }
+                />
+              </Tooltip>
               {notServedDishes !== 0 && (
                 <Text
                   textAlign={'center'}
@@ -62,12 +67,14 @@ export const NavigateButtons = ({
               )}
             </div>
             <div className={cls.iconBtn}>
-              <IconButton
-                className={cls.icon}
-                Svg={BiMoney}
-                mode={isWaiterPayPage ? 'filled' : 'outlined'}
-                onClick={() => navigate(`/${params.restId}/waiter/tables/${params.tableId}/pay`)}
-              />
+              <Tooltip content="Orders payments">
+                <IconButton
+                  className={cls.icon}
+                  Svg={BiMoney}
+                  mode={isWaiterPayPage ? 'filled' : 'outlined'}
+                  onClick={() => navigate(`/${params.restId}/waiter/tables/${params.tableId}/pay`)}
+                />
+              </Tooltip>
               {notPaidOrders !== 0 && (
                 <Text
                   textAlign={'center'}
@@ -79,12 +86,14 @@ export const NavigateButtons = ({
                 </Text>
               )}
             </div>
-            <IconButton
-              className={cls.icon}
-              Svg={BiSolidPlusCircle}
-              onClick={navigateToTableMenu}
-              mode={'outlined'}
-            />
+            <Tooltip content="Create order">
+              <IconButton
+                className={cls.icon}
+                Svg={BiSolidPlusCircle}
+                onClick={navigateToTableMenu}
+                mode={'outlined'}
+              />
+            </Tooltip>
           </div>
         </div>
       )}

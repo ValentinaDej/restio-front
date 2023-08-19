@@ -268,7 +268,7 @@ export const TransactionsTable = () => {
           className={cls.box}
         >
           <Modal isModalOpen={calendarIsOpen} setIsModalOpen={onClickCalendar}>
-            <Calendar isOpen={onClickCalendar} onChange={onChangeDate} />
+            <Calendar onChange={onChangeDate} newDate={date} />
           </Modal>
           <Title fontSize={22}>Table</Title>
           <div className={cls.btnsBox}>
