@@ -64,6 +64,7 @@ export const TransactionsTable = () => {
 
   const onChangeDate = (newDate) => {
     setDate(newDate);
+    setPagination({ pageIndex: 0, pageSize });
   };
 
   const onClickClearFilters = () => {
