@@ -12,6 +12,7 @@ const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg'];
 const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
   const [uploadedFile, setUploadedFile] = useState();
   const [previewUrl, setPreviewUrl] = useState(onEditPhoto);
+  
   const fileInputRef = useRef();
 
   const getFileExtension = (fileName) => {

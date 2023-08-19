@@ -1,4 +1,5 @@
-import { useQuery } from 'react-query';
+import { useQueryClient, useQueries } from 'react-query';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -28,40 +29,49 @@ const SUCCESS_MESSAGES = {
 const AddDishPage = () => {
   const { restId, dishesId } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const dishQuery = useQuery(['new_dish', dishesId], () => getDishById(dishesId), {
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchInterval: false,
-    enabled: !!dishesId,
-    onError: () => {
-      toast.error(ERROR_MESSAGES.fetchDish);
+  const queries = useQueries([
+    {
+      queryKey: ['new_dish', dishesId],
+      queryFn: () => (dishesId ? getDishById(dishesId) : null),
+      onError: () => {
+        toast.error(ERROR_MESSAGES.fetchDish);
+      },
     },
-  });
+    {
+      queryKey: 'ingredients',
+      queryFn: getIngredients,
+      onError: () => {
+        toast.error(ERROR_MESSAGES.fetchIngredients);
+      },
+    },
+  ]);
 
-  const IngredientsQuery = useQuery('ingredients', getIngredients, {
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchInterval: false,
-    onError: () => {
-      toast.error(ERROR_MESSAGES.fetchIngredients);
-    },
-  });
+  const dishQuery = queries[0];
+  const ingredientsQuery = queries[1];
 
   const handleBack = () => {
-    navigate(-1);
+    navigate(`/${restId}/admin/dishes/`, {
+      state: {
+        shouldUpdate: true,
+      },
+    });
   };
 
   const handleSubmit = async (formData) => {
     try {
       console.log('Form data:', formData);
       if (dishesId) {
-        await updateDishById(formData, dishesId);
+        await updateDishById(formData, dishesId, restId);
         toast.success(SUCCESS_MESSAGES.successfullyUpdated);
       } else {
         await createDish(formData, restId);
         toast.success(SUCCESS_MESSAGES.successfullyCreated);
       }
+      queryClient.invalidateQueries(['new_dish', dishesId]);
+      queryClient.invalidateQueries('ingredients');
+
       handleBack();
     } catch (error) {
       toast.error(ERROR_MESSAGES.savingEditing);
@@ -69,7 +79,7 @@ const AddDishPage = () => {
     }
   };
 
-  if (dishQuery.isLoading || IngredientsQuery.isLoading) {
+  if (dishQuery.isLoading || ingredientsQuery.isLoading) {
     return (
       <main className={styles.loadingWrapper}>
         <Loader />
@@ -81,7 +91,9 @@ const AddDishPage = () => {
     (dishQuery.data?.ingredients || []).map((ingredient) => [ingredient._id, ingredient.name])
   );
 
-  const initialData = {
+  let initialData = {};
+
+  initialData = {
     name: dishQuery.data?.name || '',
     spicy: dishQuery.data?.spicy || false,
     vegetarian: dishQuery.data?.vegetarian || false,
@@ -89,9 +101,12 @@ const AddDishPage = () => {
     isActive: dishQuery.data?.isActive || false,
     portionWeight: dishQuery.data?.portionWeight || '',
     price: dishQuery.data?.price || '',
-    picture: dishQuery.data?.picture || '',
     type: dishQuery.data?.type || '',
   };
+
+  if (dishQuery.data?.picture) {
+    initialData.picture = dishQuery.data.picture;
+  }
 
   const isEditing = Boolean(dishesId);
 
@@ -110,7 +125,7 @@ const AddDishPage = () => {
           <DishForm
             onSubmit={handleSubmit}
             category={DISH_CATEGORIES}
-            ingredientsList={IngredientsQuery.data}
+            ingredientsList={ingredientsQuery.data}
             selectedIngredientsMap={selectedIngredientsMap}
             initialState={initialData}
             isEditing={isEditing}

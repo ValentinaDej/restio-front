@@ -74,6 +74,12 @@ td {
   vertical-align: middle;
 }
 
+tr {
+  &:focus {
+    outline: 1px dotted var(--color-orange-hover);
+  }
+}
+
 .table__row > td:first-child {
   white-space: nowrap;
 }

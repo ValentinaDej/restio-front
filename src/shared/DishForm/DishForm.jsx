@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
@@ -41,25 +41,29 @@ const DishForm = ({
     reset,
     control,
   } = useForm({
-    defaultValues: initialState,
     shouldUseNativeValidation: false,
     mode: 'onBlur',
   });
 
+  useEffect(() => {
+    if (isEditing) {
+      reset(initialState);
+    }
+  }, [initialState, reset, isEditing]);
+
   const handleFormSubmit = async (data, event) => {
     event.preventDefault();
-
     const selectedIngredientIds = Array.from(selectedIngredients.keys());
     const picture = await fileUploaderRef.current.handleUpload();
+    delete data.image;
 
     if (picture) {
-      onSubmit({ ...data, picture: picture.data.imageName, ingredients: selectedIngredientIds });
+      onSubmit({ ...data, picture: picture, ingredients: selectedIngredientIds });
+      fileUploaderRef.current.clearFile();
     } else {
-      onSubmit({ ...data, picture: 'default.png', ingredients: selectedIngredientIds });
+      const { picture, ...dataWithoutPicture } = data;
+      onSubmit({ ...dataWithoutPicture, ingredients: selectedIngredientIds });
     }
-    reset();
-
-    fileUploaderRef.current.clearFile();
   };
 
   const cleareForm = () => {
@@ -154,12 +158,12 @@ const DishForm = ({
             validationRules={{
               required: 'Name is a required field',
               pattern: {
-                value: /^.{3,50}$/,
+                value: /^.{2,30}$/,
                 message: 'Invalid name',
               },
             }}
             register={register}
-            maxLength={100}
+            maxLength={30}
           />
 
           <div className={classes.column__wrapper}>
@@ -195,7 +199,7 @@ const DishForm = ({
               )}
               <DishTypeOptions register={register} />
               <div className={classes.img__wrapper}>
-                <FileUploader ref={fileUploaderRef} />
+                <FileUploader ref={fileUploaderRef} imageUrl={initialState.picture} />
               </div>
             </div>
             <div className={classes.column}>
@@ -352,8 +356,8 @@ DishForm.propTypes = {
     vegetarian: PropTypes.bool,
     spicy: PropTypes.bool,
     pescatarian: PropTypes.bool,
-    portionWeight: PropTypes.number,
-    price: PropTypes.number,
+    portionWeight: PropTypes.string,
+    price: PropTypes.string,
     ingredients: PropTypes.arrayOf(PropTypes.string),
   }),
   Ingredients: PropTypes.arrayOf(

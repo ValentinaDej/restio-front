@@ -32,6 +32,7 @@ const DishPage = () => {
   const { pathname } = useLocation();
   const sliderRef = useRef(null);
 
+  console.log('DishPage', dishId);
   const {
     isLoading,
     data: dish,
