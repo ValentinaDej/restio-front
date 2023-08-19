@@ -20,6 +20,7 @@ import { IoReturnDownBackOutline } from 'react-icons/io5';
 import { MdNavigateNext } from 'react-icons/md';
 import { MdNavigateBefore } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
+import { HfInference } from '@huggingface/inference';
 
 const DishPage = () => {
   const [dishQuantity, setDishQuantity] = useState(0);
@@ -31,6 +32,10 @@ const DishPage = () => {
   const storeData = useSelector(getProductFromState);
   const { pathname } = useLocation();
   const sliderRef = useRef(null);
+  const [generatedText, setGeneratedText] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [currentText, setCurrentText] = useState('');
+  const words = generatedText.split(' ');
 
   console.log('DishPage', dishId);
   const {
@@ -48,18 +53,25 @@ const DishPage = () => {
       for (const item of storeData) {
         idsToExclude.push(item.id);
       }
+      let filteredItems;
       idsToExclude.push(dishId);
-      const filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
-      if (filteredItems.length <= 3) {
+      if (dish?.vegetarian === true) {
+        let interimfilteredItems = data.filter((item) => item.vegetarian);
+        filteredItems = interimfilteredItems.filter((item) => !idsToExclude.includes(item._id));
+      } else {
+        filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
+      }
+
+      if (filteredItems.length <= 5) {
         setRecommendedDishes(filteredItems);
       } else {
         const first = Math.floor(Math.random() * (filteredItems.length - 5));
-        const second = first + 5;
+        const second = first + 4;
         let several = filteredItems.slice(first, second);
         setRecommendedDishes(several);
       }
     },
-    [storeData, dishId]
+    [storeData, dishId, dish]
   );
 
   const fetchDishesList = useCallback(async () => {
@@ -88,6 +100,57 @@ const DishPage = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  const generateText = useCallback(async () => {
+    if (dish) {
+      const key = process.env.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY2;
+      const hf = new HfInference(key);
+      const model = 'declare-lab/flan-alpaca-large';
+      // const text = 'Provide interesting facts about ${dish.name} meal';
+      // const text = `When does ${dish.name} dish was invented?`;
+      const text = `Create exquisite desription of ${dish.name}.`;
+      const response = await hf.textGeneration({
+        model: model,
+        inputs: text,
+        parameters: { max_new_tokens: 250 },
+      });
+      let textGen = response.generated_text;
+      const lastDotIndex = textGen.lastIndexOf('.');
+      let cuttedText = textGen.substring(0, lastDotIndex + 1);
+      setGeneratedText(cuttedText);
+      setIsLoaded(true);
+      console.log(cuttedText);
+      // let text =
+      //   'Caesar is a classic salad made with a vinaigrette of romaine lettuce, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with a vinaigrette of croutons, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with croutons, croutons, and a vinaigrette dressing.';
+      // const lastDotIndex = text.lastIndexOf('.');
+      // let cuttedText = text.substring(0, lastDotIndex + 1);
+      // setTimeout(() => {
+      //   setIsLoaded(true);
+      //   setGeneratedText(cuttedText);
+      // }, 7000);
+    }
+  }, [dish]);
+
+  useEffect(() => {
+    generateText();
+  }, [generateText]);
+
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index == 0) {
+        setCurrentText(words[index] + ' ');
+        index++;
+      } else if (index < words.length - 1) {
+        setCurrentText((prevText) => prevText + words[index] + ' ');
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 100);
+    setCurrentText('');
+    return () => clearInterval(interval);
+  }, [generatedText]);
+
   if (isLoading) {
     return <Loader size="lg"></Loader>;
   }
@@ -102,7 +165,7 @@ const DishPage = () => {
   };
 
   const increaseItem = () => {
-    const { picture: src, name: title, price, _id: id } = dish;
+    const { _id: id } = dish;
     dispatch(increaseQuantity(id));
   };
 
@@ -115,59 +178,37 @@ const DishPage = () => {
     const element = sliderRef.current;
     const elementWidth = element.getBoundingClientRect().width;
     console.log(elementWidth);
-    if (elementWidth > 445) {
-      const sliderWidth = 1510;
-      const scrollAmount = elementWidth * (1 / 3);
+    if (elementWidth > 375) {
+      const sliderWidth = 317 * recommendedDishes.length - 60;
+      console.log(sliderWidth);
+      let scrollAmount = elementWidth * (1 / 3);
       console.log(scrollAmount);
       let newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
-      console.log(newRightValue);
       const diff = sliderWidth - elementWidth - newRightValue;
-      console.log('disff:' + diff);
+      console.log('diff' + diff);
       if (diff < scrollAmount) {
         element.style.right = newRightValue + diff + 'px';
-      } else {
-        element.style.right = newRightValue + 'px';
-        return;
-      }
-    } else if (elementWidth < 445) {
-      const scrollAmount = elementWidth;
-      let newRightValue = parseFloat(getComputedStyle(element).right) + scrollAmount;
-      console.log(newRightValue);
-      if (newRightValue >= scrollAmount * 4) {
-        console.log('first');
-        return;
+        console.log('fisrs');
       } else {
         element.style.right = newRightValue + 'px';
         console.log('second');
+        return;
+      }
+    } else if (elementWidth < 375) {
+      const scrollAmount = elementWidth;
+      let newRightValue = parseFloat(getComputedStyle(element).right) + scrollAmount;
+      console.log(newRightValue);
+      if (newRightValue >= scrollAmount * recommendedDishes.length) {
+        return;
+      } else {
+        element.style.right = newRightValue + 'px';
       }
     }
-    // const scrollAmount = 260 + 25;
-    // const sliderWidth = 1500;
-    // console.log(sliderWidth);
-    // let newRightValue;
-    // if (elementWidth >= 900) {
-    //   element.style.right = sliderWidth - elementWidth + 'px';
-    //   return;
-    // }
-    // newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
-    // console.log(newRightValue);
-    // console.log('computed rest:' + (sliderWidth - elementWidth - newRightValue));
-    // if (sliderWidth - elementWidth - newRightValue <= 400) {
-    //   console.log('1 block');
-    //   element.style.right = newRightValue + (sliderWidth - elementWidth - newRightValue) + 'px';
-    // } else if (sliderWidth - elementWidth - newRightValue > 400) {
-    //   console.log('2 block');
-    //   element.style.right = newRightValue + 'px';
-    // }
   };
   const sliderBack = () => {
     const element = sliderRef.current;
-    console.log(element);
-    const elementWidth = element.getBoundingClientRect().width;
-    console.log(elementWidth);
     const scrollAmount = 350;
     const newRightValue = parseInt(getComputedStyle(element).right) - scrollAmount;
-    console.log(newRightValue);
     if (newRightValue <= 0) {
       element.style.right = 0 + 'px';
       element.style.transform = '1s ease';
@@ -182,7 +223,6 @@ const DishPage = () => {
           <NavigateButtons params={restId}>Back</NavigateButtons>
         </NavLink>
         <div className={classes.fullDish}>
-          <p className={classes.category}>{dish.type}</p>
           <div className={classes.dishInfoWarapper}>
             <img className={classes.dishImage} src={dish.picture} />
             <div className={classes.dishText}>
@@ -232,7 +272,7 @@ const DishPage = () => {
               <div className={`${classes.spicy_wrapper} ${classes.box} `}>
                 <div className={classes.spicy_item}>
                   <Text mode="p" classname={classes.subtitle}>
-                    Vegeterian
+                    Vegetarian
                   </Text>
                   <ul>
                     <li
@@ -307,6 +347,21 @@ const DishPage = () => {
                 </div>
               </div>
             </div>
+          </div>
+          <div className={classes.AIwrapper}>
+            <Text mode="p" classname={`${classes.subtitle} ${classes.AItitle}`}>
+              What does AI think about this dish:
+            </Text>
+            {isLoaded ? (
+              <Text mode="p" classname={classes.AItext}>
+                {currentText}
+                <span className={classes.cursor}></span>
+              </Text>
+            ) : (
+              <div className={classes.loader_AI}>
+                <Loader size="sm"></Loader>
+              </div>
+            )}
           </div>
         </div>
         <Cart />
