@@ -56,14 +56,16 @@ export const NavigateButtons = ({
                 />
               </Tooltip>
               {notServedDishes !== 0 && (
-                <Text
-                  textAlign={'center'}
-                  fontWeight={700}
-                  fontSize={14}
-                  classname={cls.iconBtnValue}
-                >
-                  {notServedDishes}
-                </Text>
+                <div className={cls.iconBtnBox}>
+                  <Text
+                    textAlign={'center'}
+                    fontWeight={700}
+                    fontSize={14}
+                    classname={cls.iconBtnValue}
+                  >
+                    {notServedDishes}
+                  </Text>
+                </div>
               )}
             </div>
             <div className={cls.iconBtn}>
@@ -76,14 +78,16 @@ export const NavigateButtons = ({
                 />
               </Tooltip>
               {notPaidOrders !== 0 && (
-                <Text
-                  textAlign={'center'}
-                  fontWeight={700}
-                  fontSize={14}
-                  classname={cls.iconBtnValue}
-                >
-                  {notPaidOrders}
-                </Text>
+                <div className={cls.iconBtnBox}>
+                  <Text
+                    textAlign={'center'}
+                    fontWeight={700}
+                    fontSize={14}
+                    classname={cls.iconBtnValue}
+                  >
+                    {notPaidOrders}
+                  </Text>
+                </div>
               )}
             </div>
             <Tooltip content="Create order">
