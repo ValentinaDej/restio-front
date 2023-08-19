@@ -89,6 +89,29 @@ const DishPage = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  const generateText = useCallback(async () => {
+    if (dish) {
+      // const key = process.env.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY2;
+      // const hf = new HfInference(key);
+      // const model = 'declare-lab/flan-alpaca-large';
+      // // const text = 'Provide interesting facts about ${dish.name} meal';
+      // // const text = `When does ${dish.name} dish was invented?`;
+      // const text = `Create exquisite desription of ${dish.name} dish.`;
+      // const response = await hf.textGeneration({
+      //   model: model,
+      //   inputs: text,
+      //   parameters: { max_new_tokens: 250 },
+      // });
+      // console.log(response);
+      // setGeneratedText(response.generated_text);
+      setGeneratedText(dish.name + 'fkgfktrtltklgk;lvkblkvsdeererfdfgfgghghghjghkапсмвав');
+    }
+  }, [dish]);
+
+  useEffect(() => {
+    generateText();
+  }, [generateText]);
+
   if (isLoading) {
     return <Loader size="lg"></Loader>;
   }
@@ -138,7 +161,6 @@ const DishPage = () => {
   };
   const sliderBack = () => {
     const element = sliderRef.current;
-    const elementWidth = element.getBoundingClientRect().width;
     const scrollAmount = 350;
     const newRightValue = parseInt(getComputedStyle(element).right) - scrollAmount;
     if (newRightValue <= 0) {
@@ -148,23 +170,6 @@ const DishPage = () => {
       element.style.right = newRightValue + 'px';
     }
   };
-  // Generate text
-  const generateText = async () => {
-    const key = process.env.HUGGINGFACE_API_KEY;
-    const hf = new HfInference(key);
-    const model = 'declare-lab/flan-alpaca-large';
-    // const text = 'Provide interesting facts about ${dish.name} meal';
-    // const text = `When does ${dish.name} dish was invented?`;
-    const text = `Create exquisite desription of ${dish.name} dish. `;
-    const response = await hf.textGeneration({
-      model: model,
-      inputs: text,
-      length: 250,
-      parameters: { max_new_tokens: 250 },
-    });
-    console.log(response);
-    setGeneratedText(response.generated_text);
-  };
   return (
     <>
       <main className={classes.dish}>
@@ -172,7 +177,7 @@ const DishPage = () => {
           <NavigateButtons params={restId}>Back</NavigateButtons>
         </NavLink>
         <div className={classes.fullDish}>
-          <p className={classes.category}>{dish.type}</p>
+          {/* <p className={classes.category}>{dish.type}</p> */}
           <div className={classes.dishInfoWarapper}>
             <img className={classes.dishImage} src={dish.picture} />
             <div className={classes.dishText}>
