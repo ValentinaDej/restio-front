@@ -1,20 +1,17 @@
 .status {
-  // width: 70px;
-  // padding: 3px 5px;
   color: #fff;
   background: green;
   display: flex;
   align-items: center;
   justify-content: center;
-  // border-radius: 12px;
   &_sm {
     width: 70px;
     padding: 3px 5px;
     border-radius: 20px;
   }
   &_lg {
-    width: 89px;
-    padding: 7px 5px;
-    border-radius: 12px;
+    width: 98px;
+    padding: 9px 2px;
+    border-radius: 20px;
   }
 }

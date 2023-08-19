@@ -199,18 +199,44 @@
     }
   }
 
-  .AIbutton {
-    width: 100%;
-    margin: 15px 0;
-    &:hover {
-      cursor: pointer;
-    }
+  .AIwrapper {
+    display: block;
+  }
+
+  .AItitle {
+    margin-bottom: 15px;
+    margin: -10px auto 10px;
+    width: fit-content;
+    text-align: center;
   }
 
   .AItext {
-    font-size: 1.1rem;
+    color: var(--color-orange);
+    width: 90%;
+    margin: 0 auto;
+    transition: 1s ease;
     text-align: justify;
-    color: var(--color-gray);
+  }
+
+  // .typewriter {
+  //   border-right: 0.15em solid orange;
+  //   overflow: hidden;
+  //   animation: pulse 1s ;
+  // }
+
+  .cursor {
+    border-right: 0.15em solid orange;
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
   }
 
   .arrowNext {
@@ -318,6 +344,14 @@
 
   .box {
     margin: 0.5rem 0;
+  }
+
+  .AItitle {
+    margin: 15px auto 10px;
+  }
+
+  .AItext {
+    width: 100%;
   }
 
   .recomWrapper {

@@ -4,6 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import './OrderListSkeleton.scss';
 import cls from '../../OrderCard/OrderCard.module.scss';
 import ulCls from '../../../components/Orders/ui/OrdersList/OrderList.module.scss';
+import PropTypes from 'prop-types';
 
 const skeletonData = [
   { topBlockWidth: 180, bottomBlockWidth: 200 },
@@ -14,16 +15,21 @@ const skeletonData = [
   { topBlockWidth: 180, bottomBlockWidth: 220 },
 ];
 
-const OrderListSkeleton = ({ isSmall, isWaiter }) => {
+const OrderListSkeleton = ({ isSmall, isWaiter, isWaiterDishesPage }) => {
   const renderTopBlock = () => {
     return (
       <div className="topBox">
-        <Skeleton width={200} height={25} containerClassName="text" />
-        <div className="topBoxBtns">
-          <Skeleton width={100} height={35} />
-          <Skeleton width={100} height={35} />
-        </div>
-        <Skeleton width={300} height={15} containerClassName="text" />
+        {isWaiterDishesPage ? null : (
+          <>
+            <Skeleton width={222} height={25} containerClassName="text" />
+            <div className="topBoxBtns">
+              <Skeleton width={150} height={40} borderRadius={10} />
+              <Skeleton width={150} height={40} borderRadius={10} />
+            </div>
+            <Skeleton width={300} height={15} containerClassName="text" />
+          </>
+        )}
+        <Skeleton width={100} height={30} containerClassName="text" />
       </div>
     );
   };
@@ -81,6 +87,11 @@ const OrderListSkeleton = ({ isSmall, isWaiter }) => {
       </div>
     </div>
   );
+};
+
+OrderListSkeleton.propTypes = {
+  isSmall: PropTypes.bool,
+  isWaiter: PropTypes.bool,
 };
 
 export default OrderListSkeleton;

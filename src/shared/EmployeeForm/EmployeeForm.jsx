@@ -81,11 +81,8 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
 
     delete data.image;
 
-    if (picture) {
-      onSubmit({ ...data, picture: picture.data.imageName });
-    } else {
-      onSubmit({ ...data, picture: '' });
-    }
+    onSubmit({ ...data, picture: picture });
+
     reset();
 
     fileUploaderRef.current.clearFile();
@@ -235,7 +232,7 @@ const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
           </div>
         </div>
         <div className={`${styles.field__wrapper} ${styles.fileUploader__wrapper}`}>
-          <FileUploader ref={fileUploaderRef} />
+          <FileUploader onEditPhoto={initialState.picture} ref={fileUploaderRef} />
         </div>
         <div className={styles.btn_group}>
           <Button type="submit" size={size} disabled={isSubmitting}>

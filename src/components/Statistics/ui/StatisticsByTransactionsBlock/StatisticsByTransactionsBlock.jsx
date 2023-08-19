@@ -36,10 +36,10 @@ export const StatisticsByTransactionsBlock = memo(({ monthlyStatistics }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="cash" fill="#3bb77e" />
+          <Bar dataKey="cash" fill="#69a6ce" />
           <Bar dataKey="pos" fill="#12cdea" />
           <Bar dataKey="online" fill="#eab012" />
-          <Bar dataKey="transactions" fill="#ea6a12" />
+          <Bar dataKey="transactions" fill={'var(--color-orange)'} />
         </BarChart>
       </ResponsiveContainer>
     </div>

@@ -1,6 +1,6 @@
 .table {
-  width: 240px;
-  height: 265px;
+  width: 230px;
+  height: 310px;
   background-color: #fdfcfc;
   border: dashed 1px rgb(212, 211, 211);
   border-radius: 30px;
@@ -10,7 +10,7 @@
   transition: 0.5s;
   box-shadow: 10px 10px 25px -24px rgba(0, 0, 0, 0.52);
 
-  &_pulsating {
+  &_Waiting {
     animation: pulse 2s infinite alternate;
   }
 
@@ -21,10 +21,14 @@
     margin-bottom: 1rem;
   }
 
+  &__favorites {
+    display: flex;
+    align-items: center;
+  }
+
   &__number {
     display: flex;
     padding: 0.3rem 0.2rem;
-    // background-color: var(--color-bg-dark);
     border-radius: 5px;
     gap: 0.3rem;
   }
@@ -33,106 +37,127 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // margin-bottom: 0.7rem;
   }
 
   &__mainBlock {
     flex: 1 1 auto;
-    // margin-top: 1rem;
   }
 
-  &__orders {
-    // background-color: var(--color-gray-200);
-    border-radius: 10px;
-    padding: 0.5rem 0.5rem;
+  &__emptyState {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  &__orders_title {
-    margin-bottom: 0.4rem;
+  &__orders_box {
+    display: flex;
   }
 
-  &__order {
+  &__orders_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px 0 20px;
+  }
+
+  &__order_open {
     display: flex;
     flex-direction: row;
-    gap: 0.6rem;
+    padding: 0.5rem 0;
+  }
+
+  &__order_paid {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 0.5rem;
+    &:first-child {
+      padding-top: 0.5rem;
+    }
   }
 
   &__orders_list {
     display: flex;
-    flex-direction: row;
-    gap: 1rem;
+    flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    height: 60px;
   }
 
-  &__item {
+  &__dishes_box {
     display: flex;
-    justify-content: space-around;
-    gap: 0.4rem;
   }
 
-  &__dishes {
-    // margin-top: 1rem;
-    // background-color: var(--color-gray-200);
-    border-radius: 10px;
-    padding: 0 0.5rem;
-  }
-
-  &__dishes_title {
-    margin-bottom: 0.4rem;
+  &__dishes_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px 0 20px;
   }
 
   &__dishes_list {
-    overflow: auto;
-    max-height: 65px;
-  }
-
-  &__dishes_item {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 0.3rem;
+    height: 60px;
   }
 
-  &__dishes_content {
+  &__dishes_ordered {
     display: flex;
     flex-direction: row;
-    gap: 0.6rem;
+    padding: 0.5rem 0;
+  }
+
+  &__dishes_ready {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 0.5rem;
+    &:first-child {
+      padding-top: 0.5rem;
+    }
   }
 
   &__bottom {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     margin-top: 1rem;
+  }
+
+  &__btn_view_div {
+    margin-bottom: 1rem;
+  }
+
+  &__btn_view {
+    display: block;
+    width: 100%;
   }
 
   &__seats {
     display: flex;
     align-items: center;
-    // justify-content: center;
     padding: 0 0.2rem;
-    // background-color: var(--color-bg-dark);
     border-radius: 5px;
     gap: 0.3rem;
+  }
+
+  &__bot {
+    display: flex;
+    justify-content: space-between;
   }
 
   .line {
     width: 100%;
     height: 1px;
     background: linear-gradient(to right, transparent 50%, rgb(212, 211, 211) 50%);
-    background-size: 5px 1px; /* Width: 2px, Height: 1px */
-    background-repeat: repeat-x; /* Repeat horizontally */
-    // margin-top: 0.7rem;
+    background-size: 5px 1px;
+    background-repeat: repeat-x;
   }
 }
 
 @media (min-width: 992px) {
   .table {
     &:hover {
-      // transition: 0.7s;
       background-color: rgba(255, 255, 255, 0.8);
       box-shadow: 10px 12px 40px -24px rgba(0, 0, 0, 0.52);
-      // cursor: pointer;
     }
   }
 }
@@ -142,6 +167,39 @@
     background-color: var(--color-bg);
   }
   100% {
-    background-color: rgb(252, 177, 177);
+    background-color: rgb(255, 198, 198);
   }
+}
+
+%status {
+  display: inline-block;
+  padding: 2px 5px;
+  font-size: 11px;
+  text-align: center;
+  font-weight: 500;
+  color: white;
+  border-radius: 30px;
+  min-width: 70px;
+  margin-right: 15px;
+  cursor: context-menu;
+}
+
+.unpaid {
+  background-color: #eb966a;
+  @extend %status;
+}
+
+.paid {
+  background-color: #72daba;
+  @extend %status;
+}
+
+.ready {
+  background-color: orange;
+  @extend %status;
+}
+
+.disable {
+  background-color: var(--color-gray-400);
+  @extend %status;
 }

@@ -1,0 +1,166 @@
+/* AIAssistant.module.scss */
+
+.formStepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align content to the top vertically */
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 255, 0, 0.5);
+  padding: 20px;
+  max-width: 1200px;
+  margin: 2rem auto; /* Center the form horizontally */
+
+  .stepIndicator {
+    display: flex;
+    align-items: center;
+
+    .stepBubble {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 10px;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+
+      &.activeStep {
+        background-color: var(--color-green);
+        color: #fff;
+      }
+    }
+
+    .prototypeBubble {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: rgba(255, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 10px;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+
+      &.activeStep {
+        background-color: var(--color-red);
+        color: var(--color-white);
+      }
+    }
+  }
+
+  .stepContent {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    transition: 2s;
+
+    & h2 h1 h3 {
+      padding: 2rem;
+    }
+  }
+
+  .questionContent {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Adjust the width as needed */
+    margin-bottom: 20px;
+    transition: 1s;
+
+    & button {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+    }
+  }
+
+  .centerContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.text {
+  font-size: 1.4rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.responseText {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 80%; /* Adjust the width as needed */
+  text-align: center;
+  transition: 1s;
+
+  // If you want to add more spacing around the text content, you can adjust padding.
+  // padding: 1.5rem;
+}
+
+.budgetInput {
+  width: 100%;
+}
+
+.sliderContainer {
+  flex: 2; /* Increase flex value for a longer slider */
+  position: relative;
+  margin: 1rem 0 1rem 0;
+}
+
+input[type='range'] {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px; /* Increase height for a bigger slider */
+  border-radius: 4px; /* Adjust border radius */
+  background: #ccc;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px; /* Increase thumb size */
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-green);
+  cursor: pointer;
+}
+
+.budgetValue {
+  font-size: 1.5rem;
+  font-family: monospace;
+  color: #555;
+}
+
+.nextBtn {
+  margin: 1rem;
+}
+
+.assistantLogo {
+  margin-top: 1rem;
+}
+
+.backButton {
+  margin: 1rem;
+}

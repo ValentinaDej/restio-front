@@ -1,6 +1,6 @@
 import axios from 'axios';
 import storage from 'utils/storage';
-import { getNewToken } from './auth';
+import { getNewToken, getToken } from './auth';
 
 export const BASE_URL =
   process.env.NODE_ENV === 'development'
@@ -11,16 +11,14 @@ export const instance = axios.create({
   baseURL: BASE_URL,
 });
 
+const authRoutes = ['personnel', 'dishes', 'orders', 'tables', 'transactions'];
+
 instance.interceptors.request.use(
   (request) => {
-    if (
-      request.url.includes('admin') ||
-      request.url.includes('waiter') ||
-      request.url.includes('cook')
-    ) {
-      const auth = storage.getItem('userData');
-      if (auth?.token && request.headers) {
-        request.headers['Authorization'] = `Bearer ${auth.token}`;
+    if (authRoutes.some((route) => request.url.includes(route))) {
+      const token = getToken();
+      if (token && request.headers) {
+        request.headers['Authorization'] = `Bearer ${token}`;
       }
     }
 
@@ -36,16 +34,24 @@ instance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    if (error.response.status === 401 || error.response.data.message === '401 Unauthorized') {
+    if (error.response.data.status === 401 && error.response.data.message === 'Token expired.') {
       try {
         const token = await getNewToken();
         error.config.headers['Authorization'] = `Bearer ${token}`;
-        return axios.request(error.config);
-      } catch (refreshError) {
+        return instance.request(error.config);
+      } catch {
         storage.removeItem('userData');
         window.location.replace('/login');
-        return Promise.reject({ message: 'Please login again.' });
       }
+    } else if (
+      error.response.data.status === 401 &&
+      error.response.data.message === 'User authorization failed. Access denied.'
+    ) {
+      storage.removeItem('userData');
+      window.location.replace('/login');
+    } else if (error.response.data.status === 401 || error.response.data.status === 500) {
+      storage.removeItem('userData');
+      window.location.replace('/login');
     }
     return Promise.reject(error);
   }

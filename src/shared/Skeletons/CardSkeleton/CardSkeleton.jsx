@@ -12,16 +12,26 @@ const variant = {
   cook: 'cook',
 };
 
-const CardSkeleton = ({ mode = variant.order, ...props }) => {
+const CardSkeleton = ({ mode = variant.order }) => {
   return (
     <div className={css['card']}>
       <div className={css['card__image-container']}>
-        <Skeleton circle height="100%" />
+        <Skeleton width="100%" height="100%" />
       </div>
       <div className={css['card__wrapper']}>
         <div className={css['card__flex-container']}>
           <Skeleton width={100} height={20} />
 
+          {mode === variant.order && (
+            <div className={css['card__icon-wrapper']}>
+              <Skeleton width={30} height={20} />
+            </div>
+          )}
+          {mode === variant.waiter && (
+            <div className={css['card__status']}>
+              <Skeleton width={30} height={20} />
+            </div>
+          )}
           {mode === variant.cart && (
             <div className={css['card__icon-wrapper']} style={{ marginRight: 0 }}>
               <Skeleton width={30} height={20} />
@@ -48,11 +58,6 @@ const CardSkeleton = ({ mode = variant.order, ...props }) => {
           {mode === variant.order && <Skeleton width={30} height={20} />}
         </div>
       </div>
-      {mode === variant.waiter && (
-        <div className={`${styles.cardSkeleton__waiter}`}>
-          <Skeleton circle width={30} height={30} />
-        </div>
-      )}
     </div>
   );
 };

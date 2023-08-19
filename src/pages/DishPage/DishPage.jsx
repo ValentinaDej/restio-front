@@ -33,7 +33,9 @@ const DishPage = () => {
   const { pathname } = useLocation();
   const sliderRef = useRef(null);
   const [generatedText, setGeneratedText] = useState('');
-  let inputText = 'Once upon a time';
+  const [currentText, setCurrentText] = useState('');
+  const words = generatedText.split(' ');
+
   const {
     isLoading,
     data: dish,
@@ -96,21 +98,44 @@ const DishPage = () => {
       // const model = 'declare-lab/flan-alpaca-large';
       // // const text = 'Provide interesting facts about ${dish.name} meal';
       // // const text = `When does ${dish.name} dish was invented?`;
-      // const text = `Create exquisite desription of ${dish.name} dish.`;
+      // const text = `Create exquisite desription of ${dish.name}.`;
       // const response = await hf.textGeneration({
       //   model: model,
       //   inputs: text,
       //   parameters: { max_new_tokens: 250 },
       // });
-      // console.log(response);
-      // setGeneratedText(response.generated_text);
-      setGeneratedText(dish.name + 'fkgfktrtltklgk;lvkblkvsdeererfdfgfgghghghjghkапсмвав');
+      // let textGen = response.generated_text;
+      // const lastDotIndex = textGen.lastIndexOf('.');
+      // let cuttedText = textGen.substring(0, lastDotIndex + 1);
+      // setGeneratedText(cuttedText);
+      let text =
+        'Caesar is a classic salad made with a vinaigrette of romaine lettuce, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with a vinaigrette of croutons, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with croutons, croutons, and a vinaigrette dressing.';
+      const lastDotIndex = text.lastIndexOf('.');
+      let cuttedText = text.substring(0, lastDotIndex + 1);
+      setGeneratedText(cuttedText);
     }
   }, [dish]);
 
   useEffect(() => {
     generateText();
   }, [generateText]);
+
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index == 0) {
+        setCurrentText(words[index] + ' ');
+        index++;
+      } else if (index < words.length - 1) {
+        setCurrentText((prevText) => prevText + words[index] + ' ');
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 100);
+    setCurrentText('');
+    return () => clearInterval(interval);
+  }, [generatedText]);
 
   if (isLoading) {
     return <Loader size="lg"></Loader>;
@@ -126,7 +151,7 @@ const DishPage = () => {
   };
 
   const increaseItem = () => {
-    const { picture: src, name: title, price, _id: id } = dish;
+    const { _id: id } = dish;
     dispatch(increaseQuantity(id));
   };
 
@@ -177,7 +202,6 @@ const DishPage = () => {
           <NavigateButtons params={restId}>Back</NavigateButtons>
         </NavLink>
         <div className={classes.fullDish}>
-          {/* <p className={classes.category}>{dish.type}</p> */}
           <div className={classes.dishInfoWarapper}>
             <img className={classes.dishImage} src={dish.picture} />
             <div className={classes.dishText}>
@@ -303,10 +327,15 @@ const DishPage = () => {
               </div>
             </div>
           </div>
-          <Button onClick={generateText} className={classes.AIbutton}>
-            Generate AI dish description
-          </Button>
-          <p className={classes.AItext}>{generatedText}</p>
+          <div className={classes.AIwrapper}>
+            <Text mode="p" classname={`${classes.subtitle} ${classes.AItitle}`}>
+              What does AI think about this dish:
+            </Text>
+            <Text mode="p" classname={classes.AItext}>
+              {currentText}
+              <span className={classes.cursor}></span>
+            </Text>
+          </div>
         </div>
         <Cart />
         <div className={classes.recommended_block}>

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { MdRestaurantMenu, MdTableBar } from 'react-icons/md';
 import { FaMoneyBillTrendUp } from 'react-icons/fa6';
@@ -16,16 +16,22 @@ import { getRestaurantId } from 'store/auth/authSelector';
 import { logout } from 'store/auth/authSlice';
 import { useQuery } from 'react-query';
 import { getRestaurant } from 'api/restaurant';
+import { useGetOrdersByTableId } from 'api/order';
 
 const Header = ({ role }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const restaurantId = useSelector(getRestaurantId);
 
   const { pathname } = useLocation();
   const arrParams = pathname.split('/');
-  const restId = arrParams[1];
 
+  const restId = arrParams[1];
   const tableId = arrParams[3];
+
+  // const { data: orders } = useGetOrdersByTableId({ restId, tableId });
+  // const totalOrders = orders?.data?.orders.length;
+
   const { isError, isLoading, data } = useQuery(
     ['restaurant', restId],
     async () => await getRestaurant(restId),
@@ -94,12 +100,15 @@ const Header = ({ role }) => {
               Call waiter
             </Button>
           </div>
-          <NavLink
-            to={`/${restId}/tables/${tableId}/orders`}
-            className={classes['header__link-button']}
-          >
-            Orders
-          </NavLink>
+          {/* {totalOrders > 0 && (
+            <Button
+              size="sm"
+              mode="outlined"
+              onClick={() => navigate(`/${restId}/tables/${tableId}/orders`)}
+            >
+              Orders: {totalOrders}
+            </Button>
+          )} */}
         </div>
       )}
     </header>

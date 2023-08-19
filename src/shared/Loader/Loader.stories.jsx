@@ -10,7 +10,7 @@ const meta = {
       type: 'string',
       description: 'Loader size options',
       defaultValue: 'sm',
-      options: ['md', 'sm', 'lg'],
+      options: ['md', 'sm', 'lg', 'xs'],
       control: { type: 'radio' },
     },
   },
@@ -20,6 +20,11 @@ const Template = (args) => <Loader {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   size: 'sm',
+};
+
+export const VerySmallLoader = Template.bind({});
+VerySmallLoader.args = {
+  size: 'xs',
 };
 
 export const MediumLoader = Template.bind({});
