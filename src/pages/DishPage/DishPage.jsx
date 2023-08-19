@@ -149,7 +149,7 @@ const DishPage = () => {
     }, 100);
     setCurrentText('');
     return () => clearInterval(interval);
-  }, [generatedText]);
+  }, [generatedText, words]);
 
   if (isLoading) {
     return <Loader size="lg"></Loader>;
