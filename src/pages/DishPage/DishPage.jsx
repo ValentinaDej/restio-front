@@ -33,6 +33,7 @@ const DishPage = () => {
   const { pathname } = useLocation();
   const sliderRef = useRef(null);
   const [generatedText, setGeneratedText] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
   const [currentText, setCurrentText] = useState('');
   const words = generatedText.split(' ');
 
@@ -51,18 +52,25 @@ const DishPage = () => {
       for (const item of storeData) {
         idsToExclude.push(item.id);
       }
+      let filteredItems;
       idsToExclude.push(dishId);
-      const filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
-      if (filteredItems.length <= 3) {
+      if (dish?.vegetarian === true) {
+        let interimfilteredItems = data.filter((item) => item.vegetarian);
+        filteredItems = interimfilteredItems.filter((item) => !idsToExclude.includes(item._id));
+      } else {
+        filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
+      }
+
+      if (filteredItems.length <= 5) {
         setRecommendedDishes(filteredItems);
       } else {
         const first = Math.floor(Math.random() * (filteredItems.length - 5));
-        const second = first + 5;
+        const second = first + 4;
         let several = filteredItems.slice(first, second);
         setRecommendedDishes(several);
       }
     },
-    [storeData, dishId]
+    [storeData, dishId, dish]
   );
 
   const fetchDishesList = useCallback(async () => {
@@ -93,26 +101,31 @@ const DishPage = () => {
 
   const generateText = useCallback(async () => {
     if (dish) {
-      // const key = process.env.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY2;
-      // const hf = new HfInference(key);
-      // const model = 'declare-lab/flan-alpaca-large';
-      // // const text = 'Provide interesting facts about ${dish.name} meal';
-      // // const text = `When does ${dish.name} dish was invented?`;
-      // const text = `Create exquisite desription of ${dish.name}.`;
-      // const response = await hf.textGeneration({
-      //   model: model,
-      //   inputs: text,
-      //   parameters: { max_new_tokens: 250 },
-      // });
-      // let textGen = response.generated_text;
-      // const lastDotIndex = textGen.lastIndexOf('.');
-      // let cuttedText = textGen.substring(0, lastDotIndex + 1);
-      // setGeneratedText(cuttedText);
-      let text =
-        'Caesar is a classic salad made with a vinaigrette of romaine lettuce, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with a vinaigrette of croutons, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with croutons, croutons, and a vinaigrette dressing.';
-      const lastDotIndex = text.lastIndexOf('.');
-      let cuttedText = text.substring(0, lastDotIndex + 1);
+      const key = process.env.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY2;
+      const hf = new HfInference(key);
+      const model = 'declare-lab/flan-alpaca-large';
+      // const text = 'Provide interesting facts about ${dish.name} meal';
+      // const text = `When does ${dish.name} dish was invented?`;
+      const text = `Create exquisite desription of ${dish.name}.`;
+      const response = await hf.textGeneration({
+        model: model,
+        inputs: text,
+        parameters: { max_new_tokens: 250 },
+      });
+      let textGen = response.generated_text;
+      const lastDotIndex = textGen.lastIndexOf('.');
+      let cuttedText = textGen.substring(0, lastDotIndex + 1);
       setGeneratedText(cuttedText);
+      setIsLoaded(true);
+      console.log(cuttedText);
+      // let text =
+      //   'Caesar is a classic salad made with a vinaigrette of romaine lettuce, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with a vinaigrette of croutons, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with croutons, croutons, and a vinaigrette dressing.';
+      // const lastDotIndex = text.lastIndexOf('.');
+      // let cuttedText = text.substring(0, lastDotIndex + 1);
+      // setTimeout(() => {
+      //   setIsLoaded(true);
+      //   setGeneratedText(cuttedText);
+      // }, 7000);
     }
   }, [dish]);
 
@@ -163,21 +176,28 @@ const DishPage = () => {
   const sliderNext = () => {
     const element = sliderRef.current;
     const elementWidth = element.getBoundingClientRect().width;
-    if (elementWidth > 445) {
-      const sliderWidth = 1510;
-      const scrollAmount = elementWidth * (1 / 3);
+    console.log(elementWidth);
+    if (elementWidth > 375) {
+      const sliderWidth = 317 * recommendedDishes.length - 60;
+      console.log(sliderWidth);
+      let scrollAmount = elementWidth * (1 / 3);
+      console.log(scrollAmount);
       let newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
       const diff = sliderWidth - elementWidth - newRightValue;
+      console.log('diff' + diff);
       if (diff < scrollAmount) {
         element.style.right = newRightValue + diff + 'px';
+        console.log('fisrs');
       } else {
         element.style.right = newRightValue + 'px';
+        console.log('second');
         return;
       }
-    } else if (elementWidth < 445) {
+    } else if (elementWidth < 375) {
       const scrollAmount = elementWidth;
       let newRightValue = parseFloat(getComputedStyle(element).right) + scrollAmount;
-      if (newRightValue >= scrollAmount * 4) {
+      console.log(newRightValue);
+      if (newRightValue >= scrollAmount * recommendedDishes.length) {
         return;
       } else {
         element.style.right = newRightValue + 'px';
@@ -251,7 +271,7 @@ const DishPage = () => {
               <div className={`${classes.spicy_wrapper} ${classes.box} `}>
                 <div className={classes.spicy_item}>
                   <Text mode="p" classname={classes.subtitle}>
-                    Vegeterian
+                    Vegetarian
                   </Text>
                   <ul>
                     <li
@@ -331,10 +351,16 @@ const DishPage = () => {
             <Text mode="p" classname={`${classes.subtitle} ${classes.AItitle}`}>
               What does AI think about this dish:
             </Text>
-            <Text mode="p" classname={classes.AItext}>
-              {currentText}
-              <span className={classes.cursor}></span>
-            </Text>
+            {isLoaded ? (
+              <Text mode="p" classname={classes.AItext}>
+                {currentText}
+                <span className={classes.cursor}></span>
+              </Text>
+            ) : (
+              <div className={classes.loader_AI}>
+                <Loader size="sm"></Loader>
+              </div>
+            )}
           </div>
         </div>
         <Cart />
