@@ -23,19 +23,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 5px;
 
   @media screen and (min-width: 768px) {
     gap: 10px;
   }
 
-  &__top {
-    position: relative;
-    width: 160px;
-  }
-
   &__text {
     font-size: 20px;
-    margin-bottom: 5px;
     text-align: start;
 
     @media screen and (min-width: 320px) and (max-width: 374px) {
@@ -44,7 +40,6 @@
 
     @media screen and (min-width: 375px) {
       font-size: 24px;
-      margin-bottom: 8px;
     }
   }
 
@@ -95,7 +90,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 26px;
   }
 
   &__data {
@@ -118,21 +113,10 @@
 }
 
 .comment {
-  height: 40px;
+  height: 50px;
 
   @media screen and (min-width: 320px) and (max-width: 374px) {
     height: 50px;
-  }
-}
-
-.btn__comment {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-
-  @media screen and (min-width: 320px) and (max-width: 374px) {
-    top: -18px;
-    right: -10px;
   }
 }
 

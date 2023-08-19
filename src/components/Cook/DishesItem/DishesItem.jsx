@@ -6,7 +6,7 @@ import { IoIosClose } from 'react-icons/io';
 import { useMediaQuery } from 'react-responsive';
 import Text from 'shared/Text/Text';
 import { MdTableBar } from 'react-icons/md';
-import { BiDish, BiMessage } from 'react-icons/bi';
+import { BiDish } from 'react-icons/bi';
 import { useState } from 'react';
 
 const DishesItem = ({
@@ -21,7 +21,6 @@ const DishesItem = ({
   comment,
 }) => {
   const { restId } = useParams();
-  const [openComment, setOpenComment] = useState(false);
 
   const isMobile = useMediaQuery({
     query: '(max-width: 767px)',
@@ -34,19 +33,7 @@ const DishesItem = ({
   return (
     <li className={`${styles.item}`}>
       <div className={`${styles.information}`}>
-        <div className={`${styles.information__top}`}>
-          <Text classname={`${styles.information__text}`}>{dish.name}</Text>
-          {comment && (
-            <button
-              type="button"
-              aria-label="open comment"
-              className={`${styles.btn__comment}`}
-              onClick={() => setOpenComment((prevState) => !prevState)}
-            >
-              <BiMessage size={24} color={'#ff000068'} />
-            </button>
-          )}
-        </div>
+        <Text classname={`${styles.information__text}`}>{dish.name}</Text>
 
         <div className={`${styles.information__quantity}`}>
           <IoIosClose size={24} />
@@ -60,7 +47,7 @@ const DishesItem = ({
           </div>
         </div>
       </div>
-      <div className={`${styles.comment}`}>{comment && openComment && <p>{comment}</p>}</div>
+      <div className={`${styles.comment}`}>{comment && <p>{comment}</p>}</div>
       <div>
         <div className={`${styles.information__order}`}>
           <div className={`${styles.information__data}`}>
