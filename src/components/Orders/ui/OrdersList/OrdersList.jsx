@@ -3,9 +3,6 @@ import { useCallback } from 'react';
 import OrderCard from 'shared/OrderCard/OrderCard';
 import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
-import { useSelector } from 'react-redux';
-import { getIsLoading } from 'store/customer/orders/selectors';
-import Loader from 'shared/Loader/Loader';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { useUpdateDishStatusByWaiter, useUpdateReadyDishesStatusesByWaiter } from 'api/order';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -21,7 +18,6 @@ export const OrdersList = ({
   isWaiterDishesPage,
   sortOrderBy,
 }) => {
-  const { payment } = useSelector(getIsLoading);
   const { mutateAsync: mutateDishStatus } = useUpdateDishStatusByWaiter();
   const { mutate: mutateReadyDishesStatus } = useUpdateReadyDishesStatusesByWaiter();
   const { pathname } = useLocation();
@@ -104,11 +100,6 @@ export const OrdersList = ({
           {sortedOrders().map(renderOrder)}
         </motion.ul>
       </AnimatePresence>
-      {payment && (
-        <div className={cls.layout}>
-          <Loader />
-        </div>
-      )}
     </>
   );
 };

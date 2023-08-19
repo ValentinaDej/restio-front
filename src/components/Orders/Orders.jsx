@@ -14,6 +14,9 @@ import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
 import cls from './Order.module.scss';
 import Title from 'shared/Title/Title';
+import Loader from 'shared/Loader/Loader';
+import { getIsLoading } from 'store/customer/orders/selectors';
+import { useSelector } from 'react-redux';
 
 const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   const [sortOrderBy, setSortOrderBy] = useState('None');
@@ -26,6 +29,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   const [notPaidOrders, setNotPaidOrders] = useState(0);
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [isAllOrdersPaid, setIsAllOrdersPaid] = useState(false);
+  const { payment } = useSelector(getIsLoading);
   const params = useParams();
   const { tableId } = params;
 
@@ -125,7 +129,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
         ) : !data?.orders?.length ? (
           <AnimatePresence>
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-              <EmptyListBox params={params} isWaiter={isWaiter} />
+              <EmptyListBox params={params} isWaiter={isWaiter} key={'emptyBox'} />
             </motion.div>
           </AnimatePresence>
         ) : (
@@ -173,6 +177,11 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 paymentType={paymentType}
                 key={'checkout'}
               />
+            )}
+            {payment && (
+              <div className={cls.layout} key={'loader'}>
+                <Loader />
+              </div>
             )}
           </AnimatePresence>
         )}

@@ -48,7 +48,6 @@ export const Checkout = ({
     if (data && signature) {
       location.href = `${process.env.REACT_APP_LIQPAY_BASE_URL}/checkout?data=${data}&signature=${signature}`;
     }
-
     if (isError) {
       errorMessage(error?.response.data.message);
     }

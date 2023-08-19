@@ -20,11 +20,11 @@ const customerOrdersSlice = createSlice({
         state.isLoading.payment = true;
       })
       .addCase(payOrders.fulfilled, (state, action) => {
-        // state.isLoading.payment = false;
+        state.isLoading.payment = false;
         state.paymentInfo = action.payload;
       })
       .addCase(payOrders.rejected, (state, action) => {
-        // state.isLoading.payment = false;
+        state.isLoading.payment = false;
         state.error = action.payload;
       });
   },
