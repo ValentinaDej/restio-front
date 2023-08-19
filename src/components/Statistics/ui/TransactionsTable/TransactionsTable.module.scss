@@ -145,8 +145,10 @@
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .dateIcon {
+  // background: transparent;
   color: var(--color-orange);
 }
