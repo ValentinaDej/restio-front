@@ -6,7 +6,8 @@ import { IoIosClose } from 'react-icons/io';
 import { useMediaQuery } from 'react-responsive';
 import Text from 'shared/Text/Text';
 import { MdTableBar } from 'react-icons/md';
-import { BiDish } from 'react-icons/bi';
+import { BiDish, BiMessage } from 'react-icons/bi';
+import { useState } from 'react';
 
 const DishesItem = ({
   dish,
@@ -17,8 +18,10 @@ const DishesItem = ({
   tableNumber,
   orderNumber,
   create,
+  comment,
 }) => {
   const { restId } = useParams();
+  const [openComment, setOpenComment] = useState(false);
 
   const isMobile = useMediaQuery({
     query: '(max-width: 767px)',
@@ -31,7 +34,21 @@ const DishesItem = ({
   return (
     <li className={`${styles.item}`}>
       <div className={`${styles.information}`}>
-        <Text classname={`${styles.information__text}`}>{dish.name}</Text>
+        <div style={{ position: 'relative', width: '160px' }}>
+          <Text classname={`${styles.information__text}`}>{dish.name}</Text>
+          {comment && (
+            <button
+              type="button"
+              aria-label="open comment"
+              className={`${styles.btn__comment}`}
+              onClick={() => setOpenComment((prevState) => !prevState)}
+            >
+              <BiMessage size={24} color={'#789940'} />
+            </button>
+          )}
+          <div className={`${styles.comment}`}>{comment && openComment && <p>{comment}</p>}</div>
+        </div>
+
         <div className={`${styles.information__quantity}`}>
           <IoIosClose size={24} />
           <Text classname={`${styles.information__text}`}>{quantity}</Text>
@@ -44,6 +61,7 @@ const DishesItem = ({
           </div>
         </div>
       </div>
+
       <div className={`${styles.information__order}`}>
         <div className={`${styles.information__data}`}>
           <MdTableBar size={24} color={'#959895'} />
@@ -92,6 +110,7 @@ DishesItem.propTypes = {
   tableNumber: PropTypes.number.isRequired,
   orderNumber: PropTypes.string.isRequired,
   create: PropTypes.string.isRequired,
+  comment: PropTypes.string,
 };
 
 export default DishesItem;
