@@ -34,7 +34,7 @@ const DishesItem = ({
   return (
     <li className={`${styles.item}`}>
       <div className={`${styles.information}`}>
-        <div style={{ position: 'relative', width: '160px' }}>
+        <div className={`${styles.information__top}`}>
           <Text classname={`${styles.information__text}`}>{dish.name}</Text>
           {comment && (
             <button
@@ -43,10 +43,9 @@ const DishesItem = ({
               className={`${styles.btn__comment}`}
               onClick={() => setOpenComment((prevState) => !prevState)}
             >
-              <BiMessage size={24} color={'#789940'} />
+              <BiMessage size={24} color={'#ff000068'} />
             </button>
           )}
-          <div className={`${styles.comment}`}>{comment && openComment && <p>{comment}</p>}</div>
         </div>
 
         <div className={`${styles.information__quantity}`}>
@@ -61,38 +60,40 @@ const DishesItem = ({
           </div>
         </div>
       </div>
+      <div className={`${styles.comment}`}>{comment && openComment && <p>{comment}</p>}</div>
+      <div>
+        <div className={`${styles.information__order}`}>
+          <div className={`${styles.information__data}`}>
+            <MdTableBar size={24} color={'#959895'} />
+            <span>{tableNumber}</span>
+          </div>
+          <div className={`${styles.information__data}`}>
+            <BiDish size={24} color={'#959895'} />
+            <span>{orderNumber}</span>
+          </div>
+        </div>
 
-      <div className={`${styles.information__order}`}>
-        <div className={`${styles.information__data}`}>
-          <MdTableBar size={24} color={'#959895'} />
-          <span>{tableNumber}</span>
-        </div>
-        <div className={`${styles.information__data}`}>
-          <BiDish size={24} color={'#959895'} />
-          <span>{orderNumber}</span>
-        </div>
+        {status !== 'In progress' && (
+          <Button
+            onClick={() => handleChangeStatus(restId, orderId, dish._id, 'In progress')}
+            mode="outlined"
+            size={sizeButton}
+            className={`${styles.button}`}
+          >
+            {status === 'Ordered' ? 'Start cooking' : 'Return to сooking'}
+          </Button>
+        )}
+        {status === 'In progress' && (
+          <Button
+            onClick={() => handleChangeStatus(restId, orderId, dish._id, 'Ready')}
+            mode="outlined"
+            size={sizeButton}
+            className={`${styles.button}`}
+          >
+            Dish ready
+          </Button>
+        )}
       </div>
-
-      {status !== 'In progress' && (
-        <Button
-          onClick={() => handleChangeStatus(restId, orderId, dish._id, 'In progress')}
-          mode="outlined"
-          size={sizeButton}
-          className={`${styles.button}`}
-        >
-          {status === 'Ordered' ? 'Start cooking' : 'Return to сooking'}
-        </Button>
-      )}
-      {status === 'In progress' && (
-        <Button
-          onClick={() => handleChangeStatus(restId, orderId, dish._id, 'Ready')}
-          mode="outlined"
-          size={sizeButton}
-          className={`${styles.button}`}
-        >
-          Dish ready
-        </Button>
-      )}
     </li>
   );
 };
