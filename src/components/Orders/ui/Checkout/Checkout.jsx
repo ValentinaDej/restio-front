@@ -1,9 +1,8 @@
+import { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Text from 'shared/Text/Text';
-import cls from './Checkout.module.scss';
 import Button from 'shared/Button/Button';
 import { AiOutlineClose } from 'react-icons/ai';
-import { useState, useCallback, useEffect } from 'react';
 import { classNames } from 'helpers/classNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
@@ -13,6 +12,7 @@ import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/
 import { getUserId } from 'store/auth/authSelector';
 import { errorMessage } from 'helpers/errorMessage';
 import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
+import cls from './Checkout.module.scss';
 
 export const Checkout = ({
   isWaiter,

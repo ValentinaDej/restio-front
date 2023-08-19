@@ -1,4 +1,6 @@
 .list {
+  height: 100%;
+  min-height: 250px;
   display: grid;
   justify-content: center;
   grid-template-columns: auto;

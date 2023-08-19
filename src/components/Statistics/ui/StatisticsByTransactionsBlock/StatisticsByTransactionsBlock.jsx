@@ -9,8 +9,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import cls from './StatisticsByTransactionsBlock.module.scss';
 import Title from 'shared/Title/Title';
+import cls from './StatisticsByTransactionsBlock.module.scss';
 
 export const StatisticsByTransactionsBlock = memo(({ monthlyStatistics }) => {
   const data = monthlyStatistics;

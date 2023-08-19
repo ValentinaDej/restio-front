@@ -1,18 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
 import { useSSE } from 'react-hooks-sse';
 import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
 import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
 import OrderListSkeleton from 'shared/Skeletons/OrderSkeleton/OrderSkeleton';
-import PropTypes from 'prop-types';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { useGetOrdersByTableId } from 'api/order';
 import { NavigateButtons } from './ui/NavigateButtons/NavigateButtons';
 import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
-import { motion, AnimatePresence } from 'framer-motion';
-
 import cls from './Order.module.scss';
 import Title from 'shared/Title/Title';
 
@@ -36,7 +35,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   };
   const updateDishStatusEvent = useSSE('dish status');
 
-  const { data: { data } = {}, isError, isLoading, refetch } = useGetOrdersByTableId(params);
+  const { data: { data } = {}, isLoading, refetch } = useGetOrdersByTableId(params);
 
   useEffect(() => {
     if (updateDishStatusEvent && updateDishStatusEvent.message) {
@@ -124,7 +123,11 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
             isWaiterDishesPage={isWaiterDishesPage}
           />
         ) : !data?.orders?.length ? (
-          <EmptyListBox params={params} isWaiter={isWaiter} />
+          <AnimatePresence>
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+              <EmptyListBox params={params} isWaiter={isWaiter} />
+            </motion.div>
+          </AnimatePresence>
         ) : (
           <AnimatePresence>
             <motion.div

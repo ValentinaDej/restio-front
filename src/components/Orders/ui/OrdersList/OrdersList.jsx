@@ -1,13 +1,14 @@
+import { useLocation } from 'react-router-dom';
+import { useCallback } from 'react';
 import OrderCard from 'shared/OrderCard/OrderCard';
 import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { useSelector } from 'react-redux';
 import { getIsLoading } from 'store/customer/orders/selectors';
-import { useCallback } from 'react';
 import Loader from 'shared/Loader/Loader';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { useUpdateDishStatusByWaiter, useUpdateReadyDishesStatusesByWaiter } from 'api/order';
-import { useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const OrdersList = ({
   isWaiter,
@@ -98,7 +99,11 @@ export const OrdersList = ({
 
   return (
     <>
-      <ul className={cls.list}>{sortedOrders().map(renderOrder)}</ul>
+      <AnimatePresence>
+        <motion.ul exit={{ opacity: 0, y: 20 }} className={cls.list}>
+          {sortedOrders().map(renderOrder)}
+        </motion.ul>
+      </AnimatePresence>
       {payment && (
         <div className={cls.layout}>
           <Loader />
