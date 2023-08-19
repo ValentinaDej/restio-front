@@ -40,13 +40,6 @@ const orderItem = {
   quantity: 2,
   status: 'Served',
 };
-export const Default = {
-  args: {
-    _id: '2',
-    orderItems: [orderItem, orderItem, orderItem, orderItem, orderItem, orderItem, orderItem],
-    status: 'Open',
-  },
-};
 
 export const Small = {
   args: {
@@ -62,5 +55,7 @@ export const Success = {
     _id: '2',
     orderItems: [orderItem, orderItem, orderItem, orderItem, orderItem, orderItem, orderItem],
     status: 'Paid',
+    isWaiter: true,
+    created_at: new Date('2023-07-28T12:00:00Z'),
   },
 };
