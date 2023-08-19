@@ -100,11 +100,11 @@ export const Checkout = ({
             mode="outlined"
           >
             {modalIsOpen ? (
-              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
+              <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
             ) : (
               <>
                 {isLoading ? (
-                  <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
+                  <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
                 ) : (
                   'Mark as paid for selected'
                 )}
@@ -118,7 +118,7 @@ export const Checkout = ({
             className={cls.btn}
           >
             {isLoadingTableStatus ? (
-              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
+              <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
             ) : (
               'Mark table as free'
             )}

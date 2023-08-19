@@ -6,6 +6,10 @@
   @media screen and (min-width: 700px) {
     gap: 20px;
   }
+
+  // &.isWaiter{
+  //   min-height: 135px;
+  // }
 }
 
 .btn {
@@ -54,6 +58,6 @@
 }
 
 .loader {
-  color: #000000;
+  color: var(--color-status);
   height: 100%;
 }

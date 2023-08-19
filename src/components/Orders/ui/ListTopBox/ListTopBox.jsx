@@ -71,7 +71,7 @@ export const ListTopBox = ({
   }, [isConfirmed, mutate, onChangeSelected]);
 
   return (
-    <div className={cls.box}>
+    <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
       <div>
         <div className={cls.totalText}>
           {totalPrice === 0 ? (
@@ -108,16 +108,12 @@ export const ListTopBox = ({
                 className={cls.btn}
               >
                 {modalIsOpen ? (
-                  <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
+                  <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
                 ) : (
                   <>
                     {isWaiter ? (
                       isLoading ? (
-                        <Loader
-                          size={'xs'}
-                          color={'var(--color-gray-700)'}
-                          className={cls.loader}
-                        />
+                        <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
                       ) : (
                         'Mark as paid all orders'
                       )
