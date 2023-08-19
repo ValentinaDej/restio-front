@@ -9,9 +9,10 @@ import styles from './FileUploader.module.scss';
 
 const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg'];
 
-const FileUploader = forwardRef(({ size, imageUrl }, ref) => {
+const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
   const [uploadedFile, setUploadedFile] = useState();
-  const [previewUrl, setPreviewUrl] = useState(imageUrl || '');
+  const [previewUrl, setPreviewUrl] = useState(onEditPhoto);
+  
   const fileInputRef = useRef();
 
   const getFileExtension = (fileName) => {

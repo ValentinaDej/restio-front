@@ -1,10 +1,19 @@
-import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
-import { getDate } from 'helpers/getDate';
-import { useGetTransactions } from 'api/transactions';
 import { useParams } from 'react-router-dom';
+import { useGetTransactions } from 'api/transactions';
+import Button from 'shared/Button/Button';
+import { Calendar } from 'shared/Calendar/Calendar';
+import { CheckBox } from 'shared/CheckBox/CheckBox';
 import cls from './TransactionsTable.module.scss';
+import { getDate } from 'helpers/getDate';
+import { DropDown } from 'shared/DropDown/DropDown';
 import { IconButton } from 'shared/IconButton/IconButton';
+import Loader from 'shared/Loader/Loader';
+import Modal from 'shared/Modal/Modal';
+import { RxCross2 } from 'react-icons/rx';
+import Text from 'shared/Text/Text';
+import Title from 'shared/Title/Title';
 import {
   TfiAngleDoubleLeft,
   TfiAngleDoubleRight,
@@ -12,16 +21,8 @@ import {
   TfiAngleRight,
   TfiCalendar,
 } from 'react-icons/tfi';
-import { RxCross2 } from 'react-icons/rx';
 import { TbMoodSearch } from 'react-icons/tb';
-import Text from 'shared/Text/Text';
-import Loader from 'shared/Loader/Loader';
-import { DropDown } from 'shared/DropDown/DropDown';
-import Title from 'shared/Title/Title';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
-import { Calendar } from 'shared/Calendar/Calendar';
-import Modal from 'shared/Modal/Modal';
-import Button from 'shared/Button/Button';
+import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
 
 const typeOfTransactionFilterOptions = [
   { value: 'all', label: 'All' },
@@ -63,6 +64,7 @@ export const TransactionsTable = () => {
 
   const onChangeDate = (newDate) => {
     setDate(newDate);
+    setPagination({ pageIndex: 0, pageSize });
   };
 
   const onClickClearFilters = () => {
@@ -212,7 +214,12 @@ export const TransactionsTable = () => {
     date,
   };
 
-  const { data: resp, refetch, isFetching } = useGetTransactions(restId, fetchDataOptions);
+  const {
+    data: resp,
+    refetch,
+    isFetching,
+    isLoading,
+  } = useGetTransactions(restId, fetchDataOptions);
 
   const defaultData = useMemo(() => [], []);
 
@@ -252,135 +259,148 @@ export const TransactionsTable = () => {
   });
 
   return (
-    <div className={cls.box}>
-      <Modal isModalOpen={calendarIsOpen} setIsModalOpen={onClickCalendar}>
-        <Calendar isOpen={onClickCalendar} onChange={onChangeDate} />
-      </Modal>
-      <Title fontSize={22}>Table</Title>
-      <div className={cls.btnsBox}>
-        <div className={cls.paginationBox}>
-          <IconButton
-            size={25}
-            mode={'filled'}
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-            Svg={TfiAngleDoubleLeft}
-          />
-          <IconButton
-            size={25}
-            mode={'outlined'}
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            Svg={TfiAngleLeft}
-          />
-          <IconButton
-            mode={'outlined'}
-            size={25}
-            onClick={() => {
-              table.nextPage();
-            }}
-            disabled={!table.getCanNextPage()}
-            Svg={TfiAngleRight}
-          />
-          <IconButton
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-            size={25}
-            mode={'filled'}
-            Svg={TfiAngleDoubleRight}
-          />
-          <Button size="sm" onClick={onClickClearFilters}>
-            Clear filters
-          </Button>
-        </div>
-        <div className={cls.inputSelectBox}>
-          <div className={cls.inputBox}>
-            <Text classname={cls.text}>Page</Text>
-            <Text classname={cls.text}>
-              {resp?.data?.tableTransactions.pageCount === 0
-                ? 0
-                : table.getState().pagination.pageIndex + 1}{' '}
-              of {table.getPageCount()}
-            </Text>
-            <Text classname={cls.text}> Go to page:</Text>
-            <input
-              min={1}
-              type="number"
-              defaultValue={
-                isNaN(resp?.data?.tableTransactions.currentPageIndex)
-                  ? 1
-                  : resp?.data?.tableTransactions.currentPageIndex
-              }
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                table.setPageIndex(page);
-              }}
-              className={cls.input}
-            />
-            <div className={cls.loader}>{isFetching && <Loader size="xs" />}</div>
+    !isLoading && (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          className={cls.box}
+        >
+          <Modal isModalOpen={calendarIsOpen} setIsModalOpen={onClickCalendar}>
+            <Calendar isOpen={onClickCalendar} onChange={onChangeDate} />
+          </Modal>
+          <Title fontSize={22}>Table</Title>
+          <div className={cls.btnsBox}>
+            <div className={cls.paginationBox}>
+              <IconButton
+                size={25}
+                mode={'filled'}
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+                Svg={TfiAngleDoubleLeft}
+              />
+              <IconButton
+                size={25}
+                mode={'outlined'}
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                Svg={TfiAngleLeft}
+              />
+              <IconButton
+                mode={'outlined'}
+                size={25}
+                onClick={() => {
+                  table.nextPage();
+                }}
+                disabled={!table.getCanNextPage()}
+                Svg={TfiAngleRight}
+              />
+              <IconButton
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+                size={25}
+                mode={'filled'}
+                Svg={TfiAngleDoubleRight}
+              />
+              <Button size="sm" onClick={onClickClearFilters}>
+                Clear filters
+              </Button>
+            </div>
+            <div className={cls.inputSelectBox}>
+              <div className={cls.inputBox}>
+                <Text classname={cls.text}>Page</Text>
+                <Text classname={cls.text}>
+                  {resp?.data?.tableTransactions.pageCount === 0
+                    ? 0
+                    : table.getState().pagination.pageIndex + 1}{' '}
+                  of {table.getPageCount()}
+                </Text>
+                <Text classname={cls.text}> Go to page:</Text>
+                <input
+                  min={1}
+                  type="number"
+                  defaultValue={
+                    isNaN(resp?.data?.tableTransactions.currentPageIndex)
+                      ? 1
+                      : resp?.data?.tableTransactions.currentPageIndex
+                  }
+                  onChange={(e) => {
+                    const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                    table.setPageIndex(page);
+                  }}
+                  className={cls.input}
+                />
+                <div className={cls.loader}>{isFetching && <Loader size="xs" />}</div>
+              </div>
+              <div className={cls.select}>
+                <Text classname={cls.text}>Show</Text>
+                <DropDown
+                  defaultValue="20"
+                  options={numberOfTransactionsOptions}
+                  onSelect={(e) => {
+                    table.setPageSize(e.value);
+                  }}
+                  clear={isClear}
+                />
+                <CheckBox
+                  label="Today transactions"
+                  onChange={(e) => {
+                    setIsTodayTransactions(e.target.checked);
+                    setPagination({ pageIndex: 0, pageSize });
+                    setDate(undefined);
+                  }}
+                  checked={isTodayTransactions}
+                />
+              </div>
+            </div>
           </div>
-          <div className={cls.select}>
-            <Text classname={cls.text}>Show</Text>
-            <DropDown
-              defaultValue="20"
-              options={numberOfTransactionsOptions}
-              onSelect={(e) => {
-                table.setPageSize(e.value);
-              }}
-              clear={isClear}
-            />
-            <CheckBox
-              label="Today transactions"
-              onChange={(e) => {
-                setIsTodayTransactions(e.target.checked);
-                setPagination({ pageIndex: 0, pageSize });
-                setDate(undefined);
-              }}
-              checked={isTodayTransactions}
-            />
-          </div>
-        </div>
-      </div>
-      <table className={cls.table}>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr className={cls.tr} key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <th key={header.id} colSpan={header.colSpan} className={cls.th}>
-                    {header.isPlaceholder ? null : (
-                      <div>{flexRender(header.column.columnDef.header, header.getContext())}</div>
-                    )}
-                  </th>
-                );
-              })}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => {
-            return (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => {
+          <table className={cls.table}>
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <motion.tr className={cls.tr} key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <motion.th key={header.id} colSpan={header.colSpan} className={cls.th}>
+                        {header.isPlaceholder ? null : (
+                          <div>
+                            {flexRender(header.column.columnDef.header, header.getContext())}
+                          </div>
+                        )}
+                      </motion.th>
+                    );
+                  })}
+                </motion.tr>
+              ))}
+            </thead>
+            <tbody>
+              <AnimatePresence>
+                {table.getRowModel().rows.map((row) => {
                   return (
-                    <td key={cell.id} className={cls.td}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
+                    <motion.tr layout key={row.id} exit={{ opacity: 0, height: 0 }}>
+                      {row.getVisibleCells().map((cell) => {
+                        return (
+                          <motion.td layout key={cell.id} className={cls.td}>
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </motion.td>
+                        );
+                      })}
+                    </motion.tr>
                   );
                 })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      {!resp?.data?.tableTransactions.transactions.length && (
-        <div className={cls.emptyBox}>
-          <TbMoodSearch size={200} className={cls.icon} />
-          <Title mode={'h3'} fontSize={20} classname={cls.text}>
-            There are no transactions by this query.
-          </Title>
-        </div>
-      )}
-    </div>
+              </AnimatePresence>
+            </tbody>
+          </table>
+          {!resp?.data?.tableTransactions.transactions.length && (
+            <div className={cls.emptyBox}>
+              <TbMoodSearch size={200} className={cls.icon} />
+              <Title mode={'h3'} fontSize={20} classname={cls.text}>
+                There are no transactions by this query.
+              </Title>
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
+    )
   );
 };

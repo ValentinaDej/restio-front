@@ -76,7 +76,13 @@ const AdminPageContainer = ({
   const handleSearch = () => {
     queryClient.removeQueries(['personnel', restId]); // Invalidate the employee query cache
     queryClient.removeQueries(['dishes', category, type]); // Invalidate the dishes query cache
-    fetchNextPage(1); // Trigger data refetch with the first page
+    void fetchNextPage(1); // Trigger data refetch with the first page
+  };
+
+  const handleClear = () => {
+    setSearchText('');
+    queryClient.removeQueries(['personnel', restId]); // Invalidate the employee query cache
+    queryClient.removeQueries(['dishes', category, type]); // Invalidate the dishes query cache
   };
 
   const handleDeleteItem = async (id) => {
@@ -106,6 +112,11 @@ const AdminPageContainer = ({
         <div className={`${styles.search__section}`}>
           <Button size={`md`} onClick={handleSearch}>
             Search
+          </Button>
+        </div>
+        <div className={`${styles.search__section}`}>
+          <Button size={`md`} onClick={handleClear}>
+            Clear
           </Button>
         </div>
         {children}
