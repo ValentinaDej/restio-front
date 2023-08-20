@@ -124,12 +124,18 @@ export const useUpdateDishStatusByWaiter = () => {
 };
 
 export const useUpdateReadyDishesStatusesByWaiter = () => {
+  const queryClient = useQueryClient();
+
   const updateDishStatus = async ({ urlParams: { restId }, orderId }) => {
     const response = await instance.patch(`orders/${restId}/dishes/${orderId}`);
     return response.data;
   };
 
-  const mutation = useMutation(updateDishStatus);
+  const mutation = useMutation(updateDishStatus, {
+    onSuccess: () => {
+      queryClient.refetchQueries(['orders']);
+    },
+  });
 
   return mutation;
 };
