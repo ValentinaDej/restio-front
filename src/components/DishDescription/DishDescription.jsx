@@ -13,33 +13,33 @@ const DishDescription = ({ data: dish }) => {
     if (dish) {
       const keys = [process.env.HUGGINGFACE_API_KEY, process.env.HUGGINGFACE_API_KEY2];
       let generatedText = '';
-      // for (const key of keys) {
-      //   try {
-      //     const hf = new HfInference(key);
-      //     const model = 'declare-lab/flan-alpaca-large';
-      //     const text = `Create exquisite description of ${dish.name}.`;
-      //     const response = await hf.textGeneration({
-      //       model: model,
-      //       inputs: text,
-      //       parameters: { max_new_tokens: 250 },
-      //     });
-      //     let textGen = response.generated_text;
-      //     const lastDotIndex = textGen.lastIndexOf('.');
-      //     generatedText = textGen.substring(0, lastDotIndex + 1);
-      //     break;
-      //   } catch (error) {
-      //     console.error('Error with API key:', key);
-      //   }
-      // }
-      // if (generatedText) {
-      //   setGeneratedText(generatedText.split(' '));
-      //   setIsLoaded(true);
-      // } else {
-      //   console.error('Both API keys failed.');
-      // }
+      for (const key of keys) {
+        try {
+          const hf = new HfInference(key);
+          const model = 'declare-lab/flan-alpaca-large';
+          const text = `Create exquisite description of ${dish.name}.`;
+          const response = await hf.textGeneration({
+            model: model,
+            inputs: text,
+            parameters: { max_new_tokens: 250 },
+          });
+          let textGen = response.generated_text;
+          const lastDotIndex = textGen.lastIndexOf('.');
+          generatedText = textGen.substring(0, lastDotIndex + 1);
+          break;
+        } catch (error) {
+          console.error('Error with API key:', key);
+        }
+      }
+      if (generatedText) {
+        setGeneratedText(generatedText.split(' '));
+        setIsLoaded(true);
+      } else {
+        console.error('Both API keys failed.');
+      }
     }
   }, [dish]);
-  //end of hugging
+
   useEffect(() => {
     generateText();
   }, [generateText]);

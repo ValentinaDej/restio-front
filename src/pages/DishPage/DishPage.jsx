@@ -8,7 +8,6 @@ import Title from 'shared/Title/Title';
 import Text from 'shared/Text/Text';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
 import Button from 'shared/Button/Button';
-import { NavigateButtons } from '../../components/Orders/ui/NavigateButtons/NavigateButtons';
 import Cart from 'components/Cart/Cart';
 import Loader from 'shared/Loader/Loader';
 import DishDescription from 'components/DishDescription/DishDescription';
@@ -33,9 +32,9 @@ const DishPage = () => {
     data: dish,
     error,
   } = useQuery(['dish', dishId], () => getDishById(dishId), {
-    refetchOnWindowFocus: false, // Disable refetching when the window gains focus
-    refetchOnReconnect: false, // Disable refetching when the network reconnects
-    refetchInterval: false, // Disable automatic periodic refetching
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchInterval: false,
   });
   const idUsed = useCallback(
     (data) => {
