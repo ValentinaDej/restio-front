@@ -5,6 +5,7 @@ import authReducer from './auth/authSlice';
 import { customerOrdersReducer } from './customer/orders/ordersSlice';
 import cartReducer from './cart/cartSlice';
 import messagesReducer from './messages/messagesSlice';
+import tableReducer from './tables/tableSlice';
 
 import {
   persistStore,
@@ -21,13 +22,22 @@ const cartPersistConfig = {
   key: 'cart',
   storage,
 };
+
+const tablePersistConfig = {
+  key: 'tables',
+  storage,
+};
+
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
+const persistedTableReducer = persistReducer(tablePersistConfig, tableReducer);
+
 export const store = configureStore({
   reducer: {
     cart: persistedCartReducer,
     auth: authReducer,
     messages: messagesReducer,
     customerOrders: customerOrdersReducer,
+    tables: persistedTableReducer,
   },
   middleware(getDefaultMiddleware) {
     return getDefaultMiddleware({
