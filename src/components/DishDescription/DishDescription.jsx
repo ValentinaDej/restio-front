@@ -39,6 +39,7 @@ const DishDescription = ({ data: dish }) => {
       }
     }
   }, [dish]);
+  
   useEffect(() => {
     generateText();
   }, [generateText]);
