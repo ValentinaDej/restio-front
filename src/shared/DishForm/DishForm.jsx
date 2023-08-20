@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
@@ -10,6 +10,7 @@ import Select from 'shared/Select/Select';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
 import Text from 'shared/Text/Text';
 import InputValid from 'shared/InputValid/InputValid';
+import Loader from 'shared/Loader/Loader';
 import FileUploader from 'shared/FileUploader/FileUploader';
 import DishTypeOptions from './DishTypeOptions/DishTypeOptions';
 import Ingredients from './Ingredients/Ingredients';
@@ -25,6 +26,7 @@ const DishForm = ({
   selectedIngredientsMap,
   isEditing,
   handleBack,
+  isSaving,
 }) => {
   const [selectedIngredients, setSelectedIngredients] = useState(selectedIngredientsMap);
   const [inputValue, setInputValue] = useState('');
@@ -41,15 +43,10 @@ const DishForm = ({
     reset,
     control,
   } = useForm({
+    defaultValues: initialState,
     shouldUseNativeValidation: false,
     mode: 'onBlur',
   });
-
-  useEffect(() => {
-    if (isEditing) {
-      reset(initialState);
-    }
-  }, [initialState, reset, isEditing]);
 
   const handleFormSubmit = async (data, event) => {
     event.preventDefault();
@@ -64,11 +61,13 @@ const DishForm = ({
       const { picture, ...dataWithoutPicture } = data;
       onSubmit({ ...dataWithoutPicture, ingredients: selectedIngredientIds });
     }
+    reset();
   };
 
   const cleareForm = () => {
     reset();
     setSelectedIngredients(new Map());
+    fileUploaderRef.current.clearFile();
   };
 
   const uniqueTypes = Array.from(new Set(ingredientsList?.map((ingredient) => ingredient.type)));
@@ -144,205 +143,213 @@ const DishForm = ({
 
   return (
     <div>
-      <div className={classes.form}>
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
-          <div className={classes.field__wrapper_right}>
-            <CheckBox label="active" name="isActive" register={register} />
-          </div>
-          <InputValid
-            name="name"
-            placeholder="Dish name"
-            autoComplete="off"
-            size="sm"
-            error={errors.name}
-            validationRules={{
-              required: 'Name is a required field',
-              pattern: {
-                value: /^.{2,30}$/,
-                message: 'Invalid name',
-              },
-            }}
-            register={register}
-            maxLength={30}
-          />
-
-          <div className={classes.column__wrapper}>
-            <div className={classes.column}>
-              <Select
-                name="type"
-                defaultValue=""
-                register={register}
-                size="sm"
-                rules={{
-                  required: 'Dish type is required',
-                }}
-              >
-                <option value="" disabled hidden style={{ color: 'var(--color-danger)' }}>
-                  Select dish type
-                </option>
-                {category.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </Select>
-              {errors.type && (
-                <Text
-                  mode="p"
-                  textAlign="left"
-                  fontSize={8}
-                  fontWeight={400}
-                  color="var(--color-gray)"
-                >
-                  {errors.type.message}
-                </Text>
-              )}
-              <DishTypeOptions register={register} />
-              <div className={classes.img__wrapper}>
-                <FileUploader ref={fileUploaderRef} imageUrl={initialState.picture} />
-              </div>
+      {isSaving ? (
+        <Loader />
+      ) : (
+        <div className={`${classes.form}`}>
+          <form onSubmit={handleSubmit(handleFormSubmit)}>
+            <div className={classes.field__wrapper_right}>
+              <CheckBox label="active" name="isActive" register={register} />
             </div>
-            <div className={classes.column}>
-              <div className={classes.row__wrapper}>
-                <div className={classes.rowfield__wrapper}>
-                  <div className={classes.input__wrapper}>
-                    <InputValid
-                      type="text"
-                      name="portionWeight"
-                      placeholder="Weight"
-                      autoComplete="Weight (gram)"
-                      size="sm"
-                      icon={GiWeight}
-                      error={errors.portionWeight}
-                      validationRules={{
-                        required: 'Dish weight is a required field',
-                        pattern: {
-                          value: /^[1-9]\d{0,3}$|^10000$/,
-                          message: 'A number between 1 and 10000',
-                        },
-                      }}
-                      register={register}
-                      onKeyDown={(event) => {
-                        const allowedKeys = [
-                          '0',
-                          '1',
-                          '2',
-                          '3',
-                          '4',
-                          '5',
-                          '6',
-                          '7',
-                          '8',
-                          '9',
-                          'Enter',
-                          'Backspace',
-                          'ArrowUp',
-                          'ArrowDown',
-                          'ArrowLeft',
-                          'ArrowRight',
-                          'Tab',
-                        ];
-                        if (!allowedKeys.includes(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      maxLength={5}
-                    />
-                  </div>
-                </div>
-                <div className={classes.rowfield__wrapper}>
-                  <div className={classes.input__wrapper}>
-                    <InputValid
-                      type="text"
-                      name="price"
-                      placeholder="Price"
-                      autoComplete="Weight (gram)"
-                      size="sm"
-                      icon={FaMoneyBillAlt}
-                      error={errors.price}
-                      validationRules={{
-                        required: 'Dish price is a required field',
-                        pattern: {
-                          value: /^[0-9]*(\.[0-9]{0,2})?$/,
-                          message: 'A positive number with up to 2 decimal places',
-                        },
-                      }}
-                      register={register}
-                      onKeyDown={(event) => {
-                        const allowedKeys = [
-                          '0',
-                          '1',
-                          '2',
-                          '3',
-                          '4',
-                          '5',
-                          '6',
-                          '7',
-                          '8',
-                          '9',
-                          '.',
-                          'Enter',
-                          'Backspace',
-                          'ArrowUp',
-                          'ArrowDown',
-                          'ArrowLeft',
-                          'ArrowRight',
-                          'Tab',
-                        ];
-                        if (!allowedKeys.includes(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      maxLength={10}
-                    />
-                  </div>
-                </div>
-              </div>
-              <Ingredients
-                selectedType={selectedType}
-                IngredientsTypes={IngredientsTypes}
-                handleTypeChange={handleTypeChange}
-                handleInputChange={handleInputChange}
-                handleInputKeyDown={handleInputKeyDown}
-                inputValue={inputValue}
-                IngredientsToShow={IngredientsToShow}
-                selectedIngredients={selectedIngredients}
-                firstIngredientRef={firstIngredientRef}
-                handleToggleIngredient={handleToggleIngredient}
-                handleCheckSelected={handleCheckSelected}
-                showSelectedIngredients={showSelectedIngredients}
-              />
-            </div>
-          </div>
-          {selectedIngredients.size > 0 && (
-            <SortIngredients
-              selectedIngredients={selectedIngredients}
-              moveIngredient={moveIngredient}
+            <InputValid
+              name="name"
+              placeholder="Dish name"
+              autoComplete="off"
+              size="sm"
+              error={errors.name}
+              validationRules={{
+                required: 'Name is a required field',
+                pattern: {
+                  value: /^.{2,30}$/,
+                  message: 'Invalid name',
+                },
+              }}
+              register={register}
+              maxLength={30}
             />
-          )}
-          <div className={classes.button__wrapper}>
-            {isEditing ? (
-              <>
-                <Button type="submit" size="sm">
-                  Update
-                </Button>
-                <Button type="button" mode={'outlined'} onClick={handleBack} size="sm">
-                  Cancel
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button type="submit" size="sm">
-                  Create
-                </Button>
-                <Button type="button" mode={'outlined'} onClick={cleareForm} size="sm">
-                  Clear
-                </Button>
-              </>
+
+            <div className={classes.column__wrapper}>
+              <div className={classes.column}>
+                <div className={classes.select__wrapper}>
+                  <Select
+                    name="type"
+                    defaultValue=""
+                    register={register}
+                    size="sm"
+                    error={errors.type ? 'error' : 'noError'}
+                    rules={{
+                      required: 'Dish type is required',
+                    }}
+                  >
+                    <option value="" disabled hidden style={{ color: 'var(--color-danger)' }}>
+                      Select dish type
+                    </option>
+                    {category.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </Select>
+                  {errors.type && (
+                    <Text
+                      mode="p"
+                      textAlign="left"
+                      fontSize={10}
+                      fontWeight={400}
+                      color="var(--color-gray)"
+                    >
+                      {errors.type.message}
+                    </Text>
+                  )}
+                </div>
+
+                <DishTypeOptions register={register} />
+                <div className={classes.img__wrapper}>
+                  <FileUploader ref={fileUploaderRef} onEditPhoto={initialState.picture} />
+                </div>
+              </div>
+              <div className={classes.column}>
+                <div className={classes.row__wrapper}>
+                  <div className={classes.rowfield__wrapper}>
+                    <div className={classes.input__wrapper}>
+                      <InputValid
+                        type="text"
+                        name="portionWeight"
+                        placeholder="Weight"
+                        autoComplete="Weight (gram)"
+                        size="sm"
+                        icon={GiWeight}
+                        error={errors.portionWeight}
+                        validationRules={{
+                          required: 'Dish weight is a required field',
+                          pattern: {
+                            value: /^[1-9]\d{0,3}$|^10000$/,
+                            message: 'A number between 1 and 10000',
+                          },
+                        }}
+                        register={register}
+                        onKeyDown={(event) => {
+                          const allowedKeys = [
+                            '0',
+                            '1',
+                            '2',
+                            '3',
+                            '4',
+                            '5',
+                            '6',
+                            '7',
+                            '8',
+                            '9',
+                            'Enter',
+                            'Backspace',
+                            'ArrowUp',
+                            'ArrowDown',
+                            'ArrowLeft',
+                            'ArrowRight',
+                            'Tab',
+                          ];
+                          if (!allowedKeys.includes(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        maxLength={5}
+                      />
+                    </div>
+                  </div>
+                  <div className={classes.rowfield__wrapper}>
+                    <div className={classes.input__wrapper}>
+                      <InputValid
+                        type="text"
+                        name="price"
+                        placeholder="Price"
+                        autoComplete="Price"
+                        size="sm"
+                        icon={FaMoneyBillAlt}
+                        error={errors.price}
+                        validationRules={{
+                          required: 'Dish price is a required field',
+                          pattern: {
+                            value: /^[0-9]*(\.[0-9]{0,2})?$/,
+                            message: 'A positive number with up to 2 decimal places',
+                          },
+                        }}
+                        register={register}
+                        onKeyDown={(event) => {
+                          const allowedKeys = [
+                            '0',
+                            '1',
+                            '2',
+                            '3',
+                            '4',
+                            '5',
+                            '6',
+                            '7',
+                            '8',
+                            '9',
+                            '.',
+                            'Enter',
+                            'Backspace',
+                            'ArrowUp',
+                            'ArrowDown',
+                            'ArrowLeft',
+                            'ArrowRight',
+                            'Tab',
+                          ];
+                          if (!allowedKeys.includes(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        maxLength={10}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <Ingredients
+                  selectedType={selectedType}
+                  IngredientsTypes={IngredientsTypes}
+                  handleTypeChange={handleTypeChange}
+                  handleInputChange={handleInputChange}
+                  handleInputKeyDown={handleInputKeyDown}
+                  inputValue={inputValue}
+                  IngredientsToShow={IngredientsToShow}
+                  selectedIngredients={selectedIngredients}
+                  firstIngredientRef={firstIngredientRef}
+                  handleToggleIngredient={handleToggleIngredient}
+                  handleCheckSelected={handleCheckSelected}
+                  showSelectedIngredients={showSelectedIngredients}
+                />
+              </div>
+            </div>
+            {selectedIngredients.size > 0 && (
+              <SortIngredients
+                selectedIngredients={selectedIngredients}
+                moveIngredient={moveIngredient}
+              />
             )}
-          </div>
-        </form>
-      </div>
+            <div className={classes.button__wrapper}>
+              {isEditing ? (
+                <>
+                  <Button type="submit" size="sm">
+                    Update
+                  </Button>
+                  <Button type="button" mode={'outlined'} onClick={handleBack} size="sm">
+                    Cancel
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button type="submit" size="sm">
+                    Create
+                  </Button>
+                  <Button type="button" mode={'outlined'} onClick={cleareForm} size="sm">
+                    Clear
+                  </Button>
+                </>
+              )}
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

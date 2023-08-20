@@ -1,33 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { toast } from 'react-hot-toast';
 import Select from 'shared/Select/Select';
 import { DISH_CATEGORIES } from 'utils/constants';
 import styles from './DishesAdminPage.module.scss';
 import { deleteDishById } from '../../api/dish';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 
 const DishesAdminPage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const [category, setCategory] = useState('');
   const [type, setType] = useState('active');
-
-  const queryClient = useQueryClient();
-
-  const location = useLocation();
-  const state = location.state;
-
-  if (state && state.shouldUpdate) {
-    queryClient.invalidateQueries(['dishes', category, type]);
-  }
-
-  useEffect(() => {
-    queryClient.invalidateQueries(['dishes', category, type]);
-  }, [category, type, queryClient]);
 
   const { mutateAsync } = useMutation((dishId) => {
     deleteDishById(dishId, restId);
