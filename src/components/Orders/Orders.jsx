@@ -168,6 +168,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
             </motion.div>
             {!isWaiterDishesPage && (
               <Checkout
+                totalPrice={totalPrice}
                 amount={selectedTotal}
                 selectedOrders={selectedOrders}
                 onChangeSelected={onChangeSelected}
@@ -175,6 +176,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 isWaiter={isWaiter}
                 isAllOrdersPaid={isAllOrdersPaid}
                 paymentType={paymentType}
+                notServedDishes={notServedDishes}
                 key={'checkout'}
               />
             )}

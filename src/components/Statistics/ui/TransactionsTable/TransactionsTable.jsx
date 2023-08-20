@@ -268,7 +268,7 @@ export const TransactionsTable = () => {
           className={cls.box}
         >
           <Modal isModalOpen={calendarIsOpen} setIsModalOpen={onClickCalendar}>
-            <Calendar isOpen={onClickCalendar} onChange={onChangeDate} />
+            <Calendar onChange={onChangeDate} newDate={date} />
           </Modal>
           <Title fontSize={22}>Table</Title>
           <div className={cls.btnsBox}>
@@ -377,7 +377,13 @@ export const TransactionsTable = () => {
               <AnimatePresence>
                 {table.getRowModel().rows.map((row) => {
                   return (
-                    <motion.tr layout key={row.id} exit={{ opacity: 0, height: 0 }}>
+                    <motion.tr
+                      layout
+                      key={row.id}
+                      exit={{ opacity: 0, height: 0 }}
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
                       {row.getVisibleCells().map((cell) => {
                         return (
                           <motion.td layout key={cell.id} className={cls.td}>

@@ -1,0 +1,35 @@
+.customTooltip {
+  position: relative;
+}
+
+.tooltipContent {
+  position: absolute;
+  background: var(--color-green-transparent);
+  color: var(--color-blue-dark);
+  font-weight: 700;
+  padding: 5px;
+  border-radius: 4px;
+  z-index: 100;
+  white-space: nowrap;
+  font-size: 14px;
+  bottom: 105%;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+/* Positioning styles for different positions */
+.custom-tooltip[data-position='top'] .tooltip-content {
+  bottom: 100%;
+}
+
+.custom-tooltip[data-position='bottom'] .tooltip-content {
+  top: 100%;
+}
+
+.custom-tooltip[data-position='left'] .tooltip-content {
+  right: 100%;
+}
+
+.custom-tooltip[data-position='right'] .tooltip-content {
+  left: 100%;
+}

@@ -22,6 +22,7 @@ export const Checkout = ({
   urlParams,
   isAllOrdersPaid,
   paymentType,
+  totalPrice,
 }) => {
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -88,29 +89,33 @@ export const Checkout = ({
   if (isWaiter) {
     return (
       <div className={cls.waiterBtn}>
-        <Text classname={cls.text} fontWeight={700}>
-          Total price for selected orders: ${amount}
-        </Text>
+        {totalPrice !== 0 && (
+          <Text classname={cls.text} fontWeight={700}>
+            Total price for selected orders: ${amount}
+          </Text>
+        )}
         <div className={cls.btnsBox}>
-          <Button
-            size={'sm'}
-            onClick={onClickMarkAsPaidSelectedAsWaiter}
-            disabled={amount === 0 || isLoading || !paymentType}
-            className={cls.btn}
-            mode="outlined"
-          >
-            {modalIsOpen ? (
-              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
-            ) : (
-              <>
-                {isLoading ? (
-                  <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
-                ) : (
-                  'Mark as paid for selected'
-                )}
-              </>
-            )}
-          </Button>
+          {totalPrice !== 0 && (
+            <Button
+              size={'sm'}
+              onClick={onClickMarkAsPaidSelectedAsWaiter}
+              disabled={amount === 0 || isLoading || !paymentType}
+              className={cls.btn}
+              mode="outlined"
+            >
+              {modalIsOpen ? (
+                <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+              ) : (
+                <>
+                  {isLoading ? (
+                    <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+                  ) : (
+                    'Mark as paid for selected'
+                  )}
+                </>
+              )}
+            </Button>
+          )}
           <Button
             size={'sm'}
             onClick={onClickMarkAsFreeTable}
@@ -118,7 +123,7 @@ export const Checkout = ({
             className={cls.btn}
           >
             {isLoadingTableStatus ? (
-              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
+              <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
             ) : (
               'Mark table as free'
             )}
