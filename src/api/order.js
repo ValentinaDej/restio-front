@@ -40,6 +40,24 @@ export const useGetOrdersByTableId = ({ restId, tableId }) => {
   return queryResp;
 };
 
+export const useGetOrdersByRestaurantId = (restId) => {
+  const queryResp = useQuery(
+    ['ordersByRestaurantId'],
+    async () => await instance.get(`orders/${restId}`),
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
+      onError: (error) => {
+        console.error(`Error fetching`, error);
+        toast.error(`Error fetching`);
+      },
+    }
+  );
+
+  return queryResp;
+};
+
 export const useUpdateOrderStatusByWaiter = (
   { restId, tableId },
   orders,
