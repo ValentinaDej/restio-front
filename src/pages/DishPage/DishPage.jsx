@@ -99,36 +99,69 @@ const DishPage = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  // const generateText = useCallback(async () => {
+  //   if (dish) {
+  //     const key = process.env.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY2;
+  //     const hf = new HfInference(key);
+  //     const model = 'declare-lab/flan-alpaca-large';
+  //     // const text = 'Provide interesting facts about ${dish.name} meal';
+  //     // const text = `When does ${dish.name} dish was invented?`;
+  //     const text = `Create exquisite desription of ${dish.name}.`;
+  //     const response = await hf.textGeneration({
+  //       model: model,
+  //       inputs: text,
+  //       parameters: { max_new_tokens: 250 },
+  //     });
+  //     let textGen = response.generated_text;
+  //     const lastDotIndex = textGen.lastIndexOf('.');
+  //     let cuttedText = textGen.substring(0, lastDotIndex + 1);
+  //     setGeneratedText(cuttedText);
+  //     setIsLoaded(true);
+  //     console.log(cuttedText);
+  //     // let text =
+  //     //   'Caesar is a classic salad made with a vinaigrette of romaine lettuce, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with a vinaigrette of croutons, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with croutons, croutons, and a vinaigrette dressing.';
+  //     // const lastDotIndex = text.lastIndexOf('.');
+  //     // let cuttedText = text.substring(0, lastDotIndex + 1);
+  //     // setTimeout(() => {
+  //     //   setIsLoaded(true);
+  //     //   setGeneratedText(cuttedText);
+  //     // }, 7000);
+  //   }
+  // }, [dish]);
   const generateText = useCallback(async () => {
     if (dish) {
-      const key = process.env.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY2;
-      const hf = new HfInference(key);
-      const model = 'declare-lab/flan-alpaca-large';
-      // const text = 'Provide interesting facts about ${dish.name} meal';
-      // const text = `When does ${dish.name} dish was invented?`;
-      const text = `Create exquisite desription of ${dish.name}.`;
-      const response = await hf.textGeneration({
-        model: model,
-        inputs: text,
-        parameters: { max_new_tokens: 250 },
-      });
-      let textGen = response.generated_text;
-      const lastDotIndex = textGen.lastIndexOf('.');
-      let cuttedText = textGen.substring(0, lastDotIndex + 1);
-      setGeneratedText(cuttedText);
-      setIsLoaded(true);
-      console.log(cuttedText);
-      // let text =
-      //   'Caesar is a classic salad made with a vinaigrette of romaine lettuce, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with a vinaigrette of croutons, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with croutons, croutons, and a vinaigrette dressing.';
-      // const lastDotIndex = text.lastIndexOf('.');
-      // let cuttedText = text.substring(0, lastDotIndex + 1);
-      // setTimeout(() => {
-      //   setIsLoaded(true);
-      //   setGeneratedText(cuttedText);
-      // }, 7000);
+      const keys = [process.env.HUGGINGFACE_API_KEY, process.env.HUGGINGFACE_API_KEY2];
+      let generatedText = '';
+      for (const key of keys) {
+        try {
+          const hf = new HfInference(key);
+          const model = 'declare-lab/flan-alpaca-large';
+          const text = `Create exquisite description of ${dish.name}.`;
+          const response = await hf.textGeneration({
+            model: model,
+            inputs: text,
+            parameters: { max_new_tokens: 250 },
+          });
+          let textGen = response.generated_text;
+          const lastDotIndex = textGen.lastIndexOf('.');
+          generatedText = textGen.substring(0, lastDotIndex + 1);
+          break;
+        } catch (error) {
+          console.error('Error with API key:', key);
+        }
+      }
+      if (generatedText) {
+        setGeneratedText(generatedText);
+        setIsLoaded(true);
+        console.log(generatedText);
+      } else {
+        // Handle the case where both keys failed
+        console.error('Both API keys failed.');
+        // Display an error message to the user or take other appropriate actions
+      }
     }
   }, [dish]);
-
+  //end of hugging
   useEffect(() => {
     generateText();
   }, [generateText]);
