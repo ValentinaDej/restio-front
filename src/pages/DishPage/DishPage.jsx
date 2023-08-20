@@ -126,9 +126,7 @@ const DishPage = () => {
         setIsLoaded(true);
         console.log(generatedText);
       } else {
-        // Handle the case where both keys failed
         console.error('Both API keys failed.');
-        // Display an error message to the user or take other appropriate actions
       }
     }
   }, [dish]);
