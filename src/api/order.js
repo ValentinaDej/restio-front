@@ -37,23 +37,17 @@ export const useGetOrdersByTableId = ({ restId, tableId }) => {
       cacheTime: 0,
     }
   );
+
   return queryResp;
 };
 
-export const useUpdateOrderStatusByWaiter = (
-  { restId, tableId },
-  orders,
-  amount,
-  userId,
-  paymentType
-) => {
+export const useUpdateOrderStatusByWaiter = ({ restId, tableId }, orders, amount, paymentType) => {
   const queryClient = useQueryClient();
 
   const createTransactionOffline = async () => {
     const response = await instance.post(`transactions/manual/${restId}`, {
       info: orders,
       amount,
-      createdById: userId,
       type: paymentType,
     });
     return response.data;

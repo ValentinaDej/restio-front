@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { useSSE } from 'react-hooks-sse';
-import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
+import { ListBottomBox } from 'components/Orders/ui/ListBottomBox/ListBottomBox';
 import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
 import OrderListSkeleton from 'shared/Skeletons/OrderSkeleton/OrderSkeleton';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
@@ -17,6 +17,7 @@ import Title from 'shared/Title/Title';
 import Loader from 'shared/Loader/Loader';
 import { getIsLoading } from 'store/customer/orders/selectors';
 import { useSelector } from 'react-redux';
+import { errorMessage } from 'helpers/errorMessage';
 
 const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   const [sortOrderBy, setSortOrderBy] = useState('None');
@@ -39,7 +40,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   };
   const updateDishStatusEvent = useSSE('dish status');
 
-  const { data: { data } = {}, isLoading, refetch } = useGetOrdersByTableId(params);
+  const { data: { data } = {}, isLoading, refetch, isError, error } = useGetOrdersByTableId(params);
 
   useEffect(() => {
     if (updateDishStatusEvent && updateDishStatusEvent.message) {
@@ -72,7 +73,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       let isAllOrdersPaid = true;
       let notPaidOrders = 0;
 
-      data.orders.forEach((order) => {
+      data?.orders?.forEach((order) => {
         if (order.status !== 'Paid') {
           notPaidOrders += 1;
         }
@@ -101,6 +102,13 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       setIsMounted(false);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (isError) {
+      errorMessage(error?.response.data.message);
+      setIsMounted(false);
+    }
+  }, [error?.response.data.message, isError]);
 
   return (
     <>
@@ -145,6 +153,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                   orders={data?.orders || []}
                   totalPrice={totalPrice}
                   allOrderPrice={allOrderPrice}
+                  isAllOrdersPaid={isAllOrdersPaid}
                   onChangeSelected={onChangeSelected}
                   onChangeTypeOfPay={onChangeTypeOfPay}
                   urlParams={params}
@@ -167,7 +176,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
               />
             </motion.div>
             {!isWaiterDishesPage && (
-              <Checkout
+              <ListBottomBox
                 totalPrice={totalPrice}
                 amount={selectedTotal}
                 selectedOrders={selectedOrders}
@@ -177,7 +186,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 isAllOrdersPaid={isAllOrdersPaid}
                 paymentType={paymentType}
                 notServedDishes={notServedDishes}
-                key={'checkout'}
+                key={'listBottomBox'}
               />
             )}
             {payment && (

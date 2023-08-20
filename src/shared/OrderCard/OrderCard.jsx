@@ -12,6 +12,7 @@ import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals
 import { getDate } from 'helpers/getDate';
 import Button from 'shared/Button/Button';
 import { motion, AnimatePresence } from 'framer-motion';
+import Loader from 'shared/Loader/Loader';
 
 const OrderCard = memo(
   ({
@@ -28,6 +29,7 @@ const OrderCard = memo(
     onChangeAllReadyDishes,
     isPayCard,
     isWaiterDishesPage,
+    isLoadingReadyDishesUpdate,
   }) => {
     const cardRef = useRef(null);
     const [isChecked, setIsChecked] = useState(сhecked || false);
@@ -155,11 +157,16 @@ const OrderCard = memo(
               })}
             >
               <Button
+                className={cls.readyDishesBtn}
                 size={'sm'}
-                disabled={!isDishReady}
+                disabled={!isDishReady || isLoadingReadyDishesUpdate}
                 onClick={() => onChangeAllReadyDishes(_id)}
               >
-                Mark all ready dishes as served
+                {isLoadingReadyDishesUpdate ? (
+                  <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+                ) : (
+                  'Mark all ready dishes as served'
+                )}
               </Button>
             </div>
           )}
