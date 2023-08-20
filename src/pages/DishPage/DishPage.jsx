@@ -7,7 +7,6 @@ import instance from 'api';
 import Title from 'shared/Title/Title';
 import Text from 'shared/Text/Text';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
-import DishCard from 'shared/DishCard/DishCard';
 import Button from 'shared/Button/Button';
 import { NavigateButtons } from '../../components/Orders/ui/NavigateButtons/NavigateButtons';
 import Cart from 'components/Cart/Cart';
@@ -20,7 +19,7 @@ import { addProduct, decreaseQuantity, increaseQuantity } from 'store/cart/cartS
 import { getProductFromState } from '../../store/cart/cartSelectors';
 import { toast } from 'react-hot-toast';
 
-const DishPage = (props) => {
+const DishPage = () => {
   const [dishQuantity, setDishQuantity] = useState(0);
   const [recommendedDishes, setRecommendedDishes] = useState([]);
   const dishId = useParams().dishId;
@@ -117,7 +116,7 @@ const DishPage = (props) => {
     <>
       <main className={classes.dish}>
         <NavLink to={`/${restId}/tables/${tableId}`} className={classes.back}>
-          <NavigateButtons params={restId}>Back</NavigateButtons>
+          <Button mode="outlined">Back</Button>
         </NavLink>
         <div className={classes.fullDish}>
           <div className={classes.dishInfoWarapper}>
