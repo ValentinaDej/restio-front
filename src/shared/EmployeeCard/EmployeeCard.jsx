@@ -3,7 +3,7 @@ import classes from './EmployeeCard.module.scss';
 import { BsTrash } from 'react-icons/bs';
 import { BiEditAlt } from 'react-icons/bi';
 
-const EmployeeCard = ({
+export const EmployeeCard = ({
   children,
   onClick,
   mode = 'primary',
@@ -46,5 +46,3 @@ EmployeeCard.propTypes = {
   src: PropTypes.string,
   alt: PropTypes.string,
 };
-
-export default EmployeeCard;

@@ -1,24 +1,25 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
 import PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { useSSE } from 'react-hooks-sse';
+import { motion, AnimatePresence } from 'framer-motion';
+
+import cls from './Order.module.scss';
+
 import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
 import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
-import OrderListSkeleton from 'shared/Skeletons/OrderSkeleton/OrderSkeleton';
+import { OrderSkeleton, Title, Loader } from 'shared';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
+import { classNames } from 'helpers/classNames';
 import { useGetOrdersByTableId } from 'api/order';
 import { NavigateButtons } from './ui/NavigateButtons/NavigateButtons';
 import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
-import { classNames } from 'helpers/classNames';
-import cls from './Order.module.scss';
-import Title from 'shared/Title/Title';
-import Loader from 'shared/Loader/Loader';
-import { getIsLoading } from 'store/customer/orders/selectors';
-import { useSelector } from 'react-redux';
 
-const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
+import { getIsLoading } from 'store/customer/orders/selectors';
+
+export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   const [sortOrderBy, setSortOrderBy] = useState('None');
   const [paymentType, setPaymentType] = useState('');
   const [isMounted, setIsMounted] = useState(true);
@@ -38,6 +39,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
     setSelectedOrders(selectedOrders);
   };
   const updateDishStatusEvent = useSSE('dish status');
+  const updateOrderStatusEvent = useSSE('update order status');
 
   const { data: { data } = {}, isLoading, refetch } = useGetOrdersByTableId(params);
 
@@ -49,6 +51,15 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       }
     }
   }, [updateDishStatusEvent, refetch, tableId]);
+
+  useEffect(() => {
+    if (updateOrderStatusEvent && updateOrderStatusEvent.message) {
+      const table_id = updateOrderStatusEvent.message.replace(/"/g, '');
+      if (table_id === tableId) {
+        refetch({ force: true });
+      }
+    }
+  }, [refetch, tableId, updateOrderStatusEvent]);
 
   const onChangeTypeOfPay = useCallback((e) => {
     const value = e.target.ariaLabel;
@@ -121,7 +132,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
           setSortOrderBy={setSortOrderBy}
         />
         {isLoading || isMounted ? (
-          <OrderListSkeleton
+          <OrderSkeleton
             isWaiter={isWaiter}
             isSmall={isSmall}
             isWaiterDishesPage={isWaiterDishesPage}
@@ -195,5 +206,3 @@ Orders.propTypes = {
   isSmall: PropTypes.bool,
   isWaiterDishesPage: PropTypes.bool,
 };
-
-export default Orders;

@@ -1,4 +1,4 @@
-import Orders from 'components/Orders/Orders';
+import { Orders } from 'components';
 import cls from './CustomerOrdersPage.module.scss';
 
 const CustomerOrdersPage = () => {

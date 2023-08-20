@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classes from './StatusSelector.module.scss';
-import Status from '../Status/Status';
+import { Status } from 'shared';
 
-const StatusSelector = ({
+export const StatusSelector = ({
   mode,
   currentStatus,
   size = 'sm',
@@ -86,5 +86,3 @@ StatusSelector.propTypes = {
   mode: PropTypes.oneOf(['tables', 'dishes', 'orders']).isRequired,
   itemId: PropTypes.string,
 };
-
-export default StatusSelector;

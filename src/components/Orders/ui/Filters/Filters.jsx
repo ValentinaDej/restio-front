@@ -1,5 +1,5 @@
 import { DropDown } from 'shared/DropDown/DropDown';
-import Text from 'shared/Text/Text';
+import { Text } from 'shared';
 import cls from './Filters.module.scss';
 
 const sortOptions = [

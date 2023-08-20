@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
-import Loader from 'shared/Loader/Loader';
+
 import cls from './StatisticsPage.module.scss';
-import { Statisctics } from 'components/Statistics/Statisctics';
-import { DropDown } from 'shared/DropDown/DropDown';
+import { Statisctics } from 'components';
+import { DropDown, Loader, Title } from 'shared';
 import { useEffect, useState } from 'react';
-import Title from 'shared/Title/Title';
+
 import { useGetTransactionsStatistics } from 'api/transactions';
 
 const StatisticsPage = () => {

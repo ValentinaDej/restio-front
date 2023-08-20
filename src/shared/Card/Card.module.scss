@@ -39,7 +39,7 @@
     flex-direction: column;
     justify-content: center;
     gap: 8px;
-    width: 100%;
+    width: calc(100% - 72px);
     margin-left: 12px;
   }
   &__sum {
@@ -48,7 +48,7 @@
   }
   &__icon {
     margin-left: auto;
-    color: var(--color-orange);
+    color: var(--color-primary);
   }
 
   &__add-icon {
@@ -71,7 +71,7 @@
     margin-left: 12px;
     width: 24px;
     height: 24px;
-    color: var(--color-orange);
+    color: var(--color-primary);
     cursor: pointer;
   }
   &__icon-wrapper {

@@ -1,7 +1,7 @@
 import classes from './Footer.module.scss';
-import Text from 'shared/Text/Text';
+import { Text } from 'shared';
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <footer className={classes.footer}>
       <div className="footer__container">
@@ -12,5 +12,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

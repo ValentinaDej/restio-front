@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classes from './ConfirmModal.module.scss';
 import IconConfirm from '../../assets/icons/confirmModal/confirm.png';
-import Button from 'shared/Button/Button';
-import Modal from 'shared/Modal/Modal';
-import Text from 'shared/Text/Text';
+import { Button, Modal, Text } from 'shared';
 
-const ConfirmModal = ({
+export const ConfirmModal = ({
   confirmButtonText,
   denyButtonText,
   message,
@@ -56,5 +54,3 @@ ConfirmModal.defaultProps = {
   denyButtonText: 'Deny',
   message: 'confirm your actions',
 };
-
-export default ConfirmModal;

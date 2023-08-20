@@ -1,10 +1,9 @@
 import React from 'react';
-import Input from 'shared/Input/Input';
-import Text from 'shared/Text/Text';
+import { Input, Text } from 'shared';
 
 import classes from './InputValid.module.scss';
 
-const InputValid = ({
+export const InputValid = ({
   placeholder,
   name,
   type,
@@ -44,7 +43,13 @@ const InputValid = ({
 
       <div className={classes.eror__wrapper}>
         {error && (
-          <Text mode="p" textAlign="left" fontSize={10} fontWeight={400} color="var(--color-gray)">
+          <Text
+            mode="p"
+            textAlign="left"
+            fontSize={10}
+            fontWeight={400}
+            color="var(--color-secondary)"
+          >
             {error.message}
           </Text>
         )}
@@ -52,5 +57,3 @@ const InputValid = ({
     </div>
   );
 };
-
-export default InputValid;

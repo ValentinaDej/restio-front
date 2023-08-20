@@ -21,12 +21,18 @@ const cartPersistConfig = {
   key: 'cart',
   storage,
 };
+const messagePersistConfig = {
+  key: 'messages',
+  storage,
+};
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
+const persistedMessagesReducer = persistReducer(messagePersistConfig, messagesReducer);
+
 export const store = configureStore({
   reducer: {
     cart: persistedCartReducer,
     auth: authReducer,
-    messages: messagesReducer,
+    messages: persistedMessagesReducer,
     customerOrders: customerOrdersReducer,
   },
   middleware(getDefaultMiddleware) {

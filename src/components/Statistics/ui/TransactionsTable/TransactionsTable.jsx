@@ -2,18 +2,23 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetTransactions } from 'api/transactions';
-import Button from 'shared/Button/Button';
-import { Calendar } from 'shared/Calendar/Calendar';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
+import {
+  Button,
+  Calendar,
+  CheckBox,
+  DropDown,
+  Loader,
+  IconButton,
+  Modal,
+  Text,
+  Title,
+} from 'shared';
+
 import cls from './TransactionsTable.module.scss';
 import { getDate } from 'helpers/getDate';
-import { DropDown } from 'shared/DropDown/DropDown';
-import { IconButton } from 'shared/IconButton/IconButton';
-import Loader from 'shared/Loader/Loader';
-import Modal from 'shared/Modal/Modal';
+
 import { RxCross2 } from 'react-icons/rx';
-import Text from 'shared/Text/Text';
-import Title from 'shared/Title/Title';
+
 import {
   TfiAngleDoubleLeft,
   TfiAngleDoubleRight,

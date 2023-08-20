@@ -7,7 +7,7 @@ const sizeValues = {
   lg: '120',
 };
 
-const Logo = ({ size = 'sm', classname }) => {
+export const Logo = ({ size = 'sm', classname }) => {
   return (
     <img
       className={`${classname}`}
@@ -23,5 +23,3 @@ Logo.propTypes = {
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   classname: PropTypes.string,
 };
-
-export default Logo;

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Button from 'shared/Button/Button';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
+import { CheckBox, Button } from 'shared';
 import FormInput from './FormInput';
 import classes from './LoginForm.module.scss';
 import { CHECK_PASSWORD_SCHEMA } from 'utils/constants';
@@ -26,7 +25,7 @@ const schema = yup.object({
     .required('Please provide a password'),
 });
 
-const LoginForm = () => {
+export const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
@@ -111,5 +110,3 @@ const LoginForm = () => {
     </div>
   );
 };
-
-export default LoginForm;

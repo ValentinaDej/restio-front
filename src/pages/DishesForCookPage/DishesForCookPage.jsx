@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom';
-import Title from 'shared/Title/Title';
+import { Title, Button, Loader } from 'shared';
 import styles from './DishesForCookPage.module.scss';
 import { useQuery } from 'react-query';
 import { toast } from 'react-hot-toast';
-import Loader from 'shared/Loader/Loader';
+
 import { getAllOrders, useUpdateDishStatusByWaiter } from 'api/order';
-import StatusCardItem from 'components/Cook/StatusCardItem/StatusCardItem';
+import { StatusCardItem } from 'components';
 import { useMediaQuery } from 'react-responsive';
-import Button from 'shared/Button/Button';
+
 import { useCallback, useEffect, useState } from 'react';
 import { useSSE } from 'react-hooks-sse';
 

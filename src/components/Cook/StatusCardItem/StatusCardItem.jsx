@@ -1,8 +1,8 @@
-import DishesList from '../DishesList/DishesList';
+import { DishesList } from '../DishesList/DishesList';
 import styles from './StatusCardItem.module.scss';
 import PropTypes from 'prop-types';
 
-const StatusCardItem = ({ data, handleChangeStatus }) => {
+export const StatusCardItem = ({ data, handleChangeStatus }) => {
   return (
     <div className={`${styles.status__card}`}>
       {data?.length > 0 && <DishesList dishes={data} handleChangeStatus={handleChangeStatus} />}
@@ -24,5 +24,3 @@ StatusCardItem.propTypes = {
   ).isRequired,
   handleChangeStatus: PropTypes.func.isRequired,
 };
-
-export default StatusCardItem;

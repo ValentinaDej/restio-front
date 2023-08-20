@@ -5,19 +5,15 @@ import PropTypes from 'prop-types';
 import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
 
-import Button from 'shared/Button/Button';
-import Select from 'shared/Select/Select';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
-import Text from 'shared/Text/Text';
-import InputValid from 'shared/InputValid/InputValid';
-import FileUploader from 'shared/FileUploader/FileUploader';
+import { Button, Select, CheckBox, Text, InputValid, FileUploader } from 'shared';
+
 import DishTypeOptions from './DishTypeOptions/DishTypeOptions';
 import Ingredients from './Ingredients/Ingredients';
 import SortIngredients from './SortIngridients/SortIngredients';
 
 import classes from './DishForm.module.scss';
 
-const DishForm = ({
+export const DishForm = ({
   onSubmit,
   category,
   initialState,
@@ -381,5 +377,3 @@ DishForm.defaultProps = {
   selectedIngredientsMap: new Map(),
   isEditing: false,
 };
-
-export default DishForm;

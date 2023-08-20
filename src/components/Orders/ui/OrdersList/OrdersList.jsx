@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { useCallback } from 'react';
-import OrderCard from 'shared/OrderCard/OrderCard';
+import { OrderCard } from 'shared';
 import PropTypes from 'prop-types';
 import cls from './OrderList.module.scss';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';

@@ -2,8 +2,7 @@ import { FaPen } from 'react-icons/fa';
 import { FaCheck } from 'react-icons/fa';
 import { FaList } from 'react-icons/fa';
 
-import Text from 'shared/Text/Text';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
+import { Text, CheckBox } from 'shared';
 import SelectIngredients from './SelectIngridients/SelectIngredients';
 import classes from './Ingredients.module.scss';
 

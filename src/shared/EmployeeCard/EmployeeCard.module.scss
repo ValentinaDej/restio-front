@@ -59,14 +59,14 @@
   .edit {
     position: absolute;
 
-    color: var(--color-gray);
+    color: var(--color-secondary);
 
     bottom: 120px;
     right: 10px;
     z-index: 1;
     margin-right: 20px;
     &:hover {
-      color: var(--color-orange);
+      color: var(--color-primary);
     }
   }
 }

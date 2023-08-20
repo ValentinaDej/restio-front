@@ -7,10 +7,7 @@ import { DISH_CATEGORIES } from 'utils/constants';
 import { getDishById, createDish, updateDishById } from '../../api/dish';
 import { getIngredients } from '../../api/ingredient';
 
-import DishForm from 'shared/DishForm/DishForm';
-import Button from 'shared/Button/Button';
-import Title from 'shared/Title/Title';
-import Loader from 'shared/Loader/Loader';
+import { DishForm, Button, Title, Loader } from 'shared';
 
 import styles from './AddDishPage.module.scss';
 

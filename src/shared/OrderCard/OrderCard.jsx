@@ -1,19 +1,17 @@
 import React, { useEffect, useRef, memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import Card from 'shared/Card/Card';
+import { Card, Status, Text, CheckBox, IconButton, Button } from 'shared';
 import cls from './OrderCard.module.scss';
-import Status from 'shared/Status/Status';
-import Text from 'shared/Text/Text';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
+
 import { BiDish, BiChevronDown } from 'react-icons/bi';
 import { classNames } from 'helpers/classNames';
-import { IconButton } from 'shared/IconButton/IconButton';
+
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { getDate } from 'helpers/getDate';
-import Button from 'shared/Button/Button';
+
 import { motion, AnimatePresence } from 'framer-motion';
 
-const OrderCard = memo(
+export const OrderCard = memo(
   ({
     _id,
     number,
@@ -180,5 +178,3 @@ OrderCard.propTypes = {
   isWaiterDishesPage: PropTypes.bool,
   isPayCard: PropTypes.bool,
 };
-
-export default OrderCard;

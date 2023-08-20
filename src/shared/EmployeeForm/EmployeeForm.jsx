@@ -1,12 +1,11 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
-import Select from '../Select/Select';
+import { Select, Button, Input, FileUploader } from 'shared';
 import styles from './EmployeeForm.module.scss';
-import Button from '../Button/Button';
+
 import * as Yup from 'yup';
-import Input from '../Input/Input';
-import FileUploader from '../FileUploader/FileUploader';
+
 import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA } from 'utils/constants';
 import { useParams } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
@@ -28,7 +27,7 @@ const validationSchema = Yup.object({
   picture: Yup.string(),
 });
 
-const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
+export const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
   const {
     register,
     handleSubmit,
@@ -279,5 +278,3 @@ EmployeeForm.defaultProps = {
   buttonText: 'Submit',
   size: 'sm',
 };
-
-export default EmployeeForm;

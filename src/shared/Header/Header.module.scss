@@ -5,6 +5,7 @@
   padding: 1rem 1rem;
 
   &__logo {
+    margin: auto 0;
     width: 40px;
     height: 40px;
     object-fit: cover;
@@ -28,40 +29,42 @@
     height: 30px;
   }
   &__icon {
-    width: 30px;
-    height: 30px;
     color: currentColor;
-    margin-left: 20px;
+    width: 24px;
+    height: 24px;
+
+    @media screen and (min-width: 479.98px) {
+      width: 30px;
+      height: 30px;
+    }
   }
   &__link {
     display: flex;
     align-items: center;
     margin-left: 1.5rem;
-    color: var(--color-gray);
+    color: var(--color-secondary);
     &:hover,
     &:focus {
-      color: var(--color-orange);
+      color: var(--color-primary);
     }
     &:global.active {
-      color: var(--color-orange);
+      color: var(--color-primary);
     }
   }
   &__wrapper {
     display: flex;
     align-items: center;
   }
-  &__link-button {
-    margin-left: 20px;
-    font-size: 0.8rem;
-    padding: 0.5rem 1.5rem;
-    border-radius: 30px;
-    border: 2px solid var(--color-orange);
-    color: var(--color-orange);
-    font-weight: var(--font-semi-bold);
-    &:hover,
-    &:active {
-      background: var(--color-orange-hover);
-      color: var(--color-white);
+
+  &__title {
+    display: none;
+
+    @media screen and (min-width: 767.98px) {
+      display: block;
+      font-size: 24px;
+    }
+    @media screen and (min-width: 991.98px) {
+      font-size: 28px;
     }
   }
 }

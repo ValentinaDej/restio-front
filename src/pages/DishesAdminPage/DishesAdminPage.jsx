@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
+import { AdminPageContainer } from 'components';
 import { useMutation } from 'react-query';
 import { toast } from 'react-hot-toast';
-import Select from 'shared/Select/Select';
+import { Select } from 'shared';
 import { DISH_CATEGORIES } from 'utils/constants';
 import styles from './DishesAdminPage.module.scss';
 import { deleteDishById } from '../../api/dish';

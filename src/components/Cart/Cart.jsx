@@ -1,20 +1,17 @@
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQueryClient } from 'react-query';
-import Card from 'shared/Card/Card';
-import Title from 'shared/Title/Title';
-import Button from 'shared/Button/Button';
-import Text from 'shared/Text/Text';
+import { useParams } from 'react-router';
+import { toast } from 'react-hot-toast';
+
+import { Card, Title, Button, Text, Loader } from 'shared';
+
 import css from './Cart.module.scss';
 import { getProductFromState } from 'store/cart/cartSelectors';
 import { clearCart, decreaseQuantity, deleteProduct, increaseQuantity } from 'store/cart/cartSlice';
 import { createOrder } from 'api/order';
-import { useParams } from 'react-router';
-import { toast } from 'react-hot-toast';
-import { useState } from 'react';
 
-import Loader from 'shared/Loader/Loader';
-
-const Cart = () => {
+export const Cart = () => {
   const queryClient = useQueryClient();
   const { restId, tableId } = useParams();
   const dispatch = useDispatch();
@@ -48,7 +45,9 @@ const Cart = () => {
   const deleteDishHandler = (id) => {
     dispatch(deleteProduct(id));
   };
-
+  const clearCartHandler = () => {
+    dispatch(clearCart());
+  };
   const total = cart.reduce((acc, item) => (acc += item.price * item.quantity), 0).toFixed(2);
 
   return (
@@ -90,7 +89,14 @@ const Cart = () => {
                   ${total}
                 </Text>
               </div>
-              <Button onClick={onClickHandler}>Place an order</Button>
+              <div className={css['button-wrapper']}>
+                <Button onClick={onClickHandler} size="sm">
+                  Place an order
+                </Button>
+                <Button mode="outlined" size="sm" onClick={clearCartHandler}>
+                  Clear
+                </Button>
+              </div>
             </div>
           )}
         </>
@@ -98,5 +104,3 @@ const Cart = () => {
     </>
   );
 };
-
-export default Cart;

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classes from './Button.module.scss';
 import { memo } from 'react';
 
-const Button = memo(({ children, type, onClick, mode, size, className, ...props }) => {
+export const Button = memo(({ children, type, onClick, mode, size, className, ...props }) => {
   const buttonMode = mode || 'primary';
   const buttonSize = size || 'md';
 
@@ -29,5 +29,3 @@ Button.propTypes = {
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
   onClick: PropTypes.func,
 };
-
-export default Button;

@@ -4,11 +4,9 @@ import { IoIosClose } from 'react-icons/io';
 import { BiSolidTrash, BiSolidCommentAdd, BiSolidCommentCheck } from 'react-icons/bi';
 
 import css from './Card.module.scss';
-import QuantityButton from 'shared/QuantityButton/QuantityButton';
-import { IconButton } from 'shared/IconButton/IconButton';
-import Status from 'shared/Status/Status';
-import StatusSelector from 'shared/StatusSelector/StatusSelector';
-import Dialog from 'components/Dialog/Dialog';
+import { QuantityButton, IconButton, Status, StatusSelector } from 'shared';
+
+import { Dialog } from 'components';
 import { useSelector } from 'react-redux';
 import { getProductFromState } from 'store/cart/cartSelectors';
 
@@ -19,7 +17,7 @@ const variant = {
   cook: 'cook',
 };
 
-const Card = memo(
+export const Card = memo(
   ({
     src,
     title,
@@ -64,6 +62,12 @@ const Card = memo(
                   )}
                 </>
               )}
+              {mode === variant.waiter && (
+                <>
+                  <IoIosClose className={css['card__icon']} />
+                  <p className={css['card__quantity']}>{quantity}</p>
+                </>
+              )}
               {mode === variant.order && (
                 <>
                   <IoIosClose className={css['card__icon']} />
@@ -76,18 +80,6 @@ const Card = memo(
               {mode === variant.cart && (
                 <QuantityButton size="sm" quantity={quantity} addOne={addOne} minusOne={minusOne} />
               )}
-              {mode === variant.waiter && (
-                <>
-                  <IoIosClose className={css['card__icon']} />
-                  <p className={css['card__quantity']}>{quantity}</p>
-                </>
-              )}
-              {/* {mode === variant.cook && (
-                <>
-                  <IoIosClose className={css['card__icon']} />
-                  <p className={css['card__quantity']}>{quantity}</p>
-                </>
-              )} */}
 
               {mode === variant.order && (
                 <div>
@@ -139,5 +131,3 @@ Card.propTypes = {
   changeStatusFunction: PropTypes.func,
   dishId: PropTypes.string,
 };
-
-export default Card;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { classNames } from 'helpers/classNames';
-import { DropDown } from 'shared/DropDown/DropDown';
+import { DropDown } from 'shared';
 import cls from './Calendar.module.scss';
 
 const monthOptions = [

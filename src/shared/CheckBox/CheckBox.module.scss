@@ -17,22 +17,22 @@
 
   &:hover {
     background-color: var(--color-bg-gray);
-    border-color: var(--color-orange-hover);
+    border-color: var(--color-primary-hover);
   }
 
   &.disabled {
-    border-color: var(--color-gray);
+    border-color: var(--color-secondary);
     cursor: not-allowed;
   }
 }
 
 .checkBox {
   &:checked + .checkIcon {
-    color: var(--color-orange);
+    color: var(--color-primary);
   }
 
   &:focus + .checkIcon {
-    border-color: var(--color-orange-hover);
+    border-color: var(--color-primary-hover);
     background-color: var(--color-bg-gray);
   }
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classes from './CategoryTabs.module.scss';
 import { DISH_CATEGORIES } from 'utils/constants';
 
-const CategoryTabs = ({
+export const CategoryTabs = ({
   mode = 'primary',
   categories = DISH_CATEGORIES,
   setActiveTab = () => {},
@@ -44,5 +44,3 @@ CategoryTabs.propTypes = {
   setActiveTab: PropTypes.func,
   activeTab: PropTypes.string,
 };
-
-export default CategoryTabs;

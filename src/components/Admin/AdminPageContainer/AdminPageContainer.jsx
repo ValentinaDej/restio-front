@@ -1,14 +1,12 @@
-import Title from 'shared/Title/Title';
 import styles from './AdminPageContainer.module.scss';
-import EmployeeCard from 'shared/EmployeeCard/EmployeeCard';
-import EmptyCard from 'shared/EmptyCard/EmptyCard';
+
 import { useNavigate, useParams } from 'react-router-dom';
-import Input from 'shared/Input/Input';
+
 import { useState } from 'react';
-import Loader from 'shared/Loader/Loader';
+
 import { useInfiniteQuery, useQueryClient } from 'react-query';
 import { getPersonnel } from '../../../api/personnel';
-import Button from '../../../shared/Button/Button';
+import { Button, Loader, EmptyCard, EmployeeCard, Title, Input } from 'shared';
 import toast from 'react-hot-toast';
 import { getDishes } from '../../../api/dish';
 
@@ -17,7 +15,7 @@ const value = {
   dish: 'dishes',
 };
 
-const AdminPageContainer = ({
+export const AdminPageContainer = ({
   title,
   variant,
   handleDelete,
@@ -178,5 +176,3 @@ const AdminPageContainer = ({
     </div>
   );
 };
-
-export default AdminPageContainer;

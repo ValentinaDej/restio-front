@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import { IoMdClose } from 'react-icons/io';
 
 import css from './Dialog.module.scss';
-import Button from 'shared/Button/Button';
+import { Button } from 'shared';
 import { addCommentForChef } from 'store/cart/cartSlice';
 
-const Dialog = ({ id, setIsOpen }) => {
+export const Dialog = ({ id, setIsOpen }) => {
   const dispatch = useDispatch();
 
   const [comment, setComment] = useState('');
@@ -35,5 +35,3 @@ const Dialog = ({ id, setIsOpen }) => {
     </>
   );
 };
-
-export default Dialog;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Button from 'shared/Button/Button';
+import { Button } from 'shared';
 import { BillInfo } from '../BillInfo/BillInfo';
 import cls from './BillDownload.module.scss';
 

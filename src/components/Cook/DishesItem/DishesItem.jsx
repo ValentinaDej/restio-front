@@ -1,14 +1,13 @@
-import Button from 'shared/Button/Button';
-import styles from './DishesItem.module.scss';
 import PropTypes from 'prop-types';
+import styles from './DishesItem.module.scss';
 import { useParams } from 'react-router-dom';
 import { IoIosClose } from 'react-icons/io';
 import { useMediaQuery } from 'react-responsive';
-import Text from 'shared/Text/Text';
+import { Text, Button } from 'shared';
 import { MdTableBar } from 'react-icons/md';
 import { BiDish } from 'react-icons/bi';
 
-const DishesItem = ({
+export const DishesItem = ({
   dish,
   quantity,
   handleChangeStatus,
@@ -46,11 +45,11 @@ const DishesItem = ({
       </div>
       <div className={`${styles.information__order}`}>
         <div className={`${styles.information__data}`}>
-          <MdTableBar size={24} color={'#959895'} />
+          <MdTableBar size={24} color={'var(--color-secondary)'} />
           <span>{tableNumber}</span>
         </div>
         <div className={`${styles.information__data}`}>
-          <BiDish size={24} color={'#959895'} />
+          <BiDish size={24} color={'var(--color-secondary)'} />
           <span>{orderNumber}</span>
         </div>
       </div>
@@ -93,5 +92,3 @@ DishesItem.propTypes = {
   orderNumber: PropTypes.string.isRequired,
   create: PropTypes.string.isRequired,
 };
-
-export default DishesItem;

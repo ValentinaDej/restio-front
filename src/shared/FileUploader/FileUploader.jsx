@@ -9,7 +9,7 @@ import styles from './FileUploader.module.scss';
 
 const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg'];
 
-const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
+export const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
   const [uploadedFile, setUploadedFile] = useState();
   const [previewUrl, setPreviewUrl] = useState(onEditPhoto);
   const fileInputRef = useRef();
@@ -91,5 +91,3 @@ const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
     </div>
   );
 });
-
-export default FileUploader;

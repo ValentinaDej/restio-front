@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
+import { AdminPageContainer } from 'components';
 import { BASE_URL, instance } from 'api';
 import toast from 'react-hot-toast';
 

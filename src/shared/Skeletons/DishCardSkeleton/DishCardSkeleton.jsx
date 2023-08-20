@@ -4,7 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import css from '../../DishCard/DishCard.module.scss';
 import styles from './DishCardSkeleton.module.scss';
 
-const DishCardSkeleton = ({ ...props }) => {
+export const DishCardSkeleton = ({ ...props }) => {
   return (
     <div className={css['card-container']}>
       <div className={css['card-container__image-wrapper']}>
@@ -22,5 +22,3 @@ const DishCardSkeleton = ({ ...props }) => {
     </div>
   );
 };
-
-export default DishCardSkeleton;

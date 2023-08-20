@@ -1,12 +1,11 @@
 import { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import Footer from 'shared/Footer/Footer';
-import Header from 'shared/Header/Header';
-import Loader from 'shared/Loader/Loader';
+import { Footer, Header, Loader } from 'shared';
+
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const SharedLayout = ({ logo, restaurantName, table = 0 }) => {
+export const SharedLayout = ({ logo, restaurantName, table = 0 }) => {
   const { role } = useSelector((state) => state.auth);
 
   const location = useLocation();
@@ -51,5 +50,3 @@ const SharedLayout = ({ logo, restaurantName, table = 0 }) => {
     </>
   );
 };
-
-export default SharedLayout;

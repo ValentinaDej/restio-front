@@ -1,11 +1,10 @@
-import { IconButton } from 'shared/IconButton/IconButton';
 import classes from './Modal.module.scss';
 import PropTypes from 'prop-types';
 import { AiOutlineClose } from 'react-icons/ai';
 import { useCallback, useEffect } from 'react';
-import { Portal } from 'shared/Portal/Portal';
+import { Portal, IconButton } from 'shared';
 
-const Modal = ({ children, isModalOpen, setIsModalOpen, classname, ...props }) => {
+export const Modal = ({ children, isModalOpen, setIsModalOpen, classname, ...props }) => {
   const handleClose = useCallback(() => {
     setIsModalOpen(false);
   }, [setIsModalOpen]);
@@ -66,5 +65,3 @@ Modal.propTypes = {
   isModalOpen: PropTypes.bool,
   classname: PropTypes.string,
 };
-
-export default Modal;

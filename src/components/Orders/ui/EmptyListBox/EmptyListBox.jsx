@@ -1,7 +1,6 @@
 import { TbMoodSearch } from 'react-icons/tb';
-import Button from 'shared/Button/Button';
-import Text from 'shared/Text/Text';
-import Title from 'shared/Title/Title';
+import { Button, Text, Title } from 'shared';
+
 import cls from './EmptyListBox.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';

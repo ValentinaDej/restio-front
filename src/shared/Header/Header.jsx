@@ -9,35 +9,29 @@ import { IoPeopleSharp } from 'react-icons/io5';
 import { FiLogOut } from 'react-icons/fi';
 import { GiCook } from 'react-icons/gi';
 
-import { ReactComponent as Bell } from '../../assets/icons/desk-bell.svg';
 import classes from './Header.module.scss';
-import Title from 'shared/Title/Title';
-import OrdersButton from 'components/OrdersButton/OrdersButton';
+import { ReactComponent as Bell } from '../../assets/icons/desk-bell.svg';
+
+import { Sidebar, OrdersButton } from 'components';
 import { callWaiter } from 'api/table';
 import { getRestaurant } from 'api/restaurant';
 import { getRestaurantId } from 'store/auth/authSelector';
 import { logout } from 'store/auth/authSlice';
 
-const Header = ({ role }) => {
+export const Header = ({ role }) => {
   const dispatch = useDispatch();
-
   const restaurantId = useSelector(getRestaurantId);
-
   const { pathname } = useLocation();
-  const arrParams = pathname.split('/');
 
+  const arrParams = pathname.split('/');
   const restId = arrParams[1];
   const tableId = arrParams[3];
 
-  const { isError, isLoading, data } = useQuery(
-    ['restaurant', restId],
-    async () => await getRestaurant(restId),
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchInterval: false,
-    }
-  );
+  const { data } = useQuery(['restaurant', restId], async () => await getRestaurant(restId), {
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchInterval: false,
+  });
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -59,11 +53,10 @@ const Header = ({ role }) => {
       </div>
       {role !== 'customer' && (
         <div className={classes.header__button}>
-          <Title mode="h1" fontSize={26} fontWeight={700} color="var(--color-font)">
-            {data?.name}
-          </Title>
+          <h1 className={classes.header__title}>{data?.name}</h1>
         </div>
       )}
+      {role === 'waiter' && <Sidebar />}
       {role === 'admin' && (
         <div className={classes.header__wrapper}>
           <NavLink className={classes.header__link} to={`${restaurantId}/admin/dishes`}>
@@ -81,6 +74,7 @@ const Header = ({ role }) => {
           <NavLink className={classes.header__link} to={`${restaurantId}/admin/statistics`}>
             <FaMoneyBillTrendUp className={classes.header__icon} />
           </NavLink>
+          <Sidebar />
         </div>
       )}
       {role !== 'customer' && (
@@ -102,11 +96,6 @@ const Header = ({ role }) => {
   );
 };
 
-export default Header;
-
 Header.propTypes = {
-  logo: PropTypes.string,
-  restaurantName: PropTypes.string,
   role: PropTypes.oneOf(['customer', 'waiter', 'cook', 'admin']),
-  onClick: PropTypes.func,
 };

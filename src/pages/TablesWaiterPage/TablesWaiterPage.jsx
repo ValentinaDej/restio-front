@@ -1,24 +1,16 @@
-import { useGetTablesByRestaurantId, useGetOrdersByRestaurantId } from 'api/service';
-import Loader from 'shared/Loader/Loader';
-import Title from 'shared/Title/Title';
-import styles from './TablesWaiterPage.module.scss';
-import TableCard from 'components/TableCard/TableCard';
-import { toast } from 'react-hot-toast';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-
-import Sidebar from '../../components/Sidebar/Sidebar';
+import { toast } from 'react-hot-toast';
 import { useSSE } from 'react-hooks-sse';
-import { useDispatch } from 'react-redux';
-import { addMessage } from 'store/messages/messagesSlice';
-
-import { CheckBox } from 'shared/CheckBox/CheckBox';
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const TablesWaiterPage = () => {
-  const dispatch = useDispatch();
+import styles from './TablesWaiterPage.module.scss';
+import { useGetTablesByRestaurantId, useGetOrdersByRestaurantId } from 'api/service';
+import { Loader, Title, CheckBox } from 'shared';
 
+import { TableCard } from 'components';
+
+const TablesWaiterPage = () => {
   const [isFreeTables, setIsFreeTables] = useState(false);
   const [isWaitingTables, setIsWaitinigTables] = useState(false);
   const [isTakenTables, setIsTakenTables] = useState(false);
@@ -26,9 +18,10 @@ const TablesWaiterPage = () => {
   const [isTablesWithAllPaidOrders, setIsTablesWithAllPaidOrders] = useState(false);
 
   const { restId } = useParams();
-  const updateTableStatusEvent = useSSE('table status', {});
-  const dishReadyEvent = useSSE('dish is ready', {});
-  const newOrderEvent = useSSE('new order', {});
+  const updateTableStatusEvent = useSSE('table status');
+  const dishReadyEvent = useSSE('dish is ready');
+  const newOrderEvent = useSSE('new order');
+  const updateOrderStatusEvent = useSSE('update order status');
 
   const {
     data: tablesData,
@@ -38,19 +31,10 @@ const TablesWaiterPage = () => {
   } = useGetTablesByRestaurantId(restId);
 
   useEffect(() => {
-    if (updateTableStatusEvent && updateTableStatusEvent.message) {
-      if (updateTableStatusEvent.message.includes('Waiting')) {
-        dispatch(
-          addMessage({
-            message: updateTableStatusEvent.message,
-            id: Date.now(),
-            type: 'waiting',
-          })
-        );
-      }
+    if (updateTableStatusEvent || newOrderEvent) {
       refetchTables({ force: true });
     }
-  }, [dispatch, refetchTables, restId, updateTableStatusEvent]);
+  }, [newOrderEvent, refetchTables, updateTableStatusEvent]);
 
   const {
     refetch: refetchOrders,
@@ -60,19 +44,10 @@ const TablesWaiterPage = () => {
   } = useGetOrdersByRestaurantId(restId);
 
   useEffect(() => {
-    if (dishReadyEvent && dishReadyEvent.message) {
-      dispatch(addMessage({ message: dishReadyEvent.message, id: Date.now(), type: 'ready' }));
-
+    if (dishReadyEvent || updateOrderStatusEvent || newOrderEvent) {
       refetchOrders({ force: true });
     }
-  }, [dishReadyEvent, dispatch, refetchOrders]);
-
-  useEffect(() => {
-    if (newOrderEvent) {
-      refetchTables({ force: true });
-      refetchOrders({ force: true });
-    }
-  }, [newOrderEvent, refetchOrders, refetchTables]);
+  }, [dishReadyEvent, newOrderEvent, refetchOrders, updateOrderStatusEvent]);
 
   // console.log(tablesData);
   // console.log(ordersData);
@@ -150,7 +125,6 @@ const TablesWaiterPage = () => {
 
   return (
     <div className={styles.tables}>
-      <Sidebar />
       <Title textAlign={'left'}>Tables board</Title>
       <hr className={styles.tables__divider} />
       <div className={styles.tables__checkbox_container}>

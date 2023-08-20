@@ -1,9 +1,9 @@
 import styles from './DishesList.module.scss';
-import DishesItem from '../DishesItem/DishesItem';
+import { DishesItem } from '../DishesItem/DishesItem';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 
-const DishesList = ({ dishes, handleChangeStatus }) => {
+export const DishesList = ({ dishes, handleChangeStatus }) => {
   const sortedDishes = [...dishes].sort((dishA, dishB) => {
     return new Date(dishA.create) - new Date(dishB.create);
   });
@@ -41,5 +41,3 @@ DishesList.propTypes = {
   ).isRequired,
   handleChangeStatus: PropTypes.func.isRequired,
 };
-
-export default DishesList;

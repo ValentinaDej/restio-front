@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import EmployeeForm from '../../shared/EmployeeForm/EmployeeForm';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import Loader from '../../shared/Loader/Loader';
-import styles from './AddPersonnelPage.module.scss';
-import Title from '../../shared/Title/Title';
-import Button from '../../shared/Button/Button';
 import toast from 'react-hot-toast';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
+import styles from './AddPersonnelPage.module.scss';
+import { Title, Button, Loader, EmployeeForm } from 'shared';
+
 import { createPersonnel, getPersonnelById, updatePersonnel } from '../../api/personnel';
 
 const AddPersonnelPage = () => {

@@ -3,7 +3,7 @@ import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 
 import css from './QuantityButton.module.scss';
 
-const QuantityButton = ({ quantity = 1, addOne, minusOne, mode, size, classname }) => {
+export const QuantityButton = ({ quantity = 1, addOne, minusOne, mode, size, classname }) => {
   return (
     <div
       className={`${css['quantity-container']} ${css[`quantity-container_${mode}`]}
@@ -38,5 +38,3 @@ QuantityButton.propTypes = {
   mode: PropTypes.string,
   size: PropTypes.string,
 };
-
-export default QuantityButton;

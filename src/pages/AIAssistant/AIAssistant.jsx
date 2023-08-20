@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import styles from './AIAssistant.module.scss';
-import Button from '../../shared/Button/Button';
-import Title from '../../shared/Title/Title';
+
 import { FcApproval } from '@react-icons/all-files/fc/FcApproval';
 import { FcCancel } from '@react-icons/all-files/fc/FcCancel';
 import { FcAssistant } from '@react-icons/all-files/fc/FcAssistant';
 import { FcMoneyTransfer } from '@react-icons/all-files/fc/FcMoneyTransfer';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
-import { openai } from '../../api/openai';
-import Loader from '../../shared/Loader/Loader';
-import css from '../MenuPage/MenuPage.module.scss';
-import DishCard from '../../shared/DishCard/DishCard';
-import Cart from '../../components/Cart/Cart';
-import CategoryTabs from '../../shared/CategoryTabs/CategoryTabs';
 import { useQuery } from 'react-query';
+import { openai } from '../../api/openai';
+
+import css from '../MenuPage/MenuPage.module.scss';
+import { DishCard, Loader, CategoryTabs, Input, Title, Button } from 'shared';
+import { Cart } from 'components';
+
 import { getDishesForMenu } from '../../api/dish';
-import Input from '../../shared/Input/Input';
 
 const AIAssistant = () => {
   const { restId, tableId } = useParams();
@@ -206,7 +204,7 @@ const AIAssistant = () => {
             {isLoading ? (
               <Loader />
             ) : (
-              <div>
+              <div className={styles.wrapper}>
                 <CategoryTabs mode="outlined" setActiveTab={setActiveTab} activeTab={category} />
                 <ul className={css.list}>
                   {data?.data?.map(({ _id, picture, price, portionWeight, ingredients, name }) => (

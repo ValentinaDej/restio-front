@@ -1,10 +1,9 @@
-import Button from 'shared/Button/Button';
 import cls from './NavigateButtons.module.scss';
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { IconButton } from 'shared/IconButton/IconButton';
+
 import { BiDish, BiMoney, BiSolidPlusCircle } from 'react-icons/bi';
-import Text from 'shared/Text/Text';
+import { Text, IconButton, Button } from 'shared';
 import { Filters } from '../Filters/Filters';
 
 export const NavigateButtons = ({

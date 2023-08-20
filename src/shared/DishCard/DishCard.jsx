@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { addProduct } from 'store/cart/cartSlice';
 import { Link } from 'react-router-dom';
 
-const DishCard = memo(({ id, src, title, ingredients, weight, price, link }) => {
+export const DishCard = memo(({ id, src, title, ingredients, weight, price, link }) => {
   const dispatch = useDispatch();
 
   const onClickHandler = () => {
@@ -48,5 +48,3 @@ DishCard.propTypes = {
   link: PropTypes.string,
   onClick: PropTypes.func,
 };
-
-export default DishCard;

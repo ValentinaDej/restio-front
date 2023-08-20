@@ -1,13 +1,11 @@
 import styles from './TableCard.module.scss';
 import PropTypes from 'prop-types';
-import StatusSelector from 'shared/StatusSelector/StatusSelector';
-import Status from 'shared/Status/Status';
-import Text from 'shared/Text/Text';
-import Button from 'shared/Button/Button';
+import { StatusSelector, Text, Button } from 'shared';
+
 import { NavLink } from 'react-router-dom';
 import { useChangeTableStatus } from 'api/service';
 import { toast } from 'react-hot-toast';
-import { useEffect, useState } from 'react';
+
 import { GiWoodenChair, GiNotebook } from 'react-icons/gi';
 import { BiDish } from 'react-icons/bi';
 import { MdTableBar } from 'react-icons/md';
@@ -15,7 +13,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { IoIosRestaurant } from 'react-icons/io';
 import { motion } from 'framer-motion';
 
-const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seats }) => {
+export const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seats }) => {
   const changeTableStatus = useChangeTableStatus();
   // const [currentStatus, setCurrentStatus] = useState(status);
 
@@ -252,5 +250,3 @@ TableCard.propTypes = {
   orders: PropTypes.array,
   seats: PropTypes.number,
 };
-
-export default TableCard;

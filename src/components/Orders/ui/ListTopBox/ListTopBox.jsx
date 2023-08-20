@@ -2,16 +2,15 @@ import { useUpdateOrderStatusByWaiter } from 'api/order';
 import React, { useCallback, useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from 'shared/Button/Button';
-import Loader from 'shared/Loader/Loader';
-import Text from 'shared/Text/Text';
+import { Button, Loader, Text, CheckBox } from 'shared';
+
 import { BillDownload } from '../BillDownload/BillDownload';
 import PropTypes from 'prop-types';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import cls from './ListTopBox.module.scss';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
+
 import { getUserId } from 'store/auth/authSelector';
-import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
+import { ConfirmModal } from 'components';
 import { classNames } from 'helpers/classNames';
 
 export const ListTopBox = ({

@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import css from '../../Card/Card.module.scss';
-import styles from './CardSkeleton.module.scss';
 
 const variant = {
   order: 'order',
@@ -12,7 +11,7 @@ const variant = {
   cook: 'cook',
 };
 
-const CardSkeleton = ({ mode = variant.order }) => {
+export const CardSkeleton = ({ mode = variant.order }) => {
   return (
     <div className={css['card']}>
       <div className={css['card__image-container']}>
@@ -65,5 +64,3 @@ const CardSkeleton = ({ mode = variant.order }) => {
 CardSkeleton.propTypes = {
   mode: PropTypes.string,
 };
-
-export default CardSkeleton;
