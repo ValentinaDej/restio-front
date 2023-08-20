@@ -41,7 +41,7 @@ const DishesAdminPage = () => {
     try {
       await toast.promise(mutateAsync(id, restId), {
         loading: 'Removing...',
-        success: 'Dish removed from the menu',
+        success: type === 'active' ? 'Dish moved to inactive' : 'Dish moved to active',
         error: 'Error removing dish',
       });
     } catch (error) {
