@@ -92,7 +92,6 @@ const DishPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-  
   if (isLoading) {
     return <Loader size="lg"></Loader>;
   }
