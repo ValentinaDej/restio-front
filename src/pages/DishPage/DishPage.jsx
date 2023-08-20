@@ -12,17 +12,15 @@ import Button from 'shared/Button/Button';
 import { NavigateButtons } from '../../components/Orders/ui/NavigateButtons/NavigateButtons';
 import Cart from 'components/Cart/Cart';
 import Loader from 'shared/Loader/Loader';
+import DishDescription from 'components/DishDescription/DishDescription';
 import Footer from 'shared/Footer/Footer';
+import Slider from '../../components/Slider/Slider';
 import { getDishById } from 'api/dish';
 import { addProduct, decreaseQuantity, increaseQuantity } from 'store/cart/cartSlice';
 import { getProductFromState } from '../../store/cart/cartSelectors';
-import { IoReturnDownBackOutline } from 'react-icons/io5';
-import { MdNavigateNext } from 'react-icons/md';
-import { MdNavigateBefore } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
-import { HfInference } from '@huggingface/inference';
 
-const DishPage = () => {
+const DishPage = (props) => {
   const [dishQuantity, setDishQuantity] = useState(0);
   const [recommendedDishes, setRecommendedDishes] = useState([]);
   const dishId = useParams().dishId;
@@ -31,11 +29,6 @@ const DishPage = () => {
   const dispatch = useDispatch();
   const storeData = useSelector(getProductFromState);
   const { pathname } = useLocation();
-  const sliderRef = useRef(null);
-  const [generatedText, setGeneratedText] = useState('');
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [currentText, setCurrentText] = useState('');
-  const words = generatedText.split(' ');
 
   console.log('DishPage', dishId);
   const {
@@ -99,58 +92,7 @@ const DishPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
-  const generateText = useCallback(async () => {
-    if (dish) {
-      const key = process.env.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY2;
-      const hf = new HfInference(key);
-      const model = 'declare-lab/flan-alpaca-large';
-      // const text = 'Provide interesting facts about ${dish.name} meal';
-      // const text = `When does ${dish.name} dish was invented?`;
-      const text = `Create exquisite desription of ${dish.name}.`;
-      const response = await hf.textGeneration({
-        model: model,
-        inputs: text,
-        parameters: { max_new_tokens: 250 },
-      });
-      let textGen = response.generated_text;
-      const lastDotIndex = textGen.lastIndexOf('.');
-      let cuttedText = textGen.substring(0, lastDotIndex + 1);
-      setGeneratedText(cuttedText);
-      setIsLoaded(true);
-      console.log(cuttedText);
-      // let text =
-      //   'Caesar is a classic salad made with a vinaigrette of romaine lettuce, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with a vinaigrette of croutons, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with croutons, croutons, and a vinaigrette dressing.';
-      // const lastDotIndex = text.lastIndexOf('.');
-      // let cuttedText = text.substring(0, lastDotIndex + 1);
-      // setTimeout(() => {
-      //   setIsLoaded(true);
-      //   setGeneratedText(cuttedText);
-      // }, 7000);
-    }
-  }, [dish]);
-
-  useEffect(() => {
-    generateText();
-  }, [generateText]);
-
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index == 0) {
-        setCurrentText(words[index] + ' ');
-        index++;
-      } else if (index < words.length - 1) {
-        setCurrentText((prevText) => prevText + words[index] + ' ');
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 100);
-    setCurrentText('');
-    return () => clearInterval(interval);
-  }, [generatedText, words]);
-
+  
   if (isLoading) {
     return <Loader size="lg"></Loader>;
   }
@@ -170,52 +112,10 @@ const DishPage = () => {
   };
 
   const decreaseItem = () => {
-    const { picture: src, name: title, price, _id: id } = dish;
+    const { _id: id } = dish;
     dispatch(decreaseQuantity(id));
   };
 
-  const sliderNext = () => {
-    const element = sliderRef.current;
-    const elementWidth = element.getBoundingClientRect().width;
-    console.log(elementWidth);
-    if (elementWidth > 375) {
-      const sliderWidth = 317 * recommendedDishes.length - 60;
-      console.log(sliderWidth);
-      let scrollAmount = elementWidth * (1 / 3);
-      console.log(scrollAmount);
-      let newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
-      const diff = sliderWidth - elementWidth - newRightValue;
-      console.log('diff' + diff);
-      if (diff < scrollAmount) {
-        element.style.right = newRightValue + diff + 'px';
-        console.log('fisrs');
-      } else {
-        element.style.right = newRightValue + 'px';
-        console.log('second');
-        return;
-      }
-    } else if (elementWidth < 375) {
-      const scrollAmount = elementWidth;
-      let newRightValue = parseFloat(getComputedStyle(element).right) + scrollAmount;
-      console.log(newRightValue);
-      if (newRightValue >= scrollAmount * recommendedDishes.length) {
-        return;
-      } else {
-        element.style.right = newRightValue + 'px';
-      }
-    }
-  };
-  const sliderBack = () => {
-    const element = sliderRef.current;
-    const scrollAmount = 350;
-    const newRightValue = parseInt(getComputedStyle(element).right) - scrollAmount;
-    if (newRightValue <= 0) {
-      element.style.right = 0 + 'px';
-      element.style.transform = '1s ease';
-    } else {
-      element.style.right = newRightValue + 'px';
-    }
-  };
   return (
     <>
       <main className={classes.dish}>
@@ -348,52 +248,15 @@ const DishPage = () => {
               </div>
             </div>
           </div>
-          <div className={classes.AIwrapper}>
-            <Text mode="p" classname={`${classes.subtitle} ${classes.AItitle}`}>
-              What does AI think about this dish:
-            </Text>
-            {isLoaded ? (
-              <Text mode="p" classname={classes.AItext}>
-                {currentText}
-                <span className={classes.cursor}></span>
-              </Text>
-            ) : (
-              <div className={classes.loader_AI}>
-                <Loader size="sm"></Loader>
-              </div>
-            )}
-          </div>
+          <DishDescription data={dish}></DishDescription>
         </div>
         <Cart />
         <div className={classes.recommended_block}>
           <Title mode="h3">Recommend to try</Title>
-          <div className={classes.recomWrapper}>
-            <MdNavigateBefore
-              className={classes.arrowBefore}
-              onClick={sliderBack}
-            ></MdNavigateBefore>
-            <MdNavigateNext className={classes.arrowNext} onClick={sliderNext}></MdNavigateNext>
-            <div className={classes.sliderWrapper}>
-              <div className={classes.slider_box} ref={sliderRef} style={{ transition: '1s ease' }}>
-                {recommendedDishes?.map((item) => {
-                  return (
-                    <DishCard
-                      src={item.picture}
-                      key={item._id}
-                      id={item._id}
-                      title={item.name}
-                      ingredients={item.ingredients}
-                      weight={item.portionWeight}
-                      price={item.price}
-                      link={`/${restId}/tables/${tableId}/dishes/${item._id}`}
-                    ></DishCard>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+          <Slider data={recommendedDishes} restId={restId} tableId={tableId}></Slider>
         </div>
       </main>
+      <Footer></Footer>
     </>
   );
 };
