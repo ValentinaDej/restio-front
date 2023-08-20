@@ -71,7 +71,7 @@ export const ListTopBox = ({
   }, [isConfirmed, mutate, onChangeSelected]);
 
   return (
-    <div className={cls.box}>
+    <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
       <div>
         <div className={cls.totalText}>
           {totalPrice === 0 ? (
@@ -96,56 +96,61 @@ export const ListTopBox = ({
           )}
         </div>
       </div>
-      <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
-        <div className={cls.btns}>
-          <BillDownload orders={orders || []} />
-          <Button
-            size={'sm'}
-            onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
-            mode={(!totalPrice || isLoading || (isWaiter && !paymentType)) && 'disabled'}
-            className={cls.btn}
-          >
-            {modalIsOpen ? (
-              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
-            ) : (
-              <>
-                {isWaiter ? (
-                  isLoading ? (
-                    <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
-                  ) : (
-                    'Mark as paid all orders'
-                  )
+      {totalPrice === 0 ? null : (
+        <>
+          <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
+            <div className={cls.btns}>
+              <BillDownload orders={orders || []} />
+              <Button
+                size={'sm'}
+                onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
+                mode={(!totalPrice || isLoading || (isWaiter && !paymentType)) && 'disabled'}
+                className={cls.btn}
+              >
+                {modalIsOpen ? (
+                  <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
                 ) : (
-                  'Pay online'
+                  <>
+                    {isWaiter ? (
+                      isLoading ? (
+                        <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+                      ) : (
+                        'Mark as paid all orders'
+                      )
+                    ) : (
+                      'Pay online'
+                    )}
+                  </>
                 )}
-              </>
+              </Button>
+            </div>
+            {isWaiter && (
+              <div className={cls.checkboxes}>
+                <CheckBox
+                  label="Cash"
+                  onChange={onChangeTypeOfPay}
+                  ariaLabel="cash"
+                  disabled={paymentType === 'POS'}
+                  size={22}
+                />
+                <CheckBox
+                  label="Terminal"
+                  onChange={onChangeTypeOfPay}
+                  ariaLabel="POS"
+                  disabled={paymentType === 'cash'}
+                  size={22}
+                />
+              </div>
             )}
-          </Button>
-        </div>
-        {isWaiter && (
-          <div className={cls.checkboxes}>
-            <CheckBox
-              label="Cash"
-              onChange={onChangeTypeOfPay}
-              ariaLabel="cash"
-              disabled={paymentType === 'POS'}
-              size={22}
-            />
-            <CheckBox
-              label="Terminal"
-              onChange={onChangeTypeOfPay}
-              ariaLabel="POS"
-              disabled={paymentType === 'cash'}
-              size={22}
-            />
           </div>
-        )}
-      </div>
-      <Text classname={cls.text}>
-        {isWaiter
-          ? 'Or select those orders that the customer has paid by selecting the ones you need.'
-          : 'Or you can pay for each order separately by selecting the ones you need.'}
-      </Text>
+          <Text classname={cls.text}>
+            {isWaiter
+              ? 'Or select those orders that the customer has paid by selecting the ones you need.'
+              : 'Or you can pay for each order separately by selecting the ones you need.'}
+          </Text>
+        </>
+      )}
+
       {isWaiter && (
         <ConfirmModal
           isOpen={modalIsOpen}

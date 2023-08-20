@@ -1,6 +1,7 @@
 .section__select {
   display: inline-block;
-  height: 150px;
+  max-height: 200px;
+  position: relative;
   margin-top: 0.5rem;
   cursor: pointer;
   width: 100%;
