@@ -1,7 +1,7 @@
-import { useUpdateOrderStatusByWaiter } from 'api/order';
+import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
 import React, { useCallback, useEffect } from 'react';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Button from 'shared/Button/Button';
 import Loader from 'shared/Loader/Loader';
 import Text from 'shared/Text/Text';
@@ -10,9 +10,9 @@ import PropTypes from 'prop-types';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import cls from './ListTopBox.module.scss';
 import { CheckBox } from 'shared/CheckBox/CheckBox';
-import { getUserId } from 'store/auth/authSelector';
 import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
 import { classNames } from 'helpers/classNames';
+import { errorMessage } from 'helpers/errorMessage';
 
 export const ListTopBox = ({
   orders,
@@ -23,19 +23,24 @@ export const ListTopBox = ({
   onChangeTypeOfPay,
   paymentType,
   allOrderPrice,
+  isAllOrdersPaid,
 }) => {
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const userId = useSelector(getUserId);
   const [ordersIDs, setOrdersIDs] = useState([]);
   const { isLoading, mutate } = useUpdateOrderStatusByWaiter(
     urlParams,
     ordersIDs,
     totalPrice,
-    userId,
     paymentType
   );
+  const {
+    isLoading: isLoadingTableStatus,
+    mutate: mutateTableStatus,
+    isError,
+    error,
+  } = useUpdateTableStatusByWaiter(urlParams, 'Free');
   const frontLink = location.href;
 
   useEffect(() => {
@@ -70,6 +75,16 @@ export const ListTopBox = ({
     }
   }, [isConfirmed, mutate, onChangeSelected]);
 
+  const onClickMarkAsFreeTable = useCallback(() => {
+    mutateTableStatus();
+  }, [mutateTableStatus]);
+
+  useEffect(() => {
+    if (isError) {
+      errorMessage(error?.response.data.message);
+    }
+  }, [error?.response.data.message, isError]);
+
   return (
     <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
       <div>
@@ -96,7 +111,25 @@ export const ListTopBox = ({
           )}
         </div>
       </div>
-      {totalPrice === 0 ? null : (
+      {totalPrice === 0 ? (
+        <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
+          <BillDownload orders={orders || []} />
+          {isWaiter && (
+            <Button
+              size={'sm'}
+              onClick={onClickMarkAsFreeTable}
+              disabled={!isAllOrdersPaid}
+              className={cls.btn}
+            >
+              {isLoadingTableStatus ? (
+                <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+              ) : (
+                'Mark table as free'
+              )}
+            </Button>
+          )}
+        </div>
+      ) : (
         <>
           <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
             <div className={cls.btns}>
@@ -150,7 +183,6 @@ export const ListTopBox = ({
           </Text>
         </>
       )}
-
       {isWaiter && (
         <ConfirmModal
           isOpen={modalIsOpen}
@@ -172,4 +204,7 @@ ListTopBox.propTypes = {
   orders: PropTypes.array,
   totalPrice: PropTypes.number,
   onChangeSelected: PropTypes.func,
+  onChangeTypeOfPay: PropTypes.func,
+  isAllOrdersPaid: PropTypes.bool,
+  allOrderPrice: PropTypes.number,
 };

@@ -8,51 +8,37 @@ import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
 import Loader from 'shared/Loader/Loader';
-import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
-import { getUserId } from 'store/auth/authSelector';
-import { errorMessage } from 'helpers/errorMessage';
+import { useUpdateOrderStatusByWaiter } from 'api/order';
 import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
-import cls from './Checkout.module.scss';
+import cls from './ListBottomBox.module.scss';
 
-export const Checkout = ({
+export const ListBottomBox = ({
   isWaiter,
   amount,
   selectedOrders,
   onChangeSelected,
   urlParams,
-  isAllOrdersPaid,
   paymentType,
   totalPrice,
 }) => {
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const userId = useSelector(getUserId);
   const { data, signature } = useSelector(getPaymentInfo);
   const [isOpen, setIsOpen] = useState(false);
   const { isLoading, mutate } = useUpdateOrderStatusByWaiter(
     urlParams,
     selectedOrders,
     amount,
-    userId,
     paymentType
   );
-  const {
-    isLoading: isLoadingTableStatus,
-    mutate: mutateTableStatus,
-    isError,
-    error,
-  } = useUpdateTableStatusByWaiter(urlParams, 'Free');
   const frontLink = location.href;
 
   useEffect(() => {
     if (data && signature) {
       location.href = `${process.env.REACT_APP_LIQPAY_BASE_URL}/checkout?data=${data}&signature=${signature}`;
     }
-    if (isError) {
-      errorMessage(error?.response.data.message);
-    }
-  }, [data, error, isError, signature]);
+  }, [data, signature]);
 
   const onOpenModal = useCallback(() => {
     setIsOpen((prev) => !prev);
@@ -68,10 +54,6 @@ export const Checkout = ({
       })
     );
   }, [amount, dispatch, frontLink, selectedOrders, urlParams.restId]);
-
-  const onClickMarkAsFreeTable = useCallback(() => {
-    mutateTableStatus();
-  }, [mutateTableStatus]);
 
   const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
     setModalIsOpen(true);
@@ -116,18 +98,6 @@ export const Checkout = ({
               )}
             </Button>
           )}
-          <Button
-            size={'sm'}
-            onClick={onClickMarkAsFreeTable}
-            disabled={!isAllOrdersPaid}
-            className={cls.btn}
-          >
-            {isLoadingTableStatus ? (
-              <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
-            ) : (
-              'Mark table as free'
-            )}
-          </Button>
         </div>
         <ConfirmModal
           isOpen={modalIsOpen}
@@ -173,12 +143,11 @@ export const Checkout = ({
   );
 };
 
-Checkout.propTypes = {
+ListBottomBox.propTypes = {
   isWaiter: PropTypes.bool,
   amount: PropTypes.number,
   selectedOrders: PropTypes.array,
   onChangeSelected: PropTypes.func,
   urlParams: PropTypes.object,
-  isAllOrdersPaid: PropTypes.bool,
   paymentType: PropTypes.string,
 };
