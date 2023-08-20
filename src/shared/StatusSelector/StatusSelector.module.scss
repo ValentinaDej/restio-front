@@ -9,18 +9,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    // border: solid 2px #ccc;
     border-radius: 15px;
   }
   &_header_sm {
     width: 90px;
     height: 27px;
-    border: solid 2px #ccc;
   }
   &_header_lg {
     width: 100px;
     height: 33px;
-    // border: solid 1px #ccc;
   }
   &_body {
     z-index: 10;

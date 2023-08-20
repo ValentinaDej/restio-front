@@ -30,6 +30,7 @@ const DishPage = (props) => {
   const storeData = useSelector(getProductFromState);
   const { pathname } = useLocation();
 
+  console.log('DishPage', dishId);
   const {
     isLoading,
     data: dish,
@@ -91,7 +92,7 @@ const DishPage = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
+  
   if (isLoading) {
     return <Loader size="lg"></Loader>;
   }

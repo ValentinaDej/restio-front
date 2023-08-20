@@ -15,15 +15,17 @@
   }
 }
 
-.info {
+.leftBtns {
+  width: 100%;
   display: flex;
-  gap: 5px;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .waiterBtns {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 
   @media screen and (min-width: 600px) {
     flex-direction: row;
@@ -35,21 +37,49 @@
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  gap: 5px;
+  gap: 10px;
 }
 
 .iconBtn {
   position: relative;
 }
 
-.iconBtnValue {
-  color: var(--color-status);
+.iconBtnBox {
   position: absolute;
-  top: -9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: -14px;
   right: -2px;
+  width: 20px;
+  height: 20px;
+  padding: 5px;
+  border-radius: 50%;
+  background-color: var(--color-status);
+}
+
+.iconBtnValue {
+  color: var(--color-white);
+}
+
+.iconDishes {
+  width: 35px;
+  height: 35px;
 }
 
 .icon {
   width: 35px;
   height: 35px;
+}
+
+.icon {
+  width: 35px;
+  height: 35px;
+}
+
+.sort {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 }

@@ -1,9 +1,8 @@
+import { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Text from 'shared/Text/Text';
-import cls from './Checkout.module.scss';
 import Button from 'shared/Button/Button';
 import { AiOutlineClose } from 'react-icons/ai';
-import { useState, useCallback, useEffect } from 'react';
 import { classNames } from 'helpers/classNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { payOrders } from 'store/customer/orders/asyncOperations';
@@ -13,6 +12,7 @@ import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/
 import { getUserId } from 'store/auth/authSelector';
 import { errorMessage } from 'helpers/errorMessage';
 import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
+import cls from './Checkout.module.scss';
 
 export const Checkout = ({
   isWaiter,
@@ -22,6 +22,7 @@ export const Checkout = ({
   urlParams,
   isAllOrdersPaid,
   paymentType,
+  totalPrice,
 }) => {
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -48,7 +49,6 @@ export const Checkout = ({
     if (data && signature) {
       location.href = `${process.env.REACT_APP_LIQPAY_BASE_URL}/checkout?data=${data}&signature=${signature}`;
     }
-
     if (isError) {
       errorMessage(error?.response.data.message);
     }
@@ -89,30 +89,44 @@ export const Checkout = ({
   if (isWaiter) {
     return (
       <div className={cls.waiterBtn}>
-        <Text classname={cls.text} fontWeight={700}>
-          Total price for selected orders: ${amount}
-        </Text>
+        {totalPrice !== 0 && (
+          <Text classname={cls.text} fontWeight={700}>
+            Total price for selected orders: ${amount}
+          </Text>
+        )}
         <div className={cls.btnsBox}>
-          <Button
-            size={'sm'}
-            onClick={onClickMarkAsPaidSelectedAsWaiter}
-            disabled={amount === 0 || isLoading || !paymentType}
-            className={cls.btn}
-            mode="outlined"
-          >
-            {modalIsOpen ? (
-              <Loader size={'xs'} color={'#ea6a12'} />
-            ) : (
-              <> {isLoading ? <Loader size={'xs'} /> : 'Mark as paid for selected'}</>
-            )}
-          </Button>
+          {totalPrice !== 0 && (
+            <Button
+              size={'sm'}
+              onClick={onClickMarkAsPaidSelectedAsWaiter}
+              disabled={amount === 0 || isLoading || !paymentType}
+              className={cls.btn}
+              mode="outlined"
+            >
+              {modalIsOpen ? (
+                <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+              ) : (
+                <>
+                  {isLoading ? (
+                    <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+                  ) : (
+                    'Mark as paid for selected'
+                  )}
+                </>
+              )}
+            </Button>
+          )}
           <Button
             size={'sm'}
             onClick={onClickMarkAsFreeTable}
             disabled={!isAllOrdersPaid}
             className={cls.btn}
           >
-            {isLoadingTableStatus ? <Loader size={'xs'} /> : 'Mark table as free'}
+            {isLoadingTableStatus ? (
+              <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+            ) : (
+              'Mark table as free'
+            )}
           </Button>
         </div>
         <ConfirmModal
@@ -166,4 +180,5 @@ Checkout.propTypes = {
   onChangeSelected: PropTypes.func,
   urlParams: PropTypes.object,
   isAllOrdersPaid: PropTypes.bool,
+  paymentType: PropTypes.string,
 };

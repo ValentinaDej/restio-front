@@ -71,64 +71,86 @@ export const ListTopBox = ({
   }, [isConfirmed, mutate, onChangeSelected]);
 
   return (
-    <>
+    <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
       <div>
-        <Text fontWeight={700} fontSize={20} classname={cls.text}>
-          {totalPrice === 0
-            ? isWaiter
-              ? 'All orders paid, mark table as free when customer leave.'
-              : 'All orders are paid, thank you for visiting our restaurant.'
-            : `Bill Total: $${allOrderPrice}, Unpaid: $${totalPrice}`}
-        </Text>
-      </div>
-      <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
-        <BillDownload orders={orders || []} />
-        <Button
-          size={'sm'}
-          onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
-          mode={(!totalPrice || isLoading || (isWaiter && !paymentType)) && 'disabled'}
-          className={cls.btn}
-        >
-          {modalIsOpen ? (
-            <Loader size={'xs'} color={'#fff'} />
+        <div className={cls.totalText}>
+          {totalPrice === 0 ? (
+            isWaiter ? (
+              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+                All orders paid, mark table as free when customer leave.
+              </Text>
+            ) : (
+              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+                All orders are paid, thank you for visiting our restaurant.
+              </Text>
+            )
           ) : (
             <>
-              {isWaiter ? (
-                isLoading ? (
-                  <Loader size={'xs'} color={'#fff'} />
-                ) : (
-                  'Mark as paid all orders'
-                )
-              ) : (
-                'Pay online'
-              )}
+              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+                Bill Total: ${allOrderPrice}
+              </Text>
+              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+                Unpaid: ${totalPrice}
+              </Text>
             </>
           )}
-        </Button>
-        {isWaiter && (
-          <div className={cls.checkboxes}>
-            <CheckBox
-              label="Cash"
-              onChange={onChangeTypeOfPay}
-              ariaLabel="cash"
-              disabled={paymentType === 'POS'}
-              size={22}
-            />
-            <CheckBox
-              label="Terminal"
-              onChange={onChangeTypeOfPay}
-              ariaLabel="POS"
-              disabled={paymentType === 'cash'}
-              size={22}
-            />
-          </div>
-        )}
+        </div>
       </div>
-      <Text classname={cls.text}>
-        {isWaiter
-          ? 'Or select those orders that the customer has paid by selecting the ones you need.'
-          : 'Or you can pay for each order separately by selecting the ones you need.'}
-      </Text>
+      {totalPrice === 0 ? null : (
+        <>
+          <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
+            <div className={cls.btns}>
+              <BillDownload orders={orders || []} />
+              <Button
+                size={'sm'}
+                onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
+                mode={(!totalPrice || isLoading || (isWaiter && !paymentType)) && 'disabled'}
+                className={cls.btn}
+              >
+                {modalIsOpen ? (
+                  <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+                ) : (
+                  <>
+                    {isWaiter ? (
+                      isLoading ? (
+                        <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+                      ) : (
+                        'Mark as paid all orders'
+                      )
+                    ) : (
+                      'Pay online'
+                    )}
+                  </>
+                )}
+              </Button>
+            </div>
+            {isWaiter && (
+              <div className={cls.checkboxes}>
+                <CheckBox
+                  label="Cash"
+                  onChange={onChangeTypeOfPay}
+                  ariaLabel="cash"
+                  disabled={paymentType === 'POS'}
+                  size={22}
+                />
+                <CheckBox
+                  label="Terminal"
+                  onChange={onChangeTypeOfPay}
+                  ariaLabel="POS"
+                  disabled={paymentType === 'cash'}
+                  size={22}
+                />
+              </div>
+            )}
+          </div>
+          <Text classname={cls.text}>
+            {isWaiter
+              ? 'Or select those orders that the customer has paid by selecting the ones you need.'
+              : 'Or you can pay for each order separately by selecting the ones you need.'}
+          </Text>
+        </>
+      )}
+
       {isWaiter && (
         <ConfirmModal
           isOpen={modalIsOpen}
@@ -140,7 +162,7 @@ export const ListTopBox = ({
           onCancel={() => setModalIsOpen(false)}
         />
       )}
-    </>
+    </div>
   );
 };
 

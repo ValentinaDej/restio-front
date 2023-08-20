@@ -49,7 +49,7 @@ instance.interceptors.response.use(
     ) {
       storage.removeItem('userData');
       window.location.replace('/login');
-    } else if (error.response.data.status === 401 || error.response.data.status === 500) {
+    } else if (error.response.data.status === 401) {
       storage.removeItem('userData');
       window.location.replace('/login');
     }

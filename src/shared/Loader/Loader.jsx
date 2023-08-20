@@ -9,11 +9,11 @@ const sizeValues = {
   lg: '96',
 };
 
-const Loader = ({ size = 'sm', color = '#ea6a12' }) => {
+const Loader = ({ size = 'sm', color = 'var(--color-orange)', className }) => {
   return (
-    <div className={` ${classes.loader}`}>
+    <div className={`${classes.loader} ${className}`}>
       <RotatingLines
-        strokeColor={'var(--color-orange)'}
+        strokeColor={color}
         strokeWidth="5"
         width={sizeValues[size]}
         animationDuration="0.75"
@@ -25,6 +25,7 @@ const Loader = ({ size = 'sm', color = '#ea6a12' }) => {
 
 Loader.propTypes = {
   size: PropTypes.oneOf(['sm', 'md', 'lg', 'xs']),
+  className: PropTypes.string,
 };
 
 export default Loader;
