@@ -99,35 +99,6 @@ const DishPage = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  // const generateText = useCallback(async () => {
-  //   if (dish) {
-  //     const key = process.env.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY2;
-  //     const hf = new HfInference(key);
-  //     const model = 'declare-lab/flan-alpaca-large';
-  //     // const text = 'Provide interesting facts about ${dish.name} meal';
-  //     // const text = `When does ${dish.name} dish was invented?`;
-  //     const text = `Create exquisite desription of ${dish.name}.`;
-  //     const response = await hf.textGeneration({
-  //       model: model,
-  //       inputs: text,
-  //       parameters: { max_new_tokens: 250 },
-  //     });
-  //     let textGen = response.generated_text;
-  //     const lastDotIndex = textGen.lastIndexOf('.');
-  //     let cuttedText = textGen.substring(0, lastDotIndex + 1);
-  //     setGeneratedText(cuttedText);
-  //     setIsLoaded(true);
-  //     console.log(cuttedText);
-  //     // let text =
-  //     //   'Caesar is a classic salad made with a vinaigrette of romaine lettuce, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with a vinaigrette of croutons, croutons, and a vinaigrette dressing. The dressing is a vinaigrette made with olive oil, garlic, and a dash of lemon juice. The salad is topped with croutons, croutons, and a vinaigrette dressing.';
-  //     // const lastDotIndex = text.lastIndexOf('.');
-  //     // let cuttedText = text.substring(0, lastDotIndex + 1);
-  //     // setTimeout(() => {
-  //     //   setIsLoaded(true);
-  //     //   setGeneratedText(cuttedText);
-  //     // }, 7000);
-  //   }
-  // }, [dish]);
   const generateText = useCallback(async () => {
     if (dish) {
       const keys = [process.env.HUGGINGFACE_API_KEY, process.env.HUGGINGFACE_API_KEY2];
@@ -181,7 +152,7 @@ const DishPage = () => {
     }, 100);
     setCurrentText('');
     return () => clearInterval(interval);
-  }, [generatedText]);
+  }, [generatedText, words]);
 
   if (isLoading) {
     return <Loader size="lg"></Loader>;
