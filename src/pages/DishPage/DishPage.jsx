@@ -29,8 +29,6 @@ const DishPage = (props) => {
   const dispatch = useDispatch();
   const storeData = useSelector(getProductFromState);
   const { pathname } = useLocation();
-
-  console.log('DishPage', dishId);
   const {
     isLoading,
     data: dish,
