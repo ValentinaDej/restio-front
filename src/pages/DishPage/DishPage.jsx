@@ -32,10 +32,9 @@ const DishPage = () => {
   const storeData = useSelector(getProductFromState);
   const { pathname } = useLocation();
   const sliderRef = useRef(null);
-  const [generatedText, setGeneratedText] = useState('');
+  const [generatedText, setGeneratedText] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentText, setCurrentText] = useState('');
-  const words = generatedText.split(' ');
 
   const {
     isLoading,
@@ -122,7 +121,8 @@ const DishPage = () => {
         }
       }
       if (generatedText) {
-        setGeneratedText(generatedText);
+        console.log(generatedText);
+        setGeneratedText(generatedText.split(' '));
         setIsLoaded(true);
         console.log(generatedText);
       } else {
@@ -139,10 +139,10 @@ const DishPage = () => {
     let index = 0;
     const interval = setInterval(() => {
       if (index == 0) {
-        setCurrentText(words[index] + ' ');
+        setCurrentText(generatedText[index] + ' ');
         index++;
-      } else if (index < words.length - 1) {
-        setCurrentText((prevText) => prevText + words[index] + ' ');
+      } else if (index < generatedText.length - 1) {
+        setCurrentText((prevText) => prevText + generatedText[index] + ' ');
         index++;
       } else {
         clearInterval(interval);
@@ -150,7 +150,7 @@ const DishPage = () => {
     }, 100);
     setCurrentText('');
     return () => clearInterval(interval);
-  }, [generatedText, words]);
+  }, [generatedText]);
 
   if (isLoading) {
     return <Loader size="lg"></Loader>;
@@ -171,7 +171,7 @@ const DishPage = () => {
   };
 
   const decreaseItem = () => {
-    const { picture: src, name: title, price, _id: id } = dish;
+    const { _id: id } = dish;
     dispatch(decreaseQuantity(id));
   };
 
