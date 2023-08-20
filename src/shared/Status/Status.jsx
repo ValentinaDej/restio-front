@@ -47,7 +47,7 @@ const Status = ({ statusCurrent, className, statusSize = 'sm' }) => {
       }}
       className={`${classes.status} ${className} ${classes[`status_${statusSize}`]}`}
     >
-      <Text mode={'p'} fontSize={statusSize === 'sm' ? 10 : 13}>
+      <Text mode={'p'} fontSize={13}>
         {statusCurrent}
       </Text>
     </div>

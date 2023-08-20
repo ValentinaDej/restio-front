@@ -20,3 +20,16 @@ export const useGetTransactions = (
   );
   return queryResp;
 };
+
+export const useGetTransactionsStatistics = (restId, timestamp) => {
+  const queryResp = useQuery(
+    ['statistics'],
+    async () => await instance.get(`/transactions/statistics/${restId}/?timestamp=${timestamp}`),
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
+    }
+  );
+  return queryResp;
+};
