@@ -7,6 +7,7 @@ import { useMediaQuery } from 'react-responsive';
 import Text from 'shared/Text/Text';
 import { MdTableBar } from 'react-icons/md';
 import { BiDish } from 'react-icons/bi';
+import { useState } from 'react';
 
 const DishesItem = ({
   dish,
@@ -17,6 +18,7 @@ const DishesItem = ({
   tableNumber,
   orderNumber,
   create,
+  comment,
 }) => {
   const { restId } = useParams();
 
@@ -32,6 +34,7 @@ const DishesItem = ({
     <li className={`${styles.item}`}>
       <div className={`${styles.information}`}>
         <Text classname={`${styles.information__text}`}>{dish.name}</Text>
+
         <div className={`${styles.information__quantity}`}>
           <IoIosClose size={24} />
           <Text classname={`${styles.information__text}`}>{quantity}</Text>
@@ -44,37 +47,40 @@ const DishesItem = ({
           </div>
         </div>
       </div>
-      <div className={`${styles.information__order}`}>
-        <div className={`${styles.information__data}`}>
-          <MdTableBar size={24} color={'#959895'} />
-          <span>{tableNumber}</span>
+      <div className={`${styles.comment}`}>{comment && <p>{comment}</p>}</div>
+      <div>
+        <div className={`${styles.information__order}`}>
+          <div className={`${styles.information__data}`}>
+            <MdTableBar size={24} color={'#959895'} />
+            <span>{tableNumber}</span>
+          </div>
+          <div className={`${styles.information__data}`}>
+            <BiDish size={24} color={'#959895'} />
+            <span>{orderNumber}</span>
+          </div>
         </div>
-        <div className={`${styles.information__data}`}>
-          <BiDish size={24} color={'#959895'} />
-          <span>{orderNumber}</span>
-        </div>
-      </div>
 
-      {status !== 'In progress' && (
-        <Button
-          onClick={() => handleChangeStatus(restId, orderId, dish._id, 'In progress')}
-          mode="outlined"
-          size={sizeButton}
-          className={`${styles.button}`}
-        >
-          {status === 'Ordered' ? 'Start cooking' : 'Return to сooking'}
-        </Button>
-      )}
-      {status === 'In progress' && (
-        <Button
-          onClick={() => handleChangeStatus(restId, orderId, dish._id, 'Ready')}
-          mode="outlined"
-          size={sizeButton}
-          className={`${styles.button}`}
-        >
-          Dish ready
-        </Button>
-      )}
+        {status !== 'In progress' && (
+          <Button
+            onClick={() => handleChangeStatus(restId, orderId, dish._id, 'In progress')}
+            mode="outlined"
+            size={sizeButton}
+            className={`${styles.button}`}
+          >
+            {status === 'Ordered' ? 'Start cooking' : 'Return to сooking'}
+          </Button>
+        )}
+        {status === 'In progress' && (
+          <Button
+            onClick={() => handleChangeStatus(restId, orderId, dish._id, 'Ready')}
+            mode="outlined"
+            size={sizeButton}
+            className={`${styles.button}`}
+          >
+            Dish ready
+          </Button>
+        )}
+      </div>
     </li>
   );
 };
@@ -92,6 +98,7 @@ DishesItem.propTypes = {
   tableNumber: PropTypes.number.isRequired,
   orderNumber: PropTypes.string.isRequired,
   create: PropTypes.string.isRequired,
+  comment: PropTypes.string,
 };
 
 export default DishesItem;

@@ -38,7 +38,7 @@
   }
 
   .employee_text {
-    padding: 3rem 2.3rem 1.2rem;
+    padding: 4rem 2.3rem 1.2rem;
     background-color: var(--color-white);
     backdrop-filter: blur(42px);
     border-radius: 25px;
@@ -49,11 +49,15 @@
   .trash {
     position: absolute;
 
-    color: var(--color-red);
+    color: var(--color-orange);
 
     top: 20px;
     right: 15px;
     margin-right: 20px;
+    &:hover,
+    &:focus {
+      color: var(--color-gray);
+    }
   }
 
   .edit {

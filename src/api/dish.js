@@ -71,5 +71,5 @@ export const createDish = async (body, restId) => {
 };
 
 export const deleteDishById = async (dishId, restId) => {
-  await instance.patch(`/dishes/${dishId}/restaurant/${restId}`, { isActive: false });
+  await instance.patch(`/dishes/${dishId}/restaurant/${restId}`);
 };

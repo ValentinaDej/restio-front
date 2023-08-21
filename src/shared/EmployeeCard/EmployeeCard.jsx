@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import classes from './EmployeeCard.module.scss';
 import { BsTrash } from 'react-icons/bs';
 import { BiEditAlt } from 'react-icons/bi';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const EmployeeCard = ({
   children,
@@ -12,6 +13,7 @@ const EmployeeCard = ({
   alt,
   handleDelete,
   handleEdit,
+  type,
   ...props
 }) => {
   return (
@@ -19,11 +21,28 @@ const EmployeeCard = ({
       <div className={`${classes.card} ${classes[`${mode}`]} ${classes[`${size}`]}`}>
         <img src={src} alt={alt} className={classes.card_image} />
         {/* Insert 'DELETE BUTTON" and "EDIT BUTTON" component instead of react-icons, but keep a class '.trash' and '.edit' and size={'1.2rem'}  */}
-        <BsTrash
-          onClick={handleDelete}
-          size={'1.6rem'}
-          className={`${classes.trash} ${classes[`${size}`]}`}
-        ></BsTrash>
+
+        {type === 'dish_active' && (
+          <AiFillEyeInvisible
+            onClick={handleDelete}
+            size={'1.6rem'}
+            className={`${classes.trash} ${classes[`${size}`]}`}
+          ></AiFillEyeInvisible>
+        )}
+        {type === 'dish_noActive' && (
+          <AiFillEye
+            onClick={handleDelete}
+            size={'1.6rem'}
+            className={`${classes.trash} ${classes[`${size}`]}`}
+          ></AiFillEye>
+        )}
+        {type === 'employee' && (
+          <BsTrash
+            onClick={handleDelete}
+            size={'1.6rem'}
+            className={`${classes.trash} ${classes[`${size}`]}`}
+          ></BsTrash>
+        )}
         <BiEditAlt
           onClick={handleEdit}
           size={'1.6rem'}
@@ -45,6 +64,7 @@ EmployeeCard.propTypes = {
   handleDelete: PropTypes.func,
   src: PropTypes.string,
   alt: PropTypes.string,
+  type: PropTypes.string,
 };
 
 export default EmployeeCard;
