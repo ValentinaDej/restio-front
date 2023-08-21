@@ -36,7 +36,11 @@ const App = () => {
           <Route path="login" element={<PublicRoute component={<LoginPage />} />} />
           <Route element={<RoutesProvider restId={restId} role={role} />}>
             {routesCustomer.map(({ path, component }) => (
-              <Route key={path} path={path} element={<PublicRoute component={component} />} />
+              <Route
+                key={path}
+                path={path}
+                element={<PublicRoute redirectTo="/login" component={component} />}
+              />
             ))}
 
             {(role === 'admin' || role === 'waiter' || role === 'cook') &&
