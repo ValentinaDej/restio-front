@@ -75,7 +75,7 @@ export const TableCard = ({
           <AiFillStar
             size={22}
             onClick={() => dispatch(setFavorite(table_id))}
-            color={!isFavorite ? 'var(--color-gray-300)' : 'var(--color-orange)'}
+            color={!isFavorite ? 'var(--color-gray-300)' : 'var(--color-primary)'}
           />
         </div>
         <div className={styles.table__number}>
