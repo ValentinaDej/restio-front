@@ -1,12 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Modal from 'shared/Modal/Modal'; // Замініть на власний шлях
 import PropTypes from 'prop-types';
 import ReactCrop, { centerCrop, makeAspectCrop, convertToPixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+
+import { LiaPlusSolid } from 'react-icons/lia';
+
 import { canvasPreview } from './canvasPreview';
 import { useDebounceEffect } from './useDebounceEffect';
-import { LiaPlusSolid } from 'react-icons/lia';
+import Modal from 'shared/Modal/Modal';
 import toast from 'react-hot-toast';
+import Button from 'shared/Button/Button';
+
 import classes from './DownloadImgWithPrew.module.scss';
 
 const ALLOWED_EXTENSIONS = ['png', 'jpeg', 'jpg'];
@@ -54,6 +58,8 @@ const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) => {
         reader.addEventListener('load', () => setImgSrc(reader.result || ''));
         reader.readAsDataURL(e.target.files[0]);
         setIsModalOpen(true);
+        setScale(1);
+        setRotate(0);
       } else {
         toast.error('Invalid file format. Allowed formats: png, jpeg, jpg');
       }
@@ -144,69 +150,78 @@ const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) => {
             type="file"
             accept="image/jpeg, image/png, image/jpg"
             onChange={onSelectFile}
-            className={classes.hiddenInput}
+            className={classes.hidden}
             ref={fileInputRef}
           />
         </div>
       </div>
       {imgSrc && (
         <Modal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}>
-          <div>
-            <label htmlFor="scale-input">Scale: </label>
-            <input
-              id="scale-input"
-              type="number"
-              step="0.1"
-              value={scale}
-              disabled={!imgSrc}
-              onChange={(e) => setScale(Number(e.target.value))}
-            />
+          <div className={classes.field__wrapper_right}>
+            <Button size={'sm'} onClick={handleAddImage}>
+              Add to form
+            </Button>
+            <Button size={'sm'} onClick={onDownloadCropClick} mode={'outlined'}>
+              Download
+            </Button>
           </div>
-          <div>
-            <label htmlFor="rotate-input">Rotate: </label>
-            <input
-              id="rotate-input"
-              type="number"
-              value={rotate}
-              disabled={!imgSrc}
-              onChange={(e) => setRotate(Math.min(180, Math.max(-180, Number(e.target.value))))}
-            />
-          </div>
-          <div>
-            <button onClick={handleToggleAspectClick}>Toggle aspect {aspect ? 'off' : 'on'}</button>
-          </div>
-          {imgSrc && (
-            <ReactCrop
-              crop={crop}
-              onChange={(_, percentCrop) => setCrop(percentCrop)}
-              onComplete={(c) => setCompletedCrop(c)}
-              aspect={aspect}
-            >
-              <img
-                ref={imgRef}
-                alt="Crop me"
-                src={imgSrc}
-                style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
-                onLoad={onImageLoad}
+          <div className={classes.controlsection__wrapper}>
+            <div className={classes.sliderContainer}>
+              <label htmlFor="scale-input">Scale </label>
+              <input
+                id="scale-input"
+                type="range"
+                min="0"
+                max="3"
+                step="0.1"
+                value={scale}
+                disabled={!imgSrc}
+                onChange={(e) => setScale(Number(e.target.value))}
               />
-            </ReactCrop>
+            </div>
+            <div className={classes.sliderContainer}>
+              <label htmlFor="rotate-input">Rotate </label>
+              <input
+                id="rotate-input"
+                type="range"
+                min="-180"
+                max="180"
+                value={rotate}
+                disabled={!imgSrc}
+                onChange={(e) => setRotate(Math.min(180, Math.max(-180, Number(e.target.value))))}
+              />
+            </div>
+            <div>
+              <button className="toggleButton" onClick={handleToggleAspectClick}>
+                Toggle aspect {aspect ? 'off' : 'on'}
+              </button>
+            </div>
+          </div>
+
+          {imgSrc && (
+            <div className={classes.section__wrapper}>
+              <ReactCrop
+                crop={crop}
+                onChange={(_, percentCrop) => setCrop(percentCrop)}
+                onComplete={(c) => setCompletedCrop(c)}
+                aspect={aspect}
+              >
+                <img
+                  ref={imgRef}
+                  alt="Crop me"
+                  src={imgSrc}
+                  style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                  onLoad={onImageLoad}
+                />
+              </ReactCrop>
+            </div>
           )}
           {completedCrop && (
             <>
               <div>
-                <canvas
-                  ref={previewCanvasRef}
-                  style={{
-                    border: '1px solid black',
-                    objectFit: 'contain',
-                    width: completedCrop.width,
-                    height: completedCrop.height,
-                  }}
-                />
+                <canvas ref={previewCanvasRef} className={classes.hidden} />
               </div>
               <div>
-                <button onClick={onDownloadCropClick}>Download Crop</button>
-                <button onClick={handleAddImage}>Додати</button>
                 <a
                   ref={hiddenAnchorRef}
                   download
