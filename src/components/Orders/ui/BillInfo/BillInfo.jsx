@@ -1,20 +1,13 @@
 import { useQuery } from 'react-query';
 import { toast } from 'react-hot-toast';
 
-import Modal from 'shared/Modal/Modal';
-import Loader from 'shared/Loader/Loader';
-import Title from 'shared/Title/Title';
-import Text from 'shared/Text/Text';
-
+import classes from './BillInfo.module.scss';
+import { Modal, Loader, Title, Text, Button } from 'shared';
 import logoImg from 'assets/img/RESTio.svg';
-
 import { formatNumberWithTwoDecimalsForPrint } from 'helpers/formatNumberWithTwoDecimalsForPrint';
 import { getDate } from 'helpers/getDate';
-import { getRestaurant } from 'api/restaurant';
 import { downloadBillPdf } from 'helpers/billToPDF';
-
-import classes from './BillInfo.module.scss';
-import Button from 'shared/Button/Button';
+import { getRestaurant } from 'api/restaurant';
 
 export const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
   const {

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import classes from './Title.module.scss';
 
-const Title = ({ mode, children, fontWeight, fontSize, color, textAlign, classname }) => {
+export const Title = ({ mode, children, fontWeight, fontSize, color, textAlign, classname }) => {
   switch (mode) {
     case 'h1':
       return (
@@ -62,5 +62,3 @@ Title.defaultProps = {
   mode: 'h2',
   children: 'Title...',
 };
-
-export default Title;

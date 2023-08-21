@@ -3,17 +3,11 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { DISH_CATEGORIES } from 'utils/constants';
-
-import { getDishById, createDish, updateDishById } from '../../api/dish';
-import { getIngredients } from '../../api/ingredient';
-
-import DishForm from 'shared/DishForm/DishForm';
-import Button from 'shared/Button/Button';
-import Title from 'shared/Title/Title';
-import Loader from 'shared/Loader/Loader';
-
 import styles from './AddDishPage.module.scss';
+import { DishForm, Button, Title, Loader } from 'shared';
+import { DISH_CATEGORIES } from 'utils/constants';
+import { getDishById, createDish, updateDishById } from 'api/dish';
+import { getIngredients } from 'api/ingredient';
 
 const ERROR_MESSAGES = {
   fetchDish: 'Error fetching dish data',

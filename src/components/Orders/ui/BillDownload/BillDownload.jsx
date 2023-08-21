@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Button from 'shared/Button/Button';
-import { BillInfo } from '../BillInfo/BillInfo';
+
 import cls from './BillDownload.module.scss';
+import { Button } from 'shared';
+import { BillInfo } from '../BillInfo/BillInfo';
 
 export const BillDownload = ({ orders }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

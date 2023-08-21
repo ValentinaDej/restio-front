@@ -1,12 +1,13 @@
-import { useLocation } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
-import OrderCard from 'shared/OrderCard/OrderCard';
 import PropTypes from 'prop-types';
-import cls from './OrderList.module.scss';
-import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
-import { useUpdateDishStatusByWaiter, useUpdateReadyDishesStatusesByWaiter } from 'api/order';
+import { useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import cls from './OrderList.module.scss';
+import { OrderCard } from 'shared';
+import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { errorMessage } from 'helpers/errorMessage';
+import { useUpdateDishStatusByWaiter, useUpdateReadyDishesStatusesByWaiter } from 'api/order';
 
 export const OrdersList = ({
   isWaiter,

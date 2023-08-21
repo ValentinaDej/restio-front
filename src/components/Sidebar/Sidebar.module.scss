@@ -29,34 +29,50 @@
   color: var(--color-green);
   margin-right: 8px;
 }
+.messages {
+  position: absolute;
+  top: 16px;
+  right: 8px;
+  border-radius: 20px;
+  background-color: var(--color-red);
+
+  min-width: 18px;
+  height: 14px;
+  color: var(--color-white);
+  font-size: 12px;
+}
 .button {
-  position: fixed;
-  z-index: 3;
-  top: 160px;
-  right: 0;
+  position: relative;
+  margin-left: 20px;
   display: grid;
   place-items: center;
-  width: 60px;
-  height: 60px;
   background-color: transparent;
+}
+.menu-button {
+  display: block;
+  margin-left: auto;
 }
 .amount {
   position: absolute;
 
-  color: var(--color-orange);
+  color: var(--color-primary);
 }
 .menu {
   position: fixed;
-  padding: 60px 20px 40px;
+  padding: 20px;
   z-index: 2;
-  top: 160px;
+  top: 100px;
   right: -400px;
   width: 400px;
   height: 100%;
   background-color: var(--color-bg);
-  border-left: 1px solid var(--color-gray);
+  border-left: 1px solid var(--color-secondary);
   transform: translateX(-100%);
   transition: transform 0.375s cubic-bezier(0.175, 0.885, 0.32, 1);
+  @media screen and (max-width: 400px) {
+    right: -320px;
+    width: 320px;
+  }
 }
 .open {
   opacity: 1;
@@ -64,16 +80,33 @@
   transform: translateX(0);
   animation: menu-in 0.375;
 }
-
+.img {
+  width: 300px;
+  height: auto;
+  object-fit: cover;
+}
+.text {
+  font-size: 16px;
+  color: var(--color-secondary);
+}
+.wrapper {
+  margin-top: 40px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
 .bell {
-  color: var(--color-orange);
+  color: var(--color-gray);
 
   width: 24px;
   height: 24px;
 
   &:hover,
   :focus {
-    color: var(--color-orange);
+    color: var(--color-primary);
   }
 }
 @keyframes menu-in {

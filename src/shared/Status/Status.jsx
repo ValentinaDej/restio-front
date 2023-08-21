@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classes from './Status.module.scss';
-import Text from '../Text/Text';
+import { Text } from 'shared';
 
-const Status = ({ statusCurrent, className, statusSize = 'sm' }) => {
+export const Status = ({ statusCurrent, className, statusSize = 'sm' }) => {
   const [statusColor, setStatusColor] = useState('#50D1AA');
 
   useEffect(() => {
@@ -74,5 +74,3 @@ Status.propTypes = {
   ]),
   className: PropTypes.string,
 };
-
-export default Status;

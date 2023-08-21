@@ -1,15 +1,14 @@
-import { useParams } from 'react-router-dom';
-import Title from 'shared/Title/Title';
-import styles from './DishesForCookPage.module.scss';
+import { useCallback, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { toast } from 'react-hot-toast';
-import Loader from 'shared/Loader/Loader';
-import { getAllOrders, useUpdateDishStatusByWaiter } from 'api/order';
-import StatusCardItem from 'components/Cook/StatusCardItem/StatusCardItem';
+import { useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
-import Button from 'shared/Button/Button';
-import { useCallback, useEffect, useState } from 'react';
 import { useSSE } from 'react-hooks-sse';
+
+import styles from './DishesForCookPage.module.scss';
+import { Title, Button, Loader } from 'shared';
+import { StatusCardItem } from 'components';
+import { getAllOrders, useUpdateDishStatusByWaiter } from 'api/order';
 
 const statuses = ['Ordered', 'In progress', 'Ready'];
 

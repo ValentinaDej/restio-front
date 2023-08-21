@@ -9,7 +9,7 @@ const sizeValues = {
   lg: '96',
 };
 
-const Loader = ({ size = 'sm', color = 'var(--color-orange)', className }) => {
+export const Loader = ({ size = 'sm', color = 'var(--color-primary)', className }) => {
   return (
     <div className={`${classes.loader} ${className}`}>
       <RotatingLines
@@ -27,5 +27,3 @@ Loader.propTypes = {
   size: PropTypes.oneOf(['sm', 'md', 'lg', 'xs']),
   className: PropTypes.string,
 };
-
-export default Loader;

@@ -1,7 +1,7 @@
 .cart-container {
   margin: 0 10px 40px;
   padding: 20px 10px;
-  border: 2px solid var(--color-orange);
+  border: 2px solid var(--color-primary);
   border-radius: 20px;
   text-align: center;
 }
@@ -46,4 +46,10 @@
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
+}
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }

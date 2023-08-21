@@ -1,10 +1,11 @@
 import { useRef } from 'react';
-import classes from '../../pages/DishPage/DishPage.module.scss';
-import DishCard from 'shared/DishCard/DishCard';
 import { MdNavigateNext } from 'react-icons/md';
 import { MdNavigateBefore } from 'react-icons/md';
 
-const Slider = ({ data: recommendedDishes, restId, tableId }) => {
+import classes from 'pages/DishPage/DishPage.module.scss';
+import { DishCard } from 'shared';
+
+export const Slider = ({ data: recommendedDishes, restId, tableId }) => {
   const sliderRef = useRef(null);
   const sliderNext = () => {
     const element = sliderRef.current;
@@ -66,5 +67,3 @@ const Slider = ({ data: recommendedDishes, restId, tableId }) => {
     </div>
   );
 };
-
-export default Slider;

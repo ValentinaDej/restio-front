@@ -1,18 +1,15 @@
-import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
-import React, { useCallback, useEffect } from 'react';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import Button from 'shared/Button/Button';
-import Loader from 'shared/Loader/Loader';
-import Text from 'shared/Text/Text';
-import { BillDownload } from '../BillDownload/BillDownload';
 import PropTypes from 'prop-types';
-import { payOrders } from 'store/customer/orders/asyncOperations';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import cls from './ListTopBox.module.scss';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
-import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
+import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
+import { payOrders } from 'store/customer/orders/asyncOperations';
 import { classNames } from 'helpers/classNames';
 import { errorMessage } from 'helpers/errorMessage';
+import { Button, Loader, Text, CheckBox } from 'shared';
+import { ConfirmModal } from 'components';
+import { BillDownload } from '../BillDownload/BillDownload';
 
 export const ListTopBox = ({
   orders,

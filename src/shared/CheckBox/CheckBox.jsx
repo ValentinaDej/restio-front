@@ -1,10 +1,10 @@
-import React, { memo, useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import { AiOutlineCheck } from 'react-icons/ai';
-import cls from './CheckBox.module.scss';
 import { nanoid } from '@reduxjs/toolkit';
+
+import cls from './CheckBox.module.scss';
 import { classNames } from 'helpers/classNames';
-import { forwardRef } from 'react';
 
 export const CheckBox = forwardRef(
   (

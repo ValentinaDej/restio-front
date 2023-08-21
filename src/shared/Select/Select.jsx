@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from './Select.module.scss';
 
-const Select = forwardRef(
+export const Select = forwardRef(
   (
     {
       children,
@@ -57,5 +57,3 @@ Select.propTypes = {
   length: PropTypes.oneOf(['sm', 'md', 'lg']),
   error: PropTypes.oneOf(['error', 'noError']),
 };
-
-export default Select;

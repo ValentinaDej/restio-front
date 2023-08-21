@@ -4,7 +4,7 @@ import { BsTrash } from 'react-icons/bs';
 import { BiEditAlt } from 'react-icons/bi';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
-const EmployeeCard = ({
+export const EmployeeCard = ({
   children,
   onClick,
   mode = 'primary',
@@ -66,5 +66,3 @@ EmployeeCard.propTypes = {
   alt: PropTypes.string,
   type: PropTypes.string,
 };
-
-export default EmployeeCard;

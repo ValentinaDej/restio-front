@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import { FaChevronDown } from 'react-icons/fa';
 
 import classes from './SelectIngredients.module.scss';

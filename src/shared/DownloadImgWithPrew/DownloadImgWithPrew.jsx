@@ -2,14 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactCrop, { centerCrop, makeAspectCrop, convertToPixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-
 import { LiaPlusSolid } from 'react-icons/lia';
 
 import { canvasPreview } from './canvasPreview';
 import { useDebounceEffect } from './useDebounceEffect';
-import Modal from 'shared/Modal/Modal';
+
 import toast from 'react-hot-toast';
-import Button from 'shared/Button/Button';
+import { Button, Modal } from 'shared';
 
 import classes from './DownloadImgWithPrew.module.scss';
 
@@ -31,7 +30,7 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   );
 }
 
-const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) => {
+export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) => {
   const [imgSrc, setImgSrc] = useState('');
   const previewCanvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -246,5 +245,3 @@ DownloadImgWithPrew.propTypes = {
   handleImagePrew: PropTypes.func.isRequired,
   handleImageDownload: PropTypes.func.isRequired,
 };
-
-export default DownloadImgWithPrew;

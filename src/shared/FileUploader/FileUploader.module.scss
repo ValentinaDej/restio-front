@@ -3,8 +3,7 @@
   display: inline-block;
   width: 200px;
   height: 200px;
-  border: 1px solid var(--color-orange);
-  // background: var(--color-white);
+  border: 1px solid var(--color-primary);
   background-color: var(--color-bg-dark);
   border-radius: 50%;
   transition: all 0.3s ease 0s;
@@ -26,7 +25,7 @@
 
   &:hover,
   &:focus {
-    border-color: var(--color-orange-hover);
+    border-color: var(--color-primary-hover);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 }

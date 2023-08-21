@@ -15,7 +15,7 @@ const skeletonData = [
   { topBlockWidth: 180, bottomBlockWidth: 220 },
 ];
 
-const OrderSkeleton = ({ isSmall, isWaiter, isWaiterDishesPage }) => {
+export const OrderSkeleton = ({ isSmall, isWaiter, isWaiterDishesPage }) => {
   const renderTopBlock = () => {
     return (
       <div className="topBox">
@@ -92,5 +92,3 @@ OrderSkeleton.propTypes = {
   isSmall: PropTypes.bool,
   isWaiter: PropTypes.bool,
 };
-
-export default OrderSkeleton;

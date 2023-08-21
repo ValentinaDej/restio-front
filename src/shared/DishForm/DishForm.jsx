@@ -1,25 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
-
 import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
 
-import Button from 'shared/Button/Button';
-import Select from 'shared/Select/Select';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
-import Text from 'shared/Text/Text';
-import InputValid from 'shared/InputValid/InputValid';
-import Loader from 'shared/Loader/Loader';
-import FileUploader from 'shared/FileUploader/FileUploader';
+import classes from './DishForm.module.scss';
+import { Button, Select, CheckBox, Text, InputValid, FileUploader, Loader } from 'shared';
 import DishTypeOptions from './DishTypeOptions/DishTypeOptions';
 import Ingredients from './Ingredients/Ingredients';
 import SortIngredients from './SortIngridients/SortIngredients';
-import DownloadImg from '../DownloadImgWithPrew/DownloadImgWithPrew';
 
-import classes from './DishForm.module.scss';
-
-const DishForm = ({
+export const DishForm = ({
   onSubmit,
   category,
   initialState,
@@ -393,5 +384,3 @@ DishForm.defaultProps = {
   selectedIngredientsMap: new Map(),
   isEditing: false,
 };
-
-export default DishForm;

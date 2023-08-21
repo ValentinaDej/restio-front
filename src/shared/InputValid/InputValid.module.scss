@@ -9,7 +9,7 @@
   position: relative;
 
   &:hover > .icon__wrapper {
-    color: var(--color-orange-hover);
+    color: var(--color-primary-hover);
   }
 }
 
@@ -17,7 +17,7 @@
   position: absolute;
   top: 50%;
   right: 0.5rem;
-  color: var(--color-orange);
+  color: var(--color-primary);
   transform: translateY(-50%);
   transition: opacity 0.3s ease;
 }

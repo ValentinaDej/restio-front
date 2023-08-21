@@ -1,21 +1,20 @@
-import styles from './TableCard.module.scss';
 import PropTypes from 'prop-types';
-import StatusSelector from 'shared/StatusSelector/StatusSelector';
-import Text from 'shared/Text/Text';
-import Button from 'shared/Button/Button';
-import { NavLink } from 'react-router-dom';
-import { useChangeTableStatus } from 'api/table';
 import { toast } from 'react-hot-toast';
+import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { GiWoodenChair, GiNotebook } from 'react-icons/gi';
 import { BiDish } from 'react-icons/bi';
 import { MdTableBar } from 'react-icons/md';
 import { AiFillStar } from 'react-icons/ai';
 import { IoIosRestaurant } from 'react-icons/io';
 import { motion } from 'framer-motion';
-import { useDispatch } from 'react-redux';
+
+import styles from './TableCard.module.scss';
+import { StatusSelector, Text, Button } from 'shared';
+import { useChangeTableStatus } from 'api/table';
 import { setFavorite } from 'store/tables/tableSlice';
 
-const TableCard = ({
+export const TableCard = ({
   restaurant_id,
   table_number,
   table_id,
@@ -33,7 +32,6 @@ const TableCard = ({
       await changeTableStatus.mutateAsync({ status: item, restaurant_id, table_id });
       return 'success';
     } catch (mutationError) {
-      console.error('Mutation Error:', mutationError);
       toast.error(mutationError.response.data.message);
     }
   };
@@ -211,5 +209,3 @@ TableCard.propTypes = {
   orders: PropTypes.array,
   seats: PropTypes.number,
 };
-
-export default TableCard;

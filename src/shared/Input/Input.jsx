@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import styles from './Input.module.scss';
 import { forwardRef } from 'react';
 
-const Input = forwardRef(
+export const Input = forwardRef(
   (
     {
       label,
@@ -71,5 +71,3 @@ Input.propTypes = {
   length: PropTypes.oneOf(['sm', 'md', 'lg']),
   mode: PropTypes.string,
 };
-
-export default Input;

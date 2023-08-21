@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { HfInference } from '@huggingface/inference';
-import Text from 'shared/Text/Text';
-import Loader from 'shared/Loader/Loader';
-import classes from '../../pages/DishPage/DishPage.module.scss';
 
-const DishDescription = ({ data: dish }) => {
+import classes from 'pages/DishPage/DishPage.module.scss';
+import { Text, Loader } from 'shared';
+
+export const DishDescription = ({ data: dish }) => {
   const [generatedText, setGeneratedText] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentText, setCurrentText] = useState('');
@@ -78,5 +78,3 @@ const DishDescription = ({ data: dish }) => {
     </div>
   );
 };
-
-export default DishDescription;

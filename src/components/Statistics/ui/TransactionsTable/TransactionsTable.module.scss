@@ -92,7 +92,7 @@
   width: 50px;
 
   &:focus {
-    outline: 1px solid var(--color-orange-hover);
+    outline: 1px solid var(--color-primary-hover);
   }
 }
 
@@ -133,7 +133,7 @@
 .icon {
   margin-left: auto;
   margin-right: auto;
-  color: var(--color-orange);
+  color: var(--color-primary);
 }
 
 .calendarBox {
@@ -141,7 +141,7 @@
 }
 
 .calendarValue {
-  color: var(--color-orange);
+  color: var(--color-primary);
   position: absolute;
   top: 60%;
   left: 50%;
@@ -150,5 +150,5 @@
 }
 
 .dateIcon {
-  color: var(--color-orange);
+  color: var(--color-primary);
 }
