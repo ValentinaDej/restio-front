@@ -23,11 +23,16 @@ const cartPersistConfig = {
   storage,
 };
 
+const messagePersistConfig = {
+  key: 'messages',
+  storage,
+};
+
 const tablePersistConfig = {
   key: 'tables',
   storage,
 };
-
+const persistedMessagesReducer = persistReducer(messagePersistConfig, messagesReducer);
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 const persistedTableReducer = persistReducer(tablePersistConfig, tableReducer);
 
@@ -35,7 +40,7 @@ export const store = configureStore({
   reducer: {
     cart: persistedCartReducer,
     auth: authReducer,
-    messages: messagesReducer,
+    messages: persistedMessagesReducer,
     customerOrders: customerOrdersReducer,
     tables: persistedTableReducer,
   },

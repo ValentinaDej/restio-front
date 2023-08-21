@@ -1,22 +1,16 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'react-hot-toast';
 import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
+
 import classes from './DishPage.module.scss';
 import instance from 'api';
-import Title from 'shared/Title/Title';
-import Text from 'shared/Text/Text';
-import QuantityButton from 'shared/QuantityButton/QuantityButton';
-import Button from 'shared/Button/Button';
-import Cart from 'components/Cart/Cart';
-import Loader from 'shared/Loader/Loader';
-import DishDescription from 'components/DishDescription/DishDescription';
-import Footer from 'shared/Footer/Footer';
-import Slider from '../../components/Slider/Slider';
+import { Cart, Slider, DishDescription } from 'components';
+import { Loader, Button, QuantityButton, Text, Title } from 'shared';
 import { getDishById } from 'api/dish';
 import { addProduct, decreaseQuantity, increaseQuantity } from 'store/cart/cartSlice';
-import { getProductFromState } from '../../store/cart/cartSelectors';
-import { toast } from 'react-hot-toast';
+import { getProductFromState } from 'store/cart/cartSelectors';
 
 const DishPage = () => {
   const [dishQuantity, setDishQuantity] = useState(0);
@@ -251,7 +245,6 @@ const DishPage = () => {
           <Slider data={recommendedDishes} restId={restId} tableId={tableId}></Slider>
         </div>
       </main>
-      <Footer></Footer>
     </>
   );
 };

@@ -1,14 +1,12 @@
 import classes from './Footer.module.scss';
-import { BsTelegram, BsTwitter } from 'react-icons/bs';
-import { AiFillInstagram } from '@react-icons/all-files/ai/AiFillInstagram';
-import Input from '../Input/Input';
-import Button from '../Button/Button';
-import Text from '../Text/Text';
 import { send } from 'emailjs-com';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { BsTelegram, BsTwitter } from 'react-icons/bs';
+import { AiFillInstagram } from '@react-icons/all-files/ai/AiFillInstagram';
+import { Input, Button, Text } from 'shared';
 
-const Footer = () => {
+export const Footer = () => {
   const [from_name, SetFromName] = useState('');
   const [reply_to, SetFromEmail] = useState('');
   const [message, SetMessage] = useState('');
@@ -128,5 +126,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

@@ -3,9 +3,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  outline-color: var(--color-orange);
+  outline-color: var(--color-primary);
   border-radius: 50%;
-  background: var(--color-orange);
+  background: var(--color-primary);
 
   transition-property: background, color, border-color;
   transition-duration: 500ms;
@@ -17,39 +17,39 @@
   &:hover,
   &:focus {
     .icon {
-      color: var(--color-orange);
+      color: var(--color-primary);
     }
   }
   .icon {
-    color: var(--color-orange);
+    color: var(--color-primary);
   }
 }
 
 .filled {
-  outline-color: var(--color-orange);
+  outline-color: var(--color-primary);
   border-radius: 50%;
-  background: var(--color-orange);
+  background: var(--color-primary);
   border: var(--border-primary);
 
   &:hover,
   &:focus {
     background: var(--color-white);
-    color: var(--color-orange);
+    color: var(--color-primary);
 
     .icon {
-      color: var(--color-orange);
+      color: var(--color-primary);
     }
   }
 }
 
 .outlined {
-  color: var(--color-orange);
-  border: 2px solid var(--color-orange);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
   background: none;
 
   &:hover,
   &:focus {
-    background: var(--color-orange);
+    background: var(--color-primary);
 
     .icon {
       color: var(--color-white);
@@ -57,7 +57,7 @@
   }
 
   .icon {
-    color: var(--color-orange);
+    color: var(--color-primary);
   }
 }
 

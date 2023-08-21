@@ -4,7 +4,7 @@ import cls from './IconButton.module.scss';
 import { classNames } from 'helpers/classNames';
 
 export const IconButton = memo(
-  ({ Svg, size = 20, mode = 'clear', disabled, onClick, className, ...props }) => {
+  ({ Svg, size = 20, mode = 'clear', disabled, onClick, color, className, ...props }) => {
     const mods = {
       [cls.disabled]: disabled,
     };
@@ -16,7 +16,7 @@ export const IconButton = memo(
         disabled={disabled}
         {...props}
       >
-        <Svg size={size} className={cls.icon} />
+        <Svg size={size} className={cls.icon} color={color} />
       </button>
     );
   }

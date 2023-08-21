@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import Button from 'shared/Button/Button';
-import { CheckBox } from 'shared/CheckBox/CheckBox';
+import { useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
+import toast from 'react-hot-toast';
+
+import { CheckBox, Button } from 'shared';
 import FormInput from './FormInput';
 import classes from './LoginForm.module.scss';
 import { CHECK_PASSWORD_SCHEMA } from 'utils/constants';
-import * as yup from 'yup';
-import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
 import { loginUser } from 'store/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object({
   email: yup
@@ -26,7 +26,7 @@ const schema = yup.object({
     .required('Please provide a password'),
 });
 
-const LoginForm = () => {
+export const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
@@ -111,5 +111,3 @@ const LoginForm = () => {
     </div>
   );
 };
-
-export default LoginForm;

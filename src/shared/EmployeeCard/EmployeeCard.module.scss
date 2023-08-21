@@ -5,9 +5,6 @@
     flex: 0 0 1;
     transition: 1s;
 
-    //margin-bottom: 2rem;
-    //margin-top: -85px;
-
     text-align: center;
     &.outlined {
       border: dashed 1px var(--color-light);
@@ -27,9 +24,7 @@
     margin: 0 auto;
     bottom: -50px;
     border-radius: 50%;
-    //width: 65%;
     width: 170px;
-    //height: 170px;
     height: auto;
     object-fit: cover;
     object-position: 25% 25%;
@@ -49,28 +44,28 @@
   .trash {
     position: absolute;
 
-    color: var(--color-orange);
+    color: var(--color-primary);
 
     top: 20px;
     right: 15px;
     margin-right: 20px;
     &:hover,
     &:focus {
-      color: var(--color-gray);
+      color: var(--color-secondary);
     }
   }
 
   .edit {
     position: absolute;
 
-    color: var(--color-gray);
+    color: var(--color-secondary);
 
     bottom: 120px;
     right: 10px;
     z-index: 1;
     margin-right: 20px;
     &:hover {
-      color: var(--color-orange);
+      color: var(--color-primary);
     }
   }
 }
@@ -80,7 +75,6 @@
     position: relative;
     width: 100%;
     transition: 1s;
-    //margin-bottom: 2rem;
   }
 
   .trash {
@@ -105,7 +99,6 @@
     position: relative;
     width: 100%;
     transition: 1s;
-    //margin-bottom: 2rem;
   }
 
   .card:hover .employee_text {

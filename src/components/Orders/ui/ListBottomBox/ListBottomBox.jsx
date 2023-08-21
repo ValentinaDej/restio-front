@@ -1,16 +1,15 @@
-import { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Text from 'shared/Text/Text';
-import Button from 'shared/Button/Button';
-import { AiOutlineClose } from 'react-icons/ai';
-import { classNames } from 'helpers/classNames';
+import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { AiOutlineClose } from 'react-icons/ai';
+
+import cls from './ListBottomBox.module.scss';
+import { Text, Button, Loader } from 'shared';
+import { ConfirmModal } from 'components';
+import { classNames } from 'helpers/classNames';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
-import Loader from 'shared/Loader/Loader';
 import { useUpdateOrderStatusByWaiter } from 'api/order';
-import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
-import cls from './ListBottomBox.module.scss';
 
 export const ListBottomBox = ({
   isWaiter,

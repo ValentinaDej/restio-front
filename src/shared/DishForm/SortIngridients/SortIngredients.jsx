@@ -1,7 +1,7 @@
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import Text from 'shared/Text/Text';
+import { Text } from 'shared';
 import DraggableIngredient from './DraggableIngredient/DraggableIngredient';
 import classes from './SortIngredients.module.scss';
 

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import classes from './EmptyCard.module.scss';
 import { AiOutlineAppstoreAdd } from 'react-icons/ai';
-import Text from 'shared/Text/Text';
+import { Text } from 'shared';
 
-const EmptyCard = ({ text, onClick, mode = 'primary', ...props }) => {
+export const EmptyCard = ({ text, onClick, mode = 'primary', ...props }) => {
   return (
     <>
       <div onClick={onClick} className={`${classes.emptyCard_wrapper} ${classes[`${mode}`]}`}>
@@ -20,5 +20,3 @@ EmptyCard.propTypes = {
   mode: PropTypes.oneOf(['primary', 'outlined']),
   onClick: PropTypes.func,
 };
-
-export default EmptyCard;

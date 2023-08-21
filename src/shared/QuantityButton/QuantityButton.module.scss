@@ -6,7 +6,7 @@
   padding: 0.2rem 1rem;
 
   background-color: transparent;
-  color: var(--color-orange);
+  color: var(--color-primary);
   font-size: 1.5rem;
 
   &__value {
@@ -17,10 +17,10 @@
   &__button {
     &:hover,
     :focus {
-      color: var(--color-orange);
+      color: var(--color-primary);
     }
     &:disabled {
-      color: var(--color-gray);
+      color: var(--color-secondary);
       cursor: not-allowed;
     }
   }
@@ -30,7 +30,7 @@
   }
 
   &_outlined {
-    border: 2px solid var(--color-orange);
+    border: 2px solid var(--color-primary);
     border-radius: 2rem;
   }
   &_sm {

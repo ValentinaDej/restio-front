@@ -11,7 +11,7 @@
   padding: 8px 12px;
   border: var(--border-primary);
   border-radius: 10px;
-  background-color: #fff;
+  background-color: var(--color-white);
   cursor: pointer;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .icon {
-  color: var(--color-orange);
+  color: var(--color-primary);
 }
 
 .dropdown-item {
@@ -37,6 +37,6 @@
   cursor: pointer;
 
   &:hover {
-    background-color: var(--color-orange-transparent);
+    background-color: var(--color-green-accent);
   }
 }

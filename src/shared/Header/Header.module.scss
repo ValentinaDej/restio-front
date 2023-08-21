@@ -5,9 +5,14 @@
   padding: 1rem 1rem;
 
   &__logo {
-    width: 60px;
-    height: 60px;
+    margin: auto 0;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
+    @media screen and (min-width: 768px) {
+      width: 60px;
+      height: 60px;
+    }
   }
   &__img {
     width: 100%;
@@ -18,41 +23,91 @@
     align-items: center;
     margin-right: 10px;
   }
-  &__icon {
+  &__call {
+    cursor: pointer;
     width: 30px;
     height: 30px;
+  }
+  &__icon {
     color: currentColor;
-    margin-left: 20px;
+
+    width: 30px;
+    height: 30px;
   }
   &__link {
     display: flex;
     align-items: center;
     margin-left: 1.5rem;
-    color: var(--color-gray);
+    color: var(--color-secondary);
     &:hover,
     &:focus {
-      color: var(--color-orange);
+      color: var(--color-primary);
     }
     &:global.active {
-      color: var(--color-orange);
+      color: var(--color-primary);
+    }
+    @media screen and (min-width: 991.98px) {
+      margin-left: 2rem;
     }
   }
   &__wrapper {
     display: flex;
     align-items: center;
   }
-  &__link-button {
-    margin-left: 20px;
-    font-size: 0.8rem;
-    padding: 0.5rem 1.5rem;
-    border-radius: 30px;
-    border: 2px solid var(--color-orange);
-    color: var(--color-orange);
-    font-weight: var(--font-semi-bold);
-    &:hover,
-    &:active {
-      background: var(--color-orange-hover);
-      color: var(--color-white);
+
+  &__title {
+    display: none;
+    @media screen and (min-width: 477.98px) {
+      display: block;
+      font-size: 20px;
     }
+    @media screen and (min-width: 767.98px) {
+      font-size: 24px;
+    }
+    @media screen and (min-width: 991.98px) {
+      font-size: 28px;
+    }
+  }
+}
+.mobile-menu {
+  background-color: var(--color-bg-gray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  align-items: flex-end;
+  position: fixed;
+  padding: 100px 24px;
+  z-index: 2;
+  top: 0;
+  right: -80px;
+  width: 80px;
+  height: 100%;
+  border-left: 1px solid var(--color-secondary);
+  transform: translateX(-100%);
+  transition: transform 0.375s cubic-bezier(0.175, 0.885, 0.32, 1);
+}
+
+.switch-button {
+  margin-right: 8px;
+  background-color: transparent;
+  z-index: 3;
+  color: var(--color-secondary);
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  animation: menu-in 0.375;
+}
+@keyframes menu-in {
+  0% {
+    clip-path: ellipse(60% 60% at 0% 50%);
+  }
+  100% {
+    clip-path: ellipse(120% 120% at 0% 50%);
   }
 }

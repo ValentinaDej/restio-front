@@ -1,15 +1,14 @@
-import Button from 'shared/Button/Button';
-import styles from './DishesItem.module.scss';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
-import { IoIosClose } from 'react-icons/io';
 import { useMediaQuery } from 'react-responsive';
-import Text from 'shared/Text/Text';
 import { MdTableBar } from 'react-icons/md';
 import { BiDish } from 'react-icons/bi';
-import { useState } from 'react';
+import { IoIosClose } from 'react-icons/io';
 
-const DishesItem = ({
+import styles from './DishesItem.module.scss';
+import { Text, Button } from 'shared';
+
+export const DishesItem = ({
   dish,
   quantity,
   handleChangeStatus,
@@ -47,6 +46,7 @@ const DishesItem = ({
           </div>
         </div>
       </div>
+
       <div className={`${styles.comment}`}>{comment && <p>{comment}</p>}</div>
       <div>
         <div className={`${styles.information__order}`}>
@@ -100,5 +100,3 @@ DishesItem.propTypes = {
   create: PropTypes.string.isRequired,
   comment: PropTypes.string,
 };
-
-export default DishesItem;

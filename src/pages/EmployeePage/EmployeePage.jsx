@@ -1,9 +1,10 @@
 import React from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import AdminPageContainer from 'components/Admin/AdminPageContainer/AdminPageContainer';
-import { instance } from 'api';
 import toast from 'react-hot-toast';
+
+import { AdminPageContainer } from 'components';
+import { instance } from 'api';
 
 const EmployeePage = () => {
   const { restId } = useParams();

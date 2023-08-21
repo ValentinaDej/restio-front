@@ -9,7 +9,7 @@ const routesCustomer = [
   { path: ':restId/tables/:tableId', component: <MenuPage /> },
   { path: ':restId/tables/:tableId/orders', component: <CustomerOrdersPage /> },
   { path: ':restId/tables/:tableId/dishes/:dishId', component: <DishPage /> },
-  { path: ':restId/aia', component: <AIAssistant /> },
+  { path: ':restId/tables/:tableId/aia', component: <AIAssistant /> },
 ];
 
 export default routesCustomer;

@@ -1,0 +1,22 @@
+.icon {
+  width: 30px;
+  height: 30px;
+  color: var(--color-primary);
+}
+.button {
+  margin-left: 12px;
+  margin-top: 4px;
+  position: relative;
+}
+.number {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  width: 22px;
+  height: 14px;
+  border-radius: 20px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 12px;
+  font-weight: 600;
+}

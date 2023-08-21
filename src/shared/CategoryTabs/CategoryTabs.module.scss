@@ -33,31 +33,31 @@
   &_primary {
     color: var(--color-white);
     border: 2px solid transparent;
-    background-color: var(--color-orange);
+    background-color: var(--color-primary);
     &:hover {
-      background-color: var(--color-orange-hover);
-      border-color: var(--color-orange-focus);
+      background-color: var(--color-primary-hover);
+      border-color: var(--color-primary-focus);
     }
     &_active {
       background-color: transparent;
-      color: var(--color-orange);
-      border-color: var(--color-orange);
+      color: var(--color-primary);
+      border-color: var(--color-primary);
       pointer-events: none;
     }
   }
 
   &_outlined {
-    color: var(--color-orange);
-    border: 2px solid var(--color-orange);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
     background-color: transparent;
 
     &_active {
-      background-color: var(--color-orange-focus);
+      background-color: var(--color-primary-focus);
       color: var(--color-white);
       pointer-events: none;
     }
     &:hover {
-      background-color: var(--color-orange);
+      background-color: var(--color-primary);
       color: var(--color-white);
     }
   }

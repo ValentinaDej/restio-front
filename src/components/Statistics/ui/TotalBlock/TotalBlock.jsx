@@ -9,7 +9,7 @@ import {
 } from 'recharts';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { memo } from 'react';
-import Title from 'shared/Title/Title';
+import { Title } from 'shared';
 import cls from './TotalBlock.module.scss';
 
 export const TotalBlock = memo(({ monthlyStatistics }) => {

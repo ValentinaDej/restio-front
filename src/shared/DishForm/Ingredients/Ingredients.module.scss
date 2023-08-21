@@ -5,7 +5,7 @@
   margin-top: 0.5rem;
   cursor: pointer;
   width: 100%;
-  border: 1px solid var(--color-orange);
+  border: 1px solid var(--color-primary);
   background: var(--color-white);
   color: var(--color-dark);
   font-size: 0.8rem;
@@ -17,7 +17,7 @@
 
   &:hover,
   &:focus {
-    border-color: var(--color-orange-hover);
+    border-color: var(--color-primary-hover);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
@@ -26,22 +26,22 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: var(--color-orange);
+    background-color: var(--color-primary);
     border-radius: 20px;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: var(--color-orange-transparent);
+    background-color: var(--color-green-accent);
   }
 
   /* Styling the scrollbar for Firefox */
   & {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-orange) var(--color-orange-transparent);
+    scrollbar-color: var(--color-primary) var(--color-green-accent);
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-orange-hover);
+    background-color: var(--color-primary-hover);
   }
 
   @media screen and (min-width: 768px) {
@@ -58,15 +58,14 @@
   padding: 8px;
   vertical-align: middle;
   text-align: left;
-  //border-bottom: 1px dotted var(--color-orange-transparent);
 }
 
 .table__row:nth-child(even) {
-  background-color: var(--color-orange-transparent);
+  background-color: var(--color-green-accent);
 }
 
 .table__row:hover {
-  // background-color: var(--color-orange-hover);
+  // background-color: var(--color-primary-hover);
 }
 
 td {
@@ -91,10 +90,10 @@ tr {
 
 .select__type {
   width: 100%;
-  border-bottom: 1px solid var(--color-orange);
+  border-bottom: 1px solid var(--color-primary);
   font-size: 0.8rem;
   outline: none;
-  background-color: white;
+  background-color: var(--color-white);
   padding: 0.3rem 0rem;
   //border-radius: 30px;
 }
@@ -103,11 +102,11 @@ tr {
   cursor: pointer;
   height: 18px;
   width: 18px;
-  color: var(--color-orange);
+  color: var(--color-primary);
 
   &:hover,
   &:focus {
-    color: var(--color-orange-hover);
+    color: var(--color-primary-hover);
   }
 }
 
@@ -120,21 +119,21 @@ tr {
   top: 50%;
   right: 0.5rem;
   transform: translateY(-50%);
-  color: var(--color-orange);
+  color: var(--color-primary);
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
 .pencil__icon:hover,
 .input__wrapper:hover .pencil__icon {
-  color: var(--color-orange-hover);
+  color: var(--color-primary-hover);
 }
 
 .input {
   width: 100%;
-  border-bottom: 1px solid var(--color-orange);
+  border-bottom: 1px solid var(--color-primary);
   font-size: 0.8rem;
   outline: none;
-  background-color: white;
+  background-color: var(--color-white);
   padding: 0.3rem 0rem;
 }

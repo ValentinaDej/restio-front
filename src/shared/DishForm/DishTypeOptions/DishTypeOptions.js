@@ -1,4 +1,4 @@
-import { CheckBox } from 'shared/CheckBox/CheckBox';
+import { CheckBox } from 'shared';
 
 import classes from './DishTypeOptions.module.scss';
 

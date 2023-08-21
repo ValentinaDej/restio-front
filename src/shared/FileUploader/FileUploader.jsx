@@ -2,11 +2,11 @@ import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'rea
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-import defaultImage from '../../assets/img/defaultUploadImg.png';
+import defaultImage from 'assets/img/defaultUploadImg.png';
 import styles from './FileUploader.module.scss';
-import DownloadImgWithPrew from 'shared/DownloadImgWithPrew/DownloadImgWithPrew';
+import { DownloadImgWithPrew } from 'shared';
 
-const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
+export const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
   const [uploadedFile, setUploadedFile] = useState();
   const [previewUrl, setPreviewUrl] = useState(onEditPhoto);
 
@@ -65,5 +65,3 @@ const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
     </div>
   );
 });
-
-export default FileUploader;

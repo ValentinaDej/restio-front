@@ -1,26 +1,22 @@
-import Title from 'shared/Title/Title';
-import styles from './AdminPageContainer.module.scss';
-import EmployeeCard from 'shared/EmployeeCard/EmployeeCard';
-import EmptyCard from 'shared/EmptyCard/EmptyCard';
-import { useNavigate, useParams } from 'react-router-dom';
-import Input from 'shared/Input/Input';
 import { useState } from 'react';
-import Loader from 'shared/Loader/Loader';
-import { useInfiniteQuery, useQueryClient } from 'react-query';
-import { getPersonnel } from '../../../api/personnel';
-import Button from '../../../shared/Button/Button';
 import toast from 'react-hot-toast';
-import { getDishes } from '../../../api/dish';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useInfiniteQuery, useQueryClient } from 'react-query';
 import { useMediaQuery } from 'react-responsive';
 import { BiSearch } from 'react-icons/bi';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
+
+import styles from './AdminPageContainer.module.scss';
+import { getPersonnel } from 'api/personnel';
+import { getDishes } from 'api/dish';
+import { Button, Loader, EmptyCard, EmployeeCard, Title, Input } from 'shared';
 
 const value = {
   employee: 'personnel',
   dish: 'dishes',
 };
 
-const AdminPageContainer = ({
+export const AdminPageContainer = ({
   title,
   variant,
   handleDelete,
@@ -60,11 +56,9 @@ const AdminPageContainer = ({
         onError: () => {
           toast.error(`Error fetching ${variant}`);
         },
-        cacheTime: 10 * 60 * 60,
-        staleTime: 15 * 60 * 60,
-        refetchOnWindowFocus: false, // Disable refetching when the window gains focus
-        refetchOnReconnect: false, // Disable refetching when the network reconnects
-        refetchInterval: false, // Disable automatic periodic refetching
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchInterval: false,
       }
     );
 
@@ -207,5 +201,3 @@ const AdminPageContainer = ({
     </div>
   );
 };
-
-export default AdminPageContainer;

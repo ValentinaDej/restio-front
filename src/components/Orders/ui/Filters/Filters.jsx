@@ -1,6 +1,5 @@
-import { DropDown } from 'shared/DropDown/DropDown';
-import Text from 'shared/Text/Text';
 import cls from './Filters.module.scss';
+import { Text, DropDown } from 'shared';
 
 const sortOptions = [
   { value: 'None', label: 'Newest' },

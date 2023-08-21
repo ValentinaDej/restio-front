@@ -1,5 +1,5 @@
-import LoginForm from 'shared/LoginForm/LoginForm';
-import MainWrapper from 'shared/MainWrapper/MainWrapper';
+import { MainWrapper, LoginForm } from 'shared';
+
 import classes from './LoginPage.module.scss';
 
 const LoginPage = () => {
