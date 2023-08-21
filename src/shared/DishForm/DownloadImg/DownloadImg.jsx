@@ -1,24 +1,30 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Modal from 'shared/Modal/Modal'; // Замініть на власний шлях
 import PropTypes from 'prop-types';
-import ReactCrop from 'react-image-crop';
+import ReactCrop, {
+  centerCrop,
+  makeAspectCrop,
+  Crop,
+  PixelCrop,
+  convertToPixelCrop,
+} from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import { canvasPreview } from './canvasPreview';
+import { useDebounceEffect } from './useDebounceEffect';
 
 const DownloadImg = ({ setIsModalOpen, isModalOpen, selectedFile, handleImageAdd }) => {
-  //   const handleAddImage = () => {
-  //     if (croppedImage) {
-  //       handleImageAdd(output);
-  //     }
-  //     setIsModalOpen(false);
-  //   };
-
-  const [src, setSrc] = useState(null);
+  //   const [src, setSrc] = useState(URL.createObjectURL(selectedFile));
+  const [src, setSrc] = useState(selectedFile);
   const [crop, setCrop] = useState({ aspect: 16 / 9 });
   const [image, setImage] = useState(null);
   const [output, setOutput] = useState(null);
-
-  const selectImage = (file) => {
-    setSrc(URL.createObjectURL(file));
+  //   console.log(typeof src);
+  //   console.log(typeof selectedFile);
+  const handleAddImage = () => {
+    if (croppedImage) {
+      handleImageAdd(output);
+    }
+    setIsModalOpen(false);
   };
 
   const cropImageNow = () => {
@@ -53,30 +59,20 @@ const DownloadImg = ({ setIsModalOpen, isModalOpen, selectedFile, handleImageAdd
   };
 
   return (
-    <div className="App">
-      <center>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            selectImage(e.target.files[0]);
-          }}
-        />
-        <br />
-        <br />
+    <div>
+      <Modal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}>
         <div>
+          <h2>Crop Image</h2>
           {src && (
             <div>
               <ReactCrop src={src} onImageLoaded={setImage} crop={crop} onChange={setCrop} />
-              <br />
               <button onClick={cropImageNow}>Crop</button>
-              <br />
-              <br />
+              <div>{output && <img src={output} />}</div>
             </div>
           )}
         </div>
-        <div>{output && <img src={output} />}</div>
-      </center>
+        <button onClick={handleAddImage}>Додати</button>
+      </Modal>
     </div>
   );
 };

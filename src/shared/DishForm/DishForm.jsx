@@ -41,8 +41,9 @@ const DishForm = ({
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedFile(imageUrl);
+      // const imageUrl = URL.createObjectURL(file);
+      // setSelectedFile(imageUrl);
+      setSelectedFile(file);
       setIsModalOpen(true); // Open the modal after selecting the image
     }
   };
@@ -167,6 +168,7 @@ const DishForm = ({
     setSelectedIngredients(newSelectedIngredients);
   };
 
+  console.log(typeof selectedFile);
   return (
     <div>
       {isSaving ? (
