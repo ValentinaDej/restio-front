@@ -1,12 +1,25 @@
+import { store } from 'store';
 import LoginForm from './LoginForm';
+import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 
-const meta = {
-  title: 'Shared/LoginForm',
+export default {
+  title: 'Forms/LoginForm',
   component: LoginForm,
-  tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <MemoryRouter>
+        <Provider store={store}>
+          <Story />
+        </Provider>
+      </MemoryRouter>
+    ),
+  ],
+  argTypes: {
+    onSubmit: { action: 'submitted' },
+  },
+  tags: ['autodocs', 'forms'],
 };
-
-export default meta;
 
 const Template = (args) => <LoginForm {...args} />;
 

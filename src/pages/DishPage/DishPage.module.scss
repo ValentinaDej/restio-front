@@ -43,8 +43,8 @@
   .fullDish {
     width: 100%;
     position: relative;
-    margin: 30px auto 100px;
-    padding: 2rem 2rem;
+    margin: 0px auto 50px;
+    padding: 1rem 2rem;
     background-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0px 2px 25px -16px rgba(128, 128, 128, 1);
     border-radius: 25px;
@@ -195,7 +195,41 @@
     }
     &.false {
       color: var(--color-white);
-      background-color: var(--color-gray-600);
+      background-color: var(--color-bg-gray);
+    }
+  }
+
+  .AIwrapper {
+    display: block;
+  }
+
+  .AItitle {
+    margin-bottom: 15px;
+    margin: -10px auto 10px;
+    width: fit-content;
+    text-align: center;
+  }
+
+  .AItext {
+    color: var(--color-orange);
+    width: 90%;
+    margin: 0 auto;
+    transition: 1s ease;
+    text-align: justify;
+  }
+
+  .cursor {
+    border-right: 0.15em solid var(--color-orange);
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
     }
   }
 
@@ -248,6 +282,14 @@
       margin-left: 1%;
     }
   }
+
+  .loader_AI {
+    & > div {
+      height: 50px;
+      position: relative;
+      top: 0;
+    }
+  }
 }
 
 @media (min-width: 576px) {
@@ -281,7 +323,7 @@
     flex-direction: row;
     justify-content: space-between;
     gap: 5%;
-    padding: 1.5rem 0 0.5rem;
+    padding: 1rem 0 0.5rem;
     align-items: center;
   }
   .dishImage {
@@ -304,6 +346,14 @@
 
   .box {
     margin: 0.5rem 0;
+  }
+
+  .AItitle {
+    margin: 15px auto 10px;
+  }
+
+  .AItext {
+    width: 100%;
   }
 
   .recomWrapper {

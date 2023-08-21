@@ -7,18 +7,15 @@ import instance from 'api';
 import Title from 'shared/Title/Title';
 import Text from 'shared/Text/Text';
 import QuantityButton from 'shared/QuantityButton/QuantityButton';
-import DishCard from 'shared/DishCard/DishCard';
 import Button from 'shared/Button/Button';
-import { NavigateButtons } from '../../components/Orders/ui/NavigateButtons/NavigateButtons';
 import Cart from 'components/Cart/Cart';
 import Loader from 'shared/Loader/Loader';
+import DishDescription from 'components/DishDescription/DishDescription';
 import Footer from 'shared/Footer/Footer';
+import Slider from '../../components/Slider/Slider';
 import { getDishById } from 'api/dish';
 import { addProduct, decreaseQuantity, increaseQuantity } from 'store/cart/cartSlice';
 import { getProductFromState } from '../../store/cart/cartSelectors';
-import { IoReturnDownBackOutline } from 'react-icons/io5';
-import { MdNavigateNext } from 'react-icons/md';
-import { MdNavigateBefore } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
 
 const DishPage = () => {
@@ -30,16 +27,14 @@ const DishPage = () => {
   const dispatch = useDispatch();
   const storeData = useSelector(getProductFromState);
   const { pathname } = useLocation();
-  const sliderRef = useRef(null);
-
   const {
     isLoading,
     data: dish,
     error,
   } = useQuery(['dish', dishId], () => getDishById(dishId), {
-    refetchOnWindowFocus: false, // Disable refetching when the window gains focus
-    refetchOnReconnect: false, // Disable refetching when the network reconnects
-    refetchInterval: false, // Disable automatic periodic refetching
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchInterval: false,
   });
   const idUsed = useCallback(
     (data) => {
@@ -47,18 +42,25 @@ const DishPage = () => {
       for (const item of storeData) {
         idsToExclude.push(item.id);
       }
+      let filteredItems;
       idsToExclude.push(dishId);
-      const filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
-      if (filteredItems.length <= 3) {
+      if (dish?.vegetarian === true) {
+        let interimfilteredItems = data.filter((item) => item.vegetarian);
+        filteredItems = interimfilteredItems.filter((item) => !idsToExclude.includes(item._id));
+      } else {
+        filteredItems = data.filter((item) => !idsToExclude.includes(item._id));
+      }
+
+      if (filteredItems.length <= 5) {
         setRecommendedDishes(filteredItems);
       } else {
         const first = Math.floor(Math.random() * (filteredItems.length - 5));
-        const second = first + 5;
+        const second = first + 4;
         let several = filteredItems.slice(first, second);
         setRecommendedDishes(several);
       }
     },
-    [storeData, dishId]
+    [storeData, dishId, dish]
   );
 
   const fetchDishesList = useCallback(async () => {
@@ -86,7 +88,6 @@ const DishPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
   if (isLoading) {
     return <Loader size="lg"></Loader>;
   }
@@ -101,87 +102,22 @@ const DishPage = () => {
   };
 
   const increaseItem = () => {
-    const { picture: src, name: title, price, _id: id } = dish;
+    const { _id: id } = dish;
     dispatch(increaseQuantity(id));
   };
 
   const decreaseItem = () => {
-    const { picture: src, name: title, price, _id: id } = dish;
+    const { _id: id } = dish;
     dispatch(decreaseQuantity(id));
   };
 
-  const sliderNext = () => {
-    const element = sliderRef.current;
-    const elementWidth = element.getBoundingClientRect().width;
-    console.log(elementWidth);
-    if (elementWidth > 445) {
-      const sliderWidth = 1510;
-      const scrollAmount = elementWidth * (1 / 3);
-      console.log(scrollAmount);
-      let newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
-      console.log(newRightValue);
-      const diff = sliderWidth - elementWidth - newRightValue;
-      console.log('disff:' + diff);
-      if (diff < scrollAmount) {
-        element.style.right = newRightValue + diff + 'px';
-      } else {
-        element.style.right = newRightValue + 'px';
-        return;
-      }
-    } else if (elementWidth < 445) {
-      const scrollAmount = elementWidth;
-      let newRightValue = parseFloat(getComputedStyle(element).right) + scrollAmount;
-      console.log(newRightValue);
-      if (newRightValue >= scrollAmount * 4) {
-        console.log('first');
-        return;
-      } else {
-        element.style.right = newRightValue + 'px';
-        console.log('second');
-      }
-    }
-    // const scrollAmount = 260 + 25;
-    // const sliderWidth = 1500;
-    // console.log(sliderWidth);
-    // let newRightValue;
-    // if (elementWidth >= 900) {
-    //   element.style.right = sliderWidth - elementWidth + 'px';
-    //   return;
-    // }
-    // newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
-    // console.log(newRightValue);
-    // console.log('computed rest:' + (sliderWidth - elementWidth - newRightValue));
-    // if (sliderWidth - elementWidth - newRightValue <= 400) {
-    //   console.log('1 block');
-    //   element.style.right = newRightValue + (sliderWidth - elementWidth - newRightValue) + 'px';
-    // } else if (sliderWidth - elementWidth - newRightValue > 400) {
-    //   console.log('2 block');
-    //   element.style.right = newRightValue + 'px';
-    // }
-  };
-  const sliderBack = () => {
-    const element = sliderRef.current;
-    console.log(element);
-    const elementWidth = element.getBoundingClientRect().width;
-    console.log(elementWidth);
-    const scrollAmount = 350;
-    const newRightValue = parseInt(getComputedStyle(element).right) - scrollAmount;
-    console.log(newRightValue);
-    if (newRightValue <= 0) {
-      element.style.right = 0 + 'px';
-      element.style.transform = '1s ease';
-    } else {
-      element.style.right = newRightValue + 'px';
-    }
-  };
   return (
     <>
       <main className={classes.dish}>
         <NavLink to={`/${restId}/tables/${tableId}`} className={classes.back}>
-          <NavigateButtons params={restId}>Back</NavigateButtons>
+          <Button mode="outlined">Back</Button>
         </NavLink>
         <div className={classes.fullDish}>
-          <p className={classes.category}>{dish.type}</p>
           <div className={classes.dishInfoWarapper}>
             <img className={classes.dishImage} src={dish.picture} />
             <div className={classes.dishText}>
@@ -231,7 +167,7 @@ const DishPage = () => {
               <div className={`${classes.spicy_wrapper} ${classes.box} `}>
                 <div className={classes.spicy_item}>
                   <Text mode="p" classname={classes.subtitle}>
-                    Vegeterian
+                    Vegetarian
                   </Text>
                   <ul>
                     <li
@@ -307,37 +243,15 @@ const DishPage = () => {
               </div>
             </div>
           </div>
+          <DishDescription data={dish}></DishDescription>
         </div>
         <Cart />
         <div className={classes.recommended_block}>
           <Title mode="h3">Recommend to try</Title>
-          <div className={classes.recomWrapper}>
-            <MdNavigateBefore
-              className={classes.arrowBefore}
-              onClick={sliderBack}
-            ></MdNavigateBefore>
-            <MdNavigateNext className={classes.arrowNext} onClick={sliderNext}></MdNavigateNext>
-            <div className={classes.sliderWrapper}>
-              <div className={classes.slider_box} ref={sliderRef} style={{ transition: '1s ease' }}>
-                {recommendedDishes?.map((item) => {
-                  return (
-                    <DishCard
-                      src={item.picture}
-                      key={item._id}
-                      id={item._id}
-                      title={item.name}
-                      ingredients={item.ingredients}
-                      weight={item.portionWeight}
-                      price={item.price}
-                      link={`/${restId}/tables/${tableId}/dishes/${item._id}`}
-                    ></DishCard>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+          <Slider data={recommendedDishes} restId={restId} tableId={tableId}></Slider>
         </div>
       </main>
+      <Footer></Footer>
     </>
   );
 };

@@ -1,21 +1,26 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
 import { useSSE } from 'react-hooks-sse';
-import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
+import { ListBottomBox } from 'components/Orders/ui/ListBottomBox/ListBottomBox';
 import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
 import OrderListSkeleton from 'shared/Skeletons/OrderSkeleton/OrderSkeleton';
-import PropTypes from 'prop-types';
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { useGetOrdersByTableId } from 'api/order';
 import { NavigateButtons } from './ui/NavigateButtons/NavigateButtons';
 import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
 import { classNames } from 'helpers/classNames';
-
 import cls from './Order.module.scss';
 import Title from 'shared/Title/Title';
+import Loader from 'shared/Loader/Loader';
+import { getIsLoading } from 'store/customer/orders/selectors';
+import { useSelector } from 'react-redux';
+import { errorMessage } from 'helpers/errorMessage';
 
 const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
+  const [sortOrderBy, setSortOrderBy] = useState('None');
   const [paymentType, setPaymentType] = useState('');
   const [isMounted, setIsMounted] = useState(true);
   const [selectedTotal, setSelectedTotal] = useState(0);
@@ -25,6 +30,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   const [notPaidOrders, setNotPaidOrders] = useState(0);
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [isAllOrdersPaid, setIsAllOrdersPaid] = useState(false);
+  const { payment } = useSelector(getIsLoading);
   const params = useParams();
   const { tableId } = params;
 
@@ -34,7 +40,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   };
   const updateDishStatusEvent = useSSE('dish status');
 
-  const { data: { data } = {}, isError, isLoading, refetch } = useGetOrdersByTableId(params);
+  const { data: { data } = {}, isLoading, refetch, isError, error } = useGetOrdersByTableId(params);
 
   useEffect(() => {
     if (updateDishStatusEvent && updateDishStatusEvent.message) {
@@ -67,7 +73,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       let isAllOrdersPaid = true;
       let notPaidOrders = 0;
 
-      data.orders.forEach((order) => {
+      data?.orders?.forEach((order) => {
         if (order.status !== 'Paid') {
           notPaidOrders += 1;
         }
@@ -89,7 +95,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       });
 
       setNotServedDishes(notServedDishes);
-      setAllOrderPrice(allOrderPrice);
+      setAllOrderPrice(formatNumberWithTwoDecimals(allOrderPrice));
       setNotPaidOrders(notPaidOrders);
       setTotalPrice(formatNumberWithTwoDecimals(newTotalPrice));
       setIsAllOrdersPaid(isAllOrdersPaid);
@@ -97,11 +103,20 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (isError) {
+      errorMessage(error?.response.data.message);
+      setIsMounted(false);
+    }
+  }, [error?.response.data.message, isError]);
+
   return (
     <>
       {isWaiter && (
         <>
-          <Title textAlign={'left'}>{isWaiterDishesPage ? 'Table dishes' : 'Table checkout'}</Title>
+          <Title textAlign={'left'}>
+            {isWaiterDishesPage ? 'Orders dishes' : 'Orders payments'}
+          </Title>
           <hr className={cls.divider} />
         </>
       )}
@@ -111,6 +126,7 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
           isWaiter={isWaiter}
           notServedDishes={notServedDishes}
           notPaidOrders={notPaidOrders}
+          setSortOrderBy={setSortOrderBy}
         />
         {isLoading || isMounted ? (
           <OrderListSkeleton
@@ -119,20 +135,31 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
             isWaiterDishesPage={isWaiterDishesPage}
           />
         ) : !data?.orders?.length ? (
-          <EmptyListBox params={params} isWaiter={isWaiter} />
+          <AnimatePresence>
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+              <EmptyListBox params={params} isWaiter={isWaiter} key={'emptyBox'} />
+            </motion.div>
+          </AnimatePresence>
         ) : (
-          <>
-            <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
+          <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}
+            >
               {!isWaiterDishesPage && (
                 <ListTopBox
                   orders={data?.orders || []}
                   totalPrice={totalPrice}
                   allOrderPrice={allOrderPrice}
+                  isAllOrdersPaid={isAllOrdersPaid}
                   onChangeSelected={onChangeSelected}
                   onChangeTypeOfPay={onChangeTypeOfPay}
                   urlParams={params}
                   isWaiter={isWaiter}
                   paymentType={paymentType}
+                  key={'topList'}
                 />
               )}
               <OrdersList
@@ -144,10 +171,13 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 isSmall={isSmall}
                 isWaiter={isWaiter}
                 isWaiterDishesPage={isWaiterDishesPage}
+                sortOrderBy={sortOrderBy}
+                key={'list'}
               />
-            </div>
+            </motion.div>
             {!isWaiterDishesPage && (
-              <Checkout
+              <ListBottomBox
+                totalPrice={totalPrice}
                 amount={selectedTotal}
                 selectedOrders={selectedOrders}
                 onChangeSelected={onChangeSelected}
@@ -155,9 +185,16 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 isWaiter={isWaiter}
                 isAllOrdersPaid={isAllOrdersPaid}
                 paymentType={paymentType}
+                notServedDishes={notServedDishes}
+                key={'listBottomBox'}
               />
             )}
-          </>
+            {payment && (
+              <div className={cls.layout} key={'loader'}>
+                <Loader />
+              </div>
+            )}
+          </AnimatePresence>
         )}
       </section>
     </>
@@ -166,6 +203,8 @@ const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
 
 Orders.propTypes = {
   isWaiter: PropTypes.bool,
+  isSmall: PropTypes.bool,
+  isWaiterDishesPage: PropTypes.bool,
 };
 
 export default Orders;
