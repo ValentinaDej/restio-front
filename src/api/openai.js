@@ -21,6 +21,5 @@ export const openai = async (
     });
   } catch (error) {
     toast.error('An error occurred. Please try again later.');
-    console.log(error);
   }
 };

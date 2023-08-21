@@ -50,8 +50,8 @@ const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
             'Content-Type': 'multipart/form-data',
           },
         })
-        .catch((error) => {
-          console.log('error', error);
+        .catch(() => {
+          toast.error('Some error occurred uploading an image!');
         });
       // Clear the selected file and preview after successful upload
       setUploadedFile(null);
