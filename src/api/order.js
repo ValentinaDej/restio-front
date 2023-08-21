@@ -37,6 +37,7 @@ export const useGetOrdersByTableId = ({ restId, tableId }) => {
       cacheTime: 0,
     }
   );
+
   return queryResp;
 };
 
@@ -58,20 +59,13 @@ export const useGetOrdersByRestaurantId = (restId) => {
   return queryResp;
 };
 
-export const useUpdateOrderStatusByWaiter = (
-  { restId, tableId },
-  orders,
-  amount,
-  userId,
-  paymentType
-) => {
+export const useUpdateOrderStatusByWaiter = ({ restId, tableId }, orders, amount, paymentType) => {
   const queryClient = useQueryClient();
 
   const createTransactionOffline = async () => {
     const response = await instance.post(`transactions/manual/${restId}`, {
       info: orders,
       amount,
-      createdById: userId,
       type: paymentType,
     });
     return response.data;
@@ -130,12 +124,18 @@ export const useUpdateDishStatusByWaiter = () => {
 };
 
 export const useUpdateReadyDishesStatusesByWaiter = () => {
+  const queryClient = useQueryClient();
+
   const updateDishStatus = async ({ urlParams: { restId }, orderId }) => {
     const response = await instance.patch(`orders/${restId}/dishes/${orderId}`);
     return response.data;
   };
 
-  const mutation = useMutation(updateDishStatus);
+  const mutation = useMutation(updateDishStatus, {
+    onSuccess: () => {
+      queryClient.refetchQueries(['orders']);
+    },
+  });
 
   return mutation;
 };
