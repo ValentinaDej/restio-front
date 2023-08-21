@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { payOrders } from './asyncOperations';
+import { toast } from 'react-hot-toast';
 
 const initialState = {
   paymentInfo: {},
@@ -20,12 +21,13 @@ const customerOrdersSlice = createSlice({
         state.isLoading.payment = true;
       })
       .addCase(payOrders.fulfilled, (state, action) => {
-        // state.isLoading.payment = false;
+        state.isLoading.payment = false;
         state.paymentInfo = action.payload;
       })
       .addCase(payOrders.rejected, (state, action) => {
-        // state.isLoading.payment = false;
+        state.isLoading.payment = false;
         state.error = action.payload;
+        toast.error(action.payload);
       });
   },
 });

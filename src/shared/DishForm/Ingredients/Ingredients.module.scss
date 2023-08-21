@@ -1,6 +1,7 @@
 .section__select {
   display: inline-block;
-  height: 150px;
+  max-height: 200px;
+  position: relative;
   margin-top: 0.5rem;
   cursor: pointer;
   width: 100%;
@@ -72,6 +73,12 @@ td {
   padding: 8px;
   text-align: left;
   vertical-align: middle;
+}
+
+tr {
+  &:focus {
+    outline: 1px dotted var(--color-orange-hover);
+  }
 }
 
 .table__row > td:first-child {

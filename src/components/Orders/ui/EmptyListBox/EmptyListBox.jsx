@@ -14,7 +14,7 @@ export const EmptyListBox = ({ params, isWaiter }) => {
     if (isWaiter) {
       navigate(`/${params.restId}/waiter/tables`);
     } else {
-      navigate(`/${params.restId}/${params.tableId}`);
+      navigate(`/${params.restId}/tables/${params.tableId}`);
     }
   }, [isWaiter, navigate, params]);
 

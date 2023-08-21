@@ -51,6 +51,7 @@
 }
 
 .text {
+  font-size: 13px;
   color: var(--color-blue-dark);
 
   &.isSmall {
@@ -60,13 +61,10 @@
 
 .total {
   color: var(--color-blue-dark);
-
-  &.isPaid {
-    margin-top: 20px;
-  }
 }
 
 .bottomBlock {
+  height: 30px;
   margin-top: 10px;
   display: flex;
   gap: 10px;
@@ -109,4 +107,17 @@
   &.isSmall {
     transform: translate(-50%) rotate(0);
   }
+}
+
+.loader {
+  color: var(--color-status);
+  height: 100%;
+}
+
+.readyDishesBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 42px;
+  width: 180px;
 }
