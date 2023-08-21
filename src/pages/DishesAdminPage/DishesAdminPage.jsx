@@ -7,6 +7,7 @@ import Select from 'shared/Select/Select';
 import { DISH_CATEGORIES } from 'utils/constants';
 import styles from './DishesAdminPage.module.scss';
 import { deleteDishById } from '../../api/dish';
+import Loader from 'shared/Loader/Loader';
 
 const DishesAdminPage = () => {
   const { restId } = useParams();
@@ -14,7 +15,7 @@ const DishesAdminPage = () => {
   const [category, setCategory] = useState('');
   const [type, setType] = useState('active');
 
-  const { mutateAsync } = useMutation((dishId) => {
+  const { mutateAsync, isLoading } = useMutation((dishId) => {
     deleteDishById(dishId, restId);
   });
 
@@ -25,7 +26,6 @@ const DishesAdminPage = () => {
   const handleDelete = async (id, restId) => {
     try {
       await toast.promise(mutateAsync(id, restId), {
-        loading: 'Removing...',
         success: type === 'active' ? 'Dish moved to inactive' : 'Dish moved to active',
         error: 'Error removing dish',
       });
@@ -44,7 +44,9 @@ const DishesAdminPage = () => {
     setType(typeValue);
   };
 
-  return (
+  return isLoading ? (
+    <Loader size={'lg'} />
+  ) : (
     <AdminPageContainer
       title="Dishes list"
       variant="dish"

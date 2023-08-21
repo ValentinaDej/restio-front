@@ -110,7 +110,7 @@ const AdminPageContainer = ({
       <hr className={styles.divider} />
 
       <div className={`${styles.input__section}`}>
-        <div style={{ position: 'relative', display: 'flex', width: '100%', gap: '10px' }}>
+        <div className={`${styles.input__content}`}>
           <Input
             type="text"
             name="search"
@@ -163,6 +163,7 @@ const AdminPageContainer = ({
                 <EmployeeCard
                   data={item}
                   mode={'outlined'}
+                  type={variant}
                   alt={`Employee ${item.name}`}
                   src={item.picture}
                   handleEdit={() => navigateToEdit(item._id)}
@@ -184,6 +185,7 @@ const AdminPageContainer = ({
                   mode={'outlined'}
                   alt={`Dish ${item.name}`}
                   src={item.picture}
+                  type={`${variant}_${type}`}
                   handleEdit={() => navigateToEdit(item._id)}
                   handleDelete={() => handleDeleteItem(item._id)}
                 >

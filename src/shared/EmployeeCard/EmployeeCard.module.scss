@@ -49,11 +49,15 @@
   .trash {
     position: absolute;
 
-    color: var(--color-red);
+    color: var(--color-orange);
 
     top: 20px;
     right: 15px;
     margin-right: 20px;
+    &:hover,
+    &:focus {
+      color: var(--color-gray);
+    }
   }
 
   .edit {
