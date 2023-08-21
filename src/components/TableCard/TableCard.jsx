@@ -41,47 +41,6 @@ const TableCard = ({
   const paidOrders = orders.filter((order) => order.status === 'Paid').length;
   const openOrders = orders.filter((order) => order.status === 'Open').length;
 
-  // const getReadyDishes = (orders) => {
-  //   const readyItems = orders.flatMap((order) =>
-  //     order.orderItems.filter((item) => item.status === 'Ready')
-  //   );
-  //   const readyDishes = readyItems.reduce((result, readyItem) => {
-  //     const existingDish = result.find((dish) => dish.name === readyItem.dish.name);
-
-  //     if (existingDish) {
-  //       existingDish.quantity += readyItem.quantity;
-  //     } else {
-  //       result.push({ name: readyItem.dish.name, quantity: readyItem.quantity });
-  //     }
-
-  //     return result;
-  //   }, []);
-
-  //   return readyDishes;
-  // };
-
-  // const getOrderedDishes = (orders) => {
-  //   const readyItems = orders.flatMap((order) =>
-  //     order.orderItems.filter((item) => item.status === 'Ordered')
-  //   );
-  //   const readyDishes = readyItems.reduce((result, readyItem) => {
-  //     const existingDish = result.find((dish) => dish.name === readyItem.dish.name);
-
-  //     if (existingDish) {
-  //       existingDish.quantity += readyItem.quantity;
-  //     } else {
-  //       result.push({ name: readyItem.dish.name, quantity: readyItem.quantity });
-  //     }
-
-  //     return result;
-  //   }, []);
-
-  //   return readyDishes;
-  // };
-
-  // const readyDishes = getReadyDishes(orders);
-  // const orderedDishes = getOrderedDishes(orders);
-
   const getTotalReadyDishesCount = (orders) => {
     const totalReadyCount = orders.reduce((count, order) => {
       const readyItems = order.orderItems.filter((item) => item.status === 'Ready');
