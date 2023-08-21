@@ -39,7 +39,7 @@ export const StatisticsByTransactionsBlock = memo(({ monthlyStatistics }) => {
           <Bar dataKey="cash" fill="#69a6ce" />
           <Bar dataKey="pos" fill="#12cdea" />
           <Bar dataKey="online" fill="#eab012" />
-          <Bar dataKey="transactions" fill={'var(--color-orange)'} />
+          <Bar dataKey="transactions" fill={'var(--color-primary)'} />
         </BarChart>
       </ResponsiveContainer>
     </div>

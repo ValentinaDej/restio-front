@@ -38,8 +38,8 @@ export const TotalBlock = memo(({ monthlyStatistics }) => {
           <Area
             type="monotone"
             dataKey="amount"
-            stroke={'var(--color-orange)'}
-            fill={'var(--color-orange-transparent)'}
+            stroke={'var(--color-primary)'}
+            fill={'var(--color-green-accent)'}
           />
         </AreaChart>
       </ResponsiveContainer>
