@@ -76,23 +76,11 @@ tfoot {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
 }
 
 .logo {
   width: 24px;
   height: 24px;
   margin-left: 10px;
-}
-
-.icon {
-  width: 36px;
-  height: 36px;
-  color: var(--color-orange);
-  transition: all 0.3s ease 0s;
-
-  &:hover,
-  &:focus {
-    cursor: pointer;
-    color: var(--color-orange-hover);
-  }
 }

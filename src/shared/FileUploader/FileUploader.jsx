@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useRef, useImperativeHandle, useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -14,6 +14,10 @@ const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
   const [previewUrl, setPreviewUrl] = useState(onEditPhoto);
 
   const fileInputRef = useRef();
+
+  useEffect(() => {
+    setPreviewUrl(onEditPhoto); // Оновлюємо previewUrl при зміні onEditPhoto
+  }, [onEditPhoto]);
 
   const getFileExtension = (fileName) => {
     return fileName.split('.').pop().toLowerCase();
