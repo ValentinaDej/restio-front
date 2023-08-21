@@ -1,8 +1,10 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
+import { getToken, getUserRole } from 'store/auth/authSelector';
 
-export const PrivateRoute = ({ component: Element }) => {
-  const { role } = useSelector((state) => state.auth);
+export const PrivateRoute = ({ component: Element, redirectTo = '/login' }) => {
+  const role = useSelector(getUserRole);
+  const token = useSelector(getToken);
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -13,7 +15,7 @@ export const PrivateRoute = ({ component: Element }) => {
       currentPath.includes('/cook') ||
       currentPath.includes('/waiter'))
   ) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
 
   const allowedRoutes = {
@@ -26,8 +28,11 @@ export const PrivateRoute = ({ component: Element }) => {
     role !== 'admin' && !allowedRoutes[role]?.some((route) => currentPath.includes(`/${route}`));
 
   if (isNotAllowed) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
 
-  return Element;
+  const isLoggedIn = role && token;
+  console.log(isLoggedIn);
+
+  return isLoggedIn ? Element : <Navigate to={redirectTo} />;
 };
