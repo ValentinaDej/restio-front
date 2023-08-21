@@ -11,7 +11,7 @@ import css from './Sidebar.module.scss';
 import { Text } from 'shared';
 import { getMessagesFromState } from 'store/messages/messagesSelector';
 import { addMessage, deleteMessage } from 'store/messages/messagesSlice';
-import emptyNotifications from '../../assets/img/notifications.png';
+import emptyNotifications from 'assets/img/notifications.png';
 
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);

@@ -1,6 +1,18 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { RxCross2 } from 'react-icons/rx';
+import {
+  TfiAngleDoubleLeft,
+  TfiAngleDoubleRight,
+  TfiAngleLeft,
+  TfiAngleRight,
+  TfiCalendar,
+} from 'react-icons/tfi';
+import { TbMoodSearch } from 'react-icons/tb';
+import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
+
+import cls from './TransactionsTable.module.scss';
 import { useGetTransactions } from 'api/transactions';
 import {
   Button,
@@ -13,21 +25,8 @@ import {
   Text,
   Title,
 } from 'shared';
-
-import cls from './TransactionsTable.module.scss';
 import { getDate } from 'helpers/getDate';
-
-import { RxCross2 } from 'react-icons/rx';
-
-import {
-  TfiAngleDoubleLeft,
-  TfiAngleDoubleRight,
-  TfiAngleLeft,
-  TfiAngleRight,
-  TfiCalendar,
-} from 'react-icons/tfi';
-import { TbMoodSearch } from 'react-icons/tb';
-import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
+import { errorMessage } from 'helpers/errorMessage';
 
 const typeOfTransactionFilterOptions = [
   { value: 'all', label: 'All' },
@@ -69,6 +68,7 @@ export const TransactionsTable = () => {
 
   const onChangeDate = (newDate) => {
     setDate(newDate);
+    setPagination({ pageIndex: 0, pageSize });
   };
 
   const onClickClearFilters = () => {
@@ -223,6 +223,8 @@ export const TransactionsTable = () => {
     refetch,
     isFetching,
     isLoading,
+    isError,
+    error,
   } = useGetTransactions(restId, fetchDataOptions);
 
   const defaultData = useMemo(() => [], []);
@@ -234,6 +236,12 @@ export const TransactionsTable = () => {
     }),
     [pageIndex, pageSize]
   );
+
+  useEffect(() => {
+    if (isError) {
+      errorMessage(error?.response.data.message);
+    }
+  }, [error?.response.data.message, isError]);
 
   useEffect(() => {
     refetch();
@@ -272,7 +280,7 @@ export const TransactionsTable = () => {
           className={cls.box}
         >
           <Modal isModalOpen={calendarIsOpen} setIsModalOpen={onClickCalendar}>
-            <Calendar isOpen={onClickCalendar} onChange={onChangeDate} />
+            <Calendar onChange={onChangeDate} newDate={date} />
           </Modal>
           <Title fontSize={22}>Table</Title>
           <div className={cls.btnsBox}>
@@ -313,14 +321,18 @@ export const TransactionsTable = () => {
             </div>
             <div className={cls.inputSelectBox}>
               <div className={cls.inputBox}>
-                <Text classname={cls.text}>Page</Text>
-                <Text classname={cls.text}>
+                <Text classname={cls.text} fontWeight={600}>
+                  Page
+                </Text>
+                <Text classname={cls.text} fontWeight={600}>
                   {resp?.data?.tableTransactions.pageCount === 0
                     ? 0
                     : table.getState().pagination.pageIndex + 1}{' '}
                   of {table.getPageCount()}
                 </Text>
-                <Text classname={cls.text}> Go to page:</Text>
+                <Text classname={cls.text} fontWeight={600}>
+                  Go to page:
+                </Text>
                 <input
                   min={1}
                   type="number"
@@ -338,7 +350,9 @@ export const TransactionsTable = () => {
                 <div className={cls.loader}>{isFetching && <Loader size="xs" />}</div>
               </div>
               <div className={cls.select}>
-                <Text classname={cls.text}>Show</Text>
+                <Text classname={cls.text} fontWeight={600}>
+                  Show
+                </Text>
                 <DropDown
                   defaultValue="20"
                   options={numberOfTransactionsOptions}
@@ -381,7 +395,13 @@ export const TransactionsTable = () => {
               <AnimatePresence>
                 {table.getRowModel().rows.map((row) => {
                   return (
-                    <motion.tr layout key={row.id} exit={{ opacity: 0, height: 0 }}>
+                    <motion.tr
+                      layout
+                      key={row.id}
+                      exit={{ opacity: 0, height: 0 }}
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
                       {row.getVisibleCells().map((cell) => {
                         return (
                           <motion.td layout key={cell.id} className={cls.td}>

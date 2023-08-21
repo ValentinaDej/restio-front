@@ -52,9 +52,10 @@ export const getDishById = async (dishId) => {
   }
 };
 
-export const updateDishById = async (body, dishesId) => {
+export const updateDishById = async (body, dishesId, restId) => {
   try {
-    await instance.patch(`/dishes/${dishesId}`, body);
+    const response = await instance.patch(`dishes/${dishesId}/edit/restaurant/${restId}`, body);
+    return response;
   } catch (error) {
     handleErrorResponse(error);
   }
@@ -62,12 +63,13 @@ export const updateDishById = async (body, dishesId) => {
 
 export const createDish = async (body, restId) => {
   try {
-    await instance.post(`/dishes/restaurant/${restId}`, body);
+    const response = await instance.post(`/dishes/restaurant/${restId}`, body);
+    return response;
   } catch (error) {
     handleErrorResponse(error);
   }
 };
 
 export const deleteDishById = async (dishId, restId) => {
-  await instance.patch(`/dishes/${dishId}/restaurant/${restId}`, { isActive: false });
+  await instance.patch(`/dishes/${dishId}/restaurant/${restId}`);
 };

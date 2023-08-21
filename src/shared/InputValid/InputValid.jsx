@@ -33,6 +33,7 @@ export const InputValid = ({
           label={label}
           onKeyDown={onKeyDown}
           maxLength={maxLength}
+          error={error}
         />
         {IconComponent && (
           <div className={classes.icon__wrapper}>

@@ -1,10 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import cls from './StatisticsPage.module.scss';
 import { Statisctics } from 'components';
 import { DropDown, Loader, Title } from 'shared';
-import { useEffect, useState } from 'react';
-
 import { useGetTransactionsStatistics } from 'api/transactions';
 
 const StatisticsPage = () => {

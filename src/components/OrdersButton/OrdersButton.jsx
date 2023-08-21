@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import css from './OrdersButton.module.scss';
 import { useGetOrdersByTableId } from 'api/order';
-import { ReactComponent as DishList } from '../../assets/icons/dish-list.svg';
+import { ReactComponent as DishList } from 'assets/icons/dish-list.svg';
 
 export const OrdersButton = ({ restId, tableId }) => {
   const navigate = useNavigate();

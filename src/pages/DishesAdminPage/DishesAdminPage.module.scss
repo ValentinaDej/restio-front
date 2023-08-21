@@ -1,5 +1,18 @@
 .select__section {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 10px;
+
+  @media screen and (min-width: 768px) {
+    margin-left: auto;
+  }
+}
+
+.select {
+  padding: 0.5rem 1rem;
+
+  &__active {
+    padding: 0.5rem 1rem;
+    width: 140px;
+  }
 }

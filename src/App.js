@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
-import { ReactQueryDevtools } from 'react-query/devtools';
 
 import './styles.scss';
 import HomePage from 'pages/HomePage/HomePage';
@@ -14,7 +13,7 @@ import routesAdmin from 'routes/routesAdmin';
 import routesCook from 'routes/routesCook';
 import routesWaiter from 'routes/routesWaiter';
 import routesCustomer from 'routes/routesCustomer';
-import { Footer, Loader } from 'shared';
+import { Loader } from 'shared';
 
 const variantPath = {
   admin: routesAdmin,
@@ -49,9 +48,7 @@ const App = () => {
         </Routes>
       </Suspense>
 
-      {role && <Footer />}
       <Toaster />
-      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 };

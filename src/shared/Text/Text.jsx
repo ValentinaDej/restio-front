@@ -14,7 +14,7 @@ export const Text = memo(
               color,
               textAlign,
             }}
-            className={`${classes.p} ${classname}`}
+            className={`${classes.p} ${classname ? classname : ''}`}
           >
             {children}
           </p>
@@ -34,6 +34,7 @@ export const Text = memo(
           </span>
         );
       default:
+        <p>{children}</p>;
     }
   }
 );

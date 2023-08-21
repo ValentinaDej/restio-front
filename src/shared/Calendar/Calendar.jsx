@@ -18,8 +18,8 @@ const monthOptions = [
   { value: 11, label: 'December' },
 ];
 
-export const Calendar = ({ isOpen, onChange }) => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+export const Calendar = ({ onChange, newDate }) => {
+  const [currentDate] = useState(new Date());
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth());
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
   const [selectedDay, setSelectedDay] = useState(currentDate.getDate());
@@ -109,8 +109,13 @@ export const Calendar = ({ isOpen, onChange }) => {
           <div className={cls.dayLabel}>Sat</div>
           {renderCalendar()}
         </div>
+
         <div className={cls.selectedDate}>
-          Selected Date: {selectedMonth + 1}/{selectedDay}/{selectedYear}
+          {newDate && (
+            <>
+              Selected Date: {newDate.getMonth() + 1}/{newDate.getDate()}/{newDate.getFullYear()}
+            </>
+          )}
         </div>
       </div>
     </>

@@ -49,7 +49,7 @@ export const Modal = ({ children, isModalOpen, setIsModalOpen, classname, ...pro
             <IconButton
               Svg={AiOutlineClose}
               onClick={handleClose}
-              style={{ position: 'absolute', top: 0, right: 0 }}
+              style={{ position: 'absolute', top: 10, right: 10 }}
             />
             {children}
           </div>

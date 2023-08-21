@@ -17,15 +17,16 @@ export const Select = forwardRef(
       multiple,
       value,
       error,
+      className,
       ...props
     },
     ref
   ) => {
     return (
-      <div className={`${styles.select_wrapper}`}>
+      <div className={`${styles.select_wrapper} `}>
         <select
           ref={ref} // Use the ref passed from Controller
-          className={`${styles.select} ${styles[`select_${size}`]} ${
+          className={`${styles.select} ${styles[`select_${size}`]} ${className ? className : ''} ${
             styles[`select_length-${length}`]
           } ${styles[`select_${error}`]}  `}
           id={id}

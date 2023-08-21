@@ -1,4 +1,5 @@
 export { LoginForm } from './LoginForm/LoginForm';
+export { Tooltip } from './Tooltip/Tooltip';
 export { Title } from './Title/Title';
 export { Text } from './Text/Text';
 export { StatusSelector } from './StatusSelector/StatusSelector';
@@ -30,3 +31,4 @@ export { Modal } from './Modal/Modal';
 export { Portal } from './Portal/Portal';
 export { Select } from './Select/Select';
 export { CardSkeleton, OrderSkeleton, DishCardSkeleton } from './Skeletons';
+export { DownloadImgWithPrew } from './DownloadImgWithPrew/DownloadImgWithPrew';

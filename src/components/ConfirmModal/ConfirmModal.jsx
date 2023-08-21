@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import classes from './ConfirmModal.module.scss';
-import IconConfirm from '../../assets/icons/confirmModal/confirm.png';
+import IconConfirm from 'assets/icons/confirmModal/confirm.png';
 import { Button, Modal, Text } from 'shared';
 
 export const ConfirmModal = ({

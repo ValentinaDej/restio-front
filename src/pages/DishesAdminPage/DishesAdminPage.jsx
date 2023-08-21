@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AdminPageContainer } from 'components';
 import { useMutation } from 'react-query';
 import { toast } from 'react-hot-toast';
-import { Select } from 'shared';
-import { DISH_CATEGORIES } from 'utils/constants';
+
 import styles from './DishesAdminPage.module.scss';
-import { deleteDishById } from '../../api/dish';
+import { AdminPageContainer } from 'components';
+import { Select, Loader } from 'shared';
+import { DISH_CATEGORIES } from 'utils/constants';
+import { deleteDishById } from 'api/dish';
 
 const DishesAdminPage = () => {
   const { restId } = useParams();
@@ -14,7 +15,7 @@ const DishesAdminPage = () => {
   const [category, setCategory] = useState('');
   const [type, setType] = useState('active');
 
-  const { mutateAsync } = useMutation((dishId) => {
+  const { mutateAsync, isLoading } = useMutation((dishId) => {
     deleteDishById(dishId, restId);
   });
 
@@ -25,8 +26,7 @@ const DishesAdminPage = () => {
   const handleDelete = async (id, restId) => {
     try {
       await toast.promise(mutateAsync(id, restId), {
-        loading: 'Removing...',
-        success: 'Dish removed from the menu',
+        success: type === 'active' ? 'Dish moved to inactive' : 'Dish moved to active',
         error: 'Error removing dish',
       });
     } catch (error) {
@@ -44,7 +44,9 @@ const DishesAdminPage = () => {
     setType(typeValue);
   };
 
-  return (
+  return isLoading ? (
+    <Loader size={'lg'} />
+  ) : (
     <AdminPageContainer
       title="Dishes list"
       variant="dish"
@@ -54,11 +56,25 @@ const DishesAdminPage = () => {
       handleDelete={handleDelete}
     >
       <div className={`${styles.select__section}`}>
-        <Select id="type" value={type} onChange={handleType} size="sm" length="sm">
+        <Select
+          id="type"
+          value={type}
+          onChange={handleType}
+          size="sm"
+          length="sm"
+          className={`${styles.select}`}
+        >
           <option value="active">Active</option>
           <option value="noActive">No Active</option>
         </Select>
-        <Select id="category" value={category} onChange={handleCategory} size="sm" length="sm">
+        <Select
+          id="category"
+          value={category}
+          onChange={handleCategory}
+          size="sm"
+          length="sm"
+          className={`${styles.select__active}`}
+        >
           <option value="">All category</option>
           {DISH_CATEGORIES.map((option) => (
             <option key={option} value={option}>

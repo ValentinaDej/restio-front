@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classes from './StatusSelector.module.scss';
 import { Status } from 'shared';
@@ -14,6 +14,20 @@ export const StatusSelector = ({
   const [selectedCurrent, setSelectCurrent] = useState(currentStatus);
   const [currentMode, setCurrentMode] = useState([]);
   const [visibleBody, setVisibleBody] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setVisibleBody(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (currentStatus) {
@@ -24,8 +38,7 @@ export const StatusSelector = ({
   useEffect(() => {
     switch (mode) {
       case 'tables':
-        setCurrentMode(['Free', 'Taken', 'Waiting']);
-        // setCurrentMode(['Free', 'Taken']);
+        setCurrentMode(['Free', 'Taken']);
         break;
       case 'dishes':
         setCurrentMode(['Ordered', 'In progress', 'Ready', 'Served']);
@@ -47,7 +60,7 @@ export const StatusSelector = ({
   };
 
   return (
-    <div>
+    <div ref={dropdownRef}>
       <div className={classes.select}>
         <div
           onClick={() => setVisibleBody(!visibleBody)}

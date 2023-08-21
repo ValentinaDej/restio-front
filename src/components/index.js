@@ -1,4 +1,6 @@
 export { AdminPageContainer } from './Admin/AdminPageContainer/AdminPageContainer';
+export { DishDescription } from './DishDescription/DishDescription';
+export { Slider } from './Slider/Slider';
 export { TableCard } from './TableCard/TableCard';
 export { Statisctics } from './Statistics/Statisctics';
 export { Sidebar } from './Sidebar/Sidebar';

@@ -1,7 +1,6 @@
 .box {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 10px;
   margin-top: 20px;
   color: var(--color-blue-dark);
@@ -9,7 +8,7 @@
   border-radius: 10px;
   background-color: var(--color-white);
   height: 100%;
-  min-height: 400px;
+  min-height: 350px;
   overflow-y: hidden;
   overflow-x: auto;
 }
@@ -17,7 +16,7 @@
 .text {
   font-size: 14px;
   @media screen and (min-width: 850px) {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 
@@ -34,6 +33,8 @@
 }
 
 .th {
+  width: 150px;
+  max-width: 200px;
   position: relative;
   border-bottom: var(--border-primary);
   background: var(--color-bg-gray);
@@ -91,7 +92,7 @@
   width: 50px;
 
   &:focus {
-    outline: 1px solid var(--color-orange-hover);
+    outline: 1px solid var(--color-primary-hover);
   }
 }
 
@@ -132,7 +133,7 @@
 .icon {
   margin-left: auto;
   margin-right: auto;
-  color: var(--color-orange);
+  color: var(--color-primary);
 }
 
 .calendarBox {
@@ -140,7 +141,7 @@
 }
 
 .calendarValue {
-  color: var(--color-orange);
+  color: var(--color-primary);
   position: absolute;
   top: 60%;
   left: 50%;
@@ -149,6 +150,5 @@
 }
 
 .dateIcon {
-  // background: transparent;
-  color: var(--color-orange);
+  color: var(--color-primary);
 }

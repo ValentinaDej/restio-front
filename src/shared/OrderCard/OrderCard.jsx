@@ -1,15 +1,13 @@
 import React, { useEffect, useRef, memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Status, Text, CheckBox, IconButton, Button } from 'shared';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Card, Status, Text, CheckBox, IconButton, Button, Loader } from 'shared';
 import cls from './OrderCard.module.scss';
 
 import { BiDish, BiChevronDown } from 'react-icons/bi';
 import { classNames } from 'helpers/classNames';
-
 import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
 import { getDate } from 'helpers/getDate';
-
-import { motion, AnimatePresence } from 'framer-motion';
 
 export const OrderCard = memo(
   ({
@@ -26,6 +24,7 @@ export const OrderCard = memo(
     onChangeAllReadyDishes,
     isPayCard,
     isWaiterDishesPage,
+    isLoadingReadyDishesUpdate,
   }) => {
     const cardRef = useRef(null);
     const [isChecked, setIsChecked] = useState(сhecked || false);
@@ -153,11 +152,16 @@ export const OrderCard = memo(
               })}
             >
               <Button
+                className={cls.readyDishesBtn}
                 size={'sm'}
-                disabled={!isDishReady}
+                disabled={!isDishReady || isLoadingReadyDishesUpdate}
                 onClick={() => onChangeAllReadyDishes(_id)}
               >
-                Mark all ready dishes as served
+                {isLoadingReadyDishesUpdate ? (
+                  <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+                ) : (
+                  'Mark all ready dishes as served'
+                )}
               </Button>
             </div>
           )}

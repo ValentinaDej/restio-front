@@ -1,14 +1,15 @@
-import styles from './AdminPageContainer.module.scss';
-
-import { useNavigate, useParams } from 'react-router-dom';
-
 import { useState } from 'react';
-
-import { useInfiniteQuery, useQueryClient } from 'react-query';
-import { getPersonnel } from '../../../api/personnel';
-import { Button, Loader, EmptyCard, EmployeeCard, Title, Input } from 'shared';
 import toast from 'react-hot-toast';
-import { getDishes } from '../../../api/dish';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useInfiniteQuery, useQueryClient } from 'react-query';
+import { useMediaQuery } from 'react-responsive';
+import { BiSearch } from 'react-icons/bi';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
+
+import styles from './AdminPageContainer.module.scss';
+import { getPersonnel } from 'api/personnel';
+import { getDishes } from 'api/dish';
+import { Button, Loader, EmptyCard, EmployeeCard, Title, Input } from 'shared';
 
 const value = {
   employee: 'personnel',
@@ -29,6 +30,13 @@ export const AdminPageContainer = ({
   const [searchText, setSearchText] = useState('');
   const queryClient = useQueryClient();
 
+  const isMobile = useMediaQuery({
+    query: '(max-width: 767px)',
+  });
+  const isTablet = useMediaQuery({
+    query: '(min-width: 768px)',
+  });
+
   const queryKey = variant === 'employee' ? ['personnel', restId] : ['dishes', category, type];
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isLoading, refetch } =
@@ -45,22 +53,21 @@ export const AdminPageContainer = ({
           }
           return undefined;
         },
-        onError: (error) => {
-          console.error(`Error fetching ${variant}:`, error);
+        onError: () => {
           toast.error(`Error fetching ${variant}`);
         },
-        cacheTime: 10 * 60 * 60,
-        staleTime: 15 * 60 * 60,
-        refetchOnWindowFocus: false, // Disable refetching when the window gains focus
-        refetchOnReconnect: false, // Disable refetching when the network reconnects
-        refetchInterval: false, // Disable automatic periodic refetching
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchInterval: false,
       }
     );
 
   const handleChange = (e) => {
     const { value } = e.target;
     const normalizedValue = value.trim();
-    setSearchText(normalizedValue);
+    if (/^[a-zA-Z]+$/.test(normalizedValue) || normalizedValue === '') {
+      setSearchText(normalizedValue);
+    }
   };
 
   if (isLoading) {
@@ -88,7 +95,7 @@ export const AdminPageContainer = ({
       await handleDelete(id, restId);
       await refetch();
     } catch (error) {
-      console.error('Error deleting item:', error);
+      toast.error('Error deleting item');
     }
   };
 
@@ -98,26 +105,46 @@ export const AdminPageContainer = ({
       <hr className={styles.divider} />
 
       <div className={`${styles.input__section}`}>
-        <Input
-          type="text"
-          name="search"
-          value={searchText}
-          onChange={handleChange}
-          placeholder="Search..."
-          size="md"
-          className={`${styles.input}`}
-        />
-        <div className={`${styles.search__section}`}>
-          <Button size={`md`} onClick={handleSearch}>
-            Search
-          </Button>
+        <div className={`${styles.input__content}`}>
+          <Input
+            type="text"
+            name="search"
+            value={searchText}
+            onChange={handleChange}
+            placeholder="Search..."
+            size="md"
+            className={`${styles.input}`}
+          />
+
+          {isMobile && (
+            <>
+              <button
+                type="button"
+                onClick={handleSearch}
+                className={`${styles.search__searchBtn}`}
+              >
+                <BiSearch size={24} />
+              </button>
+              <button type="button" onClick={handleClear} className={`${styles.search__clearBtn}`}>
+                <AiOutlineCloseCircle size={24} />
+              </button>
+            </>
+          )}
         </div>
         <div className={`${styles.search__section}`}>
-          <Button size={`md`} onClick={handleClear}>
-            Clear
-          </Button>
+          {isTablet && (
+            <>
+              <Button size={`sm`} onClick={handleSearch}>
+                Search
+              </Button>
+              <Button size={`sm`} mode="outlined" onClick={handleClear}>
+                Clear
+              </Button>
+            </>
+          )}
+
+          {children}
         </div>
-        {children}
       </div>
 
       <ul className={`${styles.menu_wrapper}`}>
@@ -131,16 +158,15 @@ export const AdminPageContainer = ({
                 <EmployeeCard
                   data={item}
                   mode={'outlined'}
+                  type={variant}
                   alt={`Employee ${item.name}`}
                   src={item.picture}
                   handleEdit={() => navigateToEdit(item._id)}
                   handleDelete={() => handleDeleteItem(item._id)}
                 >
-                  <>
-                    <p className={styles.employee_name}>{item.name}</p>
-                    <p className={styles.employee_subinfo}>{item.role}</p>
-                    <p className={styles.employee_subinfo}>{item.phone}</p>
-                  </>
+                  <p className={styles.employee_name}>{item.name}</p>
+                  <p className={styles.employee_subinfo}>{item.role}</p>
+                  <p className={styles.employee_subinfo}>{item.phone}</p>
                 </EmployeeCard>
               </li>
             ))
@@ -154,13 +180,12 @@ export const AdminPageContainer = ({
                   mode={'outlined'}
                   alt={`Dish ${item.name}`}
                   src={item.picture}
+                  type={`${variant}_${type}`}
                   handleEdit={() => navigateToEdit(item._id)}
                   handleDelete={() => handleDeleteItem(item._id)}
                 >
-                  <>
-                    <p className={styles.employee_name}>{item.name}</p>
-                    <p className={styles.employee_subinfo}>$ {item.price}</p>
-                  </>
+                  <p className={styles.employee_name}>{item.name}</p>
+                  <p className={styles.employee_subinfo}>${item.price?.toFixed(2)}</p>
                 </EmployeeCard>
               </li>
             ))

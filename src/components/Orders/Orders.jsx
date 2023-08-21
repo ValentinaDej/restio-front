@@ -6,17 +6,16 @@ import { useSSE } from 'react-hooks-sse';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import cls from './Order.module.scss';
-
-import { Checkout } from 'components/Orders/ui/Checkout/Checkout';
-import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
 import { OrderSkeleton, Title, Loader } from 'shared';
-import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
-import { classNames } from 'helpers/classNames';
-import { useGetOrdersByTableId } from 'api/order';
 import { NavigateButtons } from './ui/NavigateButtons/NavigateButtons';
 import { EmptyListBox } from './ui/EmptyListBox/EmptyListBox';
 import { ListTopBox } from './ui/ListTopBox/ListTopBox';
-
+import { ListBottomBox } from 'components/Orders/ui/ListBottomBox/ListBottomBox';
+import { OrdersList } from 'components/Orders/ui/OrdersList/OrdersList';
+import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
+import { classNames } from 'helpers/classNames';
+import { errorMessage } from 'helpers/errorMessage';
+import { useGetOrdersByTableId } from 'api/order';
 import { getIsLoading } from 'store/customer/orders/selectors';
 
 export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
@@ -41,7 +40,7 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   const updateDishStatusEvent = useSSE('dish status');
   const updateOrderStatusEvent = useSSE('update order status');
 
-  const { data: { data } = {}, isLoading, refetch } = useGetOrdersByTableId(params);
+  const { data: { data } = {}, isLoading, refetch, isError, error } = useGetOrdersByTableId(params);
 
   useEffect(() => {
     if (updateDishStatusEvent && updateDishStatusEvent.message) {
@@ -83,7 +82,7 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       let isAllOrdersPaid = true;
       let notPaidOrders = 0;
 
-      data.orders.forEach((order) => {
+      data?.orders?.forEach((order) => {
         if (order.status !== 'Paid') {
           notPaidOrders += 1;
         }
@@ -112,6 +111,13 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       setIsMounted(false);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (isError) {
+      errorMessage(error?.response.data.message);
+      setIsMounted(false);
+    }
+  }, [error?.response.data.message, isError]);
 
   return (
     <>
@@ -156,6 +162,7 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                   orders={data?.orders || []}
                   totalPrice={totalPrice}
                   allOrderPrice={allOrderPrice}
+                  isAllOrdersPaid={isAllOrdersPaid}
                   onChangeSelected={onChangeSelected}
                   onChangeTypeOfPay={onChangeTypeOfPay}
                   urlParams={params}
@@ -178,7 +185,8 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
               />
             </motion.div>
             {!isWaiterDishesPage && (
-              <Checkout
+              <ListBottomBox
+                totalPrice={totalPrice}
                 amount={selectedTotal}
                 selectedOrders={selectedOrders}
                 onChangeSelected={onChangeSelected}
@@ -186,7 +194,8 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 isWaiter={isWaiter}
                 isAllOrdersPaid={isAllOrdersPaid}
                 paymentType={paymentType}
-                key={'checkout'}
+                notServedDishes={notServedDishes}
+                key={'listBottomBox'}
               />
             )}
             {payment && (

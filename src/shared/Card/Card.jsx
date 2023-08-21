@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import { memo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { IoIosClose } from 'react-icons/io';
 import { BiSolidTrash, BiSolidCommentAdd, BiSolidCommentCheck } from 'react-icons/bi';
 
 import css from './Card.module.scss';
 import { QuantityButton, IconButton, Status, StatusSelector } from 'shared';
-
 import { Dialog } from 'components';
-import { useSelector } from 'react-redux';
 import { getProductFromState } from 'store/cart/cartSelectors';
 
 const variant = {

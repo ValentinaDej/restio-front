@@ -6,7 +6,7 @@
   height: 110px;
   width: 100%;
   border-radius: 10px 10px 0 0;
-  background-color: var(--color-orange-transparent);
+  background-color: var(--color-green-accent);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 
@@ -74,6 +74,6 @@
 }
 
 .loader {
-  color: #000000;
+  color: var(--color-status);
   height: 100%;
 }

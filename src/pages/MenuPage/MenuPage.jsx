@@ -8,7 +8,6 @@ import { FcAssistant } from '@react-icons/all-files/fc/FcAssistant';
 
 import css from './MenuPage.module.scss';
 import { CategoryTabs, DishCardSkeleton, DishCard, Button } from 'shared';
-
 import { Cart } from 'components';
 import { getDishesForMenu } from 'api/dish';
 

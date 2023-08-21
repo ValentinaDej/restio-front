@@ -1,9 +1,10 @@
 import React from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AdminPageContainer } from 'components';
-import { BASE_URL, instance } from 'api';
 import toast from 'react-hot-toast';
+
+import { AdminPageContainer } from 'components';
+import { instance } from 'api';
 
 const EmployeePage = () => {
   const { restId } = useParams();
@@ -13,9 +14,7 @@ const EmployeePage = () => {
   };
 
   const deleteEmployeeMutation = useMutation((employeeId) =>
-    instance.delete(`${BASE_URL}/personnel/${employeeId}`, {
-      data: { restaurant_id: restId },
-    })
+    instance.delete(`/personnel/${employeeId}`, { data: { restaurant_id: restId } })
   );
 
   const handleDelete = async (employeeId) => {

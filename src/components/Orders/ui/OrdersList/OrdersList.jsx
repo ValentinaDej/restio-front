@@ -1,11 +1,13 @@
-import { useLocation } from 'react-router-dom';
-import { useCallback } from 'react';
-import { OrderCard } from 'shared';
 import PropTypes from 'prop-types';
-import cls from './OrderList.module.scss';
-import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
-import { useUpdateDishStatusByWaiter, useUpdateReadyDishesStatusesByWaiter } from 'api/order';
+import { useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import cls from './OrderList.module.scss';
+import { OrderCard } from 'shared';
+import { formatNumberWithTwoDecimals } from 'helpers/formatNumberWithTwoDecimals';
+import { errorMessage } from 'helpers/errorMessage';
+import { useUpdateDishStatusByWaiter, useUpdateReadyDishesStatusesByWaiter } from 'api/order';
 
 export const OrdersList = ({
   isWaiter,
@@ -18,8 +20,18 @@ export const OrdersList = ({
   isWaiterDishesPage,
   sortOrderBy,
 }) => {
-  const { mutateAsync: mutateDishStatus } = useUpdateDishStatusByWaiter();
-  const { mutate: mutateReadyDishesStatus } = useUpdateReadyDishesStatusesByWaiter();
+  const [loadingCardId, setLoadingCardId] = useState(null);
+  const {
+    mutateAsync: mutateDishStatus,
+    isError: isUpdateDishError,
+    error: updateDishError,
+  } = useUpdateDishStatusByWaiter();
+  const {
+    isLoading,
+    mutateAsync: mutateReadyDishesStatus,
+    isError: isUpdateReadyDishesError,
+    error: updateReadyDishesError,
+  } = useUpdateReadyDishesStatusesByWaiter();
   const { pathname } = useLocation();
 
   const selectOrder = useCallback(
@@ -74,10 +86,26 @@ export const OrdersList = ({
 
   const onClickMarkAllReadyDishesAsServedAsWaiter = useCallback(
     async (orderId) => {
-      mutateReadyDishesStatus({ urlParams, orderId });
+      setLoadingCardId(orderId);
+      await mutateReadyDishesStatus({ urlParams, orderId });
+      setLoadingCardId(null);
     },
     [mutateReadyDishesStatus, urlParams]
   );
+
+  useEffect(() => {
+    if (isUpdateReadyDishesError) {
+      errorMessage(updateReadyDishesError?.response.data.message);
+    }
+    if (isUpdateDishError) {
+      errorMessage(updateDishError?.response.data.message);
+    }
+  }, [
+    isUpdateDishError,
+    isUpdateReadyDishesError,
+    updateDishError?.response.data.message,
+    updateReadyDishesError?.response.data.message,
+  ]);
 
   const renderOrder = (order) => (
     <OrderCard
@@ -90,17 +118,16 @@ export const OrdersList = ({
       onChangeStatus={onClickChangeDishStatusAsWaiter}
       onChangeAllReadyDishes={onClickMarkAllReadyDishesAsServedAsWaiter}
       isWaiterDishesPage={isWaiterDishesPage}
+      isLoadingReadyDishesUpdate={loadingCardId === order._id && isLoading}
     />
   );
 
   return (
-    <>
-      <AnimatePresence>
-        <motion.ul exit={{ opacity: 0, y: 20 }} className={cls.list}>
-          {sortedOrders().map(renderOrder)}
-        </motion.ul>
-      </AnimatePresence>
-    </>
+    <AnimatePresence>
+      <motion.ul exit={{ opacity: 0, y: 20 }} className={cls.list}>
+        {sortedOrders().map(renderOrder)}
+      </motion.ul>
+    </AnimatePresence>
   );
 };
 

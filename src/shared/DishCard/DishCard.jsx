@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
+import { memo } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { MdOutlineAddCircle } from 'react-icons/md';
 
 import css from './DishCard.module.scss';
-import { memo } from 'react';
-import { useDispatch } from 'react-redux';
 import { addProduct } from 'store/cart/cartSlice';
-import { Link } from 'react-router-dom';
 
 export const DishCard = memo(({ id, src, title, ingredients, weight, price, link }) => {
   const dispatch = useDispatch();

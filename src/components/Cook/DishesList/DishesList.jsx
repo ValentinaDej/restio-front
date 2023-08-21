@@ -1,7 +1,8 @@
-import styles from './DishesList.module.scss';
-import { DishesItem } from '../DishesItem/DishesItem';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
+
+import styles from './DishesList.module.scss';
+import { DishesItem } from '../DishesItem/DishesItem';
 
 export const DishesList = ({ dishes, handleChangeStatus }) => {
   const sortedDishes = [...dishes].sort((dishA, dishB) => {
@@ -10,19 +11,22 @@ export const DishesList = ({ dishes, handleChangeStatus }) => {
 
   return (
     <ul className={`${styles.list}`}>
-      {sortedDishes.map(({ dish, quantity, orderId, status, create, tableNumber, orderNumber }) => (
-        <DishesItem
-          key={nanoid()}
-          dish={dish}
-          status={status}
-          quantity={quantity}
-          orderId={orderId}
-          create={create}
-          handleChangeStatus={handleChangeStatus}
-          tableNumber={tableNumber}
-          orderNumber={orderNumber}
-        />
-      ))}
+      {sortedDishes.map(
+        ({ dish, quantity, orderId, status, create, tableNumber, orderNumber, comment }) => (
+          <DishesItem
+            key={nanoid()}
+            dish={dish}
+            status={status}
+            quantity={quantity}
+            orderId={orderId}
+            create={create}
+            comment={comment}
+            handleChangeStatus={handleChangeStatus}
+            tableNumber={tableNumber}
+            orderNumber={orderNumber}
+          />
+        )
+      )}
     </ul>
   );
 };
@@ -37,6 +41,7 @@ DishesList.propTypes = {
       create: PropTypes.string.isRequired,
       tableNumber: PropTypes.number.isRequired,
       orderNumber: PropTypes.string.isRequired,
+      comment: PropTypes.string,
     })
   ).isRequired,
   handleChangeStatus: PropTypes.func.isRequired,

@@ -1,8 +1,5 @@
 import instance from 'api';
 import toast from 'react-hot-toast';
-
-export const PERSONNEL = `/personnel`;
-
 export const getPersonnel = async ({ restId, pageParam = 1, searchText = '' }) => {
   try {
     const response = await instance(

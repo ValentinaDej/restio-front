@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import styles from './AIAssistant.module.scss';
-
 import { FcApproval } from '@react-icons/all-files/fc/FcApproval';
 import { FcCancel } from '@react-icons/all-files/fc/FcCancel';
 import { FcAssistant } from '@react-icons/all-files/fc/FcAssistant';
@@ -8,13 +6,13 @@ import { FcMoneyTransfer } from '@react-icons/all-files/fc/FcMoneyTransfer';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { openai } from '../../api/openai';
 
+import styles from './AIAssistant.module.scss';
 import css from '../MenuPage/MenuPage.module.scss';
 import { DishCard, Loader, CategoryTabs, Input, Title, Button } from 'shared';
 import { Cart } from 'components';
-
-import { getDishesForMenu } from '../../api/dish';
+import { getDishesForMenu } from 'api/dish';
+import { openai } from 'api/openai';
 
 const AIAssistant = () => {
   const { restId, tableId } = useParams();
@@ -63,7 +61,6 @@ const AIAssistant = () => {
             answers.wantDrink,
             answers.budget
           );
-          console.log('text', response);
           setResponse(response.data.textBefore);
           setDishes(response.data.dishes);
           setLoading(false); // Hide loader

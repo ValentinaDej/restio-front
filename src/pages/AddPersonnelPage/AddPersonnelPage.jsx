@@ -6,8 +6,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 
 import styles from './AddPersonnelPage.module.scss';
 import { Title, Button, Loader, EmployeeForm } from 'shared';
-
-import { createPersonnel, getPersonnelById, updatePersonnel } from '../../api/personnel';
+import { createPersonnel, getPersonnelById, updatePersonnel } from 'api/personnel';
 
 const AddPersonnelPage = () => {
   const { personId, restId } = useParams();
@@ -66,7 +65,8 @@ const AddPersonnelPage = () => {
         response = await createPersonnel(formData, restId);
       }
       await queryClient.invalidateQueries('personnel');
-      if (response.status === 200) {
+      const successResp = ['200', '201', '204'];
+      if (successResp.includes(response.status.toString())) {
         handleBack();
       }
     } catch (error) {

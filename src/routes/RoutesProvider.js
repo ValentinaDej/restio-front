@@ -2,7 +2,7 @@ import { SSEProvider } from 'react-hooks-sse';
 import { Outlet } from 'react-router-dom';
 
 import { BASE_URL } from 'api';
-import { Header } from 'shared';
+import { Header, Footer } from 'shared';
 
 const RoutesProvider = ({ restId, role }) => {
   return (
@@ -11,6 +11,7 @@ const RoutesProvider = ({ restId, role }) => {
       <main>
         <Outlet />
       </main>
+      <Footer />
     </SSEProvider>
   );
 };

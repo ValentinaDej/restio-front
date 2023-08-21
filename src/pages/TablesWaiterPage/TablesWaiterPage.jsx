@@ -1,16 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
 import { useSSE } from 'react-hooks-sse';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import styles from './TablesWaiterPage.module.scss';
-import { useGetTablesByRestaurantId, useGetOrdersByRestaurantId } from 'api/service';
 import { Loader, Title, CheckBox } from 'shared';
-
 import { TableCard } from 'components';
+import { useGetTablesByRestaurantId } from 'api/table';
+import { useGetOrdersByRestaurantId } from 'api/order';
+import { getTablesData } from 'store/tables/tableSelector';
+import { filterTables, sortTables } from 'helpers/filterSortTables';
 
 const TablesWaiterPage = () => {
+  const [isFavoriteTables, setIsFavoriteTables] = useState(false);
   const [isFreeTables, setIsFreeTables] = useState(false);
   const [isWaitingTables, setIsWaitinigTables] = useState(false);
   const [isTakenTables, setIsTakenTables] = useState(false);
@@ -24,11 +28,12 @@ const TablesWaiterPage = () => {
   const updateOrderStatusEvent = useSSE('update order status');
 
   const {
-    data: tablesData,
     isLoading: isLoadingTables,
     isError: isErrorTables,
     refetch: refetchTables,
   } = useGetTablesByRestaurantId(restId);
+
+  const { tablesData } = useSelector(getTablesData);
 
   useEffect(() => {
     if (updateTableStatusEvent || newOrderEvent) {
@@ -49,10 +54,6 @@ const TablesWaiterPage = () => {
     }
   }, [dishReadyEvent, newOrderEvent, refetchOrders, updateOrderStatusEvent]);
 
-  // console.log(tablesData);
-  // console.log(ordersData);
-
-  const tables = tablesData?.data;
   const orders = ordersData?.data?.orders;
 
   const isLoading = isLoadingTables || isLoadingOrders;
@@ -67,61 +68,21 @@ const TablesWaiterPage = () => {
     toast.error('Something went wrong!');
   }
 
+  const filteredTables = filterTables(
+    tablesData,
+    orders,
+    isFavoriteTables,
+    isFreeTables,
+    isWaitingTables,
+    isTakenTables,
+    isTablesWithReadyDishes,
+    isTablesWithAllPaidOrders
+  );
+
+  const sortedTables = sortTables(filteredTables);
+
   const filterOrdersByTableId = (orders, table_id) =>
     orders?.filter((order) => order.table_id._id === table_id);
-
-  // const tablesWithReadyDishes = orders
-  //   .filter((order) => order.orderItems.some((item) => item.status === 'Ready'))
-  //   .map((order) => order.table_id._id);
-
-  // const tableNumbers = tablesWithReadyDishes
-  //   .map((tableId) => {
-  //     const table = tables.find((table) => table._id === tableId);
-  //     return table ? table.table_number : null;
-  //   })
-  //   .filter((tableNumber) => tableNumber !== null);
-
-  // const uniqueTableNumbers = [...new Set(tableNumbers)].join(', ');
-
-  const filterTables = () => {
-    let tablesFiltered = tables.slice();
-
-    if (isFreeTables) {
-      tablesFiltered = tablesFiltered.filter((table) => table.status === 'Free');
-    }
-    if (isTakenTables) {
-      tablesFiltered = tablesFiltered.filter((table) => table.status === 'Taken');
-    }
-    if (isWaitingTables) {
-      tablesFiltered = tablesFiltered.filter((table) => table.status === 'Waiting');
-    }
-    if (isTablesWithReadyDishes) {
-      tablesFiltered = tablesFiltered.filter((table) => {
-        const ordersForTable = orders.filter((order) => order.table_id._id === table._id);
-
-        const hasReadyDishes = ordersForTable.some((order) =>
-          order.orderItems.some((item) => item.status === 'Ready')
-        );
-
-        return hasReadyDishes;
-      });
-    }
-    if (isTablesWithAllPaidOrders) {
-      tablesFiltered = tablesFiltered.filter((table) => {
-        // Find orders for this table
-        const ordersForTable = orders.filter((order) => order.table_id._id === table._id);
-
-        // Check if all orders are in "Paid" status
-        const allOrdersPaid =
-          ordersForTable.length > 0 && ordersForTable.every((order) => order.status === 'Paid');
-
-        return allOrdersPaid;
-      });
-    }
-    return tablesFiltered;
-  };
-
-  const filteredTables = filterTables();
 
   return (
     <div className={styles.tables}>
@@ -130,19 +91,25 @@ const TablesWaiterPage = () => {
       <div className={styles.tables__checkbox_container}>
         <div className={styles.tables__checkbox_container_body}>
           <CheckBox
-            label={'Free tables'}
+            label={'Favorite'}
+            onChange={() => setIsFavoriteTables((prev) => !prev)}
+            checked={isFavoriteTables}
+            size={25}
+          />
+          <CheckBox
+            label={'Free'}
             onChange={() => setIsFreeTables((prev) => !prev)}
             checked={isFreeTables}
             size={25}
           />
           <CheckBox
-            label={'Taken tables'}
+            label={'Taken'}
             onChange={() => setIsTakenTables((prev) => !prev)}
             checked={isTakenTables}
             size={25}
           />
           <CheckBox
-            label={'Waiting tables'}
+            label={'Waiting'}
             onChange={() => setIsWaitinigTables((prev) => !prev)}
             checked={isWaitingTables}
             size={25}
@@ -163,7 +130,7 @@ const TablesWaiterPage = () => {
       </div>
       <AnimatePresence>
         <motion.div layout className={styles.tables__container}>
-          {filteredTables.map((table) => (
+          {sortedTables.map((table) => (
             <TableCard
               key={table.table_number}
               table_number={table.table_number}
@@ -172,6 +139,7 @@ const TablesWaiterPage = () => {
               status={table.status}
               table_id={table._id}
               orders={filterOrdersByTableId(orders, table._id)}
+              isFavorite={table.isFavorite === undefined ? false : table.isFavorite}
             />
           ))}
         </motion.div>

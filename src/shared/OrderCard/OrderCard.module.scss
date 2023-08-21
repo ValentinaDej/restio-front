@@ -108,3 +108,16 @@
     transform: translate(-50%) rotate(0);
   }
 }
+
+.loader {
+  color: var(--color-status);
+  height: 100%;
+}
+
+.readyDishesBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 42px;
+  width: 180px;
+}

@@ -1,17 +1,13 @@
 import { useQuery } from 'react-query';
 import { toast } from 'react-hot-toast';
-import { LiaDownloadSolid } from 'react-icons/lia';
-
-import { Modal, Loader, Title, Text } from 'shared';
-
-import logoImg from 'assets/img/RESTio.svg';
-
-import { formatNumberWithTwoDecimalsForPrint } from 'helpers/formatNumberWithTwoDecimalsForPrint';
-import { getDate } from 'helpers/getDate';
-import { getRestaurant } from 'api/restaurant';
-import { downloadBillPdf } from 'helpers/billToPDF';
 
 import classes from './BillInfo.module.scss';
+import { Modal, Loader, Title, Text, Button } from 'shared';
+import logoImg from 'assets/img/RESTio.svg';
+import { formatNumberWithTwoDecimalsForPrint } from 'helpers/formatNumberWithTwoDecimalsForPrint';
+import { getDate } from 'helpers/getDate';
+import { downloadBillPdf } from 'helpers/billToPDF';
+import { getRestaurant } from 'api/restaurant';
 
 export const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
   const {
@@ -56,17 +52,6 @@ export const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
       {!isError && (
         <Modal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}>
           <div>
-            <div className={classes.section__wrapper}>
-              <div className={classes.head__wrapper}>
-                <Text textAlign={'center'} fontSize={10} fontWeight={600}>
-                  table #
-                </Text>
-                <LiaDownloadSolid
-                  onClick={() => downloadBillPdf(restData, dishData)}
-                  className={classes.icon}
-                />
-              </div>
-            </div>
             <div className={classes.section__wrapper}>
               <img src={restData.picture} alt={restData.name} className={classes.img__wrapper} />
             </div>
@@ -140,6 +125,15 @@ export const BillInfo = ({ setIsModalOpen, isModalOpen, orders, restId }) => {
                   </Text>
                 </div>
                 <img src={logoImg} alt="RESTio" className={classes.logo} />
+              </div>
+              <div className={classes.foot__wrapper}>
+                <Button
+                  onClick={() => downloadBillPdf(restData, dishData)}
+                  size={'sm'}
+                  mode="outlined"
+                >
+                  Download
+                </Button>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import logo from '../../assets/img/RESTio.svg';
+import logo from 'assets/img/RESTio.svg';
 
 const sizeValues = {
   sm: '54',

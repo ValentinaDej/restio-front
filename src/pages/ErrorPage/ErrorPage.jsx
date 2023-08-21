@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router';
 
-import burger from '../../assets/img/burger.png';
-import number from '../../assets/img/4.png';
 import css from './ErrorPage.module.scss';
+import burger from 'assets/img/burger.png';
+import number from 'assets/img/4.png';
 import { Button, Title } from 'shared';
 
 const ErrorPage = () => {

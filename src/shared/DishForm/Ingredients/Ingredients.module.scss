@@ -1,10 +1,11 @@
 .section__select {
   display: inline-block;
-  height: 150px;
+  max-height: 200px;
+  position: relative;
   margin-top: 0.5rem;
   cursor: pointer;
   width: 100%;
-  border: 1px solid var(--color-orange);
+  border: 1px solid var(--color-primary);
   background: var(--color-white);
   color: var(--color-dark);
   font-size: 0.8rem;
@@ -57,7 +58,6 @@
   padding: 8px;
   vertical-align: middle;
   text-align: left;
-  //border-bottom: 1px dotted var(--color-green-accent);
 }
 
 .table__row:nth-child(even) {
@@ -72,6 +72,12 @@ td {
   padding: 8px;
   text-align: left;
   vertical-align: middle;
+}
+
+tr {
+  &:focus {
+    outline: 1px dotted var(--color-orange-hover);
+  }
 }
 
 .table__row > td:first-child {

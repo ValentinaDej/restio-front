@@ -1,10 +1,10 @@
-import { TbMoodSearch } from 'react-icons/tb';
-import { Button, Text, Title } from 'shared';
-
-import cls from './EmptyListBox.module.scss';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
-import PropTypes from 'prop-types';
+import { TbMoodSearch } from 'react-icons/tb';
+
+import cls from './EmptyListBox.module.scss';
+import { Button, Text, Title } from 'shared';
 
 export const EmptyListBox = ({ params, isWaiter }) => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export const EmptyListBox = ({ params, isWaiter }) => {
     if (isWaiter) {
       navigate(`/${params.restId}/waiter/tables`);
     } else {
-      navigate(`/${params.restId}/${params.tableId}`);
+      navigate(`/${params.restId}/tables/${params.tableId}`);
     }
   }, [isWaiter, navigate, params]);
 

@@ -1,0 +1,113 @@
+.hidden {
+  display: none;
+}
+
+.addButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 60px;
+  color: var(--color-primary);
+
+  &:hover,
+  &:focus {
+    color: var(--color-primary-hover);
+  }
+
+  &_lg {
+    font-size: 60px;
+  }
+
+  &_md {
+    font-size: 45px;
+  }
+
+  &_sm {
+    font-size: 30px;
+  }
+}
+
+.field__wrapper_right {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+
+  button:not(:last-child) {
+    margin-right: 1rem;
+  }
+}
+
+.sliderContainer {
+  display: flex;
+  align-items: center;
+
+  label {
+    margin-right: 0.5rem;
+  }
+}
+
+input[type='range'] {
+  width: 100%;
+  margin: 0;
+  appearance: none;
+  background-color: transparent;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: #ddd;
+  border-radius: 3px;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  margin-top: -6px;
+}
+
+input[type='range']:disabled::-webkit-slider-thumb {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.toggleButton {
+  background-color: var(--color-primary-hover);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggleButton:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.controlsection__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.section__wrapper {
+  margin-top: 1rem;
+}

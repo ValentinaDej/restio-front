@@ -1,11 +1,7 @@
-import styles from './TableCard.module.scss';
 import PropTypes from 'prop-types';
-import { StatusSelector, Text, Button } from 'shared';
-
-import { NavLink } from 'react-router-dom';
-import { useChangeTableStatus } from 'api/service';
 import { toast } from 'react-hot-toast';
-
+import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { GiWoodenChair, GiNotebook } from 'react-icons/gi';
 import { BiDish } from 'react-icons/bi';
 import { MdTableBar } from 'react-icons/md';
@@ -13,69 +9,35 @@ import { AiFillStar } from 'react-icons/ai';
 import { IoIosRestaurant } from 'react-icons/io';
 import { motion } from 'framer-motion';
 
-export const TableCard = ({ restaurant_id, table_number, table_id, status, orders, seats }) => {
-  const changeTableStatus = useChangeTableStatus();
-  // const [currentStatus, setCurrentStatus] = useState(status);
+import styles from './TableCard.module.scss';
+import { StatusSelector, Text, Button } from 'shared';
+import { useChangeTableStatus } from 'api/table';
+import { setFavorite } from 'store/tables/tableSlice';
 
-  // const redAnimation = currentStatus === 'Waiting' ? styles.table_pulsating : '';
-  // console.log(status);
-  // console.log(currentStatus);
-  // console.log(styles.table);
+export const TableCard = ({
+  restaurant_id,
+  table_number,
+  table_id,
+  status,
+  orders,
+  seats,
+  isFavorite,
+}) => {
+  const dispatch = useDispatch();
+
+  const changeTableStatus = useChangeTableStatus();
 
   const changeStatus = async (item) => {
     try {
       await changeTableStatus.mutateAsync({ status: item, restaurant_id, table_id });
-      // setCurrentStatus(item);
       return 'success';
     } catch (mutationError) {
-      console.error('Mutation Error:', mutationError);
       toast.error(mutationError.response.data.message);
     }
   };
 
   const paidOrders = orders.filter((order) => order.status === 'Paid').length;
   const openOrders = orders.filter((order) => order.status === 'Open').length;
-
-  const getReadyDishes = (orders) => {
-    const readyItems = orders.flatMap((order) =>
-      order.orderItems.filter((item) => item.status === 'Ready')
-    );
-    const readyDishes = readyItems.reduce((result, readyItem) => {
-      const existingDish = result.find((dish) => dish.name === readyItem.dish.name);
-
-      if (existingDish) {
-        existingDish.quantity += readyItem.quantity;
-      } else {
-        result.push({ name: readyItem.dish.name, quantity: readyItem.quantity });
-      }
-
-      return result;
-    }, []);
-
-    return readyDishes;
-  };
-
-  const getOrderedDishes = (orders) => {
-    const readyItems = orders.flatMap((order) =>
-      order.orderItems.filter((item) => item.status === 'Ordered')
-    );
-    const readyDishes = readyItems.reduce((result, readyItem) => {
-      const existingDish = result.find((dish) => dish.name === readyItem.dish.name);
-
-      if (existingDish) {
-        existingDish.quantity += readyItem.quantity;
-      } else {
-        result.push({ name: readyItem.dish.name, quantity: readyItem.quantity });
-      }
-
-      return result;
-    }, []);
-
-    return readyDishes;
-  };
-
-  const readyDishes = getReadyDishes(orders);
-  const orderedDishes = getOrderedDishes(orders);
 
   const getTotalReadyDishesCount = (orders) => {
     const totalReadyCount = orders.reduce((count, order) => {
@@ -106,17 +68,14 @@ export const TableCard = ({ restaurant_id, table_number, table_id, status, order
       animate={{ opacity: 1 }}
       initial={{ opacity: 0 }}
       exit={{ opacity: 0 }}
-      // className={`${styles.table} ${redAnimation}`}
-      // ${classes[`button_${buttonSize}`]}
       className={`${styles.table} ${styles[`table_${status}`]}`}
     >
       <div className={styles.table__head}>
         <div className={styles.table__favorites}>
           <AiFillStar
             size={22}
-            color="var(--color-gray-300)"
-            onMouseOver={({ target }) => (target.style.color = 'var(--color-orange)')}
-            onMouseOut={({ target }) => (target.style.color = 'var(--color-gray-300)')}
+            onClick={() => dispatch(setFavorite(table_id))}
+            color={!isFavorite ? 'var(--color-gray-300)' : 'var(--color-orange)'}
           />
         </div>
         <div className={styles.table__number}>

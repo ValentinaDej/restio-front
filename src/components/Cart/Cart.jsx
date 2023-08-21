@@ -4,9 +4,8 @@ import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router';
 import { toast } from 'react-hot-toast';
 
-import { Card, Title, Button, Text, Loader } from 'shared';
-
 import css from './Cart.module.scss';
+import { Card, Title, Button, Text, Loader } from 'shared';
 import { getProductFromState } from 'store/cart/cartSelectors';
 import { clearCart, decreaseQuantity, deleteProduct, increaseQuantity } from 'store/cart/cartSlice';
 import { createOrder } from 'api/order';

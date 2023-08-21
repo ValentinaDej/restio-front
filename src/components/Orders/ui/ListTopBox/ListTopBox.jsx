@@ -1,17 +1,15 @@
-import { useUpdateOrderStatusByWaiter } from 'api/order';
-import React, { useCallback, useEffect } from 'react';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Loader, Text, CheckBox } from 'shared';
-
-import { BillDownload } from '../BillDownload/BillDownload';
 import PropTypes from 'prop-types';
-import { payOrders } from 'store/customer/orders/asyncOperations';
-import cls from './ListTopBox.module.scss';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { getUserId } from 'store/auth/authSelector';
-import { ConfirmModal } from 'components';
+import cls from './ListTopBox.module.scss';
+import { useUpdateOrderStatusByWaiter, useUpdateTableStatusByWaiter } from 'api/order';
+import { payOrders } from 'store/customer/orders/asyncOperations';
 import { classNames } from 'helpers/classNames';
+import { errorMessage } from 'helpers/errorMessage';
+import { Button, Loader, Text, CheckBox } from 'shared';
+import { ConfirmModal } from 'components';
+import { BillDownload } from '../BillDownload/BillDownload';
 
 export const ListTopBox = ({
   orders,
@@ -22,19 +20,24 @@ export const ListTopBox = ({
   onChangeTypeOfPay,
   paymentType,
   allOrderPrice,
+  isAllOrdersPaid,
 }) => {
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const userId = useSelector(getUserId);
   const [ordersIDs, setOrdersIDs] = useState([]);
   const { isLoading, mutate } = useUpdateOrderStatusByWaiter(
     urlParams,
     ordersIDs,
     totalPrice,
-    userId,
     paymentType
   );
+  const {
+    isLoading: isLoadingTableStatus,
+    mutate: mutateTableStatus,
+    isError,
+    error,
+  } = useUpdateTableStatusByWaiter(urlParams, 'Free');
   const frontLink = location.href;
 
   useEffect(() => {
@@ -69,8 +72,18 @@ export const ListTopBox = ({
     }
   }, [isConfirmed, mutate, onChangeSelected]);
 
+  const onClickMarkAsFreeTable = useCallback(() => {
+    mutateTableStatus();
+  }, [mutateTableStatus]);
+
+  useEffect(() => {
+    if (isError) {
+      errorMessage(error?.response.data.message);
+    }
+  }, [error?.response.data.message, isError]);
+
   return (
-    <div className={cls.box}>
+    <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
       <div>
         <div className={cls.totalText}>
           {totalPrice === 0 ? (
@@ -95,56 +108,78 @@ export const ListTopBox = ({
           )}
         </div>
       </div>
-      <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
-        <div className={cls.btns}>
+      {totalPrice === 0 ? (
+        <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
           <BillDownload orders={orders || []} />
-          <Button
-            size={'sm'}
-            onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
-            mode={(!totalPrice || isLoading || (isWaiter && !paymentType)) && 'disabled'}
-            className={cls.btn}
-          >
-            {modalIsOpen ? (
-              <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
-            ) : (
-              <>
-                {isWaiter ? (
-                  isLoading ? (
-                    <Loader size={'xs'} color={'var(--color-gray-700)'} className={cls.loader} />
-                  ) : (
-                    'Mark as paid all orders'
-                  )
-                ) : (
-                  'Pay online'
-                )}
-              </>
-            )}
-          </Button>
+          {isWaiter && (
+            <Button
+              size={'sm'}
+              onClick={onClickMarkAsFreeTable}
+              disabled={!isAllOrdersPaid}
+              className={cls.btn}
+            >
+              {isLoadingTableStatus ? (
+                <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+              ) : (
+                'Mark table as free'
+              )}
+            </Button>
+          )}
         </div>
-        {isWaiter && (
-          <div className={cls.checkboxes}>
-            <CheckBox
-              label="Cash"
-              onChange={onChangeTypeOfPay}
-              ariaLabel="cash"
-              disabled={paymentType === 'POS'}
-              size={22}
-            />
-            <CheckBox
-              label="Terminal"
-              onChange={onChangeTypeOfPay}
-              ariaLabel="POS"
-              disabled={paymentType === 'cash'}
-              size={22}
-            />
+      ) : (
+        <>
+          <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
+            <div className={cls.btns}>
+              <BillDownload orders={orders || []} />
+              <Button
+                size={'sm'}
+                onClick={isWaiter ? onClickMarkAsPaidAllAsWaiter : onClickPayAllAsCustomer}
+                mode={(!totalPrice || isLoading || (isWaiter && !paymentType)) && 'disabled'}
+                className={cls.btn}
+              >
+                {modalIsOpen ? (
+                  <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+                ) : (
+                  <>
+                    {isWaiter ? (
+                      isLoading ? (
+                        <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+                      ) : (
+                        'Mark as paid all orders'
+                      )
+                    ) : (
+                      'Pay online'
+                    )}
+                  </>
+                )}
+              </Button>
+            </div>
+            {isWaiter && (
+              <div className={cls.checkboxes}>
+                <CheckBox
+                  label="Cash"
+                  onChange={onChangeTypeOfPay}
+                  ariaLabel="cash"
+                  disabled={paymentType === 'POS'}
+                  size={22}
+                />
+                <CheckBox
+                  label="Terminal"
+                  onChange={onChangeTypeOfPay}
+                  ariaLabel="POS"
+                  disabled={paymentType === 'cash'}
+                  size={22}
+                />
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <Text classname={cls.text}>
-        {isWaiter
-          ? 'Or select those orders that the customer has paid by selecting the ones you need.'
-          : 'Or you can pay for each order separately by selecting the ones you need.'}
-      </Text>
+          <Text classname={cls.text}>
+            {isWaiter
+              ? 'Or select those orders that the customer has paid by selecting the ones you need.'
+              : 'Or you can pay for each order separately by selecting the ones you need.'}
+          </Text>
+        </>
+      )}
       {isWaiter && (
         <ConfirmModal
           isOpen={modalIsOpen}
@@ -166,4 +201,7 @@ ListTopBox.propTypes = {
   orders: PropTypes.array,
   totalPrice: PropTypes.number,
   onChangeSelected: PropTypes.func,
+  onChangeTypeOfPay: PropTypes.func,
+  isAllOrdersPaid: PropTypes.bool,
+  allOrderPrice: PropTypes.number,
 };

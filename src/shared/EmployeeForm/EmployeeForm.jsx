@@ -1,14 +1,13 @@
 import React, { useRef, useState } from 'react';
+import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
-import { Select, Button, Input, FileUploader } from 'shared';
-import styles from './EmployeeForm.module.scss';
-
-import * as Yup from 'yup';
-
-import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA } from 'utils/constants';
 import { useParams } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+
+import { Select, Button, Input, FileUploader } from 'shared';
+import styles from './EmployeeForm.module.scss';
+import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA } from 'utils/constants';
 
 const validationSchema = Yup.object({
   firstName: Yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required field'),

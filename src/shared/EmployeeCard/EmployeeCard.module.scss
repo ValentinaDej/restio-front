@@ -2,11 +2,8 @@
   .card {
     position: relative;
     width: 100%;
-    // flex: 0 0 1;
+    flex: 0 0 1;
     transition: 1s;
-
-    //margin-bottom: 2rem;
-    //margin-top: -85px;
 
     text-align: center;
     &.outlined {
@@ -27,9 +24,7 @@
     margin: 0 auto;
     bottom: -50px;
     border-radius: 50%;
-    //width: 65%;
     width: 170px;
-    //height: 170px;
     height: auto;
     object-fit: cover;
     object-position: 25% 25%;
@@ -38,7 +33,7 @@
   }
 
   .employee_text {
-    padding: 3rem 2.3rem 1.2rem;
+    padding: 4rem 2.3rem 1.2rem;
     background-color: var(--color-white);
     backdrop-filter: blur(42px);
     border-radius: 25px;
@@ -49,11 +44,15 @@
   .trash {
     position: absolute;
 
-    color: var(--color-red);
+    color: var(--color-primary);
 
     top: 20px;
     right: 15px;
     margin-right: 20px;
+    &:hover,
+    &:focus {
+      color: var(--color-secondary);
+    }
   }
 
   .edit {
@@ -76,7 +75,6 @@
     position: relative;
     width: 100%;
     transition: 1s;
-    //margin-bottom: 2rem;
   }
 
   .trash {
@@ -101,7 +99,6 @@
     position: relative;
     width: 100%;
     transition: 1s;
-    //margin-bottom: 2rem;
   }
 
   .card:hover .employee_text {
