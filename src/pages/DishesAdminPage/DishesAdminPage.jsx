@@ -54,11 +54,25 @@ const DishesAdminPage = () => {
       handleDelete={handleDelete}
     >
       <div className={`${styles.select__section}`}>
-        <Select id="type" value={type} onChange={handleType} size="sm" length="sm">
+        <Select
+          id="type"
+          value={type}
+          onChange={handleType}
+          size="sm"
+          length="sm"
+          className={`${styles.select}`}
+        >
           <option value="active">Active</option>
           <option value="noActive">No Active</option>
         </Select>
-        <Select id="category" value={category} onChange={handleCategory} size="sm" length="sm">
+        <Select
+          id="category"
+          value={category}
+          onChange={handleCategory}
+          size="sm"
+          length="sm"
+          className={`${styles.select__active}`}
+        >
           <option value="">All category</option>
           {DISH_CATEGORIES.map((option) => (
             <option key={option} value={option}>

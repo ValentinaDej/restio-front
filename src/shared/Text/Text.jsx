@@ -13,7 +13,7 @@ const Text = memo(({ mode, children, fontWeight, fontSize, color, textAlign, cla
             color,
             textAlign,
           }}
-          className={`${classes.p} ${classname}`}
+          className={`${classes.p} ${classname ? classname : ''}`}
         >
           {children}
         </p>

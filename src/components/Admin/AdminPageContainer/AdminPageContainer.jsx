@@ -11,6 +11,9 @@ import { getPersonnel } from '../../../api/personnel';
 import Button from '../../../shared/Button/Button';
 import toast from 'react-hot-toast';
 import { getDishes } from '../../../api/dish';
+import { useMediaQuery } from 'react-responsive';
+import { BiSearch } from 'react-icons/bi';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 const value = {
   employee: 'personnel',
@@ -30,6 +33,13 @@ const AdminPageContainer = ({
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState('');
   const queryClient = useQueryClient();
+
+  const isMobile = useMediaQuery({
+    query: '(max-width: 767px)',
+  });
+  const isTablet = useMediaQuery({
+    query: '(min-width: 768px)',
+  });
 
   const queryKey = variant === 'employee' ? ['personnel', restId] : ['dishes', category, type];
 
@@ -100,26 +110,46 @@ const AdminPageContainer = ({
       <hr className={styles.divider} />
 
       <div className={`${styles.input__section}`}>
-        <Input
-          type="text"
-          name="search"
-          value={searchText}
-          onChange={handleChange}
-          placeholder="Search..."
-          size="md"
-          className={`${styles.input}`}
-        />
-        <div className={`${styles.search__section}`}>
-          <Button size={`md`} onClick={handleSearch}>
-            Search
-          </Button>
+        <div style={{ position: 'relative', display: 'flex', width: '100%', gap: '10px' }}>
+          <Input
+            type="text"
+            name="search"
+            value={searchText}
+            onChange={handleChange}
+            placeholder="Search..."
+            size="md"
+            className={`${styles.input}`}
+          />
+
+          {isMobile && (
+            <>
+              <button
+                type="button"
+                onClick={handleSearch}
+                className={`${styles.search__searchBtn}`}
+              >
+                <BiSearch size={24} />
+              </button>
+              <button type="button" onClick={handleClear} className={`${styles.search__clearBtn}`}>
+                <AiOutlineCloseCircle size={24} />
+              </button>
+            </>
+          )}
         </div>
         <div className={`${styles.search__section}`}>
-          <Button size={`md`} onClick={handleClear}>
-            Clear
-          </Button>
+          {isTablet && (
+            <>
+              <Button size={`sm`} onClick={handleSearch}>
+                Search
+              </Button>
+              <Button size={`sm`} mode="outlined" onClick={handleClear}>
+                Clear
+              </Button>
+            </>
+          )}
+
+          {children}
         </div>
-        {children}
       </div>
 
       <ul className={`${styles.menu_wrapper}`}>
@@ -138,11 +168,9 @@ const AdminPageContainer = ({
                   handleEdit={() => navigateToEdit(item._id)}
                   handleDelete={() => handleDeleteItem(item._id)}
                 >
-                  <>
-                    <p className={styles.employee_name}>{item.name}</p>
-                    <p className={styles.employee_subinfo}>{item.role}</p>
-                    <p className={styles.employee_subinfo}>{item.phone}</p>
-                  </>
+                  <p className={styles.employee_name}>{item.name}</p>
+                  <p className={styles.employee_subinfo}>{item.role}</p>
+                  <p className={styles.employee_subinfo}>{item.phone}</p>
                 </EmployeeCard>
               </li>
             ))
@@ -159,10 +187,8 @@ const AdminPageContainer = ({
                   handleEdit={() => navigateToEdit(item._id)}
                   handleDelete={() => handleDeleteItem(item._id)}
                 >
-                  <>
-                    <p className={styles.employee_name}>{item.name}</p>
-                    <p className={styles.employee_subinfo}>$ {item.price}</p>
-                  </>
+                  <p className={styles.employee_name}>{item.name}</p>
+                  <p className={styles.employee_subinfo}>${item.price?.toFixed(2)}</p>
                 </EmployeeCard>
               </li>
             ))
