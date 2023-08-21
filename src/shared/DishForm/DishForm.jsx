@@ -15,6 +15,7 @@ import FileUploader from 'shared/FileUploader/FileUploader';
 import DishTypeOptions from './DishTypeOptions/DishTypeOptions';
 import Ingredients from './Ingredients/Ingredients';
 import SortIngredients from './SortIngridients/SortIngredients';
+import DownloadImg from './DownloadImg/DownloadImg';
 
 import classes from './DishForm.module.scss';
 
@@ -32,6 +33,27 @@ const DishForm = ({
   const [inputValue, setInputValue] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [showSelectedIngredients, setShowSelectedIngredients] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null); // Add this line
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedFile(imageUrl);
+      setIsModalOpen(true); // Open the modal after selecting the image
+    }
+  };
+
+  const openFileInput = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleImageAdd = (image) => {
+    setSelectedImage(image);
+  };
 
   const firstIngredientRef = useRef(null);
   const fileUploaderRef = useRef();
@@ -47,6 +69,10 @@ const DishForm = ({
     shouldUseNativeValidation: false,
     mode: 'onBlur',
   });
+
+  const onClickDownload = () => {
+    setIsModalOpen(true);
+  };
 
   const handleFormSubmit = async (data, event) => {
     event.preventDefault();
@@ -148,6 +174,24 @@ const DishForm = ({
       ) : (
         <div className={`${classes.form}`}>
           <form onSubmit={handleSubmit(handleFormSubmit)}>
+            <Button size={'sm'} onClick={openFileInput} mode="outlined">
+              Download img
+            </Button>
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={handleFileSelect}
+            />
+            {isModalOpen && (
+              <DownloadImg
+                setIsModalOpen={setIsModalOpen}
+                isModalOpen={isModalOpen}
+                selectedFile={selectedFile}
+                handleImageAdd={handleImageAdd}
+              />
+            )}
             <div className={classes.field__wrapper_right}>
               <CheckBox label="active" name="isActive" register={register} />
             </div>
@@ -205,7 +249,11 @@ const DishForm = ({
 
                 <DishTypeOptions register={register} />
                 <div className={classes.img__wrapper}>
-                  <FileUploader ref={fileUploaderRef} onEditPhoto={initialState.picture} />
+                  <FileUploader
+                    ref={fileUploaderRef}
+                    // onEditPhoto={initialState.picture}
+                    onEditPhoto={selectedImage}
+                  />
                 </div>
               </div>
               <div className={classes.column}>
