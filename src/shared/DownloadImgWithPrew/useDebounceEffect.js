@@ -1,4 +1,4 @@
-import { useEffect, DependencyList } from 'react';
+import { useEffect } from 'react';
 
 export function useDebounceEffect(fn, waitTime, deps) {
   useEffect(() => {
@@ -9,5 +9,5 @@ export function useDebounceEffect(fn, waitTime, deps) {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, deps);
+  }, [deps, fn, waitTime]);
 }

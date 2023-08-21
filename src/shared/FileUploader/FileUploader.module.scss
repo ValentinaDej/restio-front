@@ -38,37 +38,3 @@
   object-fit: cover;
   border-radius: 50%;
 }
-
-.addButton {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-}
-
-.icon {
-  font-size: 60px;
-  color: var(--color-orange);
-
-  &:hover,
-  &:focus {
-    color: var(--color-orange-hover);
-  }
-
-  &_lg {
-    font-size: 60px;
-  }
-
-  &_md {
-    font-size: 45px;
-  }
-
-  &_sm {
-    font-size: 30px;
-  }
-}
-
-.hiddenInput {
-  display: none;
-}
