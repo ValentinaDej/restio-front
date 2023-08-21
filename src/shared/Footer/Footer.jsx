@@ -22,14 +22,14 @@ const Footer = (role) => {
   const [message, SetMessage] = useState('');
   const sendEmail = () => {
     send(
-      'service_yoitn3j',
-      'template_zzlzkjm',
+      process.env.EMAILJS_SERVICE,
+      process.env.EMAILJS_TEMPLATE,
       {
         from_name,
         reply_to,
         message,
       },
-      'M4WptDbO7Xqx8hkP-'
+      process.env.EMAILJS_USER
     )
       .then(() => {
         toast.success('Message sent successfully');
