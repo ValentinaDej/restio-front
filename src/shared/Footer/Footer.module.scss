@@ -1,6 +1,120 @@
 .footer {
-  background-color: var(--color-gray-600);
-  &__wrapper {
-    padding: 1.5rem 0;
+  background-color: var(--color-green-transparent);
+  color: #3a3a3a;
+  padding: 20px 0;
+}
+
+.footer__container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 40%; /* Adjust the width of the left column */
+  padding-right: 20px; /* Add space between columns */
+  justify-content: space-between;
+}
+
+.formWrapper {
+  flex-basis: 100%;
+  max-width: 50%;
+
+  .inlineInputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .inlineInputs {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.socialIcons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .socialIcon {
+    margin: 0 10px;
+  }
+}
+
+.footer__heading {
+  font-size: 1.5rem;
+  margin: 0.4rem;
+  text-align: center;
+}
+
+.messageInput {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-top: 10px;
+  resize: none;
+  transition: 0.5s;
+
+  &:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.footer__btnWrapper {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer__link:hover {
+  transition: 0.5s;
+  color: var(--color-green);
+}
+
+.footer__copyright {
+  text-align: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .footer__container {
+    flex-direction: column;
+  }
+
+  .footer__wrapper {
+    flex: none; /* Reset flex property to allow elements to stack */
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .formWrapper {
+    max-width: 100%; /* Remove the max-width property */
+  }
+}
+
+.header {
+  background-color: var(--color-bg-gray);
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+
+  &__logo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
   }
 }
