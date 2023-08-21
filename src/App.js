@@ -68,7 +68,7 @@ const App = () => {
           </Routes>
         </Suspense>
       </main>
-      <Footer role={role} />
+      <Footer />
       <Toaster />
       <ReactQueryDevtools initialIsOpen={false} />
     </>
