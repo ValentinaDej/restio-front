@@ -54,7 +54,6 @@ const AddDishPage = () => {
 
   const handleSubmit = async (formData) => {
     try {
-      console.log('Form data:', formData);
       if (dishesId) {
         await updateDishById(formData, dishesId);
         toast.success(SUCCESS_MESSAGES.successfullyUpdated);

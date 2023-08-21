@@ -11,7 +11,7 @@ export const openai = async (
   budget
 ) => {
   try {
-    const response = await instance.post(`/openai/${restaurantId}`, {
+    return await instance.post(`/openai/${restaurantId}`, {
       isVegan,
       likeSpicy,
       isPasc,
@@ -19,8 +19,6 @@ export const openai = async (
       wantDrink,
       budget,
     });
-    console.log(response.data.response);
-    return response;
   } catch (error) {
     toast.error('An error occurred. Please try again later.');
     console.log(error);

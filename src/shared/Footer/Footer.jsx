@@ -21,7 +21,6 @@ const Footer = (role) => {
   const [reply_to, SetFromEmail] = useState('');
   const [message, SetMessage] = useState('');
   const sendEmail = () => {
-    console.log(from_name, reply_to, message);
     send(
       'service_yoitn3j',
       'template_zzlzkjm',

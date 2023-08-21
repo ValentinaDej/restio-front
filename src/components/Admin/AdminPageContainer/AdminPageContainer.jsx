@@ -62,7 +62,9 @@ const AdminPageContainer = ({
   const handleChange = (e) => {
     const { value } = e.target;
     const normalizedValue = value.trim();
-    setSearchText(normalizedValue);
+    if (/^[a-zA-Z]+$/.test(normalizedValue) || normalizedValue === '') {
+      setSearchText(normalizedValue);
+    }
   };
 
   if (isLoading) {

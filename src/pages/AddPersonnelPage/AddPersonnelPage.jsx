@@ -67,7 +67,8 @@ const AddPersonnelPage = () => {
         response = await createPersonnel(formData, restId);
       }
       await queryClient.invalidateQueries('personnel');
-      if (response.status === 200) {
+      const successResp = ['200', '201', '204'];
+      if (successResp.includes(response.status.toString())) {
         handleBack();
       }
     } catch (error) {
