@@ -57,8 +57,7 @@ const AdminPageContainer = ({
           }
           return undefined;
         },
-        onError: (error) => {
-          console.error(`Error fetching ${variant}:`, error);
+        onError: () => {
           toast.error(`Error fetching ${variant}`);
         },
         cacheTime: 10 * 60 * 60,
@@ -72,7 +71,9 @@ const AdminPageContainer = ({
   const handleChange = (e) => {
     const { value } = e.target;
     const normalizedValue = value.trim();
-    setSearchText(normalizedValue);
+    if (/^[a-zA-Z]+$/.test(normalizedValue) || normalizedValue === '') {
+      setSearchText(normalizedValue);
+    }
   };
 
   if (isLoading) {
@@ -100,7 +101,7 @@ const AdminPageContainer = ({
       await handleDelete(id, restId);
       await refetch();
     } catch (error) {
-      console.error('Error deleting item:', error);
+      toast.error('Error deleting item');
     }
   };
 

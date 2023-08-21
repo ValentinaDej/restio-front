@@ -65,7 +65,6 @@ const AIAssistant = () => {
             answers.wantDrink,
             answers.budget
           );
-          console.log('text', response);
           setResponse(response.data.textBefore);
           setDishes(response.data.dishes);
           setLoading(false); // Hide loader
