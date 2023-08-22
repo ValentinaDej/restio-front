@@ -115,7 +115,7 @@ export const ListTopBox = ({
             <Button
               size={'sm'}
               onClick={onClickMarkAsFreeTable}
-              disabled={!isAllOrdersPaid}
+              disabled={!isAllOrdersPaid || isLoadingTableStatus}
               className={cls.btn}
             >
               {isLoadingTableStatus ? (

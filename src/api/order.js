@@ -1,5 +1,7 @@
 import { instance } from 'api';
 import { errorMessage } from 'helpers/errorMessage';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const { useQuery, useMutation, useQueryClient } = require('react-query');
 
@@ -92,7 +94,7 @@ export const useUpdateOrderStatusByWaiter = ({ restId, tableId }, orders, amount
 
 export const useUpdateTableStatusByWaiter = ({ restId, tableId }, status) => {
   const queryClient = useQueryClient();
-
+  const navigate = useNavigate();
   const updateTableStatus = async () => {
     const response = await instance.patch(`/tables/${tableId}`, { restaurant_id: restId, status });
     return response.data;
@@ -100,6 +102,17 @@ export const useUpdateTableStatusByWaiter = ({ restId, tableId }, status) => {
   const mutation = useMutation(updateTableStatus, {
     onSuccess: () => {
       queryClient.setQueryData(['orders'], []);
+      toast.success(`Table is free`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+      navigate(`/${restId}/waiter/tables`);
     },
   });
 
