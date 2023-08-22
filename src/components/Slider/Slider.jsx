@@ -10,11 +10,9 @@ export const Slider = ({ data: recommendedDishes, restId, tableId }) => {
   const sliderNext = () => {
     const element = sliderRef.current;
     const elementWidth = element.getBoundingClientRect().width;
-    console.log(elementWidth);
     if (elementWidth > 375) {
       const sliderWidth = 300 * recommendedDishes.length;
       let scrollAmount = elementWidth * (1 / 3);
-      console.log(scrollAmount);
       let newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
       const diff = sliderWidth - elementWidth - newRightValue;
       if (diff < scrollAmount) {
@@ -25,10 +23,9 @@ export const Slider = ({ data: recommendedDishes, restId, tableId }) => {
       }
     } else if (elementWidth < 375) {
       const scrollAmount = elementWidth;
-      console.log(scrollAmount);
       let newRightValue = parseFloat(getComputedStyle(element).right) + scrollAmount;
-      console.log(newRightValue);
       if (newRightValue >= scrollAmount * recommendedDishes.length - 5) {
+        element.style.right = scrollAmount * (recommendedDishes.length - 1) + 'px';
         return;
       } else {
         element.style.right = newRightValue + 'px';
@@ -37,13 +34,27 @@ export const Slider = ({ data: recommendedDishes, restId, tableId }) => {
   };
   const sliderBack = () => {
     const element = sliderRef.current;
-    const scrollAmount = 350;
-    const newRightValue = parseInt(getComputedStyle(element).right) - scrollAmount;
-    if (newRightValue <= 0) {
-      element.style.right = 0 + 'px';
-      element.style.transform = '1s ease';
-    } else {
-      element.style.right = newRightValue + 'px';
+    const elementWidth = element.getBoundingClientRect().width;
+    if (elementWidth > 375) {
+      const sliderWidth = 300 * recommendedDishes.length;
+      let scrollAmount = elementWidth * (1 / 3);
+      let newRightValue = parseInt(getComputedStyle(element).right) - scrollAmount;
+      const diff = sliderWidth - elementWidth - newRightValue;
+      if (newRightValue < 0) {
+        element.style.right = 0 + 'px';
+      } else {
+        element.style.right = newRightValue + 'px';
+        return;
+      }
+    } else if (elementWidth < 375) {
+      const scrollAmount = elementWidth;
+      let newRightValue = parseFloat(getComputedStyle(element).right) - scrollAmount;
+      if (newRightValue <= 0) {
+        element.style.right = 0 + 'px';
+        return;
+      } else {
+        element.style.right = newRightValue + 'px';
+      }
     }
   };
   return (
