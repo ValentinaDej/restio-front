@@ -49,7 +49,7 @@ const DishPage = () => {
         setRecommendedDishes(filteredItems);
       } else {
         const first = Math.floor(Math.random() * (filteredItems.length - 5));
-        const second = first + 4;
+        const second = first + 5;
         let several = filteredItems.slice(first, second);
         setRecommendedDishes(several);
       }
