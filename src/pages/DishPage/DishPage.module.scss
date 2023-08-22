@@ -272,7 +272,7 @@
     display: flex;
     padding: 50px 0 20px;
     position: relative;
-    gap: 1%;
+    // gap: 1%;
     right: 0;
     & > div {
       flex-shrink: 0;
@@ -280,6 +280,7 @@
       flex-shrink: 0;
       min-width: 98%;
       margin-left: 1%;
+      margin-right: 1%;
     }
   }
 
@@ -372,7 +373,7 @@
   .slider_box {
     display: flex;
     padding: 90px 0 10px;
-    gap: 20px;
+    // gap: 20px;
     position: relative;
     right: 0;
     & > div {
@@ -380,7 +381,8 @@
       flex: 1;
       flex-shrink: 0;
       min-width: 280px;
-      margin-left: 5px;
+      margin-left: 10px;
+      margin-right: 10px;
     }
   }
 }
