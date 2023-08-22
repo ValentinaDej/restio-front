@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useInfiniteQuery, useQueryClient } from 'react-query';
@@ -31,7 +32,7 @@ export const AdminPageContainer = ({
   const queryClient = useQueryClient();
 
   const isMobile = useMediaQuery({
-    query: '(max-width: 767px)',
+    query: '(max-width: 767.98px)',
   });
   const isTablet = useMediaQuery({
     query: '(min-width: 768px)',
@@ -200,4 +201,14 @@ export const AdminPageContainer = ({
       )}
     </div>
   );
+};
+
+AdminPageContainer.propTypes = {
+  title: PropTypes.string.isRequired,
+  variant: PropTypes.oneOf(['dish', 'employee']),
+  handleDelete: PropTypes.func.isRequired,
+  goToAdd: PropTypes.func.isRequired,
+  children: PropTypes.element,
+  category: PropTypes.string,
+  type: PropTypes.string,
 };

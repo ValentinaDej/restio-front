@@ -43,7 +43,6 @@ export const Header = ({ role }) => {
   const logoutHandler = () => {
     dispatch(logout());
   };
-
   const onClickHandler = async () => {
     try {
       await callWaiter(tableId, { status: 'Waiting', restaurant_id: restId });

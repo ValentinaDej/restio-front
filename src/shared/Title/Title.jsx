@@ -12,7 +12,7 @@ export const Title = ({ mode, children, fontWeight, fontSize, color, textAlign, 
             color,
             textAlign,
           }}
-          className={`${classes.h1} ${classname}`}
+          className={`${classname ? classname : ''} ${classes.h1} `}
         >
           {children}
         </h1>
@@ -26,7 +26,7 @@ export const Title = ({ mode, children, fontWeight, fontSize, color, textAlign, 
             color,
             textAlign,
           }}
-          className={`${classes.h1} ${classname}`}
+          className={`${classname ? classname : ''}  ${classes.h2}`}
         >
           {children}
         </h2>
@@ -40,7 +40,7 @@ export const Title = ({ mode, children, fontWeight, fontSize, color, textAlign, 
             color,
             textAlign,
           }}
-          className={`${classes.h1} ${classname}`}
+          className={`${classname ? classname : ''}  ${classes.h3} `}
         >
           {children}
         </h3>

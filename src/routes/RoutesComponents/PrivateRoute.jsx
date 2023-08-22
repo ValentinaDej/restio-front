@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { getToken, getUserRole } from 'store/auth/authSelector';
 
 export const PrivateRoute = ({ component: Element, redirectTo = '/login' }) => {
@@ -7,7 +8,6 @@ export const PrivateRoute = ({ component: Element, redirectTo = '/login' }) => {
   const token = useSelector(getToken);
   const location = useLocation();
   const currentPath = location.pathname;
-
   // Redirect users without a role from admin, cook, and waiter routes
   if (
     (!role || role === 'customer') &&
@@ -17,11 +17,10 @@ export const PrivateRoute = ({ component: Element, redirectTo = '/login' }) => {
   ) {
     return <Navigate to="/login" />;
   }
-
   const allowedRoutes = {
-    admin: ['admin'], // Admin can access all routes
-    cook: ['cook'], // Cook can access cook routes
-    waiter: ['waiter'], // Waiter can access waiter routes
+    admin: ['admin'],
+    cook: ['cook'],
+    waiter: ['waiter'],
   };
 
   const isNotAllowed =
@@ -31,8 +30,12 @@ export const PrivateRoute = ({ component: Element, redirectTo = '/login' }) => {
     return <Navigate to="/login" />;
   }
 
-  const isLoggedIn = role && token;
-  console.log(isLoggedIn);
+  const isLoggedIn = token && role;
 
   return isLoggedIn ? Element : <Navigate to={redirectTo} />;
+};
+
+PrivateRoute.propTypes = {
+  redirectTo: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  component: PropTypes.element.isRequired,
 };

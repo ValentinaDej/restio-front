@@ -1,5 +1,5 @@
-import Modal from './Modal';
 import '../../styles.scss';
+import { Modal } from './Modal';
 
 const meta = {
   title: 'Shared/Modal',
