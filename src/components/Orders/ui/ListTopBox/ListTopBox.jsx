@@ -88,20 +88,20 @@ export const ListTopBox = ({
         <div className={cls.totalText}>
           {totalPrice === 0 ? (
             isWaiter ? (
-              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+              <Text fontWeight={700} classname={cls.text}>
                 All orders paid, mark table as free when customer leave.
               </Text>
             ) : (
-              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+              <Text fontWeight={700} classname={cls.text}>
                 All orders are paid, thank you for visiting our restaurant.
               </Text>
             )
           ) : (
             <>
-              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+              <Text fontWeight={700} classname={cls.text}>
                 Bill Total: ${allOrderPrice}
               </Text>
-              <Text fontWeight={700} fontSize={20} classname={cls.text}>
+              <Text fontWeight={700} classname={cls.text}>
                 Unpaid: ${totalPrice}
               </Text>
             </>
