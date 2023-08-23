@@ -5,10 +5,10 @@ import { useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useSSE } from 'react-hooks-sse';
 
-import styles from './DishesForCookPage.module.scss';
 import { Title, Button, Loader } from 'shared';
 import { StatusCardItem } from 'components';
 import { getAllOrders, useUpdateDishStatusByWaiter } from 'api/order';
+import styles from './DishesForCookPage.module.scss';
 
 const statuses = ['Ordered', 'In progress', 'Ready'];
 
@@ -24,9 +24,9 @@ const DishesForCookPage = () => {
       onError: (error) => {
         toast.error(error.message);
       },
-      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
-      refetchOnReconnect: false, // Disable refetching when the network reconnects
-      refetchInterval: false, // Disable automatic periodic refetching
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
       cacheTime: 0,
     }
   );
@@ -38,7 +38,7 @@ const DishesForCookPage = () => {
   }, [createNewOrderEvent, refetch]);
 
   const isMobile = useMediaQuery({
-    query: '(max-width: 767px)',
+    query: '(max-width: 767.98px)',
   });
 
   const { mutate } = useUpdateDishStatusByWaiter();
@@ -55,46 +55,44 @@ const DishesForCookPage = () => {
   );
 
   return (
-    <div className={`main__container  ${styles.main__section}`}>
-      <div className={`${styles.section}`}>
-        <Title classname={`${styles.title}`}>Cook Dashboard</Title>
-        <hr className={`${styles.divider}`} />
-        {isLoading ? (
-          <div className={`${styles.loader__section}`}>
-            <Loader size="lg" />
+    <div className={`${styles.main__section}`}>
+      <Title classname={`${styles.title}`}>Cook Dashboard</Title>
+      <hr className={`${styles.divider}`} />
+      {isLoading ? (
+        <div className={`${styles.loader__section}`}>
+          <Loader size="lg" />
+        </div>
+      ) : (
+        <>
+          <div className={`${styles.button__section}`}>
+            {statuses.map((status) => (
+              <Button
+                key={`btn_${status}`}
+                size={isMobile ? 'sm' : 'md'}
+                mode={currentStatus === status ? 'primary' : 'outlined'}
+                onClick={() => setCurrentStatus(status)}
+              >
+                {status}
+              </Button>
+            ))}
           </div>
-        ) : (
-          <>
-            <div className={`${styles.button__section}`}>
-              {statuses.map((status) => (
-                <Button
-                  key={`btn_${status}`}
-                  size={isMobile ? 'sm' : 'md'}
-                  mode={currentStatus === status ? 'primary' : 'outlined'}
-                  onClick={() => setCurrentStatus(status)}
-                >
-                  {status}
-                </Button>
-              ))}
-            </div>
 
-            <div>
-              {data?.length > 0 &&
-                statuses.map(
-                  (status) =>
-                    currentStatus === status && (
-                      <StatusCardItem
-                        key={status}
-                        status={status}
-                        data={filterDishes(status)}
-                        handleChangeStatus={handleChangeStatus}
-                      />
-                    )
-                )}
-            </div>
-          </>
-        )}
-      </div>
+          <div>
+            {data?.length > 0 &&
+              statuses.map(
+                (status) =>
+                  currentStatus === status && (
+                    <StatusCardItem
+                      key={status}
+                      status={status}
+                      data={filterDishes(status)}
+                      handleChangeStatus={handleChangeStatus}
+                    />
+                  )
+              )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

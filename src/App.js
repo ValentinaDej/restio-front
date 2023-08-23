@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
-
 import './styles.scss';
 import HomePage from 'pages/HomePage/HomePage';
 import LoginPage from 'pages/LoginPage/LoginPage';
@@ -41,7 +40,11 @@ const App = () => {
 
             {(role === 'admin' || role === 'waiter' || role === 'cook') &&
               variantPath[role].map(({ path, component }) => (
-                <Route key={path} path={path} element={<PrivateRoute component={component} />} />
+                <Route
+                  key={path}
+                  path={path}
+                  element={<PrivateRoute redirectTo="/login" component={component} />}
+                />
               ))}
           </Route>
           <Route path="*" element={<ErrorPage />} />

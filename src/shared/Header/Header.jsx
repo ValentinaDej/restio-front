@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useQuery } from 'react-query';
 import { useMediaQuery } from 'react-responsive';
@@ -29,6 +29,7 @@ export const Header = ({ role }) => {
   const arrParams = pathname.split('/');
   const restId = arrParams[1];
   const tableId = arrParams[3];
+  const navigate = useNavigate();
   const isMobile = useMediaQuery({
     query: '(max-width: 767.98px)',
   });
@@ -42,8 +43,8 @@ export const Header = ({ role }) => {
   };
   const logoutHandler = () => {
     dispatch(logout());
+    navigate('/login');
   };
-
   const onClickHandler = async () => {
     try {
       await callWaiter(tableId, { status: 'Waiting', restaurant_id: restId });

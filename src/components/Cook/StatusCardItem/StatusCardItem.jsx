@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-import styles from './StatusCardItem.module.scss';
 import { DishesList } from '../DishesList/DishesList';
+import styles from './StatusCardItem.module.scss';
 
 export const StatusCardItem = ({ data, handleChangeStatus }) => {
   return (
