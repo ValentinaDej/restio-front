@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useQuery } from 'react-query';
 import { useMediaQuery } from 'react-responsive';
@@ -20,8 +20,10 @@ import { callWaiter } from 'api/table';
 import { getRestaurant } from 'api/restaurant';
 import { getRestaurantId } from 'store/auth/authSelector';
 import { logout } from 'store/auth/authSlice';
+import { Button } from 'shared';
 
 export const Header = ({ role }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const restaurantId = useSelector(getRestaurantId);
   const { pathname } = useLocation();
@@ -55,9 +57,16 @@ export const Header = ({ role }) => {
 
   return (
     <header className={classes.header}>
-      <div className={classes.header__logo}>
-        <img src={data?.picture} alt="logo" className={classes.header__img} />
-      </div>
+      {role === 'customer' ? (
+        <Link to={`/${restId}/tables/${tableId}`} className={classes.header__logo}>
+          <img src={data?.picture} alt="logo" className={classes.header__img} />
+        </Link>
+      ) : (
+        <div className={classes.header__logo}>
+          <img src={data?.picture} alt="logo" className={classes.header__img} />
+        </div>
+      )}
+
       {role !== 'customer' && (
         <div className={classes.header__button}>
           <h1 className={classes.header__title}>{data?.name}</h1>
@@ -137,9 +146,13 @@ export const Header = ({ role }) => {
       )}
       {role === 'customer' && (
         <div className={classes.header__wrapper}>
-          <div className={classes.header__button}>
+          <Button size="sm" onClick={onClickHandler}>
+            Call waiter
+          </Button>
+          {/* <div className={classes.header__button}>
             <Bell className={classes.header__call} onClick={onClickHandler} />
-          </div>
+           
+          </div> */}
           <OrdersButton restId={restId} tableId={tableId} />
         </div>
       )}
