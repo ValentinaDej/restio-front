@@ -145,44 +145,6 @@ const TablesWaiterPage = () => {
                   isTablesWithAllPaidOrders={isTablesWithAllPaidOrders}
                   size={25}
                 />
-                // <div className={styles.tables__checkbox_container_body}>
-                //   <CheckBox
-                //     label={'Favorite'}
-                //     onChange={() => setIsFavoriteTables((prev) => !prev)}
-                //     checked={isFavoriteTables}
-                //     size={25}
-                //   />
-                //   <CheckBox
-                //     label={'Free'}
-                //     onChange={() => setIsFreeTables((prev) => !prev)}
-                //     checked={isFreeTables}
-                //     size={25}
-                //   />
-                //   <CheckBox
-                //     label={'Taken'}
-                //     onChange={() => setIsTakenTables((prev) => !prev)}
-                //     checked={isTakenTables}
-                //     size={25}
-                //   />
-                //   <CheckBox
-                //     label={'Waiting'}
-                //     onChange={() => setIsWaitinigTables((prev) => !prev)}
-                //     checked={isWaitingTables}
-                //     size={25}
-                //   />
-                //   <CheckBox
-                //     label={'Ready dishes'}
-                //     onChange={() => setIsTablesWithReadyDishes((prev) => !prev)}
-                //     checked={isTablesWithReadyDishes}
-                //     size={25}
-                //   />
-                //   <CheckBox
-                //     label={'All orders paid'}
-                //     onChange={() => setIsTablesWithAllPaidOrders((prev) => !prev)}
-                //     checked={isTablesWithAllPaidOrders}
-                //     size={25}
-                //   />
-                // </div>
               )}
             </>
           ) : (
