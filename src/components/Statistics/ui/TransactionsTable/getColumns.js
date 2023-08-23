@@ -3,6 +3,7 @@ import { TfiCalendar } from 'react-icons/tfi';
 import { DropDown, IconButton, Text } from 'shared';
 import { getDate } from 'helpers/getDate';
 import cls from './TransactionsTable.module.scss';
+import { DebouncedInput } from './DebounceInput/DebounceInput';
 
 const typeOfTransactionFilterOptions = [
   { value: 'all', label: 'all' },
@@ -18,6 +19,12 @@ const typeOfUserFilterOptions = [
   { value: 'admin', label: 'admin' },
 ];
 
+const amountOptions = [
+  { value: 'newest', label: 'newest' },
+  { value: 'ascending', label: 'ascending' },
+  { value: 'descending', label: 'descending' },
+];
+
 export const getColumns = (
   date,
   isClear,
@@ -28,6 +35,9 @@ export const getColumns = (
   setPagination,
   setDate,
   setCreatedByTypeOptions,
+  nameFilter,
+  setNameFilter,
+  setTransactionSortTypeOptions,
   defaultValues
 ) => [
   {
@@ -56,7 +66,20 @@ export const getColumns = (
         accessorFn: (row) => row.paymentAmount,
         id: 'paymnetAmount',
         cell: (info) => info.getValue(),
-        header: () => <span className={cls.span}>Amount $</span>,
+        header: () => (
+          <span className={cls.span}>
+            Amount $
+            <DropDown
+              options={amountOptions}
+              onSelect={(e) => {
+                setTransactionSortTypeOptions(e.value);
+                setPagination({ pageIndex: 0, pageSize });
+              }}
+              defaultValue={defaultValues.transactionSortType}
+              clear={isClear}
+            />
+          </span>
+        ),
         footer: (props) => props.column.id,
       },
       {
@@ -138,7 +161,17 @@ export const getColumns = (
       },
       {
         accessorKey: 'createdByName',
-        header: () => <span className={cls.span}>Name</span>,
+        header: () => (
+          <div className={cls.span}>
+            <span>Name</span>
+            <DebouncedInput
+              value={nameFilter ?? ''}
+              onChange={(value) => setNameFilter(String(value))}
+              className="p-2 font-lg shadow border border-block"
+              placeholder="Search all columns..."
+            />
+          </div>
+        ),
         cell: (info) => {
           const name = info.getValue();
           return <span className={cls.span}>{name ? name : '-'}</span>;

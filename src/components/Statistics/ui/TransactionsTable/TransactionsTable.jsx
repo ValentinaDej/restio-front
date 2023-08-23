@@ -15,6 +15,7 @@ export const TransactionsTable = ({ timestamp }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { restId } = useParams();
   const [calendarIsOpen, setCalendarIsOpen] = useState(false);
+  const [nameFilter, setNameFilter] = useState(searchParams.get('nameFilter') || '');
   const [date, setDate] = useState(
     (searchParams.get('date') && new Date(searchParams.get('date'))) || undefined
   );
@@ -31,6 +32,9 @@ export const TransactionsTable = ({ timestamp }) => {
   const [transactionTypeOptions, setTransactionTypeOptions] = useState(
     searchParams.get('transactionType') || 'all'
   );
+  const [transactionSortTypeOptions, setTransactionSortTypeOptions] = useState(
+    searchParams.get('transactionSortType') || 'newest'
+  );
   const [isClear, setIsClear] = useState(false);
   const [fetchDataOptions, setFetchDataOptions] = useState({
     pageIndex,
@@ -39,6 +43,8 @@ export const TransactionsTable = ({ timestamp }) => {
     userType: createdByTypeOptions,
     transactionType: transactionTypeOptions,
     date,
+    nameFilter,
+    transactionSortType: transactionSortTypeOptions,
   });
 
   const onClickCalendar = () => {
@@ -55,6 +61,8 @@ export const TransactionsTable = ({ timestamp }) => {
     setIsClear(true);
     setCreatedByTypeOptions('all');
     setTransactionTypeOptions('all');
+    setTransactionSortTypeOptions('newest');
+    setNameFilter('');
     setDate(undefined);
     setIsTodayTransactions(false);
     setPagination({ pageIndex: 0, pageSize: 20 });
@@ -70,9 +78,10 @@ export const TransactionsTable = ({ timestamp }) => {
     return {
       userType: createdByTypeOptions,
       transactionType: transactionTypeOptions,
+      transactionSortType: transactionSortTypeOptions,
       pageSize,
     };
-  }, [createdByTypeOptions, pageSize, transactionTypeOptions]);
+  }, [createdByTypeOptions, pageSize, transactionSortTypeOptions, transactionTypeOptions]);
   const columns = useMemo(
     () =>
       getColumns(
@@ -85,9 +94,12 @@ export const TransactionsTable = ({ timestamp }) => {
         setPagination,
         setDate,
         setCreatedByTypeOptions,
+        nameFilter,
+        setNameFilter,
+        setTransactionSortTypeOptions,
         defaultValues
       ),
-    [date, defaultValues, isClear, pageIndex, pageSize]
+    [date, isClear, pageIndex, pageSize, nameFilter, defaultValues]
   );
 
   const {
@@ -115,6 +127,8 @@ export const TransactionsTable = ({ timestamp }) => {
     params.pageSize = pageSize;
     params.userType = createdByTypeOptions;
     params.transactionType = transactionTypeOptions;
+    params.nameFilter = nameFilter;
+    params.transactionSortType = transactionSortTypeOptions;
 
     if (isTodayTransactions) {
       params.today = isTodayTransactions;
@@ -129,12 +143,14 @@ export const TransactionsTable = ({ timestamp }) => {
     createdByTypeOptions,
     date,
     isTodayTransactions,
+    nameFilter,
     pageIndex,
     pageSize,
     refetch,
     searchParams,
     setSearchParams,
     timestamp,
+    transactionSortTypeOptions,
     transactionTypeOptions,
   ]);
 
@@ -175,7 +191,6 @@ export const TransactionsTable = ({ timestamp }) => {
           <Modal isModalOpen={calendarIsOpen} setIsModalOpen={onClickCalendar}>
             <Calendar onChange={onChangeDate} newDate={date} />
           </Modal>
-          <Title fontSize={22}>Table</Title>
           <TableBtns
             onClickClearFilters={onClickClearFilters}
             table={table}

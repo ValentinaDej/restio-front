@@ -31,6 +31,9 @@ export const TableBtns = ({
   const pageNumber = Number(data?.currentPageIndex) + 1;
   return (
     <div className={cls.btnsBox}>
+      <Button size="sm" onClick={onClickClearFilters}>
+        Clear filters
+      </Button>
       <div className={cls.paginationBox}>
         <IconButton
           size={25}
@@ -46,6 +49,30 @@ export const TableBtns = ({
           disabled={!table.getCanPreviousPage()}
           Svg={TfiAngleLeft}
         />
+        <div className={cls.inputBox}>
+          <Text classname={cls.text} fontWeight={600}>
+            Page
+          </Text>
+          <Text classname={cls.text} fontWeight={600}>
+            {data?.pageCount === 0 ? 0 : table.getState().pagination?.pageIndex + 1} of{' '}
+            {table.getPageCount()}
+          </Text>
+          <input
+            min={1}
+            type="number"
+            defaultValue={isNaN(data?.currentPageIndex) ? 1 : pageNumber}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              table.setPageIndex(page);
+            }}
+            className={cls.input}
+          />
+          {isFetching && (
+            <div className={cls.loader}>
+              <Loader size="xs" />
+            </div>
+          )}
+        </div>
         <IconButton
           mode={'outlined'}
           size={25}
@@ -62,34 +89,8 @@ export const TableBtns = ({
           mode={'filled'}
           Svg={TfiAngleDoubleRight}
         />
-        <Button size="sm" onClick={onClickClearFilters}>
-          Clear filters
-        </Button>
       </div>
       <div className={cls.inputSelectBox}>
-        <div className={cls.inputBox}>
-          <Text classname={cls.text} fontWeight={600}>
-            Page
-          </Text>
-          <Text classname={cls.text} fontWeight={600}>
-            {data?.pageCount === 0 ? 0 : table.getState().pagination?.pageIndex + 1} of{' '}
-            {table.getPageCount()}
-          </Text>
-          <Text classname={cls.text} fontWeight={600}>
-            Go to page:
-          </Text>
-          <input
-            min={1}
-            type="number"
-            defaultValue={isNaN(data?.currentPageIndex) ? 1 : pageNumber}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              table.setPageIndex(page);
-            }}
-            className={cls.input}
-          />
-          <div className={cls.loader}>{isFetching && <Loader size="xs" />}</div>
-        </div>
         <div className={cls.select}>
           <Text classname={cls.text} fontWeight={600}>
             Show
