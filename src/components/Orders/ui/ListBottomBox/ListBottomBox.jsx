@@ -4,33 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineClose } from 'react-icons/ai';
 
 import cls from './ListBottomBox.module.scss';
-import { Text, Button, Loader } from 'shared';
-import { ConfirmModal } from 'components';
+import { Text, Button } from 'shared';
 import { classNames } from 'helpers/classNames';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
-import { useUpdateOrderStatusByWaiter } from 'api/order';
+import { useMediaQuery } from 'hooks/useMediaQuery';
 
-export const ListBottomBox = ({
-  isWaiter,
-  amount,
-  selectedOrders,
-  onChangeSelected,
-  urlParams,
-  paymentType,
-  totalPrice,
-}) => {
+export const ListBottomBox = ({ amount, selectedOrders, urlParams }) => {
   const dispatch = useDispatch();
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
   const { data, signature } = useSelector(getPaymentInfo);
   const [isOpen, setIsOpen] = useState(false);
-  const { isLoading, mutate } = useUpdateOrderStatusByWaiter(
-    urlParams,
-    selectedOrders,
-    amount,
-    paymentType
-  );
+
   const frontLink = location.href;
 
   useEffect(() => {
@@ -54,81 +40,9 @@ export const ListBottomBox = ({
     );
   }, [amount, dispatch, frontLink, selectedOrders, urlParams.restId]);
 
-  const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
-    setModalIsOpen(true);
-  }, []);
-
-  useEffect(() => {
-    if (isConfirmed) {
-      mutate();
-      onChangeSelected(0, []);
-      setModalIsOpen(false);
-      setIsConfirmed(false);
-    }
-  }, [isConfirmed, mutate, onChangeSelected]);
-
-  if (isWaiter) {
+  if (!isMobile) {
     return (
-      <div className={cls.waiterBtn}>
-        {totalPrice !== 0 && (
-          <Text classname={cls.text} fontWeight={700}>
-            Total price for selected orders: ${amount}
-          </Text>
-        )}
-        <div className={cls.btnsBox}>
-          {totalPrice !== 0 && (
-            <Button
-              size={'sm'}
-              onClick={onClickMarkAsPaidSelectedAsWaiter}
-              disabled={amount === 0 || isLoading || !paymentType}
-              className={cls.btn}
-              mode="outlined"
-            >
-              {modalIsOpen ? (
-                <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
-              ) : (
-                <>
-                  {isLoading ? (
-                    <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
-                  ) : (
-                    'Mark as paid for selected'
-                  )}
-                </>
-              )}
-            </Button>
-          )}
-        </div>
-        <ConfirmModal
-          isOpen={modalIsOpen}
-          message={`Confirm your action for ${selectedOrders?.length} ${
-            selectedOrders?.length === 1 ? 'order' : 'orders'
-          } with total $${amount}`}
-          onConfirm={() => setIsConfirmed(true)}
-          setIsOpen={onClickMarkAsPaidSelectedAsWaiter}
-          onCancel={() => setModalIsOpen(false)}
-        />
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <div
-        className={classNames(cls.box, {
-          [cls.isOpen]: isOpen && amount !== 0,
-        })}
-      >
-        <Button
-          className={classNames(cls.checkoutBtn, {
-            [cls.isShown]: amount !== 0,
-            [cls.isOpen]: isOpen,
-          })}
-          onClick={onOpenModal}
-          size={isOpen ? 'sm' : 'md'}
-          disabled={amount === 0}
-        >
-          {isOpen ? <AiOutlineClose size={25} /> : <>Go to checkout selected &middot; ${amount}</>}
-        </Button>
+      <div className={cls.descBtn}>
         <Text classname={cls.text} fontWeight={700}>
           Total price for selected orders: ${amount}
         </Text>
@@ -138,7 +52,43 @@ export const ListBottomBox = ({
           </Button>
         </div>
       </div>
-    </>
+    );
+  }
+
+  return (
+    isMobile && (
+      <>
+        <div
+          className={classNames(cls.box, {
+            [cls.isOpen]: isOpen && amount !== 0,
+          })}
+        >
+          <Button
+            className={classNames(cls.checkoutBtn, {
+              [cls.isShown]: amount !== 0,
+              [cls.isOpen]: isOpen,
+            })}
+            onClick={onOpenModal}
+            size={isOpen ? 'sm' : 'md'}
+            disabled={amount === 0}
+          >
+            {isOpen ? (
+              <AiOutlineClose size={25} />
+            ) : (
+              <>Go to checkout selected &middot; ${amount}</>
+            )}
+          </Button>
+          <Text classname={cls.text} fontWeight={700}>
+            Total price for selected orders: ${amount}
+          </Text>
+          <div className={cls.btnsBox}>
+            <Button size={'sm'} onClick={onClickPaySelectedAsCustomer} disabled={amount === 0}>
+              Pay online
+            </Button>
+          </div>
+        </div>
+      </>
+    )
   );
 };
 

@@ -4,16 +4,31 @@ import cls from './IconButton.module.scss';
 import { classNames } from 'helpers/classNames';
 
 export const IconButton = memo(
-  ({ Svg, size = 20, mode = 'clear', disabled, onClick, color, className, ...props }) => {
+  ({
+    Svg,
+    size = 20,
+    mode = 'clear',
+    disabled,
+    onClick,
+    color,
+    className,
+    itemId,
+    isLoading,
+    ...props
+  }) => {
     const mods = {
       [cls.disabled]: disabled,
+    };
+
+    const onClickBtn = () => {
+      onClick(itemId);
     };
 
     return (
       <button
         className={classNames(cls.btn, mods, [className, cls[mode]])}
-        onClick={onClick}
-        disabled={disabled}
+        onClick={onClickBtn}
+        disabled={disabled || isLoading}
         {...props}
       >
         <Svg size={size} className={cls.icon} color={color} />

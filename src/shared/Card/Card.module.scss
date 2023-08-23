@@ -65,7 +65,13 @@
   }
 
   &__status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-left: auto;
+  }
+  &__status-waiter {
+    height: 20px;
   }
   &__comment {
     margin-left: 12px;

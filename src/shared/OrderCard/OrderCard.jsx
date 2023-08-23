@@ -25,6 +25,7 @@ export const OrderCard = memo(
     isPayCard,
     isWaiterDishesPage,
     isLoadingReadyDishesUpdate,
+    isLoadingChangeDishStatus,
   }) => {
     const cardRef = useRef(null);
     const [isChecked, setIsChecked] = useState(сhecked || false);
@@ -56,8 +57,8 @@ export const OrderCard = memo(
     }, []);
 
     const onChangeStatusByWaiter = useCallback(
-      (status, dishId) => {
-        const isResolved = onChangeStatus(status, dishId, _id);
+      (dishId) => {
+        const isResolved = onChangeStatus(dishId, _id);
         return isResolved;
       },
       [_id, onChangeStatus]
@@ -106,6 +107,7 @@ export const OrderCard = memo(
                   dishId={_id}
                   changeStatusFunction={onChangeStatusByWaiter}
                   mode={isWaiter && 'waiter'}
+                  isLoading={isLoadingChangeDishStatus}
                 />
               </li>
             ))}
@@ -181,4 +183,6 @@ OrderCard.propTypes = {
   small: PropTypes.bool,
   isWaiterDishesPage: PropTypes.bool,
   isPayCard: PropTypes.bool,
+  isLoadingReadyDishesUpdate: PropTypes.bool,
+  isLoadingChangeDishStatus: PropTypes.bool,
 };

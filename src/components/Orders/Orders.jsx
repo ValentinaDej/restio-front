@@ -172,8 +172,10 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                   orders={data?.orders || []}
                   totalPrice={totalPrice}
                   allOrderPrice={allOrderPrice}
+                  amount={selectedTotal}
                   isAllOrdersPaid={isAllOrdersPaid}
                   onChangeSelected={onChangeSelected}
+                  selectedOrders={selectedOrders}
                   onChangeTypeOfPay={onChangeTypeOfPay}
                   urlParams={params}
                   isWaiter={isWaiter}
@@ -194,17 +196,11 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 key={'list'}
               />
             </motion.div>
-            {!isWaiterDishesPage && (
+            {!isWaiter && (
               <ListBottomBox
-                totalPrice={totalPrice}
                 amount={selectedTotal}
                 selectedOrders={selectedOrders}
-                onChangeSelected={onChangeSelected}
                 urlParams={params}
-                isWaiter={isWaiter}
-                isAllOrdersPaid={isAllOrdersPaid}
-                paymentType={paymentType}
-                notServedDishes={notServedDishes}
                 key={'listBottomBox'}
               />
             )}

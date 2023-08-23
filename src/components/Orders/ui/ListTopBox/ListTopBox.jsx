@@ -14,7 +14,9 @@ import { BillDownload } from '../BillDownload/BillDownload';
 export const ListTopBox = ({
   orders,
   totalPrice,
+  amount,
   onChangeSelected,
+  selectedOrders,
   urlParams,
   isWaiter,
   onChangeTypeOfPay,
@@ -23,15 +25,12 @@ export const ListTopBox = ({
   isAllOrdersPaid,
 }) => {
   const dispatch = useDispatch();
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [ordersIDs, setOrdersIDs] = useState([]);
-  const { isLoading, mutate } = useUpdateOrderStatusByWaiter(
-    urlParams,
-    ordersIDs,
-    totalPrice,
-    paymentType
-  );
+  const [isSelectedOrders, setIsSelectedOrders] = useState(false);
+  const { isLoading, mutate } = useUpdateOrderStatusByWaiter(urlParams, totalPrice, paymentType);
   const {
     isLoading: isLoadingTableStatus,
     mutate: mutateTableStatus,
@@ -65,22 +64,35 @@ export const ListTopBox = ({
 
   useEffect(() => {
     if (isConfirmed) {
-      mutate();
+      if (isSelectedOrders) {
+        mutate(selectedOrders);
+        setIsSelectedOrders(false);
+      } else {
+        mutate(ordersIDs);
+      }
       onChangeSelected(0, []);
       setModalIsOpen(false);
       setIsConfirmed(false);
     }
-  }, [isConfirmed, mutate, onChangeSelected]);
+  }, [isConfirmed, isSelectedOrders, mutate, onChangeSelected, ordersIDs, selectedOrders]);
 
   const onClickMarkAsFreeTable = useCallback(() => {
     mutateTableStatus();
   }, [mutateTableStatus]);
+
+  const onClickMarkAsPaidSelectedAsWaiter = useCallback(() => {
+    setModalIsOpen(true);
+    setIsSelectedOrders(true);
+  }, []);
 
   useEffect(() => {
     if (isError) {
       errorMessage(error?.response.data.message);
     }
   }, [error?.response.data.message, isError]);
+
+  const selectedMessage =
+    amount === 0 ? `Mark as paid for selected` : `Mark as paid for selected $${amount}`;
 
   return (
     <div className={classNames(cls.box, { [cls.isWaiter]: isWaiter }, [])}>
@@ -129,6 +141,24 @@ export const ListTopBox = ({
       ) : (
         <>
           <div className={classNames(cls.btnsBox, { [cls.isWaiter]: isWaiter })}>
+            {isWaiter && (
+              <div className={cls.checkboxes}>
+                <CheckBox
+                  label="Cash"
+                  onChange={onChangeTypeOfPay}
+                  ariaLabel="cash"
+                  disabled={paymentType === 'POS'}
+                  size={22}
+                />
+                <CheckBox
+                  label="Terminal"
+                  onChange={onChangeTypeOfPay}
+                  ariaLabel="POS"
+                  disabled={paymentType === 'cash'}
+                  size={22}
+                />
+              </div>
+            )}
             <div className={cls.btns}>
               <BillDownload orders={orders || []} />
               <Button
@@ -153,25 +183,34 @@ export const ListTopBox = ({
                   </>
                 )}
               </Button>
-            </div>
-            {isWaiter && (
-              <div className={cls.checkboxes}>
-                <CheckBox
-                  label="Cash"
-                  onChange={onChangeTypeOfPay}
-                  ariaLabel="cash"
-                  disabled={paymentType === 'POS'}
-                  size={22}
-                />
-                <CheckBox
-                  label="Terminal"
-                  onChange={onChangeTypeOfPay}
-                  ariaLabel="POS"
-                  disabled={paymentType === 'cash'}
-                  size={22}
-                />
+              <div className={cls.btnsBox}>
+                {totalPrice !== 0 && isWaiter && (
+                  <Button
+                    size={'sm'}
+                    onClick={onClickMarkAsPaidSelectedAsWaiter}
+                    disabled={amount === 0 || isLoading || !paymentType}
+                    className={cls.btn}
+                    mode="outlined"
+                  >
+                    {modalIsOpen ? (
+                      <Loader size={'xs'} color={'var(--color-status)'} className={cls.loader} />
+                    ) : (
+                      <>
+                        {isLoading ? (
+                          <Loader
+                            size={'xs'}
+                            color={'var(--color-status)'}
+                            className={cls.loader}
+                          />
+                        ) : (
+                          `${selectedMessage}`
+                        )}
+                      </>
+                    )}
+                  </Button>
+                )}
               </div>
-            )}
+            </div>
           </div>
           <Text classname={cls.text}>
             {isWaiter
@@ -180,14 +219,27 @@ export const ListTopBox = ({
           </Text>
         </>
       )}
-      {isWaiter && (
+      {isWaiter && isSelectedOrders ? (
+        <ConfirmModal
+          isOpen={modalIsOpen}
+          message={`Confirm your action for ${selectedOrders?.length} ${
+            selectedOrders?.length === 1 ? 'order' : 'orders'
+          } with total $${amount}`}
+          onConfirm={() => setIsConfirmed(true)}
+          setIsOpen={onClickMarkAsPaidSelectedAsWaiter}
+          onCancel={() => {
+            setModalIsOpen(false);
+            setIsSelectedOrders(false);
+          }}
+        />
+      ) : (
         <ConfirmModal
           isOpen={modalIsOpen}
           message={`Confirm your action for ${ordersIDs.length} ${
             ordersIDs?.length === 1 ? 'order' : 'orders'
           } with total $${totalPrice}`}
           onConfirm={() => setIsConfirmed(true)}
-          setIsOpen={onClickMarkAsPaidAllAsWaiter}
+          setIsOpen={onClickMarkAsPaidSelectedAsWaiter}
           onCancel={() => setModalIsOpen(false)}
         />
       )}

@@ -167,8 +167,7 @@ export const getColumns = (
             <DebouncedInput
               value={nameFilter ?? ''}
               onChange={(value) => setNameFilter(String(value))}
-              className="p-2 font-lg shadow border border-block"
-              placeholder="Search all columns..."
+              placeholder="Search name"
             />
           </div>
         ),

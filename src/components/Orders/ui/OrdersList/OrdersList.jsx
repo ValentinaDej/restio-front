@@ -22,6 +22,7 @@ export const OrdersList = ({
 }) => {
   const [loadingCardId, setLoadingCardId] = useState(null);
   const {
+    isLoading: isLoadingChangeDishStatus,
     mutateAsync: mutateDishStatus,
     isError: isUpdateDishError,
     error: updateDishError,
@@ -73,12 +74,14 @@ export const OrdersList = ({
   }, [orders, sortOrderBy]);
 
   const onClickChangeDishStatusAsWaiter = useCallback(
-    async (status, dishId, orderId) => {
+    async (dishId, orderId) => {
+      const status = 'Served';
       try {
+        setLoadingCardId(orderId);
         await mutateDishStatus({ urlParams, status, dishId, orderId });
-        return 'success';
+        setLoadingCardId(null);
       } catch (err) {
-        console.log(err.response.data.message);
+        console.log(err.response?.data.message);
       }
     },
     [mutateDishStatus, urlParams]
@@ -119,6 +122,7 @@ export const OrdersList = ({
       onChangeAllReadyDishes={onClickMarkAllReadyDishesAsServedAsWaiter}
       isWaiterDishesPage={isWaiterDishesPage}
       isLoadingReadyDishesUpdate={loadingCardId === order._id && isLoading}
+      isLoadingChangeDishStatus={loadingCardId === order._id && isLoadingChangeDishStatus}
     />
   );
 
