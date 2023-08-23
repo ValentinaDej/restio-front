@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { Select, Button, Input, FileUploader } from 'shared';
 import styles from './EmployeeForm.module.scss';
-import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA } from 'utils/constants';
+import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA, CHECK_EMAIL_SCHEMA } from 'utils/constants';
 
 const validationSchema = Yup.object({
   firstName: Yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required field'),
@@ -20,7 +20,7 @@ const validationSchema = Yup.object({
   phone: Yup.string()
     .matches(CHECK_PHONE_SCHEMA, 'Incorrect phone number')
     .required('Required field'),
-  email: Yup.string().email('Invalid email').required('Required field'),
+  email: Yup.string().matches(CHECK_EMAIL_SCHEMA, 'Invalid email').required('Required field'),
   address: Yup.string().required('Required field'),
   picture: Yup.string(),
 });
