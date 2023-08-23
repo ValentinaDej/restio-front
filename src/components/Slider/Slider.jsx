@@ -12,6 +12,9 @@ export const Slider = ({ data: recommendedDishes, restId, tableId }) => {
     const elementWidth = element.getBoundingClientRect().width;
     if (elementWidth > 375) {
       const sliderWidth = 300 * recommendedDishes.length;
+      if (sliderWidth <= 300) {
+        return;
+      }
       let scrollAmount = elementWidth * (1 / 3);
       let newRightValue = parseInt(getComputedStyle(element).right) + scrollAmount;
       const diff = sliderWidth - elementWidth - newRightValue;
