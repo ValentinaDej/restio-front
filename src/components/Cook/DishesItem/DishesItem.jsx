@@ -22,7 +22,7 @@ export const DishesItem = ({
   const { restId } = useParams();
 
   const isMobile = useMediaQuery({
-    query: '(max-width: 767px)',
+    query: '(max-width: 767.98px)',
   });
 
   const sizeButton = isMobile ? 'md' : 'lg';

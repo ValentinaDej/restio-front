@@ -55,46 +55,44 @@ const DishesForCookPage = () => {
   );
 
   return (
-    <div className={`main__container  ${styles.main__section}`}>
-      <div className={`${styles.section}`}>
-        <Title classname={`${styles.title}`}>Cook Dashboard</Title>
-        <hr className={`${styles.divider}`} />
-        {isLoading ? (
-          <div className={`${styles.loader__section}`}>
-            <Loader size="lg" />
+    <div className={`${styles.main__section}`}>
+      <Title classname={`${styles.title}`}>Cook Dashboard</Title>
+      <hr className={`${styles.divider}`} />
+      {isLoading ? (
+        <div className={`${styles.loader__section}`}>
+          <Loader size="lg" />
+        </div>
+      ) : (
+        <>
+          <div className={`${styles.button__section}`}>
+            {statuses.map((status) => (
+              <Button
+                key={`btn_${status}`}
+                size={isMobile ? 'sm' : 'md'}
+                mode={currentStatus === status ? 'primary' : 'outlined'}
+                onClick={() => setCurrentStatus(status)}
+              >
+                {status}
+              </Button>
+            ))}
           </div>
-        ) : (
-          <>
-            <div className={`${styles.button__section}`}>
-              {statuses.map((status) => (
-                <Button
-                  key={`btn_${status}`}
-                  size={isMobile ? 'sm' : 'md'}
-                  mode={currentStatus === status ? 'primary' : 'outlined'}
-                  onClick={() => setCurrentStatus(status)}
-                >
-                  {status}
-                </Button>
-              ))}
-            </div>
 
-            <div>
-              {data?.length > 0 &&
-                statuses.map(
-                  (status) =>
-                    currentStatus === status && (
-                      <StatusCardItem
-                        key={status}
-                        status={status}
-                        data={filterDishes(status)}
-                        handleChangeStatus={handleChangeStatus}
-                      />
-                    )
-                )}
-            </div>
-          </>
-        )}
-      </div>
+          <div>
+            {data?.length > 0 &&
+              statuses.map(
+                (status) =>
+                  currentStatus === status && (
+                    <StatusCardItem
+                      key={status}
+                      status={status}
+                      data={filterDishes(status)}
+                      handleChangeStatus={handleChangeStatus}
+                    />
+                  )
+              )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -35,7 +35,6 @@ export const authSlice = createSlice({
     logout: (state) => {
       Object.assign(state, initialState);
       storage.removeItem('userData');
-      window.location.replace('/login');
     },
   },
   extraReducers: (builder) => {
