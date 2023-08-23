@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 
-import styles from './DishesList.module.scss';
 import { DishesItem } from '../DishesItem/DishesItem';
+import styles from './DishesList.module.scss';
 
 export const DishesList = ({ dishes, handleChangeStatus }) => {
   const sortedDishes = [...dishes].sort((dishA, dishB) => {

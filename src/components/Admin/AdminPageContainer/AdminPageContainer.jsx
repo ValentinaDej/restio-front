@@ -7,10 +7,10 @@ import { useMediaQuery } from 'react-responsive';
 import { BiSearch } from 'react-icons/bi';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
-import styles from './AdminPageContainer.module.scss';
 import { getPersonnel } from 'api/personnel';
 import { getDishes } from 'api/dish';
 import { Button, Loader, EmptyCard, EmployeeCard, Title, Input } from 'shared';
+import styles from './AdminPageContainer.module.scss';
 
 const value = {
   employee: 'personnel',

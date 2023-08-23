@@ -5,10 +5,10 @@ import { useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useSSE } from 'react-hooks-sse';
 
-import styles from './DishesForCookPage.module.scss';
 import { Title, Button, Loader } from 'shared';
 import { StatusCardItem } from 'components';
 import { getAllOrders, useUpdateDishStatusByWaiter } from 'api/order';
+import styles from './DishesForCookPage.module.scss';
 
 const statuses = ['Ordered', 'In progress', 'Ready'];
 
@@ -24,9 +24,9 @@ const DishesForCookPage = () => {
       onError: (error) => {
         toast.error(error.message);
       },
-      refetchOnWindowFocus: false, // Disable refetching when the window gains focus
-      refetchOnReconnect: false, // Disable refetching when the network reconnects
-      refetchInterval: false, // Disable automatic periodic refetching
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
       cacheTime: 0,
     }
   );
@@ -38,7 +38,7 @@ const DishesForCookPage = () => {
   }, [createNewOrderEvent, refetch]);
 
   const isMobile = useMediaQuery({
-    query: '(max-width: 767px)',
+    query: '(max-width: 767.98px)',
   });
 
   const { mutate } = useUpdateDishStatusByWaiter();
