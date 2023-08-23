@@ -28,6 +28,7 @@ export const TableBtns = ({
   setDate,
   pageSize,
 }) => {
+  const pageNumber = Number(data?.currentPageIndex) + 1;
   return (
     <div className={cls.btnsBox}>
       <div className={cls.paginationBox}>
@@ -80,7 +81,7 @@ export const TableBtns = ({
           <input
             min={1}
             type="number"
-            defaultValue={isNaN(data?.currentPageIndex) ? 1 : data?.currentPageIndex}
+            defaultValue={isNaN(data?.currentPageIndex) ? 1 : pageNumber}
             onChange={(e) => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
               table.setPageIndex(page);
