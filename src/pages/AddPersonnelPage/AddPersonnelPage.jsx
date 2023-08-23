@@ -76,7 +76,7 @@ const AddPersonnelPage = () => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isSubmitting) {
     return (
       <main className={styles.loadingWrapper}>
         <Loader size={'lg'} />
