@@ -65,7 +65,7 @@ export const TableBtns = ({
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
               table.setPageIndex(page);
             }}
-            className={cls.input}
+            className={cls.navigateInput}
           />
           {isFetching && (
             <div className={cls.loader}>

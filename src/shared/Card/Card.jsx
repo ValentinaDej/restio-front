@@ -90,10 +90,7 @@ export const Card = memo(
               {mode === variant.order && <p className={css['card__sum']}>${sum}</p>}
               {mode === variant.waiter && (
                 <div className={css['card__status']}>
-                  <Status
-                    className={css['card__waiter-status']}
-                    statusCurrent={statusCurrent} // changeStatusFunction={changeStatusFunction}
-                  />
+                  <Status className={css['card__waiter-status']} statusCurrent={statusCurrent} />
                   <Tooltip
                     content={
                       statusCurrent === 'Served'
