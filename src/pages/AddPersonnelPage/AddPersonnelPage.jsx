@@ -76,7 +76,7 @@ const AddPersonnelPage = () => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isSubmitting) {
     return (
       <main className={styles.loadingWrapper}>
         <Loader size={'lg'} />
@@ -123,7 +123,7 @@ const AddPersonnelPage = () => {
             <Button mode={'outlined'} onClick={handleBack}>
               Back
             </Button>
-            <Title>Add Personnel</Title>
+            <Title>{personId ? 'Edit' : 'Add'} Personnel</Title>
           </div>
           <EmployeeForm onSubmit={handleSubmit} size={'md'} initialState={initialData} />
         </div>

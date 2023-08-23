@@ -66,7 +66,7 @@ export const AdminPageContainer = ({
   const handleChange = (e) => {
     const { value } = e.target;
     const normalizedValue = value.trim();
-    if (/^[a-zA-Z]+$/.test(normalizedValue) || normalizedValue === '') {
+    if (/^[a-zA-Zа-яА-Я\s]*$/.test(normalizedValue) || normalizedValue === '') {
       setSearchText(normalizedValue);
     }
   };
@@ -112,6 +112,11 @@ export const AdminPageContainer = ({
             name="search"
             value={searchText}
             onChange={handleChange}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
             placeholder="Search..."
             size="md"
             className={`${styles.input}`}
