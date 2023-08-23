@@ -39,6 +39,7 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
   };
   const updateDishStatusEvent = useSSE('dish status');
   const updateOrderStatusEvent = useSSE('update order status');
+  const newOrderEvent = useSSE('new order');
 
   const { data: { data } = {}, isLoading, refetch, isError, error } = useGetOrdersByTableId(params);
 
@@ -50,6 +51,15 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
       }
     }
   }, [updateDishStatusEvent, refetch, tableId]);
+
+  useEffect(() => {
+    if (newOrderEvent && newOrderEvent.message) {
+      const table_id = newOrderEvent.message.replace(/"/g, '');
+      if (table_id === tableId) {
+        refetch({ force: true });
+      }
+    }
+  }, [newOrderEvent, refetch, tableId]);
 
   useEffect(() => {
     if (updateOrderStatusEvent && updateOrderStatusEvent.message) {

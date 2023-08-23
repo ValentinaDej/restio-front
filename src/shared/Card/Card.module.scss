@@ -16,11 +16,11 @@
     height: 64px;
     border-radius: 20px;
     overflow: hidden;
-    object-fit: cover;
   }
   &__image {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
   &__title {
     display: -webkit-box;
