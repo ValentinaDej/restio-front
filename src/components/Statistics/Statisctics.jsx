@@ -3,14 +3,14 @@ import { TransactionsTable } from './ui/TransactionsTable/TransactionsTable';
 import { StatisticsByTransactionsBlock } from './ui/StatisticsByTransactionsBlock/StatisticsByTransactionsBlock';
 import cls from './Statisctics.module.scss';
 
-export const Statisctics = ({ statistics }) => {
+export const Statisctics = ({ statistics, timestamp }) => {
   return (
     <div>
       <div className={cls.topCharts}>
         <StatisticsByTransactionsBlock monthlyStatistics={statistics} />
         <TotalBlock monthlyStatistics={statistics} />
       </div>
-      <TransactionsTable />
+      <TransactionsTable timestamp={timestamp} />
     </div>
   );
 };

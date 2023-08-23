@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { TbMoodSearch } from 'react-icons/tb';
 import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
 
@@ -11,18 +11,35 @@ import { errorMessage } from 'helpers/errorMessage';
 import { TableBtns } from './TableBtns/TableBtns';
 import { getColumns } from './getColumns';
 
-export const TransactionsTable = () => {
+export const TransactionsTable = ({ timestamp }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { restId } = useParams();
   const [calendarIsOpen, setCalendarIsOpen] = useState(false);
-  const [date, setDate] = useState(undefined);
+  const [date, setDate] = useState(
+    (searchParams.get('date') && new Date(searchParams.get('date'))) || undefined
+  );
   const [{ pageIndex, pageSize }, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 20,
+    pageIndex: searchParams.get('pageIndex') || 0,
+    pageSize: searchParams.get('pageSize') || 20,
   });
-  const [isTodayTransactions, setIsTodayTransactions] = useState(false);
-  const [createdByTypeOptions, setCreatedByTypeOptions] = useState('all');
-  const [transactionTypeOptions, setTransactionTypeOptions] = useState('all');
+  const [isTodayTransactions, setIsTodayTransactions] = useState(
+    Boolean(searchParams.get('today')) || false
+  );
+  const [createdByTypeOptions, setCreatedByTypeOptions] = useState(
+    searchParams.get('userType') || 'all'
+  );
+  const [transactionTypeOptions, setTransactionTypeOptions] = useState(
+    searchParams.get('transactionType') || 'all'
+  );
   const [isClear, setIsClear] = useState(false);
+  const [fetchDataOptions, setFetchDataOptions] = useState({
+    pageIndex,
+    pageSize,
+    today: isTodayTransactions,
+    userType: createdByTypeOptions,
+    transactionType: transactionTypeOptions,
+    date,
+  });
 
   const onClickCalendar = () => {
     setCalendarIsOpen((prev) => !prev);
@@ -31,6 +48,7 @@ export const TransactionsTable = () => {
   const onChangeDate = (newDate) => {
     setDate(newDate);
     setPagination({ pageIndex: 0, pageSize });
+    setIsTodayTransactions(false);
   };
 
   const onClickClearFilters = () => {
@@ -48,6 +66,13 @@ export const TransactionsTable = () => {
     }
   }, [isClear]);
 
+  const defaultValues = useMemo(() => {
+    return {
+      userType: createdByTypeOptions,
+      transactionType: transactionTypeOptions,
+      pageSize,
+    };
+  }, [createdByTypeOptions, pageSize, transactionTypeOptions]);
   const columns = useMemo(
     () =>
       getColumns(
@@ -59,19 +84,11 @@ export const TransactionsTable = () => {
         setTransactionTypeOptions,
         setPagination,
         setDate,
-        setCreatedByTypeOptions
+        setCreatedByTypeOptions,
+        defaultValues
       ),
-    [date, isClear, pageIndex, pageSize]
+    [date, defaultValues, isClear, pageIndex, pageSize]
   );
-
-  const fetchDataOptions = {
-    pageIndex,
-    pageSize,
-    today: isTodayTransactions,
-    userType: createdByTypeOptions,
-    transactionType: transactionTypeOptions,
-    date,
-  };
 
   const {
     data: resp,
@@ -93,22 +110,37 @@ export const TransactionsTable = () => {
   );
 
   useEffect(() => {
-    if (isError) {
-      errorMessage(error?.response.data.message);
+    let params = {};
+    params.pageIndex = pageIndex;
+    params.pageSize = pageSize;
+    params.userType = createdByTypeOptions;
+    params.transactionType = transactionTypeOptions;
+
+    if (isTodayTransactions) {
+      params.today = isTodayTransactions;
     }
-  }, [error?.response.data.message, isError]);
+    if (date) {
+      params.date = date;
+    }
+
+    setSearchParams({ timestamp, ...params });
+    setFetchDataOptions(params);
+  }, [
+    createdByTypeOptions,
+    date,
+    isTodayTransactions,
+    pageIndex,
+    pageSize,
+    refetch,
+    searchParams,
+    setSearchParams,
+    timestamp,
+    transactionTypeOptions,
+  ]);
 
   useEffect(() => {
     refetch();
-  }, [
-    pageIndex,
-    pageSize,
-    isTodayTransactions,
-    createdByTypeOptions,
-    transactionTypeOptions,
-    date,
-    refetch,
-  ]);
+  }, [fetchDataOptions, refetch]);
 
   const table = useReactTable({
     data: resp?.data?.tableTransactions.transactions ?? defaultData,
@@ -124,6 +156,12 @@ export const TransactionsTable = () => {
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
   });
+
+  useEffect(() => {
+    if (isError) {
+      errorMessage(error?.response.data.message);
+    }
+  }, [error?.response.data.message, isError]);
 
   return (
     !isLoading && (

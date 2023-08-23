@@ -71,7 +71,7 @@ export const TableBtns = ({
             Page
           </Text>
           <Text classname={cls.text} fontWeight={600}>
-            {data.pageCount === 0 ? 0 : table.getState().pagination.pageIndex + 1} of{' '}
+            {data?.pageCount === 0 ? 0 : table.getState().pagination?.pageIndex + 1} of{' '}
             {table.getPageCount()}
           </Text>
           <Text classname={cls.text} fontWeight={600}>
@@ -80,7 +80,7 @@ export const TableBtns = ({
           <input
             min={1}
             type="number"
-            defaultValue={isNaN(data.currentPageIndex) ? 1 : data.currentPageIndex}
+            defaultValue={isNaN(data?.currentPageIndex) ? 1 : data?.currentPageIndex}
             onChange={(e) => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
               table.setPageIndex(page);
@@ -94,7 +94,7 @@ export const TableBtns = ({
             Show
           </Text>
           <DropDown
-            defaultValue="20"
+            defaultValue={pageSize}
             options={numberOfTransactionsOptions}
             onSelect={(e) => {
               table.setPageSize(e.value);

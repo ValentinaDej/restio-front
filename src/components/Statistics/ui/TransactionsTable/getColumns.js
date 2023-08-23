@@ -5,17 +5,17 @@ import { getDate } from 'helpers/getDate';
 import cls from './TransactionsTable.module.scss';
 
 const typeOfTransactionFilterOptions = [
-  { value: 'all', label: 'All' },
-  { value: 'cash', label: 'Cash' },
+  { value: 'all', label: 'all' },
+  { value: 'cash', label: 'cash' },
   { value: 'POS', label: 'POS' },
-  { value: 'online', label: 'Online' },
+  { value: 'online', label: 'online' },
 ];
 
 const typeOfUserFilterOptions = [
-  { value: 'all', label: 'All' },
-  { value: 'customer', label: 'Customer' },
-  { value: 'waiter', label: 'Waiter' },
-  { value: 'admin', label: 'Admin' },
+  { value: 'all', label: 'all' },
+  { value: 'customer', label: 'customer' },
+  { value: 'waiter', label: 'waiter' },
+  { value: 'admin', label: 'admin' },
 ];
 
 export const getColumns = (
@@ -27,7 +27,8 @@ export const getColumns = (
   setTransactionTypeOptions,
   setPagination,
   setDate,
-  setCreatedByTypeOptions
+  setCreatedByTypeOptions,
+  defaultValues
 ) => [
   {
     header: 'Transaction',
@@ -71,7 +72,7 @@ export const getColumns = (
                 setTransactionTypeOptions(e.value);
                 setPagination({ pageIndex: 0, pageSize });
               }}
-              defaultValue="All"
+              defaultValue={defaultValues.transactionType}
               clear={isClear}
             />
           </span>
@@ -128,7 +129,7 @@ export const getColumns = (
                 setCreatedByTypeOptions(e.value);
                 setPagination({ pageIndex: 0, pageSize });
               }}
-              defaultValue="All"
+              defaultValue={defaultValues.userType}
               clear={isClear}
             />
           </span>
