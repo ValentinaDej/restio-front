@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 export const getPersonnel = async ({ restId, pageParam = 1, searchText = '' }) => {
   try {
     const response = await instance(
-      `/personnel/restaurant/${restId}?page=${pageParam}&limit=11&searchText=${searchText}`
+      `/personnel/restaurant/${restId}?page=${pageParam}&limit=9&searchText=${searchText}`
     );
     return response.data;
   } catch (error) {

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
-
 import { Select, Button, Input, FileUploader } from 'shared';
 import styles from './EmployeeForm.module.scss';
 import { CHECK_PASSWORD_SCHEMA, CHECK_PHONE_SCHEMA } from 'utils/constants';
@@ -81,10 +80,22 @@ export const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
 
     onSubmit({ ...data, picture: picture });
 
-    reset();
-
     fileUploaderRef.current.clearFile();
   };
+
+  function handleClear() {
+    reset({
+      firstName: '',
+      lastName: '',
+      password: '',
+      phone: '',
+      email: '',
+      address: '',
+      role: '',
+      gender: '',
+    });
+    fileUploaderRef.current.clearFile();
+  }
 
   return (
     <>
@@ -167,7 +178,7 @@ export const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
               control={control}
               render={({ field }) => (
                 <>
-                  <Input {...field} type="email" placeholder="Email" size={size} length={`lg`} />
+                  <Input {...field} type="text" placeholder="Email" size={size} length={`lg`} />
                   {errors.email && <div className={styles.error}>{errors.email}</div>}
                 </>
               )}
@@ -236,7 +247,7 @@ export const EmployeeForm = ({ onSubmit, initialState, buttonText, size }) => {
           <Button type="submit" size={size} disabled={isSubmitting}>
             {buttonText}
           </Button>
-          <Button mode={'outlined'} type="button" onClick={() => reset()} size={size}>
+          <Button mode={'outlined'} type="button" onClick={handleClear} size={size}>
             Clear
           </Button>
         </div>
