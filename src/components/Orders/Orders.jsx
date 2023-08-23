@@ -129,7 +129,7 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
           <hr className={cls.divider} />
         </>
       )}
-      <section className={cls.section}>
+      <div className={cls.section}>
         <NavigateButtons
           params={params}
           isWaiter={isWaiter}
@@ -205,7 +205,7 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
             )}
           </AnimatePresence>
         )}
-      </section>
+      </div>
     </>
   );
 };

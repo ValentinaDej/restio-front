@@ -3,9 +3,9 @@ import cls from './TablePayWaiterPage.module.scss';
 
 const TablePayWaiterPage = () => {
   return (
-    <main className={cls.main}>
+    <section className={cls.main}>
       <Orders isWaiter isSmall />
-    </main>
+    </section>
   );
 };
 
