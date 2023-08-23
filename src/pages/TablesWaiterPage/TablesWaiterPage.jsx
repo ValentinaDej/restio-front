@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
 import { useSSE } from 'react-hooks-sse';
 import { motion, AnimatePresence } from 'framer-motion';
