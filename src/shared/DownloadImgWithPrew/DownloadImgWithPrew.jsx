@@ -48,6 +48,12 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
     return fileName.split('.').pop().toLowerCase();
   };
 
+  const handleFileInputClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   function onSelectFile(e) {
     if (e.target.files && e.target.files.length > 0) {
       const fileExtension = getFileExtension(e.target.files[0].name);
@@ -64,12 +70,6 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
       }
     }
   }
-
-  const handleFileInputClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
 
   const setDefaults = () => {
     setScale(1);
@@ -213,6 +213,7 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
                 onChange={(_, percentCrop) => setCrop(percentCrop)}
                 onComplete={(c) => setCompletedCrop(c)}
                 aspect={aspect}
+                circularCrop={true}
               >
                 <img
                   ref={imgRef}
