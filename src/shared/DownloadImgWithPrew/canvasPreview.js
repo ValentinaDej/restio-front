@@ -2,9 +2,11 @@ const TO_RADIANS = Math.PI / 180;
 
 export async function canvasPreview(image, canvas, crop, scale = 1, rotate = 0) {
   const ctx = canvas.getContext('2d');
+
   if (!ctx) {
     throw new Error('No 2d context');
   }
+
   const scaleX = image.naturalWidth / image.width;
   const scaleY = image.naturalHeight / image.height;
   const pixelRatio = window.devicePixelRatio;
