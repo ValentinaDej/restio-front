@@ -11,8 +11,10 @@ export const Slider = ({ data: recommendedDishes, restId, tableId }) => {
     const element = sliderRef.current;
     const elementWidth = element.getBoundingClientRect().width;
     if (elementWidth > 375) {
+      console.log(elementWidth);
       const sliderWidth = 300 * recommendedDishes.length;
-      if (sliderWidth <= 300) {
+      console.log(sliderWidth);
+      if (sliderWidth <= elementWidth) {
         return;
       }
       let scrollAmount = elementWidth * (1 / 3);

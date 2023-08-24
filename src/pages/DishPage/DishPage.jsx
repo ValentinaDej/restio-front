@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 import classes from './DishPage.module.scss';
 import instance from 'api';
 import { Cart, Slider, DishDescription } from 'components';
-import { Loader, Button, QuantityButton, Text, Title } from 'shared';
+import { Loader, Button, QuantityButton, Text, Title, Footer } from 'shared';
 import { getDishById } from 'api/dish';
 import { addProduct, decreaseQuantity, increaseQuantity } from 'store/cart/cartSlice';
 import { getProductFromState } from 'store/cart/cartSelectors';
@@ -148,16 +148,18 @@ const DishPage = () => {
                   </QuantityButton>
                 )}
               </div>
-              <div className={classes.box}>
-                <Text mode="p" classname={classes.subtitle}>
-                  Ingredients
-                </Text>
-                <ul className={classes.ingr_item}>
-                  {dish.ingredients?.map((item) => {
-                    return <li key={item._id}>{item.name}</li>;
-                  })}
-                </ul>
-              </div>
+              {dish.ingredients?.length > 0 && (
+                <div className={classes.box}>
+                  <Text mode="p" classname={classes.subtitle}>
+                    Ingredients
+                  </Text>
+                  <ul className={classes.ingr_item}>
+                    {dish.ingredients?.map((item) => {
+                      return <li key={item._id}>{item.name}</li>;
+                    })}
+                  </ul>
+                </div>
+              )}
               <div className={`${classes.spicy_wrapper} ${classes.box} `}>
                 <div className={classes.spicy_item}>
                   <Text mode="p" classname={classes.subtitle}>
@@ -247,6 +249,7 @@ const DishPage = () => {
           <Slider data={recommendedDishes} restId={restId} tableId={tableId}></Slider>
         </div>
       </main>
+      <Footer></Footer>
     </>
   );
 };
