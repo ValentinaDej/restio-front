@@ -1,4 +1,5 @@
 import instance from 'api';
+import { toast } from 'react-hot-toast';
 
 const handleErrorResponse = (error) => {
   if (error.response) {
@@ -71,5 +72,10 @@ export const createDish = async (body, restId) => {
 };
 
 export const deleteDishById = async (dishId, restId) => {
-  await instance.patch(`/dishes/${dishId}/restaurant/${restId}`);
+  try {
+    await instance.patch(`/dishes/${dishId}/restaurant/${restId}`);
+  } catch (error) {
+    handleErrorResponse(error);
+    toast.error(error.message);
+  }
 };
