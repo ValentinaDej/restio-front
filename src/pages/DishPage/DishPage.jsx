@@ -241,7 +241,7 @@ const DishPage = () => {
         </div>
         <Cart />
         <div className={classes.recommended_block}>
-          <Title mode="h2" classname={classes.dishTitle}>
+          <Title mode="h2" textAlign="center" classname={classes.dishTitle}>
             Recommend to try
           </Title>
           <Slider data={recommendedDishes} restId={restId} tableId={tableId}></Slider>
