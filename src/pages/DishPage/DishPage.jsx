@@ -148,16 +148,18 @@ const DishPage = () => {
                   </QuantityButton>
                 )}
               </div>
-              <div className={classes.box}>
-                <Text mode="p" classname={classes.subtitle}>
-                  Ingredients
-                </Text>
-                <ul className={classes.ingr_item}>
-                  {dish.ingredients?.map((item) => {
-                    return <li key={item._id}>{item.name}</li>;
-                  })}
-                </ul>
-              </div>
+              {dish.ingredients?.length > 0 && (
+                <div className={classes.box}>
+                  <Text mode="p" classname={classes.subtitle}>
+                    Ingredients
+                  </Text>
+                  <ul className={classes.ingr_item}>
+                    {dish.ingredients?.map((item) => {
+                      return <li key={item._id}>{item.name}</li>;
+                    })}
+                  </ul>
+                </div>
+              )}
               <div className={`${classes.spicy_wrapper} ${classes.box} `}>
                 <div className={classes.spicy_item}>
                   <Text mode="p" classname={classes.subtitle}>
@@ -241,7 +243,7 @@ const DishPage = () => {
         </div>
         <Cart />
         <div className={classes.recommended_block}>
-          <Title mode="h2" classname={classes.dishTitle}>
+          <Title mode="h2" textAlign="center" classname={classes.dishTitle}>
             Recommend to try
           </Title>
           <Slider data={recommendedDishes} restId={restId} tableId={tableId}></Slider>

@@ -11,7 +11,10 @@ export const DishDescription = ({ data: dish }) => {
 
   const generateText = useCallback(async () => {
     if (dish) {
-      const keys = [process.env.HUGGINGFACE_API_KEY, process.env.HUGGINGFACE_API_KEY2];
+      const keys = [
+        process.env.REACT_APP_HUGGINGFACE_API_KEY,
+        process.env.REACT_APP_HUGGINGFACE_API_KEY2,
+      ];
       let generatedText = '';
       for (const key of keys) {
         try {
