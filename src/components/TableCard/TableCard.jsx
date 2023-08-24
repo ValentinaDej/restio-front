@@ -8,6 +8,7 @@ import { MdTableBar } from 'react-icons/md';
 import { AiFillStar } from 'react-icons/ai';
 import { IoIosRestaurant } from 'react-icons/io';
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 
 import styles from './TableCard.module.scss';
 import { StatusSelector, Text, Button } from 'shared';
@@ -39,28 +40,24 @@ export const TableCard = ({
   const paidOrders = orders.filter((order) => order.status === 'Paid').length;
   const openOrders = orders.filter((order) => order.status === 'Open').length;
 
-  const getTotalReadyDishesCount = (orders) => {
-    const totalReadyCount = orders.reduce((count, order) => {
-      const readyItems = order.orderItems.filter((item) => item.status === 'Ready');
-      const readyItemCount = readyItems.reduce((sum, readyItem) => sum + readyItem.quantity, 0);
-      return count + readyItemCount;
-    }, 0);
+  const getTotalDishesByStatus = useMemo(
+    () => (orders, dishStatus) => {
+      const totalReadyCount = orders.reduce((count, order) => {
+        const readyItems = order.orderItems.filter((item) => item.status === dishStatus);
+        const readyItemCount = readyItems.reduce((sum, readyItem) => sum + readyItem.quantity, 0);
+        return count + readyItemCount;
+      }, 0);
 
-    return totalReadyCount;
-  };
+      return totalReadyCount;
+    },
+    []
+  );
 
-  const getTotalOrderedDishesCount = (orders) => {
-    const totalReadyCount = orders.reduce((count, order) => {
-      const readyItems = order.orderItems.filter((item) => item.status === 'Ordered');
-      const readyItemCount = readyItems.reduce((sum, readyItem) => sum + readyItem.quantity, 0);
-      return count + readyItemCount;
-    }, 0);
+  const amountOrderedDishes = getTotalDishesByStatus(orders, 'Ordered');
+  const amountInProgressDishes = getTotalDishesByStatus(orders, 'In progress');
+  const notReadyDishes = amountOrderedDishes + amountInProgressDishes;
 
-    return totalReadyCount;
-  };
-
-  const amountReadyDishes = getTotalReadyDishesCount(orders);
-  const amountOrderedDishes = getTotalOrderedDishesCount(orders);
+  const amountReadyDishes = getTotalDishesByStatus(orders, 'Ready');
 
   return (
     <motion.div
@@ -147,12 +144,12 @@ export const TableCard = ({
                   <BiDish size={30} />
                 </div>
                 <div className={styles.table__dishes_list}>
-                  <div className={styles.table__dishes_ordered}>
+                  <div className={styles.table__dishes_notReady}>
                     <Text fontSize={15}>
-                      <span className={amountOrderedDishes !== 0 ? styles.unpaid : styles.disable}>
-                        Ordered
+                      <span className={notReadyDishes !== 0 ? styles.notReady : styles.disable}>
+                        Not ready
                       </span>
-                      {amountOrderedDishes !== 0 ? amountOrderedDishes : ''}
+                      {notReadyDishes !== 0 ? notReadyDishes : ''}
                     </Text>
                   </div>
                   <div className={styles.table__dishes_ready}>

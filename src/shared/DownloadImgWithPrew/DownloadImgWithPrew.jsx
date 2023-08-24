@@ -8,7 +8,7 @@ import { canvasPreview } from './canvasPreview';
 import { useDebounceEffect } from './useDebounceEffect';
 
 import toast from 'react-hot-toast';
-import { Button, Modal } from 'shared';
+import { Button, Modal, CheckBox } from 'shared';
 
 import classes from './DownloadImgWithPrew.module.scss';
 
@@ -40,12 +40,18 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
   const [completedCrop, setCompletedCrop] = useState();
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
-  const [aspect, setAspect] = useState(16 / 9);
+  const [aspect, setAspect] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const fileInputRef = useRef();
 
   const getFileExtension = (fileName) => {
     return fileName.split('.').pop().toLowerCase();
+  };
+
+  const handleFileInputClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   function onSelectFile(e) {
@@ -65,29 +71,17 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
     }
   }
 
+  const setDefaults = () => {
+    setScale(1);
+    setRotate(0);
+    setAspect(1);
+  };
+
   function onImageLoad(e) {
     if (aspect) {
       const { width, height } = e.currentTarget;
       setCrop(centerAspectCrop(width, height, aspect));
     }
-  }
-
-  function onDownloadCropClick() {
-    if (!previewCanvasRef.current) {
-      throw new Error('Crop canvas does not exist');
-    }
-
-    previewCanvasRef.current.toBlob((blob) => {
-      if (!blob) {
-        throw new Error('Failed to create blob');
-      }
-      if (blobUrlRef.current) {
-        URL.revokeObjectURL(blobUrlRef.current);
-      }
-      blobUrlRef.current = URL.createObjectURL(blob);
-      hiddenAnchorRef.current.href = blobUrlRef.current;
-      hiddenAnchorRef.current.click();
-    });
   }
 
   useDebounceEffect(
@@ -98,7 +92,6 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
         imgRef.current &&
         previewCanvasRef.current
       ) {
-        // We use canvasPreview as it's much faster than imgPreview.
         canvasPreview(imgRef.current, previewCanvasRef.current, completedCrop, scale, rotate);
       }
     },
@@ -111,16 +104,19 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
       setAspect(undefined);
     } else if (imgRef.current) {
       const { width, height } = imgRef.current;
-      setAspect(16 / 9);
-      const newCrop = centerAspectCrop(width, height, 16 / 9);
+      setAspect(1);
+      const newCrop = centerAspectCrop(width, height, 1);
       setCrop(newCrop);
-      // Updates the preview
       setCompletedCrop(convertToPixelCrop(newCrop, width, height));
     }
   }
 
-  const handleAddImage = () => {
-    previewCanvasRef.current.toBlob((blob) => {
+  const handleBlobCreation = (canvasRef, blobUrlRef, callback) => {
+    if (!canvasRef.current) {
+      throw new Error('Crop canvas does not exist');
+    }
+
+    canvasRef.current.toBlob((blob) => {
       if (!blob) {
         throw new Error('Failed to create blob');
       }
@@ -128,21 +124,28 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
         URL.revokeObjectURL(blobUrlRef.current);
       }
       blobUrlRef.current = URL.createObjectURL(blob);
-      handleImagePrew(blobUrlRef.current);
-      handleImageDownload(blob);
+      callback(blobUrlRef.current);
+    });
+  };
+
+  const handleAddImage = () => {
+    handleBlobCreation(previewCanvasRef, blobUrlRef, (blobUrl) => {
+      handleImagePrew(blobUrl);
+      handleImageDownload(blobUrl);
       setIsModalOpen(false);
     });
   };
 
-  const handleFileInputClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+  const onDownloadCropClick = () => {
+    handleBlobCreation(previewCanvasRef, blobUrlRef, (blobUrl) => {
+      hiddenAnchorRef.current.href = blobUrl;
+      hiddenAnchorRef.current.click();
+    });
   };
 
   return (
-    <div className="App">
-      <div className="Crop-Controls">
+    <div>
+      <div>
         <div className={classes.addButton} onClick={handleFileInputClick}>
           <LiaPlusSolid className={`${classes.icon}`} />
           <input
@@ -191,10 +194,16 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
               />
             </div>
             <div>
-              <button className="toggleButton" onClick={handleToggleAspectClick}>
-                Toggle aspect {aspect ? 'off' : 'on'}
-              </button>
+              <CheckBox
+                label={`Aspect ${aspect ? 'off' : 'on'}`}
+                onChange={handleToggleAspectClick}
+                ariaLabel="aspect"
+                size={22}
+              />
             </div>
+            <Button size={'sm'} onClick={setDefaults} mode={'outlined'}>
+              defaults
+            </Button>
           </div>
 
           {imgSrc && (
@@ -204,6 +213,7 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
                 onChange={(_, percentCrop) => setCrop(percentCrop)}
                 onComplete={(c) => setCompletedCrop(c)}
                 aspect={aspect}
+                circularCrop={true}
               >
                 <img
                   ref={imgRef}
@@ -211,6 +221,7 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
                   src={imgSrc}
                   style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
                   onLoad={onImageLoad}
+                  className={classes.img__wrapper}
                 />
               </ReactCrop>
             </div>

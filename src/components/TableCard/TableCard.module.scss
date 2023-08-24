@@ -102,7 +102,7 @@
     height: 60px;
   }
 
-  &__dishes_ordered {
+  &__dishes_notReady {
     display: flex;
     flex-direction: row;
     padding: 0.5rem 0;
@@ -192,6 +192,11 @@
 
 .paid {
   background-color: #72daba;
+  @extend %status;
+}
+
+.notReady {
+  background-color: #9c9afe;
   @extend %status;
 }
 

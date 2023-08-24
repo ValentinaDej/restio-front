@@ -10,3 +10,4 @@ export { Cart } from './Cart/Cart';
 export { ConfirmModal } from './ConfirmModal/ConfirmModal';
 export { DishesItem, StatusCardItem, DishesList } from './Cook';
 export { Dialog } from './Dialog/Dialog';
+export { CheckboxTables } from './CheckboxTables/CheckboxTables';
