@@ -1,4 +1,4 @@
-import CategoryTabs from './CategoryTabs';
+import { CategoryTabs } from './CategoryTabs';
 
 const meta = {
   title: 'Shared/CategoryTabs',

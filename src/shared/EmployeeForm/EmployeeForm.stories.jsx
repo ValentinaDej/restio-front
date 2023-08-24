@@ -1,5 +1,5 @@
 import React from 'react';
-import EmployeeForm from './EmployeeForm';
+import { EmployeeForm } from './EmployeeForm';
 
 export default {
   title: 'Forms/EmployeeForm', // The title of the component in the Storybook sidebar
