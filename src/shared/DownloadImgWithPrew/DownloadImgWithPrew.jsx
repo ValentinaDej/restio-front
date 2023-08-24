@@ -65,29 +65,23 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
     }
   }
 
+  const handleFileInputClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const setDefaults = () => {
+    setScale(1);
+    setRotate(0);
+    setAspect(1);
+  };
+
   function onImageLoad(e) {
     if (aspect) {
       const { width, height } = e.currentTarget;
       setCrop(centerAspectCrop(width, height, aspect));
     }
-  }
-
-  function onDownloadCropClick() {
-    if (!previewCanvasRef.current) {
-      throw new Error('Crop canvas does not exist');
-    }
-
-    previewCanvasRef.current.toBlob((blob) => {
-      if (!blob) {
-        throw new Error('Failed to create blob');
-      }
-      if (blobUrlRef.current) {
-        URL.revokeObjectURL(blobUrlRef.current);
-      }
-      blobUrlRef.current = URL.createObjectURL(blob);
-      hiddenAnchorRef.current.href = blobUrlRef.current;
-      hiddenAnchorRef.current.click();
-    });
   }
 
   useDebounceEffect(
@@ -117,8 +111,12 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
     }
   }
 
-  const handleAddImage = () => {
-    previewCanvasRef.current.toBlob((blob) => {
+  const handleBlobCreation = (canvasRef, blobUrlRef, callback) => {
+    if (!canvasRef.current) {
+      throw new Error('Crop canvas does not exist');
+    }
+
+    canvasRef.current.toBlob((blob) => {
       if (!blob) {
         throw new Error('Failed to create blob');
       }
@@ -126,27 +124,28 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
         URL.revokeObjectURL(blobUrlRef.current);
       }
       blobUrlRef.current = URL.createObjectURL(blob);
-      handleImagePrew(blobUrlRef.current);
-      handleImageDownload(blob);
+      callback(blobUrlRef.current);
+    });
+  };
+
+  const handleAddImage = () => {
+    handleBlobCreation(previewCanvasRef, blobUrlRef, (blobUrl) => {
+      handleImagePrew(blobUrl);
+      handleImageDownload(blobUrl);
       setIsModalOpen(false);
     });
   };
 
-  const handleFileInputClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const setDefaults = () => {
-    setScale(1);
-    setRotate(0);
-    setAspect(1);
+  const onDownloadCropClick = () => {
+    handleBlobCreation(previewCanvasRef, blobUrlRef, (blobUrl) => {
+      hiddenAnchorRef.current.href = blobUrl;
+      hiddenAnchorRef.current.click();
+    });
   };
 
   return (
-    <div className="App">
-      <div className="Crop-Controls">
+    <div>
+      <div>
         <div className={classes.addButton} onClick={handleFileInputClick}>
           <LiaPlusSolid className={`${classes.icon}`} />
           <input
