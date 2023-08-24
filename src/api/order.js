@@ -1,6 +1,5 @@
 import { instance } from 'api';
 import { errorMessage } from 'helpers/errorMessage';
-import { toast } from 'react-hot-toast';
 
 const { useQuery, useMutation, useQueryClient } = require('react-query');
 
