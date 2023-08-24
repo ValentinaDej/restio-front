@@ -8,11 +8,14 @@ import { Text, Button } from 'shared';
 import { classNames } from 'helpers/classNames';
 import { payOrders } from 'store/customer/orders/asyncOperations';
 import { getPaymentInfo } from 'store/customer/orders/selectors';
-import { useMediaQuery } from 'hooks/useMediaQuery';
+
+import { useMediaQuery } from 'react-responsive';
 
 export const ListBottomBox = ({ amount, selectedOrders, urlParams }) => {
   const dispatch = useDispatch();
-  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isMobile = useMediaQuery({
+    query: '(max-width: 767.98px)',
+  });
 
   const { data, signature } = useSelector(getPaymentInfo);
   const [isOpen, setIsOpen] = useState(false);
