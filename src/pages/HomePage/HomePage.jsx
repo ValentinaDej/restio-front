@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import styles from './HomePage.module.scss';
+
 import { Title, Text, Logo, MainWrapper } from 'shared';
+import styles from './HomePage.module.scss';
 
 const HomePage = () => {
   return (
