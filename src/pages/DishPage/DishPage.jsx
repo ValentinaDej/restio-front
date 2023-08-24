@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 import classes from './DishPage.module.scss';
 import instance from 'api';
 import { Cart, Slider, DishDescription } from 'components';
-import { Loader, Button, QuantityButton, Text, Title, Footer } from 'shared';
+import { Loader, Button, QuantityButton, Text, Title } from 'shared';
 import { getDishById } from 'api/dish';
 import { addProduct, decreaseQuantity, increaseQuantity } from 'store/cart/cartSlice';
 import { getProductFromState } from 'store/cart/cartSelectors';
@@ -249,7 +249,6 @@ const DishPage = () => {
           <Slider data={recommendedDishes} restId={restId} tableId={tableId}></Slider>
         </div>
       </main>
-      <Footer></Footer>
     </>
   );
 };
