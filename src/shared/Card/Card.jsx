@@ -31,7 +31,6 @@ export const Card = memo(
     statusCurrent,
     changeStatusFunction,
     dishId,
-    isLoading,
   }) => {
     const cart = useSelector(getProductFromState);
     const exist = cart.some(({ id, comment }) => id === dishId && comment);
@@ -101,23 +100,14 @@ export const Card = memo(
                     }
                     postion="left"
                   >
-                    {isLoading ? (
-                      <IconButton
-                        Svg={AiFillCheckCircle}
-                        size={15}
-                        mode={'outlined'}
-                        disabled={true}
-                      />
-                    ) : (
-                      <IconButton
-                        Svg={AiFillCheckCircle}
-                        size={15}
-                        mode={'outlined'}
-                        disabled={statusCurrent !== 'Ready'}
-                        onClick={changeStatusFunction}
-                        itemId={dishId}
-                      />
-                    )}
+                    <IconButton
+                      Svg={AiFillCheckCircle}
+                      size={15}
+                      mode={'outlined'}
+                      disabled={statusCurrent !== 'Ready'}
+                      onClick={changeStatusFunction}
+                      itemId={dishId}
+                    />
                   </Tooltip>
                 </div>
               )}
@@ -154,5 +144,4 @@ Card.propTypes = {
   currentSelectStatus: PropTypes.string,
   changeStatusFunction: PropTypes.func,
   dishId: PropTypes.string,
-  isLoading: PropTypes.bool,
 };
