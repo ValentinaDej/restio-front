@@ -8,7 +8,7 @@ import { canvasPreview } from './canvasPreview';
 import { useDebounceEffect } from './useDebounceEffect';
 
 import toast from 'react-hot-toast';
-import { Button, Modal } from 'shared';
+import { Button, Modal, CheckBox } from 'shared';
 
 import classes from './DownloadImgWithPrew.module.scss';
 
@@ -40,7 +40,7 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
   const [completedCrop, setCompletedCrop] = useState();
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
-  const [aspect, setAspect] = useState(16 / 9);
+  const [aspect, setAspect] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const fileInputRef = useRef();
 
@@ -98,7 +98,6 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
         imgRef.current &&
         previewCanvasRef.current
       ) {
-        // We use canvasPreview as it's much faster than imgPreview.
         canvasPreview(imgRef.current, previewCanvasRef.current, completedCrop, scale, rotate);
       }
     },
@@ -111,10 +110,9 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
       setAspect(undefined);
     } else if (imgRef.current) {
       const { width, height } = imgRef.current;
-      setAspect(16 / 9);
-      const newCrop = centerAspectCrop(width, height, 16 / 9);
+      setAspect(1);
+      const newCrop = centerAspectCrop(width, height, 1);
       setCrop(newCrop);
-      // Updates the preview
       setCompletedCrop(convertToPixelCrop(newCrop, width, height));
     }
   }
@@ -138,6 +136,12 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
+  };
+
+  const setDefaults = () => {
+    setScale(1);
+    setRotate(0);
+    setAspect(1);
   };
 
   return (
@@ -191,10 +195,16 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
               />
             </div>
             <div>
-              <button className="toggleButton" onClick={handleToggleAspectClick}>
-                Toggle aspect {aspect ? 'off' : 'on'}
-              </button>
+              <CheckBox
+                label={`Aspect ${aspect ? 'off' : 'on'}`}
+                onChange={handleToggleAspectClick}
+                ariaLabel="aspect"
+                size={22}
+              />
             </div>
+            <Button size={'sm'} onClick={setDefaults} mode={'outlined'}>
+              defaults
+            </Button>
           </div>
 
           {imgSrc && (
@@ -211,6 +221,7 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
                   src={imgSrc}
                   style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
                   onLoad={onImageLoad}
+                  className={classes.img__wrapper}
                 />
               </ReactCrop>
             </div>
