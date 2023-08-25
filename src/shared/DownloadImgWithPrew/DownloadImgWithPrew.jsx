@@ -48,12 +48,6 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
     return fileName.split('.').pop().toLowerCase();
   };
 
-  const handleFileInputClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
   function onSelectFile(e) {
     if (e.target.files && e.target.files.length > 0) {
       const fileExtension = getFileExtension(e.target.files[0].name);
@@ -70,12 +64,6 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
       }
     }
   }
-
-  const setDefaults = () => {
-    setScale(1);
-    setRotate(0);
-    setAspect(1);
-  };
 
   function onImageLoad(e) {
     if (aspect) {
@@ -111,12 +99,8 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
     }
   }
 
-  const handleBlobCreation = (canvasRef, blobUrlRef, callback) => {
-    if (!canvasRef.current) {
-      throw new Error('Crop canvas does not exist');
-    }
-
-    canvasRef.current.toBlob((blob) => {
+  const handleAddImage = () => {
+    previewCanvasRef.current.toBlob((blob) => {
       if (!blob) {
         throw new Error('Failed to create blob');
       }
@@ -124,23 +108,40 @@ export const DownloadImgWithPrew = ({ handleImagePrew, handleImageDownload }) =>
         URL.revokeObjectURL(blobUrlRef.current);
       }
       blobUrlRef.current = URL.createObjectURL(blob);
-      callback(blobUrlRef.current);
-    });
-  };
-
-  const handleAddImage = () => {
-    handleBlobCreation(previewCanvasRef, blobUrlRef, (blobUrl) => {
-      handleImagePrew(blobUrl);
-      handleImageDownload(blobUrl);
+      handleImagePrew(blobUrlRef.current);
+      handleImageDownload(blob);
       setIsModalOpen(false);
     });
   };
 
-  const onDownloadCropClick = () => {
-    handleBlobCreation(previewCanvasRef, blobUrlRef, (blobUrl) => {
-      hiddenAnchorRef.current.href = blobUrl;
+  function onDownloadCropClick() {
+    if (!previewCanvasRef.current) {
+      throw new Error('Crop canvas does not exist');
+    }
+
+    previewCanvasRef.current.toBlob((blob) => {
+      if (!blob) {
+        throw new Error('Failed to create blob');
+      }
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+      }
+      blobUrlRef.current = URL.createObjectURL(blob);
+      hiddenAnchorRef.current.href = blobUrlRef.current;
       hiddenAnchorRef.current.click();
     });
+  }
+
+  const handleFileInputClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const setDefaults = () => {
+    setScale(1);
+    setRotate(0);
+    setAspect(1);
   };
 
   return (
