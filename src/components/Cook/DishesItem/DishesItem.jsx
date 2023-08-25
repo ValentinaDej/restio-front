@@ -5,8 +5,8 @@ import { MdTableBar } from 'react-icons/md';
 import { BiDish } from 'react-icons/bi';
 import { IoIosClose } from 'react-icons/io';
 
-import styles from './DishesItem.module.scss';
 import { Text, Button } from 'shared';
+import styles from './DishesItem.module.scss';
 
 export const DishesItem = ({
   dish,
@@ -22,7 +22,7 @@ export const DishesItem = ({
   const { restId } = useParams();
 
   const isMobile = useMediaQuery({
-    query: '(max-width: 767px)',
+    query: '(max-width: 767.98px)',
   });
 
   const sizeButton = isMobile ? 'md' : 'lg';
@@ -40,7 +40,9 @@ export const DishesItem = ({
         </div>
         <div className={`${styles.information__timeSection}`}>
           <p className={`${styles.information__timeText}`}>Waiting:</p>
-          <div className={`${styles.information__time} ${timeForWaiting > 10 && styles.active}`}>
+          <div
+            className={`${styles.information__time} ${timeForWaiting > 10 ? styles.active : ''}`}
+          >
             <p className={`${styles.information__timeText}`}>{timeForWaiting}</p>
             <p className={`${styles.information__timeText}`}> min</p>
           </div>

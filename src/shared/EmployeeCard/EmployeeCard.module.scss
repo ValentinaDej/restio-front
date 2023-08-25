@@ -2,10 +2,12 @@
   .card {
     position: relative;
     width: 100%;
-    flex: 0 0 1;
     transition: 1s;
-
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    height: 100%;
+
     &.outlined {
       border: dashed 1px var(--color-light);
       border-radius: 50px 50px 25px 25px;
@@ -39,6 +41,7 @@
     border-radius: 25px;
     border: 0 solid rgba(0, 0, 0, 0.125);
     transition: 0.7s;
+    flex-grow: 1;
   }
 
   .trash {

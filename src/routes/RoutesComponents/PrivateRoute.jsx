@@ -1,11 +1,13 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { getToken, getUserRole } from 'store/auth/authSelector';
 
-export const PrivateRoute = ({ component: Element }) => {
-  const { role } = useSelector((state) => state.auth);
+export const PrivateRoute = ({ component: Element, redirectTo = '/login' }) => {
+  const role = useSelector(getUserRole);
+  const token = useSelector(getToken);
   const location = useLocation();
   const currentPath = location.pathname;
-
   // Redirect users without a role from admin, cook, and waiter routes
   if (
     (!role || role === 'customer') &&
@@ -13,21 +15,27 @@ export const PrivateRoute = ({ component: Element }) => {
       currentPath.includes('/cook') ||
       currentPath.includes('/waiter'))
   ) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
-
   const allowedRoutes = {
-    admin: ['admin'], // Admin can access all routes
-    cook: ['cook'], // Cook can access cook routes
-    waiter: ['waiter'], // Waiter can access waiter routes
+    admin: ['admin'],
+    cook: ['cook'],
+    waiter: ['waiter'],
   };
 
   const isNotAllowed =
     role !== 'admin' && !allowedRoutes[role]?.some((route) => currentPath.includes(`/${route}`));
 
   if (isNotAllowed) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
 
-  return Element;
+  const isLoggedIn = token && role;
+
+  return isLoggedIn ? Element : <Navigate to={redirectTo} />;
+};
+
+PrivateRoute.propTypes = {
+  redirectTo: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  component: PropTypes.element.isRequired,
 };

@@ -3,11 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { toast } from 'react-hot-toast';
 
-import styles from './DishesAdminPage.module.scss';
 import { AdminPageContainer } from 'components';
 import { Select, Loader } from 'shared';
 import { DISH_CATEGORIES } from 'utils/constants';
 import { deleteDishById } from 'api/dish';
+import styles from './DishesAdminPage.module.scss';
 
 const DishesAdminPage = () => {
   const { restId } = useParams();

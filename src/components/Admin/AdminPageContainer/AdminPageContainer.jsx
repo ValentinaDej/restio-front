@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useInfiniteQuery, useQueryClient } from 'react-query';
@@ -6,10 +7,10 @@ import { useMediaQuery } from 'react-responsive';
 import { BiSearch } from 'react-icons/bi';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
-import styles from './AdminPageContainer.module.scss';
 import { getPersonnel } from 'api/personnel';
 import { getDishes } from 'api/dish';
 import { Button, Loader, EmptyCard, EmployeeCard, Title, Input } from 'shared';
+import styles from './AdminPageContainer.module.scss';
 
 const value = {
   employee: 'personnel',
@@ -31,7 +32,7 @@ export const AdminPageContainer = ({
   const queryClient = useQueryClient();
 
   const isMobile = useMediaQuery({
-    query: '(max-width: 767px)',
+    query: '(max-width: 767.98px)',
   });
   const isTablet = useMediaQuery({
     query: '(min-width: 768px)',
@@ -65,7 +66,7 @@ export const AdminPageContainer = ({
   const handleChange = (e) => {
     const { value } = e.target;
     const normalizedValue = value.trim();
-    if (/^[a-zA-Z]+$/.test(normalizedValue) || normalizedValue === '') {
+    if (/^[a-zA-Zа-яА-Я\s]*$/.test(normalizedValue) || normalizedValue === '') {
       setSearchText(normalizedValue);
     }
   };
@@ -111,6 +112,11 @@ export const AdminPageContainer = ({
             name="search"
             value={searchText}
             onChange={handleChange}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
             placeholder="Search..."
             size="md"
             className={`${styles.input}`}
@@ -200,4 +206,14 @@ export const AdminPageContainer = ({
       )}
     </div>
   );
+};
+
+AdminPageContainer.propTypes = {
+  title: PropTypes.string.isRequired,
+  variant: PropTypes.oneOf(['dish', 'employee']),
+  handleDelete: PropTypes.func.isRequired,
+  goToAdd: PropTypes.func.isRequired,
+  children: PropTypes.element,
+  category: PropTypes.string,
+  type: PropTypes.string,
 };
