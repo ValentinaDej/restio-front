@@ -8,7 +8,7 @@ export const PrivateRoute = ({ component: Element, redirectTo = '/login' }) => {
   const token = useSelector(getToken);
   const location = useLocation();
   const currentPath = location.pathname;
-  // Redirect users without a role from admin, cook, and waiter routes
+
   if (
     (!role || role === 'customer') &&
     (currentPath.includes('/admin') ||
