@@ -46,8 +46,8 @@ export const Header = ({ role }) => {
     setIsOpen(!isOpen);
   };
   const logoutHandler = () => {
+    navigate('login', { replace: true });
     dispatch(logout());
-    navigate('/login');
   };
   const onClickHandler = async () => {
     try {

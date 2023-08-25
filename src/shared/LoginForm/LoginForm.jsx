@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -8,27 +8,21 @@ import toast from 'react-hot-toast';
 import { CheckBox, Button } from 'shared';
 import FormInput from './FormInput';
 import classes from './LoginForm.module.scss';
-import { CHECK_PASSWORD_SCHEMA } from 'utils/constants';
 import { loginUser } from 'store/auth/authSlice';
+import { Loader } from 'shared';
 
 const schema = yup.object({
   email: yup
     .string()
     .email('Email should have correct format')
     .required('Email is a required field'),
-  password: yup
-    .string()
-    .min(8, 'Password is too short - should be 8 chars minimum.')
-    .matches(
-      CHECK_PASSWORD_SCHEMA,
-      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 8 and 30 characters long.'
-    )
-    .required('Please provide a password'),
+  password: yup.string().required('Please provide a password'),
 });
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading } = useSelector((state) => state.auth);
   const [passwordShown, setPasswordShown] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -80,34 +74,40 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className={classes.wrapper}>
-      <div className={classes.form}>
-        <div className={classes.form__header}>Sign In</div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormInput
-            placeholder="Email"
-            name="email"
-            type="email"
-            autoComplete="username"
-            register={register}
-            error={errors.email}
-          />
-          <FormInput
-            placeholder="Password"
-            name="password"
-            type={passwordShown ? 'text' : 'password'}
-            autoComplete="current-password"
-            register={register}
-            error={errors.password}
-          />
-          <CheckBox
-            label="Show Password"
-            className={classes.form__checkbox}
-            onChange={togglePasswordVisibility}
-          />
-          <Button type="submit">Sign In</Button>
-        </form>
-      </div>
-    </div>
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className={classes.wrapper}>
+          <div className={classes.form}>
+            <div className={classes.form__header}>Sign In</div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormInput
+                placeholder="Email"
+                name="email"
+                type="email"
+                autoComplete="username"
+                register={register}
+                error={errors.email}
+              />
+              <FormInput
+                placeholder="Password"
+                name="password"
+                type={passwordShown ? 'text' : 'password'}
+                autoComplete="current-password"
+                register={register}
+                error={errors.password}
+              />
+              <CheckBox
+                label="Show Password"
+                className={classes.form__checkbox}
+                onChange={togglePasswordVisibility}
+              />
+              <Button type="submit">Sign In</Button>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
