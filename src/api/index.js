@@ -5,7 +5,7 @@ import { getNewToken, getToken } from './auth';
 export const BASE_URL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3001'
-    : 'https://restio-test.onrender.com';
+    : 'https://restio-server.onrender.com';
 
 export const instance = axios.create({
   baseURL: BASE_URL,
