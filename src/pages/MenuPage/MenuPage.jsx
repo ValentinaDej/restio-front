@@ -9,17 +9,23 @@ import { FcAssistant } from '@react-icons/all-files/fc/FcAssistant';
 import css from './MenuPage.module.scss';
 import { CategoryTabs, DishCardSkeleton, DishCard, Button } from 'shared';
 import { Cart } from 'components';
-import { getDishesForMenu } from 'api/dish';
+import { getAllDishes, getDishesForMenu } from 'api/dish';
 
 const MenuPage = () => {
   const navigate = useNavigate();
   const { restId, tableId } = useParams();
-  const [category, setActiveTab] = useState('Salads');
+  const [category, setActiveTab] = useState('All');
   const { role } = useSelector((state) => state.auth);
 
   const { isError, isLoading, data } = useQuery(
     ['dishes', category],
-    async () => await getDishesForMenu(restId, category, true),
+    async () => {
+      if (category === 'All') {
+        return await getAllDishes(restId, true);
+      } else {
+        return await getDishesForMenu(restId, category, true);
+      }
+    },
     {
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,

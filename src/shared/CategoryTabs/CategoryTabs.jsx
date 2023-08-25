@@ -6,7 +6,7 @@ import { DISH_CATEGORIES } from 'utils/constants';
 
 export const CategoryTabs = ({
   mode = 'primary',
-  categories = DISH_CATEGORIES,
+  categories = ['All', ...DISH_CATEGORIES],
   setActiveTab = () => {},
   activeTab,
 }) => {
