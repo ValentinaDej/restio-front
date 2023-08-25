@@ -57,9 +57,6 @@ export const Cart = () => {
         <>
           {cart?.length > 0 && (
             <div className={css['cart-container']} id="cart">
-              <a href="#cart" className={css['cart-button']}>
-                Move to order
-              </a>
               <Title mode="h3" color={'var(--color-blue-dark)'} fontSize={25}>
                 Your order
               </Title>

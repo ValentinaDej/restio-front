@@ -1,8 +1,9 @@
 import { Card } from './Card';
-import defaultSrc from '../../assets/img/img-template.jpg';
+import defaultSrc from 'assets/img/img-template.jpg';
 
 const meta = {
   component: Card,
+
   tags: ['autodocs'],
   argTypes: {
     src: {

@@ -22,21 +22,6 @@
     }
   }
 }
-.cart-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  z-index: 3;
-  bottom: 20px;
-  right: 50%;
-  transform: translate(50%);
-  border-radius: 12px;
-  padding: 0.8rem 1.5rem;
-  font-weight: var(--font-semi-bold);
-  color: var(--color-blue-dark);
-  background-color: var(--color-green-transparent);
-}
 
 .icon {
   width: 40px;
