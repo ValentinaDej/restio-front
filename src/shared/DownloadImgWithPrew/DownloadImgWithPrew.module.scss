@@ -100,6 +100,7 @@ input[type='range']:disabled::-webkit-slider-thumb {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
   margin-top: 1rem;
 
@@ -110,4 +111,13 @@ input[type='range']:disabled::-webkit-slider-thumb {
 
 .section__wrapper {
   margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img__wrapper {
+  height: 400px;
+  width: auto;
+  max-width: 100%;
 }

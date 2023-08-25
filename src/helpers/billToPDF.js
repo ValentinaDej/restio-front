@@ -43,7 +43,7 @@ export const downloadBillPdf = async (restData, dishData) => {
     cellPadding: 5,
     valign: 'middle',
     halign: 'center',
-    lineColor: [248, 156, 95],
+    lineColor: [138, 176, 71],
   };
 
   doc.autoTable({
@@ -52,7 +52,7 @@ export const downloadBillPdf = async (restData, dishData) => {
     startY: 70,
     theme: 'grid',
     headStyles: {
-      fillColor: [248, 156, 95],
+      fillColor: [138, 176, 71],
     },
     styles: tableStyles,
   });
