@@ -1,5 +1,5 @@
 import React from 'react';
-import StatusSelector from './StatusSelector';
+import { StatusSelector } from './StatusSelector';
 import '../../styles.scss';
 
 export default {

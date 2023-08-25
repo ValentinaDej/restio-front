@@ -1,4 +1,4 @@
-import EmptyCard from './EmptyCard';
+import { EmptyCard } from './EmptyCard';
 
 const meta = {
   title: 'Shared/EmptyCard',

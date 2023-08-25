@@ -1,4 +1,4 @@
-import DishCardSkeleton from './DishCardSkeleton';
+import { DishCardSkeleton } from './DishCardSkeleton';
 import '../../../styles.scss';
 
 const meta = {

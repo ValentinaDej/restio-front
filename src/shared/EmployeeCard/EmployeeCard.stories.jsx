@@ -1,4 +1,4 @@
-import EmployeeCard from './EmployeeCard';
+import { EmployeeCard } from './EmployeeCard';
 
 const meta = {
   title: 'Shared/EmployeeCard',

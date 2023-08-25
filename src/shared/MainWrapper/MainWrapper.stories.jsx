@@ -1,4 +1,4 @@
-import MainWrapper from './MainWrapper';
+import { MainWrapper } from './MainWrapper';
 import '../../styles.scss';
 
 const meta = {
