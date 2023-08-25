@@ -13,7 +13,7 @@ const DishesAdminPage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const [category, setCategory] = useState('');
-  const [type, setType] = useState('active');
+  const [type, setType] = useState('all');
 
   const { mutateAsync, isLoading } = useMutation((dishId) => {
     deleteDishById(dishId, restId);
@@ -64,6 +64,7 @@ const DishesAdminPage = () => {
           length="sm"
           className={`${styles.select}`}
         >
+          <option value="all">All</option>
           <option value="active">Active</option>
           <option value="noActive">No Active</option>
         </Select>

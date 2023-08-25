@@ -22,17 +22,28 @@ const handleErrorResponse = (error) => {
 
 export const getDishes = async (restId, category, type, pageParam, searchText) => {
   try {
+    let typeNormalized =
+      type === 'active' ? `&isActive=true` : type === 'all' ? '' : `&isActive=false`;
     let data = [];
     if (category) {
       data = await instance(
-        `/dishes/restaurant/${restId}?type=${category}&isActive=${type}&page=${pageParam}&limit=11&searchText=${searchText}`
+        `/dishes/restaurant/${restId}?type=${category}${typeNormalized}&page=${pageParam}&limit=11&searchText=${searchText}`
       );
     } else {
       data = await instance(
-        `/dishes/restaurant/${restId}?isActive=${type}&page=${pageParam}&limit=11&searchText=${searchText}`
+        `/dishes/restaurant/${restId}?page=${pageParam}${typeNormalized}&limit=11&searchText=${searchText}`
       );
     }
-    return data.data;
+    if (type === 'all') {
+      const response = data.data;
+
+      const sortedDishes = [...response.dishes].sort(
+        (dishA, dishB) => dishB.isActive - dishA.isActive
+      );
+      return { ...response, dishes: sortedDishes };
+    } else {
+      return data.data;
+    }
   } catch (error) {
     handleErrorResponse(error);
   }

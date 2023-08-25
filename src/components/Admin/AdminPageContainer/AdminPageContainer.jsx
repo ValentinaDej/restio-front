@@ -46,7 +46,7 @@ export const AdminPageContainer = ({
       ({ pageParam = 1 }) =>
         variant === 'employee'
           ? getPersonnel({ restId, pageParam, searchText })
-          : getDishes(restId, category, type === 'active', pageParam, searchText),
+          : getDishes(restId, category, type, pageParam, searchText),
       {
         getNextPageParam: (lastPage, _pages) => {
           if (lastPage.page < lastPage.totalPages) {
@@ -186,9 +186,10 @@ export const AdminPageContainer = ({
                   mode={'outlined'}
                   alt={`Dish ${item.name}`}
                   src={item.picture}
-                  type={`${variant}_${type}`}
+                  type={`${variant}_${item.isActive}`}
                   handleEdit={() => navigateToEdit(item._id)}
                   handleDelete={() => handleDeleteItem(item._id)}
+                  className={item.isActive ? '' : styles.dish}
                 >
                   <p className={styles.employee_name}>{item.name}</p>
                   <p className={styles.employee_subinfo}>${item.price?.toFixed(2)}</p>
