@@ -8,7 +8,7 @@ export const filterTables = (
   isTablesWithReadyDishes,
   isTablesWithAllPaidOrders
 ) => {
-  let tablesFiltered = tablesData.slice();
+  let tablesFiltered = tablesData?.slice();
 
   if (isFavoriteTables) {
     tablesFiltered = tablesFiltered.filter((table) => table.isFavorite === true);
@@ -45,11 +45,11 @@ export const filterTables = (
       return allOrdersPaid;
     });
   }
-  return tablesFiltered;
+  return { tables: tablesFiltered };
 };
 
 export const sortTables = (filteredTables) => {
-  const sortedByFavorite = [...filteredTables].sort((a, b) => {
+  const sortedByFavorite = filteredTables?.tables?.sort((a, b) => {
     const aIsFavorite = a.isFavorite || false;
     const bIsFavorite = b.isFavorite || false;
 
