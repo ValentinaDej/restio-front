@@ -99,6 +99,14 @@ export const AdminPageContainer = ({
       toast.error('Error deleting item');
     }
   };
+  const handleDeleteDish = async (id, isActive, name) => {
+    try {
+      await handleDelete(id, restId, isActive, name);
+      await refetch();
+    } catch (error) {
+      toast.error('Error deleting item');
+    }
+  };
 
   return (
     <div className={styles['personnel-container']}>
@@ -188,7 +196,7 @@ export const AdminPageContainer = ({
                   src={item.picture}
                   type={`${variant}_${item.isActive}`}
                   handleEdit={() => navigateToEdit(item._id)}
-                  handleDelete={() => handleDelete(item._id, restId, item.isActive, item.name)}
+                  handleDelete={() => handleDeleteDish(item._id, item.isActive, item.name)}
                   className={item.isActive ? '' : styles.dish}
                 >
                   <p className={styles.employee_name}>{item.name}</p>
