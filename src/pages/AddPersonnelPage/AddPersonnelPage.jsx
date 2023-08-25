@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
-import { ReactQueryDevtools } from 'react-query/devtools';
 
 import styles from './AddPersonnelPage.module.scss';
 import { Title, Button, Loader, EmployeeForm } from 'shared';
@@ -128,7 +127,6 @@ const AddPersonnelPage = () => {
           <EmployeeForm onSubmit={handleSubmit} size={'md'} initialState={initialData} />
         </div>
       </main>
-      <ReactQueryDevtools initialIsOpen />
     </div>
   );
 };

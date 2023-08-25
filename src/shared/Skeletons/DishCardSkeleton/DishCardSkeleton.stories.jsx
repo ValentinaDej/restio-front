@@ -1,5 +1,5 @@
-import { DishCardSkeleton } from './DishCardSkeleton';
 import '../../../styles.scss';
+import { DishCardSkeleton } from './DishCardSkeleton';
 
 const meta = {
   title: 'Shared/DishCardSkeleton',

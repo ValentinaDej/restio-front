@@ -1,5 +1,5 @@
-import { OrderSkeleton } from './OrderSkeleton.jsx';
 import '../../../styles.scss';
+import { OrderSkeleton } from './OrderSkeleton';
 
 const meta = {
   title: 'Shared/OrderListSkeleton',

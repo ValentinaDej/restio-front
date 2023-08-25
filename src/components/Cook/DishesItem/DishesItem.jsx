@@ -5,8 +5,9 @@ import { MdTableBar } from 'react-icons/md';
 import { BiDish } from 'react-icons/bi';
 import { IoIosClose } from 'react-icons/io';
 
-import { Text, Button } from 'shared';
 import styles from './DishesItem.module.scss';
+import { Text, Button } from 'shared';
+import { useEffect, useState } from 'react';
 
 export const DishesItem = ({
   dish,
@@ -20,14 +21,26 @@ export const DishesItem = ({
   comment,
 }) => {
   const { restId } = useParams();
+  const dateInMilliseconds = new Date(create).getTime();
+  const [timeForWaiting, setTimeForWaiting] = useState(
+    Math.round((Date.now() - dateInMilliseconds) / 60000)
+  );
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const newTimeForWaiting = Math.round((Date.now() - dateInMilliseconds) / 60000);
+      setTimeForWaiting(newTimeForWaiting);
+    }, 60000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  });
 
   const isMobile = useMediaQuery({
     query: '(max-width: 767.98px)',
   });
 
   const sizeButton = isMobile ? 'md' : 'lg';
-  const dateInMilliseconds = new Date(create).getTime();
-  const timeForWaiting = Math.round((Date.now() - dateInMilliseconds) / 60000);
 
   return (
     <li className={`${styles.item}`}>
@@ -64,7 +77,7 @@ export const DishesItem = ({
 
         {status !== 'In progress' && (
           <Button
-            onClick={() => handleChangeStatus(restId, orderId, dish._id, 'In progress')}
+            onClick={() => handleChangeStatus(restId, orderId, dish._id, 'In progress', dish.name)}
             mode="outlined"
             size={sizeButton}
             className={`${styles.button}`}
@@ -74,7 +87,7 @@ export const DishesItem = ({
         )}
         {status === 'In progress' && (
           <Button
-            onClick={() => handleChangeStatus(restId, orderId, dish._id, 'Ready')}
+            onClick={() => handleChangeStatus(restId, orderId, dish._id, 'Ready', dish.name)}
             mode="outlined"
             size={sizeButton}
             className={`${styles.button}`}

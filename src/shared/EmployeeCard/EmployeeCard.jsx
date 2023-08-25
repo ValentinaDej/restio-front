@@ -14,22 +14,27 @@ export const EmployeeCard = ({
   handleDelete,
   handleEdit,
   type,
+  className,
   ...props
 }) => {
   return (
     <>
       <div className={`${classes.card} ${classes[`${mode}`]} ${classes[`${size}`]}`}>
-        <img src={src} alt={alt} className={classes.card_image} />
+        <img
+          src={src}
+          alt={alt}
+          className={`${classes.card_image} ${className ? className : ''}`}
+        />
         {/* Insert 'DELETE BUTTON" and "EDIT BUTTON" component instead of react-icons, but keep a class '.trash' and '.edit' and size={'1.2rem'}  */}
 
-        {type === 'dish_active' && (
+        {type === 'dish_true' && (
           <AiFillEyeInvisible
             onClick={handleDelete}
             size={'1.6rem'}
             className={`${classes.trash} ${classes[`${size}`]}`}
           ></AiFillEyeInvisible>
         )}
-        {type === 'dish_noActive' && (
+        {type === 'dish_false' && (
           <AiFillEye
             onClick={handleDelete}
             size={'1.6rem'}
@@ -65,4 +70,5 @@ EmployeeCard.propTypes = {
   src: PropTypes.string,
   alt: PropTypes.string,
   type: PropTypes.string,
+  className: PropTypes.string,
 };

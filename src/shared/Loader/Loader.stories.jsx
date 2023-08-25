@@ -1,5 +1,5 @@
-import { Loader } from './Loader';
 import '../../styles.scss';
+import { Loader } from './Loader';
 
 const meta = {
   title: 'Shared/Loader',

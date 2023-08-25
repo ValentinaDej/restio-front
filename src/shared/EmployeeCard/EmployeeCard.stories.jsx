@@ -1,3 +1,5 @@
+import '../../styles.scss';
+
 import { EmployeeCard } from './EmployeeCard';
 
 const meta = {
