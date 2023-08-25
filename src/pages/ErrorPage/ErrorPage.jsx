@@ -4,11 +4,25 @@ import css from './ErrorPage.module.scss';
 import burger from 'assets/img/burger.png';
 import number from 'assets/img/4.png';
 import { Button, Title } from 'shared';
+import { useSelector } from 'react-redux';
 
 const ErrorPage = () => {
+  const { role, restaurantId } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const onClickHandler = () => {
-    navigate('/');
+    switch (role) {
+      case 'admin':
+        navigate(`/${restaurantId}/admin/dishes`);
+        break;
+      case 'waiter':
+        navigate(`/${restaurantId}/waiter/tables`);
+        break;
+      case 'cook':
+        navigate(`/${restaurantId}/cook`);
+        break;
+      default:
+        navigate(-1);
+    }
   };
   return (
     <main className={css.section}>

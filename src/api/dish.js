@@ -36,12 +36,16 @@ export const getDishes = async (restId, category, type, pageParam, searchText) =
     handleErrorResponse(error);
   }
 };
-export const getAllDishes = async (restId, type) => {
-  const data = await instance(`/dishes/restaurant/${restId}?isActive=${type}`);
+export const getAllDishes = async (restId, type, pageParam) => {
+  const data = await instance(
+    `/dishes/restaurant/${restId}?isActive=${type}&page=${pageParam}&limit=6`
+  );
   return data;
 };
-export const getDishesForMenu = async (restId, category, type) => {
-  const data = await instance(`/dishes/restaurant/${restId}?type=${category}&isActive=${type}`);
+export const getDishesForMenu = async (restId, category, type, pageParam) => {
+  const data = await instance(
+    `/dishes/restaurant/${restId}?type=${category}&isActive=${type}&page=${pageParam}&limit=6`
+  );
 
   return data;
 };

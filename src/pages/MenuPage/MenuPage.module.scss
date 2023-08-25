@@ -29,7 +29,28 @@
     }
   }
 }
+.button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.cart-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  width: 240px;
 
+  bottom: 10px;
+
+  border-radius: 12px;
+  padding: 0.8rem 1.5rem;
+  font-weight: var(--font-semi-bold);
+  color: var(--color-blue-dark);
+  background-color: var(--color-green-transparent);
+}
 .aiaWrapper {
   position: fixed;
   bottom: 30px;
