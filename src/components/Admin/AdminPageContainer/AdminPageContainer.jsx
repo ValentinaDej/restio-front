@@ -188,7 +188,7 @@ export const AdminPageContainer = ({
                   src={item.picture}
                   type={`${variant}_${item.isActive}`}
                   handleEdit={() => navigateToEdit(item._id)}
-                  handleDelete={() => handleDeleteItem(item._id)}
+                  handleDelete={() => handleDelete(item._id, restId, item.isActive, item.name)}
                   className={item.isActive ? '' : styles.dish}
                 >
                   <p className={styles.employee_name}>{item.name}</p>

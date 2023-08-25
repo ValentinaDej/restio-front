@@ -24,10 +24,10 @@ const DishesAdminPage = () => {
     navigate(`/${restId}/admin/dishes/new`);
   };
 
-  const handleDelete = async (id, restId) => {
+  const handleDelete = async (id, restId, isActive, name) => {
     try {
       await toast.promise(mutateAsync(id, restId), {
-        success: type === 'active' ? 'Dish moved to inactive' : 'Dish moved to active',
+        success: isActive ? `Dish ${name} moved to inactive` : `Dish ${name} moved to active`,
         error: 'Error removing dish',
       });
       await queryClient.refetchQueries(['dishes'], []);

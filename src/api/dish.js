@@ -34,16 +34,8 @@ export const getDishes = async (restId, category, type, pageParam, searchText) =
         `/dishes/restaurant/${restId}?page=${pageParam}${typeNormalized}&limit=11&searchText=${searchText}`
       );
     }
-    if (type === 'all') {
-      const response = data.data;
 
-      const sortedDishes = [...response.dishes].sort(
-        (dishA, dishB) => dishB.isActive - dishA.isActive
-      );
-      return { ...response, dishes: sortedDishes };
-    } else {
-      return data.data;
-    }
+    return data.data;
   } catch (error) {
     handleErrorResponse(error);
   }
