@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-hot-toast';
 
 import { AdminPageContainer } from 'components';
@@ -13,7 +13,8 @@ const DishesAdminPage = () => {
   const { restId } = useParams();
   const navigate = useNavigate();
   const [category, setCategory] = useState('');
-  const [type, setType] = useState('active');
+  const [type, setType] = useState('all');
+  const queryClient = useQueryClient();
 
   const { mutateAsync, isLoading } = useMutation((dishId) => {
     deleteDishById(dishId, restId);
@@ -23,12 +24,13 @@ const DishesAdminPage = () => {
     navigate(`/${restId}/admin/dishes/new`);
   };
 
-  const handleDelete = async (id, restId) => {
+  const handleDelete = async (id, restId, isActive, name) => {
     try {
       await toast.promise(mutateAsync(id, restId), {
-        success: type === 'active' ? 'Dish moved to inactive' : 'Dish moved to active',
+        success: isActive ? `Dish ${name} moved to inactive` : `Dish ${name} moved to active`,
         error: 'Error removing dish',
       });
+      await queryClient.refetchQueries(['dishes'], []);
     } catch (error) {
       console.error('Error removing dish:', error);
     }
@@ -64,6 +66,7 @@ const DishesAdminPage = () => {
           length="sm"
           className={`${styles.select}`}
         >
+          <option value="all">All</option>
           <option value="active">Active</option>
           <option value="noActive">No Active</option>
         </Select>

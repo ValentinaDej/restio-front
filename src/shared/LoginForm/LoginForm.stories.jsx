@@ -1,5 +1,5 @@
 import { store } from 'store';
-import LoginForm from './LoginForm';
+import { LoginForm } from './LoginForm';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 

@@ -1,4 +1,4 @@
-import QuantityButton from './QuantityButton';
+import { QuantityButton } from './QuantityButton';
 
 const meta = {
   title: 'Shared/QuantityButton',

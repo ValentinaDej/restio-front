@@ -1,5 +1,5 @@
-import CardSkeleton from './CardSkeleton';
 import '../../../styles.scss';
+import { CardSkeleton } from './CardSkeleton';
 
 const meta = {
   title: 'Shared/CardSkeleton',

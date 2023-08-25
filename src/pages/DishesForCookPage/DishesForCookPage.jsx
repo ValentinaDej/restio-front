@@ -43,8 +43,9 @@ const DishesForCookPage = () => {
 
   const { mutate } = useUpdateDishStatusByWaiter();
 
-  const handleChangeStatus = (restId, orderId, dishId, status) => {
+  const handleChangeStatus = (restId, orderId, dishId, status, name) => {
     mutate({ urlParams: { restId }, status, dishId, orderId });
+    toast.success(`Dish ${name} change status to ${status}`);
   };
 
   const filterDishes = useCallback(
@@ -71,6 +72,7 @@ const DishesForCookPage = () => {
                 size={isMobile ? 'sm' : 'md'}
                 mode={currentStatus === status ? 'primary' : 'outlined'}
                 onClick={() => setCurrentStatus(status)}
+                className={`${styles.button}`}
               >
                 {status}
               </Button>

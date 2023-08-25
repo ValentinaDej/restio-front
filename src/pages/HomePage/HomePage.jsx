@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+
 import { Title, Text, Logo, MainWrapper } from 'shared';
 import styles from './HomePage.module.scss';
 
