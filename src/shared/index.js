@@ -1,4 +1,5 @@
 export { LoginForm } from './LoginForm/LoginForm';
+export { DishForm } from './DishForm/DishForm';
 export { Tooltip } from './Tooltip/Tooltip';
 export { Title } from './Title/Title';
 export { Text } from './Text/Text';
@@ -21,7 +22,6 @@ export { EmptyCard } from './EmptyCard/EmptyCard';
 export { EmployeeForm } from './EmployeeForm/EmployeeForm';
 export { EmployeeCard } from './EmployeeCard/EmployeeCard';
 export { DropDown } from './DropDown/DropDown';
-export { DishForm } from './DishForm/DishForm';
 export { DishCard } from './DishCard/DishCard';
 export { CheckBox } from './CheckBox/CheckBox';
 export { CategoryTabs } from './CategoryTabs/CategoryTabs';

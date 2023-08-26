@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { FaMoneyBillAlt } from 'react-icons/fa';
 import { GiWeight } from 'react-icons/gi';
 
-import classes from './DishForm.module.scss';
 import { Button, Select, CheckBox, Text, InputValid, FileUploader, Loader } from 'shared';
 import DishTypeOptions from './DishTypeOptions/DishTypeOptions';
 import Ingredients from './Ingredients/Ingredients';
 import SortIngredients from './SortIngridients/SortIngredients';
+
+import classes from './DishForm.module.scss';
 
 export const DishForm = ({
   onSubmit,
@@ -152,7 +153,7 @@ export const DishForm = ({
               validationRules={{
                 required: 'Name is a required field',
                 pattern: {
-                  value: /^.{2,30}$/,
+                  value: /^.{2,50}$/,
                   message: 'Invalid name',
                 },
               }}
@@ -176,7 +177,7 @@ export const DishForm = ({
                     <option value="" disabled hidden style={{ color: 'var(--color-danger)' }}>
                       Select dish type
                     </option>
-                    {category.map((option) => (
+                    {category?.map((option) => (
                       <option key={option} value={option}>
                         {option}
                       </option>

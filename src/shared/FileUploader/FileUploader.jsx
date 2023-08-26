@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import defaultImage from 'assets/img/defaultUploadImg.png';
 import styles from './FileUploader.module.scss';
 import { DownloadImgWithPrew } from 'shared';
+import { BsTrash } from 'react-icons/bs';
 
 export const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
   const [uploadedFile, setUploadedFile] = useState();
@@ -12,6 +13,10 @@ export const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
 
   const handleImagePrew = (image) => {
     setPreviewUrl(image);
+  };
+
+  const handleImageClear = (image) => {
+    setPreviewUrl('');
   };
 
   const handleImageDownload = (image) => {
@@ -47,7 +52,6 @@ export const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
   useImperativeHandle(ref, () => ({
     handleUpload: handleUpload,
     clearFile: () => {
-      // Clear the selected file and preview
       setUploadedFile(null);
       setPreviewUrl('');
     },
@@ -57,10 +61,14 @@ export const FileUploader = forwardRef(({ onEditPhoto, size }, ref) => {
     <div>
       <div className={`${styles.photoContainer} ${styles[`photoContainer_${size}`]}`}>
         <img src={previewUrl ? previewUrl : defaultImage} alt="Preview" className={styles.photo} />
-        <DownloadImgWithPrew
-          handleImagePrew={handleImagePrew}
-          handleImageDownload={handleImageDownload}
-        />
+        {previewUrl ? (
+          <BsTrash onClick={handleImageClear} className={styles.deleteIcon} />
+        ) : (
+          <DownloadImgWithPrew
+            handleImagePrew={handleImagePrew}
+            handleImageDownload={handleImageDownload}
+          />
+        )}
       </div>
     </div>
   );
