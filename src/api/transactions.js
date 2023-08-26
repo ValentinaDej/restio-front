@@ -3,13 +3,13 @@ import { useQuery } from 'react-query';
 
 export const useGetTransactions = (
   restId,
-  { pageIndex, pageSize, today, userType, transactionType, date }
+  { pageIndex, pageSize, today, userType, transactionType, date, nameFilter, transactionSortType }
 ) => {
   const queryResp = useQuery(
     ['transactions'],
     async () =>
       await instance.get(
-        `/transactions/${restId}?pageIndex=${pageIndex}&pageSize=${pageSize}&today=${today}&userType=${userType}&transactionType=${transactionType}&date=${date}`
+        `/transactions/${restId}?pageIndex=${pageIndex}&pageSize=${pageSize}&today=${today}&userType=${userType}&transactionType=${transactionType}&date=${date}&nameFilter=${nameFilter}&transactionSortType=${transactionSortType}`
       ),
     {
       refetchOnWindowFocus: false,

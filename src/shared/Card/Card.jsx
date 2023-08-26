@@ -3,9 +3,10 @@ import { memo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IoIosClose } from 'react-icons/io';
 import { BiSolidTrash, BiSolidCommentAdd, BiSolidCommentCheck } from 'react-icons/bi';
+import { AiFillCheckCircle } from 'react-icons/ai';
 
 import css from './Card.module.scss';
-import { QuantityButton, IconButton, Status, StatusSelector } from 'shared';
+import { QuantityButton, IconButton, Status, Tooltip } from 'shared';
 import { Dialog } from 'components';
 import { getProductFromState } from 'store/cart/cartSelectors';
 
@@ -88,12 +89,26 @@ export const Card = memo(
               {mode === variant.order && <p className={css['card__sum']}>${sum}</p>}
               {mode === variant.waiter && (
                 <div className={css['card__status']}>
-                  <StatusSelector
-                    mode="dishes"
-                    itemId={dishId}
-                    currentStatus={currentSelectStatus}
-                    changeStatusFunction={changeStatusFunction}
-                  />
+                  <Status className={css['card__waiter-status']} statusCurrent={statusCurrent} />
+                  <Tooltip
+                    content={
+                      statusCurrent === 'Served'
+                        ? 'Already served'
+                        : statusCurrent !== 'Ready'
+                        ? 'Dish is not ready'
+                        : 'Mark as served'
+                    }
+                    postion="left"
+                  >
+                    <IconButton
+                      Svg={AiFillCheckCircle}
+                      size={15}
+                      mode={'outlined'}
+                      disabled={statusCurrent !== 'Ready'}
+                      onClick={changeStatusFunction}
+                      itemId={dishId}
+                    />
+                  </Tooltip>
                 </div>
               )}
               {mode === variant.cart && (

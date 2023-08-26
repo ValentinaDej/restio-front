@@ -62,16 +62,20 @@
   width: 150px;
 }
 
+.btnSelected {
+  font-size: 0.8rem;
+}
+
 .text {
   color: var(--color-blue-dark);
 }
 
-.waiterBtn {
+.descBtn {
+  padding-top: 40px;
   display: grid;
   gap: 10px;
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 20px;
 }
 
 .loader {

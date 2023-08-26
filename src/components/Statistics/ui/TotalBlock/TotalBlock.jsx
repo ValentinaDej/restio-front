@@ -14,7 +14,7 @@ import cls from './TotalBlock.module.scss';
 
 export const TotalBlock = memo(({ monthlyStatistics }) => {
   const data = monthlyStatistics;
-  const total = data?.reduce((acc, el) => el.amount + acc, 0);
+  const total = data?.reduce((acc, el) => formatNumberWithTwoDecimals(el.amount) + acc, 0);
   return (
     <div className={cls.box}>
       <Title fontSize={22}>Total earnings ${formatNumberWithTwoDecimals(total)}</Title>

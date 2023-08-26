@@ -124,10 +124,10 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
 
   useEffect(() => {
     if (isError) {
-      errorMessage(error?.response.data.message);
+      errorMessage(error?.response?.data.message);
       setIsMounted(false);
     }
-  }, [error?.response.data.message, isError]);
+  }, [error?.response?.data?.message, isError]);
 
   return (
     <>
@@ -139,7 +139,7 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
           <hr className={cls.divider} />
         </>
       )}
-      <section className={cls.section}>
+      <div className={cls.section}>
         <NavigateButtons
           params={params}
           isWaiter={isWaiter}
@@ -172,8 +172,10 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                   orders={data?.orders || []}
                   totalPrice={totalPrice}
                   allOrderPrice={allOrderPrice}
+                  amount={selectedTotal}
                   isAllOrdersPaid={isAllOrdersPaid}
                   onChangeSelected={onChangeSelected}
+                  selectedOrders={selectedOrders}
                   onChangeTypeOfPay={onChangeTypeOfPay}
                   urlParams={params}
                   isWaiter={isWaiter}
@@ -194,17 +196,12 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
                 key={'list'}
               />
             </motion.div>
-            {!isWaiterDishesPage && (
+            {!isWaiter && (
               <ListBottomBox
                 totalPrice={totalPrice}
                 amount={selectedTotal}
                 selectedOrders={selectedOrders}
-                onChangeSelected={onChangeSelected}
                 urlParams={params}
-                isWaiter={isWaiter}
-                isAllOrdersPaid={isAllOrdersPaid}
-                paymentType={paymentType}
-                notServedDishes={notServedDishes}
                 key={'listBottomBox'}
               />
             )}
@@ -215,7 +212,7 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
             )}
           </AnimatePresence>
         )}
-      </section>
+      </div>
     </>
   );
 };

@@ -1,0 +1,78 @@
+.btnsBox {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
+  @media screen and (min-width: 1191px) {
+    flex-direction: row;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.paginationBox {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.inputBox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input {
+  border: var(--border-primary);
+  border-radius: 10px;
+  padding: 5px;
+  width: 100px;
+
+  &:focus {
+    outline: 1px solid var(--color-primary-hover);
+  }
+}
+
+.navigateInput {
+  border: var(--border-primary);
+  border-radius: 10px;
+  padding: 5px;
+  width: 50px;
+
+  &:focus {
+    outline: 1px solid var(--color-primary-hover);
+  }
+}
+
+.text {
+  font-size: 14px;
+  @media screen and (min-width: 850px) {
+    font-size: 16px;
+  }
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inputSelectBox {
+  display: flex;
+  height: 30px;
+  justify-content: space-around;
+}
+
+.loader {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-green-accent);
+}

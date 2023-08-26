@@ -1,5 +1,7 @@
 import { instance } from 'api';
 import { errorMessage } from 'helpers/errorMessage';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const { useQuery, useMutation, useQueryClient } = require('react-query');
 
@@ -59,10 +61,10 @@ export const useGetOrdersByRestaurantId = (restId) => {
   return queryResp;
 };
 
-export const useUpdateOrderStatusByWaiter = ({ restId, tableId }, orders, amount, paymentType) => {
+export const useUpdateOrderStatusByWaiter = ({ restId, tableId }, amount, paymentType) => {
   const queryClient = useQueryClient();
 
-  const createTransactionOffline = async () => {
+  const createTransactionOffline = async (orders) => {
     const response = await instance.post(`transactions/manual/${restId}`, {
       info: orders,
       amount,
@@ -71,10 +73,12 @@ export const useUpdateOrderStatusByWaiter = ({ restId, tableId }, orders, amount
     return response.data;
   };
 
-  const updateOrderStatus = async () => {
+  const updateOrderStatus = async (selectedOrders) => {
     try {
-      await createTransactionOffline();
-      const response = await instance.patch(`orders/${restId}/table/${tableId}`, { orders });
+      await createTransactionOffline(selectedOrders);
+      const response = await instance.patch(`orders/${restId}/table/${tableId}`, {
+        orders: selectedOrders,
+      });
       return response.data;
     } catch (err) {
       errorMessage(err.response.data.message);
@@ -92,7 +96,7 @@ export const useUpdateOrderStatusByWaiter = ({ restId, tableId }, orders, amount
 
 export const useUpdateTableStatusByWaiter = ({ restId, tableId }, status) => {
   const queryClient = useQueryClient();
-
+  const navigate = useNavigate();
   const updateTableStatus = async () => {
     const response = await instance.patch(`/tables/${tableId}`, { restaurant_id: restId, status });
     return response.data;
@@ -100,6 +104,17 @@ export const useUpdateTableStatusByWaiter = ({ restId, tableId }, status) => {
   const mutation = useMutation(updateTableStatus, {
     onSuccess: () => {
       queryClient.setQueryData(['orders'], []);
+      toast.success(`Table is free`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+      navigate(`/${restId}/waiter/tables`);
     },
   });
 

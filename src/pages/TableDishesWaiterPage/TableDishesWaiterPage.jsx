@@ -3,9 +3,9 @@ import cls from './TableDishesWaiterPage.module.scss';
 
 const TableDishesWaiterPage = () => {
   return (
-    <main className={cls.main}>
+    <section className={cls.main}>
       <Orders isWaiter isWaiterDishesPage />
-    </main>
+    </section>
   );
 };
 

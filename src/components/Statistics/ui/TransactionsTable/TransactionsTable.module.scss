@@ -33,6 +33,7 @@
 }
 
 .th {
+  text-align: center;
   width: 150px;
   max-width: 200px;
   position: relative;
@@ -45,9 +46,18 @@
   @media screen and (min-width: 1191px) {
     font-size: 14px;
   }
+
+  &:first-child {
+    width: 30px;
+  }
+
+  &:nth-child(2) {
+    width: 50px;
+  }
 }
 
 .td {
+  text-align: center;
   font-size: 16px;
   border-right: var(--border-primary);
   padding: 5px;
@@ -57,53 +67,9 @@
 .tr {
   border-bottom: none;
 }
-.btnsBox {
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-
-  @media screen and (min-width: 1191px) {
-    flex-direction: row;
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-.paginationBox {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.inputBox {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.input {
-  border: var(--border-primary);
-  border-radius: 10px;
-  padding: 5px;
-  width: 50px;
-
-  &:focus {
-    outline: 1px solid var(--color-primary-hover);
-  }
-}
 
 .loader {
   width: 30px;
-}
-
-.select {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .span {
@@ -116,13 +82,6 @@
     font-size: 14px;
   }
 }
-
-.inputSelectBox {
-  display: flex;
-  height: 30px;
-  justify-content: space-around;
-}
-
 .emptyBox {
   display: grid;
   gap: 10px;
