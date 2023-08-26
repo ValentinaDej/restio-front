@@ -1,4 +1,6 @@
-import EmployeeCard from './EmployeeCard';
+import '../../styles.scss';
+
+import { EmployeeCard } from './EmployeeCard';
 
 const meta = {
   title: 'Shared/EmployeeCard',

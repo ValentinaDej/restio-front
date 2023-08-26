@@ -1,14 +1,10 @@
-import Header from './Header';
+import { Header } from './Header';
 
 const meta = {
   title: 'Shared/Header',
   component: Header,
   tags: ['autodocs'],
   argTypes: {
-    logo: {
-      type: 'string',
-      description: 'Restaurant logo',
-    },
     restaurantName: {
       type: 'string',
       description: 'Restaurant name',
@@ -16,7 +12,7 @@ const meta = {
     role: {
       type: 'string',
       description: 'Role of the authorized person',
-      options: ['customer', 'waiter', 'cook', 'administrator'],
+      options: ['customer', 'waiter', 'cook', 'admin'],
       control: {
         type: 'radio',
       },

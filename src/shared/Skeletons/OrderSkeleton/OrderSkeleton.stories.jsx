@@ -1,9 +1,9 @@
-import OrderListSkeleton from './OrderSkeleton.jsx';
 import '../../../styles.scss';
+import { OrderSkeleton } from './OrderSkeleton';
 
 const meta = {
   title: 'Shared/OrderListSkeleton',
-  component: OrderListSkeleton,
+  component: OrderSkeleton,
   tags: ['autodocs'],
   args: {
     isSmall: {
@@ -14,5 +14,5 @@ const meta = {
   },
 };
 export default meta;
-const Template = (args) => <OrderListSkeleton {...args} />;
+const Template = (args) => <OrderSkeleton {...args} />;
 export const Default = Template.bind({});

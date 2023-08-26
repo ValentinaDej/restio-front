@@ -1,4 +1,4 @@
-import OrderCard from './OrderCard';
+import { OrderCard } from './OrderCard';
 
 const meta = {
   title: 'Shared/OrderCard',

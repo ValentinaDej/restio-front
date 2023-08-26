@@ -46,7 +46,7 @@ export const AdminPageContainer = ({
       ({ pageParam = 1 }) =>
         variant === 'employee'
           ? getPersonnel({ restId, pageParam, searchText })
-          : getDishes(restId, category, type === 'active', pageParam, searchText),
+          : getDishes(restId, category, type, pageParam, searchText),
       {
         getNextPageParam: (lastPage, _pages) => {
           if (lastPage.page < lastPage.totalPages) {
@@ -94,6 +94,14 @@ export const AdminPageContainer = ({
   const handleDeleteItem = async (id) => {
     try {
       await handleDelete(id, restId);
+      await refetch();
+    } catch (error) {
+      toast.error('Error deleting item');
+    }
+  };
+  const handleDeleteDish = async (id, isActive, name) => {
+    try {
+      await handleDelete(id, restId, isActive, name);
       await refetch();
     } catch (error) {
       toast.error('Error deleting item');
@@ -186,9 +194,10 @@ export const AdminPageContainer = ({
                   mode={'outlined'}
                   alt={`Dish ${item.name}`}
                   src={item.picture}
-                  type={`${variant}_${type}`}
+                  type={`${variant}_${item.isActive}`}
                   handleEdit={() => navigateToEdit(item._id)}
-                  handleDelete={() => handleDeleteItem(item._id)}
+                  handleDelete={() => handleDeleteDish(item._id, item.isActive, item.name)}
+                  className={item.isActive ? '' : styles.dish}
                 >
                   <p className={styles.employee_name}>{item.name}</p>
                   <p className={styles.employee_subinfo}>${item.price?.toFixed(2)}</p>

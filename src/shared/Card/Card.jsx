@@ -121,7 +121,6 @@ export const Card = memo(
                   />
                 </div>
               )}
-              {/* {mode === variant.cart && <p className={css['card__sum']}>${sum}</p>} */}
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 
-import InputValid from './InputValid';
+import { InputValid } from './InputValid';
 import { FaMoneyBillAlt } from 'react-icons/fa';
 
 export default {

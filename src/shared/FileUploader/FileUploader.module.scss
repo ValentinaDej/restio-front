@@ -37,3 +37,22 @@
   object-fit: cover;
   border-radius: 50%;
 }
+
+.deleteIcon {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  font-size: 30px;
+  color: var(--color-primary);
+
+  &:hover,
+  &:focus {
+    color: var(--color-primary-hover);
+  }
+
+  padding: 4px;
+  cursor: pointer;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
+}

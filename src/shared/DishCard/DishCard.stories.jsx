@@ -1,4 +1,4 @@
-import DishCard from './DishCard';
+import { DishCard } from './DishCard';
 import defaultSrc from '../../assets/img/img-template.jpg';
 const defaultValues = {
   src: defaultSrc,
@@ -20,6 +20,7 @@ const defaultValues = {
 };
 const meta = {
   component: DishCard,
+
   tags: ['autodocs'],
   argTypes: {
     src: {

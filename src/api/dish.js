@@ -1,4 +1,5 @@
 import instance from 'api';
+import { toast } from 'react-hot-toast';
 
 const handleErrorResponse = (error) => {
   if (error.response) {
@@ -21,27 +22,34 @@ const handleErrorResponse = (error) => {
 
 export const getDishes = async (restId, category, type, pageParam, searchText) => {
   try {
+    let typeNormalized =
+      type === 'active' ? `&isActive=true` : type === 'all' ? '' : `&isActive=false`;
     let data = [];
     if (category) {
       data = await instance(
-        `/dishes/restaurant/${restId}?type=${category}&isActive=${type}&page=${pageParam}&limit=11&searchText=${searchText}`
+        `/dishes/restaurant/${restId}?type=${category}${typeNormalized}&page=${pageParam}&limit=11&searchText=${searchText}`
       );
     } else {
       data = await instance(
-        `/dishes/restaurant/${restId}?isActive=${type}&page=${pageParam}&limit=11&searchText=${searchText}`
+        `/dishes/restaurant/${restId}?page=${pageParam}${typeNormalized}&limit=11&searchText=${searchText}`
       );
     }
+
     return data.data;
   } catch (error) {
     handleErrorResponse(error);
   }
 };
-export const getAllDishes = async (restId, type) => {
-  const data = await instance(`/dishes/restaurant/${restId}?isActive=${type}`);
+export const getAllDishes = async (restId, type, pageParam) => {
+  const data = await instance(
+    `/dishes/restaurant/${restId}?isActive=${type}&page=${pageParam}&limit=6`
+  );
   return data;
 };
-export const getDishesForMenu = async (restId, category, type) => {
-  const data = await instance(`/dishes/restaurant/${restId}?type=${category}&isActive=${type}`);
+export const getDishesForMenu = async (restId, category, type, pageParam) => {
+  const data = await instance(
+    `/dishes/restaurant/${restId}?type=${category}&isActive=${type}&page=${pageParam}&limit=6`
+  );
 
   return data;
 };
@@ -74,5 +82,10 @@ export const createDish = async (body, restId) => {
 };
 
 export const deleteDishById = async (dishId, restId) => {
-  await instance.patch(`/dishes/${dishId}/restaurant/${restId}`);
+  try {
+    await instance.patch(`/dishes/${dishId}/restaurant/${restId}`);
+  } catch (error) {
+    handleErrorResponse(error);
+    toast.error(error.message);
+  }
 };

@@ -46,8 +46,8 @@ export const Header = ({ role }) => {
     setIsOpen(!isOpen);
   };
   const logoutHandler = () => {
+    navigate('login', { replace: true });
     dispatch(logout());
-    navigate('/login');
   };
   const onClickHandler = async () => {
     try {
@@ -150,12 +150,8 @@ export const Header = ({ role }) => {
       {role === 'customer' && (
         <div className={classes.header__wrapper}>
           <Button size="sm" onClick={onClickHandler}>
-            Call waiter
+            Call a waiter
           </Button>
-          {/* <div className={classes.header__button}>
-            <Bell className={classes.header__call} onClick={onClickHandler} />
-           
-          </div> */}
           <OrdersButton restId={restId} tableId={tableId} />
         </div>
       )}
