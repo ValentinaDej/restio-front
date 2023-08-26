@@ -59,7 +59,7 @@ export const OrdersList = ({
     let sortedOrders = [...orders];
 
     if (sortOrderBy !== 'None') {
-      return [...sortedOrders].sort((orderA, orderB) => {
+      return sortedOrders.sort((orderA, orderB) => {
         if (orderA.status === sortOrderBy && orderB.status !== sortOrderBy) {
           return -1;
         }
@@ -69,7 +69,7 @@ export const OrdersList = ({
         return 0;
       });
     } else {
-      return [...sortedOrders].reverse();
+      return sortedOrders.reverse();
     }
   }, [orders, sortOrderBy]);
 
