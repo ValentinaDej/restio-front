@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
 
 import classes from './DishPage.module.scss';
+import css from '../MenuPage/MenuPage.module.scss';
 import instance from 'api';
 import { Cart, Slider, DishDescription } from 'components';
 import { Loader, Button, QuantityButton, Text, Title } from 'shared';
@@ -20,6 +21,7 @@ const DishPage = () => {
   const tableId = useParams().tableId;
   const dispatch = useDispatch();
   const storeData = useSelector(getProductFromState);
+
   const { pathname } = useLocation();
   const {
     isLoading,
@@ -248,6 +250,11 @@ const DishPage = () => {
           </Title>
           <Slider data={recommendedDishes} restId={restId} tableId={tableId}></Slider>
         </div>
+        {storeData?.length > 0 && (
+          <a href="#cart" className={css['cart-button']}>
+            Move to order
+          </a>
+        )}
       </main>
     </>
   );
