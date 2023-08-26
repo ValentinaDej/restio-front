@@ -8,6 +8,7 @@ import {
 
 import cls from './TableBtns.module.scss';
 import { Button, CheckBox, DropDown, Loader, IconButton, Text } from 'shared';
+import { DebouncedInput } from '../DebounceInput/DebounceInput';
 
 const numberOfTransactionsOptions = [
   { value: 20, label: '20' },
@@ -57,12 +58,12 @@ export const TableBtns = ({
             {data?.pageCount === 0 ? 0 : table.getState().pagination?.pageIndex + 1} of{' '}
             {table.getPageCount()}
           </Text>
-          <input
+          <DebouncedInput
             min={1}
             type="number"
-            defaultValue={isNaN(data?.currentPageIndex) ? 1 : pageNumber}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+            value={isNaN(data?.currentPageIndex) ? 1 : pageNumber}
+            onChange={(value) => {
+              const page = value ? Number(value) - 1 : 0;
               table.setPageIndex(page);
             }}
             className={cls.navigateInput}

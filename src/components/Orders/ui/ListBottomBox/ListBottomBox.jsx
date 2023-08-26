@@ -11,7 +11,7 @@ import { getPaymentInfo } from 'store/customer/orders/selectors';
 
 import { useMediaQuery } from 'react-responsive';
 
-export const ListBottomBox = ({ amount, selectedOrders, urlParams }) => {
+export const ListBottomBox = ({ amount, selectedOrders, urlParams, totalPrice }) => {
   const dispatch = useDispatch();
   const isMobile = useMediaQuery({
     query: '(max-width: 767.98px)',
@@ -43,15 +43,20 @@ export const ListBottomBox = ({ amount, selectedOrders, urlParams }) => {
     );
   }, [amount, dispatch, frontLink, selectedOrders, urlParams.restId]);
 
-  if (!isMobile) {
+  if (!isMobile && totalPrice !== 0) {
     return (
       <div className={cls.descBtn}>
         <Text classname={cls.text} fontWeight={700}>
           Total price for selected orders: ${amount}
         </Text>
         <div className={cls.btnsBox}>
-          <Button size={'sm'} onClick={onClickPaySelectedAsCustomer} disabled={amount === 0}>
-            Pay online
+          <Button
+            size={isMobile ? 'sm' : 'md'}
+            onClick={onClickPaySelectedAsCustomer}
+            disabled={amount === 0}
+            className={cls.btnSelected}
+          >
+            {isMobile ? 'Pay online' : 'Pay online selected'}
           </Button>
         </div>
       </div>
@@ -96,10 +101,8 @@ export const ListBottomBox = ({ amount, selectedOrders, urlParams }) => {
 };
 
 ListBottomBox.propTypes = {
-  isWaiter: PropTypes.bool,
   amount: PropTypes.number,
+  totalPrice: PropTypes.number,
   selectedOrders: PropTypes.array,
-  onChangeSelected: PropTypes.func,
   urlParams: PropTypes.object,
-  paymentType: PropTypes.string,
 };

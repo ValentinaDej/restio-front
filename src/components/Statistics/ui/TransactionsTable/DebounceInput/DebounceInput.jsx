@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
+import { classNames } from 'helpers/classNames';
 import cls from '../TableBtns/TableBtns.module.scss';
 
-export const DebouncedInput = ({ value: initialValue, onChange, debounce = 300, ...props }) => {
+export const DebouncedInput = ({
+  value: initialValue,
+  onChange,
+  debounce = 300,
+  className,
+  ...props
+}) => {
   const [value, setValue] = useState(initialValue);
 
   useEffect(() => {
@@ -21,7 +28,7 @@ export const DebouncedInput = ({ value: initialValue, onChange, debounce = 300, 
       {...props}
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      className={cls.input}
+      className={classNames(cls.input, {}, [className])}
     />
   );
 };

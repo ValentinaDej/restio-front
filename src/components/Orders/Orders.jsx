@@ -124,10 +124,10 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
 
   useEffect(() => {
     if (isError) {
-      errorMessage(error?.response.data.message);
+      errorMessage(error?.response?.data.message);
       setIsMounted(false);
     }
-  }, [error?.response.data.message, isError]);
+  }, [error?.response?.data?.message, isError]);
 
   return (
     <>
@@ -198,6 +198,7 @@ export const Orders = ({ isWaiter, isSmall, isWaiterDishesPage }) => {
             </motion.div>
             {!isWaiter && (
               <ListBottomBox
+                totalPrice={totalPrice}
                 amount={selectedTotal}
                 selectedOrders={selectedOrders}
                 urlParams={params}
