@@ -1,22 +1,13 @@
 import toast from 'react-hot-toast';
 import instance from './index';
 
-export const openai = async (
-  restaurantId,
-  isVegan,
-  likeSpicy,
-  isPasc,
-  wantHealthy,
-  wantDrink,
-  budget
-) => {
+export const openai = async (restaurantId, isVegan, likeSpicy, isPasc, wantHealthy, budget) => {
   try {
     return await instance.post(`/openai/${restaurantId}`, {
       isVegan,
       likeSpicy,
       isPasc,
       wantHealthy,
-      wantDrink,
       budget,
     });
   } catch (error) {
