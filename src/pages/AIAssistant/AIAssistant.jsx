@@ -5,13 +5,12 @@ import { FcAssistant } from '@react-icons/all-files/fc/FcAssistant';
 import { FcMoneyTransfer } from '@react-icons/all-files/fc/FcMoneyTransfer';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
-
+import { useInfiniteQuery } from 'react-query';
 import styles from './AIAssistant.module.scss';
 import css from '../MenuPage/MenuPage.module.scss';
-import { DishCard, Loader, CategoryTabs, Input, Title, Button } from 'shared';
+import { DishCard, Loader, CategoryTabs, Input, Title, Button, DishCardSkeleton } from 'shared';
 import { Cart } from 'components';
-import { getDishesForMenu } from 'api/dish';
+import { getAllDishes, getDishesForMenu } from 'api/dish';
 import { openai } from 'api/openai';
 
 const AIAssistant = () => {
@@ -22,7 +21,6 @@ const AIAssistant = () => {
     likeSpicy: false,
     isPasc: false,
     wantHealthy: false,
-    wantDrink: false,
     budget: 10,
   });
   const [response, setResponse] = useState('');
@@ -30,10 +28,21 @@ const AIAssistant = () => {
   const [category, setActiveTab] = useState('Salads');
   const [dishes, setDishes] = useState([]);
   const navigate = useNavigate();
-  const { isLoading, data } = useQuery(
+  const { isLoading, data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery(
     ['dishes', category],
-    async () => await getDishesForMenu(restId, category, true),
+    async ({ pageParam = 1 }) =>
+      category === 'All'
+        ? await getAllDishes(restId, true, pageParam)
+        : await getDishesForMenu(restId, category, true, pageParam),
+
     {
+      getNextPageParam: (lastPage, _pages) => {
+        if (lastPage?.data?.page < lastPage?.data?.totalPages) {
+          return lastPage.data.page + 1;
+        }
+        return undefined;
+      },
+
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       refetchInterval: false,
@@ -58,7 +67,6 @@ const AIAssistant = () => {
             answers.likeSpicy,
             answers.isPasc,
             answers.wantHealthy,
-            answers.wantDrink,
             answers.budget
           );
           setResponse(response.data.textBefore);
@@ -76,7 +84,6 @@ const AIAssistant = () => {
       setStep(step + 1);
     }
   };
-
   const handleBudgetChange = (value) => {
     setAnswers({ ...answers, budget: value });
   };
@@ -167,25 +174,6 @@ const AIAssistant = () => {
                 No
               </Button>
             </div>
-            <div className={styles.questionContent}>
-              <p className={styles.text}>
-                Would you like a drink? {answers.wantDrink ? <FcApproval /> : <FcCancel />}
-              </p>
-              <Button
-                mode={answers.wantDrink ? `` : `outlined`}
-                size={`sm`}
-                onClick={() => setAnswers({ ...answers, wantDrink: true })}
-              >
-                Yes
-              </Button>
-              <Button
-                mode={answers.wantDrink ? `outlined` : ``}
-                size={`sm`}
-                onClick={() => setAnswers({ ...answers, wantDrink: false })}
-              >
-                No
-              </Button>
-            </div>
           </div>
         );
       case 2:
@@ -203,21 +191,47 @@ const AIAssistant = () => {
             ) : (
               <div className={styles.wrapper}>
                 <CategoryTabs mode="outlined" setActiveTab={setActiveTab} activeTab={category} />
+                <Cart />
                 <ul className={css.list}>
-                  {data?.data?.map(({ _id, picture, price, portionWeight, ingredients, name }) => (
-                    <li className={css.list__item} key={_id}>
-                      <DishCard
-                        id={_id}
-                        src={picture}
-                        title={name}
-                        ingredients={ingredients}
-                        weight={portionWeight}
-                        price={price}
-                        link={`/${restId}/${tableId}/${_id}`}
-                      />
-                    </li>
-                  ))}
+                  {isLoading ? (
+                    [1, 2, 3].map((item) => (
+                      <li className={css.list__item} key={item}>
+                        <DishCardSkeleton />
+                      </li>
+                    ))
+                  ) : (
+                    <>
+                      {data?.pages?.map((page) =>
+                        page?.data?.dishes?.map(
+                          ({ _id, picture, price, portionWeight, ingredients, name }) => (
+                            <li className={css.list__item} key={_id}>
+                              <DishCard
+                                id={_id}
+                                src={picture}
+                                title={name}
+                                ingredients={ingredients}
+                                weight={portionWeight}
+                                price={price}
+                                link={`/${restId}/tables/${tableId}/dishes/${_id}`}
+                              />
+                            </li>
+                          )
+                        )
+                      )}
+                    </>
+                  )}
                 </ul>
+                {hasNextPage && (
+                  <div className={css.button}>
+                    {isFetchingNextPage ? (
+                      <Loader />
+                    ) : (
+                      <Button mode="outlined" size="sm" onClick={() => fetchNextPage()}>
+                        Load more
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
